@@ -22,12 +22,15 @@ tags:
 
 **文章**
 
-**（1）地理空间语义网的综述文章**
+**（1）地理空间语义网**
 
 - **Janowicz, K.** and Scheider, S., Pehle, T., and Hart, G. (2012): [Geospatial Semantics and Linked Spatiotemporal Data - Past, Present, and Future](https://geog.ucsb.edu/~jano/LSTD2012editorial.pdf) *(editorial)*. Semantic Web 3(4), pp. 321-332.
 - **Janowicz, K.** and Hitzler, P. (2012): [The Digital Earth as Knowledge Engine](https://geog.ucsb.edu/~jano/Semantics_Digital_Earth2012.pdf) *(editorial)*. Semantic Web Journal, 3(3), pp. 213-221.
 
-
+- **Janowicz, K.** and Hitzler, P. (2015): [Geospatial Semantic Web.](https://geog.ucsb.edu/~jano/#) The International Encyclopedia of Geography: People, the Earth, Environment, and Technology. SAGE Publications.
+- **Janowicz, K.**, Scheider, S., and Adams, B. (2013; forthcoming): [A Geo-Semantics Flyby](https://geog.ucsb.edu/~jano/geo-semantics.pdf).
+- 
+- 主要机构：美国加州大学圣巴巴拉分校、英国大地测量局、
 
 **（2）地理知识图谱相关综述文章**
 
@@ -41,8 +44,7 @@ tags:
 
 ### 书籍
 
-- **Janowicz, K.** and Hitzler, P. (2015): [Geospatial Semantic Web.](https://geog.ucsb.edu/~jano/#) The International Encyclopedia of Geography: People, the Earth, Environment, and Technology. SAGE Publications.
-- **Janowicz, K.**, Scheider, S., and Adams, B. (2013; forthcoming): [A Geo-Semantics Flyby](https://geog.ucsb.edu/~jano/geo-semantics.pdf).
+- 
 - 
 
 ## 一、地理知识图谱建模
