@@ -1,0 +1,16 @@
+{% if site.catalog-list %}
+<section>
+    {% if include.bottom %}
+        <hr class="hidden-sm hidden-xs">
+    {% endif %}
+
+    <h5> CATALOG LIST </h5>
+
+    <div class="cat-list">
+        {% for category in site.categories %}
+        {% capture category_name %}{{ category | first }}{% endcapture %}
+            <a href="{{ "/categories/" | relative_url }}#{{ category_name }}"><strong>{{ category_name }}</strong></a></br>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
