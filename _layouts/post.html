@@ -119,8 +119,8 @@ layout: default
 
 {% if site.gitalk %}
 <!-- gitalk JS codes.-->
-    {% include _partial/comment.ejs %}
-    <%- partial('_partial/comment') %>
+    {% include comment.ejs %}
+    {% partial('_partial/comment') %}
 {% endif %}
 
 {% if site.anchorjs %}
