@@ -15,7 +15,7 @@ future: true
 RSS: false
 weibo_username:     13911690331
 zhihu_username:     dr-pu-62
-github_username:    shilang1220
+github_username:    xishansnow
 #twitter_username:   huxpro
 #facebook_username:  huxpro
 #linkedin_username:  firstname-lastname-idxxxx
@@ -108,3 +108,12 @@ friends: [
     #     href: "http://su.gallery/"
     # }
 ]
+
+gitalk:
+  enable: true #用来做启用判断可以不用
+  owner: xishansnow #Github 用户名,
+  repo: xishansnow.github.io #储存评论issue的github仓库名
+  admin: xishansnow #Github 用户名,
+  oauth:
+    clientID: 54578b7c3f1e7a80999c #`Github Application clientID`
+    clientSecret: 7f608539dcf646ab10a50887d718fb6e21e82f4b #`Github Application clientSecret`
