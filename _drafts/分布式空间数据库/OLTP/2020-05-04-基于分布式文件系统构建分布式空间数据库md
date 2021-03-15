@@ -1,0 +1,70 @@
+---
+layout:     post
+title:      "分布式空间数据库「 4 」"
+subtitle:   "「 基于分布式文件系统构建分布式空间数据库 」"
+date:       2020-05-03 14:00:00
+author:     "西山晴雪"
+header-img: "img/post-bg-android.jpg"
+categories: DistributedSpatialDatabase
+tags:
+    - 分布式空间数据库
+    - 多维空间索引
+    - 空间填充曲线
+    - Z序曲线
+    - XZ序曲线
+    - 空间数据库
+---
+
+基于分布式文件系统构建分布式空间数据库
+==================
+
+ 摘要：
+
+​		在分布式空间数据库研究的技术体系中，基于成熟数据库实现海量空间数据的组织管理是一种便利的方式，但受限于基底数据库的约束，研究人员很难有更灵活的发挥。因此，直接在分布式文件系统基础上，重新构件分布式空间数据库的方法称为另外一条技术途径。原理上来说，此类方法不能称为严格的空间数据库构建方法，因为其管理的对象大多以静态数据为主，对插入、删除、更新等事物性较强的工作较少涉及。此类技术体系中，较为典型的系统是SptialHadoop和HadoopGIS。本文以SpatialHadoop作为重点，剖析此类方法中的关键技术点。
+
+ 
+
+1 背景知识 
+--------
+
+​		
+
+ 
+
+2 SpatialHadoop架构
+----------------
+
+
+
+
+
+## 3 分布式空间数据引擎
+
+
+
+
+
+4 查询方法
+-----------------------
+
+ 	
+
+
+
+5 总结
+----------
+
+​	略。
+
+ 
+
+## 参考文献
+
+​		明尼苏达大学Mohamed F. Mokbel、Ahmed Eldawy、Louai Alarabi等人发表的下列文献：
+
+- 2013年，在VLDB上发表的[A demonstration of spatialhadoop: An efficient mapreduce framework for spatial data](https://dl.acm.org/doi/abs/10.14778/2536274.2536283)
+- 2015年，在SIGSPATIAL上发表的[The Ecosystem of SpatialHadoop](https://dl.acm.org/doi/pdf/10.1145/2766196.2766198)
+- 2015年，在IEEE上发表的[SpatialHadoop: A MapReduce Framework for Spatial Data](https://ieeexplore.ieee.org/abstract/document/7113382)
+- 2015年，在VLDB上发表的[Spatial partitioning techniques in SpatialHadoop](https://dl.acm.org/doi/pdf/10.14778/2824032.2824057) ；
+- 2018年，在Geoinformatica上发表的[ST-Hadoop: a MapReduce Framework for Spatio-temporal Data](http://ibn-battuta-umh.cs.umn.edu/downloads/papers/STHadoop_GeoInformatica.pdf)
+

@@ -3,8 +3,6 @@ layout: page
 description: "追回消逝的时光..."
 ---
 
-
-
 {% for post in paginator.posts %}
 <div class="post-preview">
     <a href="{{ post.url | prepend: site.baseurl }}">
