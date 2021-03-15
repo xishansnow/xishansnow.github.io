@@ -8,7 +8,6 @@ permalink: /404.html
 ---
 
 
-
 <!-- Page Header -->
 {% include intro-header.html type="page" short='true' %}
 
