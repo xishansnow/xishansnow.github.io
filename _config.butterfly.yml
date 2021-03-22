@@ -102,7 +102,7 @@ katex:
   per_page: false
   hide_scrollbar: true
 
-# ------------------------------------------------------------------------------------------------------------系统所有图片设置-------------------------
+# ---------------------------------------------------------------------------------系统所有图片设置-----------------------
 # Image (圖片設置)
 # --------------------------------------
 
@@ -113,8 +113,8 @@ favicon: /img/favicon.png
 # 个人头像
 # Avatar (頭像)
 avatar:
-  img:
-  effect: true
+  img: /img/favicon.png
+  effect: false
 
 # Disable all banner image
 disable_top_img: false
@@ -154,27 +154,37 @@ category_per_img:
 cover:
   # 是否显示文章封面
   # display the cover or not (是否顯示文章封面)
-  index_enable: true
-  aside_enable: false
-  archives_enable: true
+  index_enable: true      #索引页中是否显示文章封面
+  aside_enable: false     #侧边栏是否显示文章封面  
+  archives_enable: true   #时间轴索引页面中是否显示文章封面
   # the position of cover in home page (封面顯示的位置)
-  # left/right/both
+  # left/right/both       #文章封面放置的位置
   position: both
   # When cover is not set, the default cover is displayed (當沒有設置cover時，默認的封面顯示)
-  default_cover:
-    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/001.png
-    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/002.png
-    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/003.png
-    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/004.png
-    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/005.png
-    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/006.png
-    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/007.png
-    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/008.png
-    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/009.png
-    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/010.png
+  default_cover:          #文章封面用到的图片（ 如果Front-matter中未定义cover，则从如下图片中随机选择一张）
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_01.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_02.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_03.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_04.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_05.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_06.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_07.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_08.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_09.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_10.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_11.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_12.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_13.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_14.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_15.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_16.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_17.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_18.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_19.png
+    - https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_20.png
 
 
-# Replace Broken Images (替換無法顯示的圖片)
+# 如果Front-matter的cover或上述列表中的图片不存在，则显示默认错误图片
 error_img:
   flink: /img/friend_404.gif
   post_page: /img/404.jpg
@@ -183,25 +193,26 @@ error_img:
 error_404:
   enable: true
   subtitle: 'Page Not Found'
-  background: https://i.loli.net/2020/05/19/aKOcLiyPl2JQdFD.png
+  background: https://gitee.com/XiShanSnow/imagebed/raw/master/images/page_404_01.png
+
 
 post_meta:
-  page: # Home Page
-    date_type: created # created or updated or both 主頁文章日期是創建日或者更新日或都顯示
-    date_format: date # date/relative 顯示日期還是相對日期
-    categories: true # true or false 主頁是否顯示分類
-    tags: false # true or false 主頁是否顯示標籤
-    label: true # true or false 顯示描述性文字
-  post:
-    date_type: both # created or updated or both 文章頁日期是創建日或者更新日或都顯示
-    date_format: date # date/relative 顯示日期還是相對日期
-    categories: true # true or false 文章頁是否顯示分類
-    tags: true # true or false 文章頁是否顯示標籤
-    label: true # true or false 顯示描述性文字
+  page: # Page页面参数配置
+    date_type: created # created or updated or both 显示page创建日期还是更新日期，或者两者都显示
+    date_format: date # date/relative page上显示日期，还是相对日期
+    categories: true # true or false page上是否显示分类信息
+    tags: false # true or false page上是否显示标签信息
+    label: true # true or false page上是否显示分类信息是否显示lable文字
+  post: # post页面参数配置
+    date_type: both # created or updated or both 显示post创建日期还是更新日期，或者两者都显示
+    date_format: date # date/relative post上显示日期，还是相对日期
+    categories: true # true or false post上是否显示分类信息
+    tags: true # true or false post上是否显示标签信息
+    label: true # true or false post上是否显示label文字
 
-# wordcount (字數統計)
+# wordcount (字数统计)
 wordcount:
-  enable: false
+  enable: true
   post_wordcount: true
   min2read: true
   total_wordcount: true
@@ -695,7 +706,7 @@ aside:
   position: left # left or right
 
   card_author: #作者区块
-    enable: false
+    enable: true
     description: It's time to...
     button:
       enable: true
@@ -795,7 +806,7 @@ translate:
   msgToSimplifiedChinese: '簡'
 
 # Read Mode (閲讀模式)
-readmode: false
+readmode: true
 
 # dark mode
 darkmode:

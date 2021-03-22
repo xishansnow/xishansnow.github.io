@@ -1,7 +1,6 @@
 ---
 layout:     post
-title:      "概念解释"
-subtitle:   "Difference of Ontology, Taxonomy, Folksonomy  and Thesauri"
+title:      "概念解释 -- Ontology、Taxonomy、Folksonomy和Thesauri的不同"
 date:       2020-05-15 18:00:00
 author:     "西山晴雪"
 categories: "知识图谱基础"
