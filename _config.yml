@@ -107,17 +107,11 @@ deploy:
     #  gitee:  git@gitee.com:XiShanSnow/XiShanSnow.git
 
   - type:  git
-    repo:  git@github.com:xishansnow/xishansnow.github.io.git
-      # gitee:   git@gitee.com:XiShanSnow/XiShanSnow.git
-    branch:   master
-  - type:  git  
-    repository: git@github.com:xishansnow/xishansnow.github.io.git      
-    branch:   dev
-    extend_dirs:   /
-    ignore_hidden:   false
-    ignore_pattern:
-      public:  .
-      node_modules:  .
+    repo:  
+      github:   git@github.com:xishansnow/xishansnow.github.io.git
+      gitee:    git@gitee.com:XiShanSnow/XiShanSnow.git
+    branch:     master
+
 
     # type:  git
     # repo:  git@gitee.com:XiShanSnow/XiShanSnow.git
