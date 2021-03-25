@@ -1,0 +1,352 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>信息抽取技术进展【2】 -- 命名实体识别 | 西山晴雪的博客</title><meta name="keywords" content="知识图谱,Knowledge Graph,信息抽取,Information Extract"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="信息抽取技术及研究进展">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息抽取技术进展【2】 -- 命名实体识别">
+<meta property="og:url" content="http://xishansnow.github.io/2021/03/25/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%9F%BA%E7%A1%80/%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%8A%80%E6%9C%AF%E8%BF%9B%E5%B1%952-%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB/index.html">
+<meta property="og:site_name" content="西山晴雪的博客">
+<meta property="og:description" content="信息抽取技术及研究进展">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_03.png">
+<meta property="article:published_time" content="2021-03-25T02:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-25T03:05:34.854Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="知识图谱">
+<meta property="article:tag" content="Knowledge Graph">
+<meta property="article:tag" content="信息抽取">
+<meta property="article:tag" content="Information Extract">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_03.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://xishansnow.github.io/2021/03/25/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%9F%BA%E7%A1%80/%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%8A%80%E6%9C%AF%E8%BF%9B%E5%B1%952-%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-25 11:05:34'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">72</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 知识库</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间索引</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/project/"><i class="fa-fw fas fa-cogs"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 论文</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/article/"><i class="fa-fw fas fa-books"></i><span> 学术论文</span></a></li><li><a class="site-page" href="https://xishansnow.github.io"><i class="fa-fw fas fa-books"></i><span> GitBook01</span></a></li><li><a class="site-page" href="https://xishansnow.github.io"><i class="fa-fw fas fa-books"></i><span> GitBook02</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-camera-retro"></i><span> 摄影</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 全部作品</span></a></li><li><a class="site-page" href="/gallery/landscape/"><i class="fa-fw fas fa-image"></i><span> 风光摄影</span></a></li><li><a class="site-page" href="/gallery/portrait/"><i class="fa-fw fas fa-portrait"></i><span> 肖像摄影</span></a></li><li><a class="site-page" href="/gallery/literal/"><i class="fa-fw fas fa-archive"></i><span> 人文摄影</span></a></li><li><a class="site-page" href="/gallery/dailylife/"><i class="fa-fw fas fa-camera"></i><span> 日常摄影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/link/food/"><i class="fa-fw fas fa-utensils"></i><span> 美食博主</span></a></li><li><a class="site-page" href="/link/photography"><i class="fa-fw fas fa-camera"></i><span> 摄影大神</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_03.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 知识库</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间索引</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/project/"><i class="fa-fw fas fa-cogs"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 论文</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/article/"><i class="fa-fw fas fa-books"></i><span> 学术论文</span></a></li><li><a class="site-page" href="https://xishansnow.github.io"><i class="fa-fw fas fa-books"></i><span> GitBook01</span></a></li><li><a class="site-page" href="https://xishansnow.github.io"><i class="fa-fw fas fa-books"></i><span> GitBook02</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-camera-retro"></i><span> 摄影</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 全部作品</span></a></li><li><a class="site-page" href="/gallery/landscape/"><i class="fa-fw fas fa-image"></i><span> 风光摄影</span></a></li><li><a class="site-page" href="/gallery/portrait/"><i class="fa-fw fas fa-portrait"></i><span> 肖像摄影</span></a></li><li><a class="site-page" href="/gallery/literal/"><i class="fa-fw fas fa-archive"></i><span> 人文摄影</span></a></li><li><a class="site-page" href="/gallery/dailylife/"><i class="fa-fw fas fa-camera"></i><span> 日常摄影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/link/food/"><i class="fa-fw fas fa-utensils"></i><span> 美食博主</span></a></li><li><a class="site-page" href="/link/photography"><i class="fa-fw fas fa-camera"></i><span> 摄影大神</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">信息抽取技术进展【2】 -- 命名实体识别</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-03-25T02:00:00.000Z" title="发表于 2021-03-25 10:00:00">2021-03-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-03-25T03:05:34.854Z" title="更新于 2021-03-25 11:05:34">2021-03-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">7.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>33分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="信息抽取技术进展【2】-–-命名实体识别"><a href="#信息抽取技术进展【2】-–-命名实体识别" class="headerlink" title="信息抽取技术进展【2】 – 命名实体识别"></a>信息抽取技术进展【2】 – 命名实体识别</h1><p>【摘要】命名实体识别（NER）是问答系统、信息抽取系统、关系抽取系统的基础，同时还能支撑语义分析、情感分析、链接分析等其他研究任务。 命名实体识别技术还可以用于改进现有搜索引擎以及数字图书馆，为用户/研究人员提供基于作者名称、研究问题、领域等各种高级参数化搜索选项。本文对命名实体识别技术进行了调查研究，并进行了梳理和总结。</p>
+<p>【引自】 Zara Nasar, Syed Waqar Jaffry, and Muhammad Kamran Malik. 2021. Named Entity Recognition and Relation Extraction: State-of-the-Art. ACM Comput. Surv. 54, 1, Article 20 (February 2021), 39 pages. <a target="_blank" rel="noopener" href="https://doi.org/10.1145/3445965">https://doi.org/10.1145/3445965</a>.</p>
+<h2 id="1-基础"><a href="#1-基础" class="headerlink" title="1 基础"></a>1 基础</h2><h3 id="（1）命名实体识别（NER）"><a href="#（1）命名实体识别（NER）" class="headerlink" title="（1）命名实体识别（NER）"></a>（1）命名实体识别（NER）</h3><p>​    命名实体识别主要是指实体识别与分类任务。 命名实体识别是问答系统、信息抽取系统、关系抽取系统的基础，同时还能支撑语义分析、情感分析、链接分析等其他研究任务。 命名实体识别技术还可以用于改进现有搜索引擎以及数字图书馆，为用户/研究人员提供基于作者名称、研究问题、领域等各种高级参数化搜索选项。</p>
+<p>​    命名实体识别高度依赖于文本上下文，因此文本序列在研究中很重要。</p>
+<ul>
+<li>例如：“华盛顿”这个词可以是指位置或人名，需要通过分析周围上下文，来理解其有效意义</li>
+</ul>
+<p>​    因此，求解命名实体识别问题首先需要了解序列标记。</p>
+<h3 id="（2）序列标记"><a href="#（2）序列标记" class="headerlink" title="（2）序列标记"></a>（2）序列标记</h3><p>​    序列标记指在保持词序和上下文视图情况下，将文本流中每个Token标记为预定义分类的过程</p>
+<ul>
+<li><p>词性标注（POS）、分词（Chunking）和命名实体识别（NER）都是常见的序列标记任务（见下图），只是分类标签有差异</p>
+</li>
+<li><p>序列标注概念可以扩展到其他需要给每个词汇提供标签的领域</p>
+</li>
+</ul>
+<p>​    本文主要讨论其中的命名实体识别（NER）问题，但有时也会关注词性标注（POS）问题，因为许多研究往往强调整体序列标记问题，而不是仅局限在NER问题上。</p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/clip_imageSP001.png" alt="序列标注方法BIO、BIOSE、IOB、BILOU、BMEWO、BMEWO+的异同"></p>
+<h3 id="（3）常用标注方法"><a href="#（3）常用标注方法" class="headerlink" title="（3）常用标注方法"></a>（3）常用标注方法</h3><p>​    广泛使用的标记方案包括IO、IOB和BILOU等（见<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/147537898?utm_source=wechat_session">序列标注方法的异同</a>）。它们之间比较重要的区别在于：</p>
+<ul>
+<li>如果两个标签连续出现，IO无法区分其边界，而IOB和BILOU都可以包含边界信息。但IOB和BILOU各自的描述上下文信息的精细程度不同。</li>
+</ul>
+<p>​    对于例句：</p>
+<blockquote>
+<p>“<strong>American Airlines</strong>, a unit o f <strong>AMR</strong>, immediately matched the move, spokesman <strong>Tim Wagner</strong> said.”</p>
+</blockquote>
+<p>在IO格式中，它将被标注为：</p>
+<blockquote>
+<p>“American/ORG Airlines/ORG, a/O unit/O of/O AMR/ORG,immediately/O matched/O the/O move/O, spokesman/O Tim/PER Wagner/PER said.”</p>
+</blockquote>
+<p>在IOB中，它将被标注为：</p>
+<blockquote>
+<p>“American/B-ORG Airlines/I-ORG, a/O unit/O of/O AMR/ORG, immediately/O matched/O the/O move/O, spokesman/O Tim/B-PER Wagner/I-PER said.”</p>
+</blockquote>
+<p>在BILOU中，被标注为：</p>
+<blockquote>
+<p>“American/B-ORG Airlines/L-ORG, a/O unit/O of/O AMR/U-ORG, immediately/O matched/O the/O move/O, spokesman/O Tim/B-PER Wagner/L-PER said.”</p>
+</blockquote>
+<h2 id="2-有关命名实体识别的综述文章"><a href="#2-有关命名实体识别的综述文章" class="headerlink" title="2 有关命名实体识别的综述文章"></a>2 有关命名实体识别的综述文章</h2><p>​    文献[14] - [18]中呈现了命名实体识别（NER）研究的各种调研成果。有些文献专注于技术的分类，有些文献专注于使用的功能：</p>
+<ul>
+<li>研究[14]描述了英语以及其他语言的工作，将NER方法分为监督和半监督学习方法。</li>
+<li>研究[15]将文献资料分为三个类型：监督、半监督和无监督，此外，还列出广泛用于NER的潜在功能，包括：<ul>
+<li>实体级别功能（实体类型、实体频率、实体分发、实体邻居）</li>
+<li>标题相关功能（是否存在标题中的字/实体）</li>
+<li>句子级别功能</li>
+<li>最终文档级别功能</li>
+</ul>
+</li>
+<li>研究[16]将NER任务分为<strong>通用NER</strong>、<strong>领域NER</strong>两种泛型，并将处理方法分为<strong>基于规则</strong>、<strong>监督、无监督和NE提取</strong>四种类型。</li>
+<li>研究[17]将方法分类为<strong>监督、半监督和无监督</strong>的方法，监督方法进一步分为HMM、SVM、最大熵和CRF。</li>
+<li>研究[18]介绍了印度和非印度语言中的NER调查研究（略）。</li>
+<li>本文侧重于结合最新的研究进展，从神经网络方法和非神经网络方法进行区分。</li>
+</ul>
+<h2 id="3-英语命名实体识别技术"><a href="#3-英语命名实体识别技术" class="headerlink" title="3 英语命名实体识别技术"></a>3 英语命名实体识别技术</h2><h3 id="3-1-非神经网络方法"><a href="#3-1-非神经网络方法" class="headerlink" title="3.1 非神经网络方法"></a>3.1 非神经网络方法</h3><ul>
+<li><p>简述</p>
+<ul>
+<li>广泛使用的NER监督方法包括：HMM、MEMM、SVM和CRF。</li>
+<li>传统方法完全依赖于基础算法和初始训练数据，而现在半监督或远程监督方法也越来越多。</li>
+<li>这些方法通常涉及外部数据集或特定领域的启发式，使结果模型更加强大。</li>
+</ul>
+</li>
+<li><p>监督方法</p>
+<ul>
+<li>研究[19]指出在网过程中遇到的主要设计挑战。主要挑战包括：<ul>
+<li>选择注释方案和推理算法</li>
+<li>长期和非本地语境依赖性的建模</li>
+<li>结合外部知识资源</li>
+</ul>
+</li>
+<li>它采用平均的Perceptron作为基线系统，全面解决了这些挑战中的每个挑战。该研究强调了Bilou方案对贪婪搜索的计算和性能有效性的适用性与Viterbi和Beam搜索的推动，利用最近预测的标签，并结合非本地特征和持续使用凝固仪和棕色集群利用外部知识资源。通过采用平均的Perceptron来研究每个特征的效果和网页数据集[20]。拟议的方法表现优于公共斯坦福人，其Codebase也公开可用于研究目的。</li>
+<li>在参考文献[21]中提出了利用字符级模型的先驱研究以执行NER。它采用令牌字符序列及其长度来训练模型。状态转换直观地应用，仅允许有效的转换。要启动和结束单词之间的字符级转换，介绍了特殊标签。应用该模型并在HMM和MEMM上进行实验。另外，还使用包括前后单词及其各自的POS标签和实体标记的上下文特征。结果表明，与相应的单词模型相比，性格模型显着提高了结果。</li>
+<li>参考文献[22]进行的研究是使用联合模型的第一个用于ner和实体连接。所提出的系统基于半CRF，在单词之间遵循轻松的马尔可夫假设。该系统利用包括UNIGRAM，BIGRAM，棕色集群，Wordnet，公鸡，实体级别特征和相关性的多个功能以及外部知识库（如FreeBase和Wikipedia）。该系统被命名为Jerl，这意味着“联合实体识别和学习”。使用Conll DataSet评估所提出的系统，这优于NER的其他最先进的解决方案。参考文献[23]介绍了通过使用各种语言特征的监督图形建模方法连接的Ner和实体连接的另一个联合解决方案。</li>
+<li>参考[24]提出了一种利用CRF进行CRF执行NER的半监督学习算法。所提出的算法依赖于利用证据。此证据与所采用的功能集无关，该特征集在分类过程中使用。因此，证据是独立的，它的剥削导致高精度注释。</li>
+</ul>
+</li>
+<li><p>非监督方法</p>
+<ul>
+<li>人们也以无人监督的方式进行。知识[25]系统是着名的系统，以执行无监督的网。在此中添加了总共三个模块以改善整体召回。这三个模块包括模式学习，子类提取和清单提取。模式学习需要一组规则，该规则充当用于进一步数据提取的模式以及提取模式的验证器。子类提取是指其他子概念的识别。例如，如果要找到教师，请在教授，助理教授，助理教授和讲师搜索教授。列表提取模块首先定位类实例列表，并在定位它们之后，学习了一种包装函数，其进一步用于提取列表元素。结果是在手动标记的语料库上进行评估，其中三个NE进行评估，即城市，电影和科学家。对实体城市，电影和科学家实现的最佳精确度分别是参考文献83,72和77。</li>
+<li>另一个无人监督的系统[26]主要由两个模块组成：凝视生成和歧义分辨率。公报生成进一步涉及多个步骤。第一步是生成种子查询并响应查询检索网页。然后，第二步骤从获取的网页中提取所需信息。根据系统的需要重复该过程;在每一步中，新识别的实体都是种子查询的一部分。在生成宪报之后，第二个模块用于解决歧义。存在三种主要类型的歧义，即EntityNoun，实体 - 边界标识和实体实体歧义。这些含糊不清通过若干报告的文学启发式解决了。在MUC-7数据集中进行实验，结果表明，由于凝固仪的召回，所提出的系统在低精度的成本上表现更好。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2-神经网络方法"><a href="#3-2-神经网络方法" class="headerlink" title="3.2 神经网络方法"></a>3.2 神经网络方法</h3><p>多层的Perceptron。参考文献[27]提出的研究将ner视为单词分类问题。它采用MLP执行ner，其中通过在输入文档上通过滑动窗口管理上下文信息。在包含商业提供数据集和研讨会通知数据集的两个数据集上评估此上下文分类器。在这些数据集中，商业提供数据集包含包含六个网元总数的短非正式句子。然而，研讨会公告数据集是一个用于信息抽取包含四个网元的任务的基准数据集。所提出的方法为具有非正式文件的域提供了良好的解决方案以及语言分析不会产生良好结果的领域。</p>
+<ul>
+<li><p>参考文献[28]中提出的方法是采用基于神经的单词嵌入到NER任务的先驱研究。本研究提出了一种新的学习单词嵌入方式的新方式，这些信息利用相关知识来源的信息，即lexicons。外部词汇的加入导致改进的单词嵌入。为了学习嵌入品，通过预测中心词的Lexicon成员资格来扩展基本的Skip-Gram模型以及预测上下文词语的矢量。</p>
+</li>
+<li><p>深度学习。参考文献[29]提出了一种基于神经语言模型的半监督方法[29]。此语言模型用于培训可以在上下文中编码单词的语义和语法角色的嵌入式。稍后，这些上下文感知嵌入物用于执行ner。提出的方法采用RNN用于神经语言建模以及序列建模。在参考[30]中使用类似的方法，这使得底层语言模型通过双向LSTMS更深入地嵌入。名为ELMO的拟议嵌入物应用于各种NLP任务，包括NER。这两种方法都分别在Conll上评估了F1分别为91.93和92.22。这些方法的独特特征是通过结合上下文信息来改进现有的单词嵌入。此外，字符卷积还用于包含字符级别特征。</p>
+</li>
+<li><p>Neuro-CRF（深度学习+ CRF）。在参考文献[31]中提出了一种利用CRF使用神经网络（NN）的方法作为NeuroCrF。在所提出的模型中，单词通过Word Embeddings表示。该研究侧重于两种类型的网络，即低级NeuroCro和全排名NeuroCro。低秩Neurocrf是指使用NN的发射权重的学习，这些重量被用于对标签分配的单词进行分类。这些重量进一步互补的标签的恒定过渡重量。全级CRFS不需要单独使用过渡矩阵。研究表明，在Conll 2003的任务上，全级NeuroCRFS倾向于倾向于在分部和行程任务上表现出低级CRF。该研究在参考文献[32]中延伸，其中共享参数通过利用标签中的相似性并入NeuroCRFS。此扩展导致FIC分数为89.62，在Conll 2003数据集中，具有集合学习。</p>
+</li>
+<li><p>参考文献[33]提出了一种使用CNN，BI-LSTMS和CRF来解决POS标记和NER问题的混合方法。在该研究中，CNNS用于获得字符级嵌入。这些字符级嵌入式以及字向量用作Bilstm的输入。 LSTMS的输出稍后使用最终CRF层处理。此外，早期停止和辍学机制也被掺入以改善结果。</p>
+</li>
+<li><p>参考文献[34]提出了一种在输出层中使用CRF扩张CNN的另一种方法。它利用迭代扩张来捕获句子上下文。使用Ontonotes和Conll数据集进行评估结果。实验表明，与基于RNN的混合模型相比，最先进的结果。这种方法的主要贡献是利用CNN的并联结构，以提高NER的整体效率。</p>
+</li>
+<li><p>CRF被用作参考文献[35]中的内存网络的培训。内存网络侧重于推理，关注和记忆的结合，以更好地了解语言。因此，提出了使用外部存储器的CRF的变化，该外部存储器被称为“存储器增强CRF（ME-CRF）”。这种集成允许CRF包括远离邻域步骤的信息，从而使系统能够捕获远程依赖性。整个系统由两层：存储器层和CRF层组成。存储器层还分为处理输入存储器，输出存储器和电流输入步骤的三个主要组件。输入存储器和输出存储器通过注意机制彼此连接。使用当前输入与存储器内容之间的相似性计算存储权重。此内存网络的输出稍后由CRF处理以训练系统。该方法应用于Conll’03数据集，并显示了改进的CRF性能。</p>
+</li>
+</ul>
+<h2 id="4-其他语言-多语言命名实体识别技术"><a href="#4-其他语言-多语言命名实体识别技术" class="headerlink" title="4 其他语言/多语言命名实体识别技术"></a>4 其他语言/多语言命名实体识别技术</h2><h3 id="4-1-非神经网络方法"><a href="#4-1-非神经网络方法" class="headerlink" title="4.1 非神经网络方法"></a>4.1 非神经网络方法</h3><p>监督方法</p>
+<ul>
+<li>参考文献[38]进行的研究利用HMM以及与各种类型的单晶相关和数量相关的特征进行执行。分别以英语和西班牙语方式的MUC-6和MET-1数据集用于执行实验。根据结果，与其他最先进的方法相比，F分数显着改善。结果显示使用混合壳体特征时显示最佳F分数为94.47。实验还表明，培训数据的增加往往会改善整体结果。作为未来的指示，作者建议改进双克模型，因为它不会捕获远程依赖性。除此之外，它们还强调分层建模以捕获嵌套名称。另一种未来的方向是设计培训启发式，以协助语料库注释。使用HMM的其他研究包括参考[39]。</li>
+<li>在参考文献[40]中进行的研究是采用MEMM执行NER的先驱研究。它利用了包含词汇，二进制，外部词汇，外部系统，相关的字典特征，参考分辨率，一致性和复合特征的各种功能。结果是关于英语的MUC-7数据集，以及日语的MET-2和IREX。使用各种特征以及培训和测试数据集的变化进行比较结果。</li>
+<li>参考文献[41]提出了采用CRF的先驱研究[41]。本研究利用多个外部词典，每个外部Lexicon都有一组广泛使用的实体。结果涉及德语2003年CONLL 2003年数据集，分别为68.11和84.04的F-Scores。</li>
+<li>基于HMM的中文语言的NER是参考[42]，这是利用扭曲过程。首先，使用Bigrams分割单词，然后使用lexicalized hmm。使用字符和单词级词汇化的HMMS评估此方法。此外，还用于识别已知词的词典。正在确定主要的三个实体，即人，位置和组织。通过三个不同的中文数据集评估所提出的方法。</li>
+<li>最近的一项研究[43]专注于就业人物级语言模型（CLM）和各种功能，以提高多语言NER系统的性能。它使用CogCompnlp系统作为基线[44]。共有八种语言用于示范拟议方法，包括Tagalog，Somali，Hindi，Farsi，Bengali，阿拉伯语，Amharic和英语。对于英语，使用Conll’03数据集，而Lorelei语言包[45]用于剩余七种语言。所提出的CLM模型将完整的单词视为句子，而每个字符被视为语言模型中的单词。此外，采用包括N-GRAM，Skip-Gram，连续袋和双线性的各种语言模型。使用现有注释数据集接受两个单独的CLMS为实体和非实体令牌培训。还使用描述使用CLM困惑的语言和实体状态的其他功能。结果表明，拟议的方法本质上简单且直接，并与艺术艺术的深度学习方法相提并论。保持最近关于培训深度神经结构训练的环境影响的担忧，所提出的方法具有巨大的意义。</li>
+</ul>
+<p>半监督方法</p>
+<ul>
+<li>存在各种半监督方法。在这方面的第一个是基于转换的学习（TBL）方法。 TBL是一种机器面向学习的基于规则的方法，它会随着时间的推移学习和改进规则[46]。它是一种迭代的方法来改进和修改规则。它的第一阶段是注释包括随机类分配或复杂算法的数据。此分配后来然后是迭代过程。目标函数用于计算金标准和注释的语料库之间的距离/相似性。通过使用此目标函数，在每次迭代中，更新转换规则，直到满足定义的精度标准或转换规则不再更新。采用这种方法在参考文献[47]中对菲律宾语言进行NER。</li>
+<li>引用中提出的基于引导的方法[48]利用实体级信息和上下文信息来执行ner。首先，通过块算法识别候选实体，然后在各个NE中进行软分类。实体的边界使用非常基本的规则确定，例如位置功能，大写功能，字长等。实验在荷兰语和西班牙语语言进行。</li>
+<li>参考文献[49]介绍了印度尼西亚语言的另一种半监督方法。本研究利用DBPedia进行培训数据的质量改进。首先，CRF用于执行初始ner。稍后，利用DBPedia的信息将标签分配给未标记的数据。稍后将此标记的数据借助于下一次迭代的评分机制添加到整体训练中，因此改善了结果。结果是在手动注释的75维基百科文章的数据集上进行评估，在每次迭代后都显示出F分数的改进。</li>
+</ul>
+<h3 id="4-2-神经网络方法"><a href="#4-2-神经网络方法" class="headerlink" title="4.2 神经网络方法"></a>4.2 神经网络方法</h3><h3 id="4-3-迁移学习方法"><a href="#4-3-迁移学习方法" class="headerlink" title="4.3 迁移学习方法"></a>4.3 迁移学习方法</h3><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] I. Muslea et al. 1999. Extraction patterns for information extraction tasks: A survey. In Proceedings of the AAAI Workshop on Machine Learning for Information Extraction.<br>[2] G. Simoes, H. Galhardas, and L. Coheur. 2009. Information extraction tasks: A survey. In Proceedings of the INForum.<br>[3] Linguistic Data Consortium. 2017. MUC Data Sets. Retrieved from <a target="_blank" rel="noopener" href="http://www-nlpir.nist.gov/related_projects/muc/muc_data/muc_data_index.html">http://www-nlpir.nist.gov/related_projects/muc/muc_data/muc_data_index.html</a>.<br>[4] A. Rodriguez. 2017. MUC - Cohen Courses. Retrieved from <a target="_blank" rel="noopener" href="http://curtis.ml.cmu.edu/w/courses/index.php/MUC">http://curtis.ml.cmu.edu/w/courses/index.php/MUC</a>.<br>[5] Linguistic Data Consortium. 2002. Annotation Tasks and Specifications. Retrieved from<a target="_blank" rel="noopener" href="https://www.ldc.upenn.edu/collaborations/past-projects/ace/annotation-tasks-and-specifications">https://www.ldc.upenn.edu/collaborations/past-projects/ace/annotation-tasks-and-specifications</a>.<br>[6] National Institute of Standards and Technology (NIST). 2017. TAC Knowledge Base Population (KBP). In Proceedings of the Text Analytic Conference.<br>[7] I. Augenstein, M. Das, S. Riedel, L. Vikraman, and A. McCallum. 2017. SemEval 2017 Task 10: ScienceIE - extracting keyphrases and relations from scientific publications. ArXiv170402853 Cs Stat, Apr. 2017.<br>[8] L. Neve. 2019. GENIA Corpus. The ORBIT Project. Retrieved from <a target="_blank" rel="noopener" href="https://orbit.nlm.nih.gov/browse-repository/dataset/human-annotated/83-genia-corpus">https://orbit.nlm.nih.gov/browse-repository/dataset/human-annotated/83-genia-corpus</a>.<br>[9] R. Merchant, M. E. Okurowski, and N. Chinchor. 1996. The multilingual entity task (MET) overview. In Proceedings of a Workshop on held at Vienna, Virginia: May 6–8, 1996. 445–447. DOI:10.3115/1119018.1119075<br>[10] Asian Federation of Natural Language Processing. 2008. IJCNLP-08 Workshop on NER for South and South East Asian Languages. Retrieved from <a target="_blank" rel="noopener" href="http://ltrc.iiit.ac.in/ner-ssea-08/index.cgi?topic=5">http://ltrc.iiit.ac.in/ner-ssea-08/index.cgi?topic=5</a>.<br>[11] M. K. Malik. 2017. Urdu named entity recognition and classification system using artificial neural network. ACM<br>Trans Asian Low-Resour Lang. Inf. Proc. 17, 1 (2017), 2:1–2:13. DOI:10.1145/3129290<br>[12] N. Peng and M. Dredze. 2015. Named entity recognition for Chinese social media with jointly trained embeddings. In Proceedings of the Conference on Empirical Methods in Natural Language Processing. 548–554.<br>[13] W. Wang, F. Bao, and G. Gao. 2015. Mongolian named entity recognition using suffixes segmentation. In Proceedings of the International Conference on Asian Language Processing (IALP’15). 169–172. DOI:10.1109/IALP.2015.7451558<br>[14] D. Nadeau and S. Sekine. 2007. A survey of named entity recognition and classification. Lingvisticae Investig. 30, 1 (2007), 3–26. DOI:10.1075/li.30.1.03nad<br>[15] N. Kanya and T. Ravi. 2012. Modelings and techniques in named entity recognition-an information extraction task. In Proceedings of the IET Chennai 3rd International on Sustainable Energy and Intelligent Systems (SEISCON’12). DOI:10.1049/cp.2012.2199<br>[16] G. K. Palshikar. 2013. Techniques for named entity recognition.Bioinforma. Concepts Methodol. Tools Appl.400 (2013).<br>[17] R. Sharnagat. 2014. Named entity recognition: A literature survey. Report 11305R013. Cent. Indian Lang. Technol.<br>[18] N. Patil, A. S. Patil, and B. Pawar. 2016. Survey of named entity recognition systems with respect to Indian and foreign languages. Int. J. Comput. Appl. 134, 16 (2016).<br>[19] L. Ratinov and D. Roth. 2019. Design challenges and misconceptions in named entity recognition. 147–155. Retrieved from <a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=1596374.1596399">http://dl.acm.org/citation.cfm?id=1596374.1596399</a>.<br>[20] N. Rizzolo and D. Roth. 2007. Modeling discriminative global inference. InProceedings of the International Conference on Semantic Computing (ICSC’07). 597–604.<br>[21] D. Klein, J. Smarr, H. Nguyen, and C. D. Manning. 2003. Named entity recognition with character-level models. In Proceedings of the 7th Conference on Natural Language Learning at HLT-NAACL, Volume 4. 180–183. DOI:10.3115/1119176.1119204<br>[22] G. Luo, X. Huang, C.-Y. Lin, and Z. Nie. 2015. Joint named entity recognition and disambiguation. In Proceedings of the Conference on Empirical Methods in Natural Language Processing (EMNLP’15). 879–880.<br>[23] D. B. Nguyen, M. Theobald, and G. Weikum. 2016. J-NERD: Joint named entity recognition and disambiguation with rich linguistic features. Trans. Assoc. Comput. Linguist. 4 (2016), 215–229. DOI:10.1162/tacl_a_00094<br>[24] W. Liao and S. Veeramachaneni. 2009. A simple semi-supervised algorithm for named entity recognition. In Proceed-ings of the NAACL HLT Workshop on Semi-Supervised Learning for Natural Language Processing. 58–65. Retrieved from <a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=1621829.1621837">http://dl.acm.org/citation.cfm?id=1621829.1621837</a>.<br>[25] O. Etzioni et al. 2005. Unsupervised named-entity extraction from the web: An experimental study. Artif. Intell. 165, 1 (2005), 91–134. DOI:10.1016/j.artint.2005.03.001<br>[26] D. Nadeau, P. Turney, and S. Matwin. 2006. Unsupervised named-entity recognition: Generating gazetteers and resolving ambiguity. Adv. Artif. Intell. Lecture Notes in Computer Sciences, vol. 4013. Springer, 266–277. DOI:10.1007/11766247_23<br>[27] I. Gallo, E. Binaghi, M. Carullo, and N. Lamberti. 2008. Named entity recognition by neural sliding window. In Proceedings of the 8th IAPR International Workshop on Document Analysis Systems. 567–573. DOI:10.1109/DAS.2008.13<br>[28] A. Passos, V. Kumar, and A. McCallum. 2017. Lexicon infused phrase embeddings for named entity resolution. ArXiv14045367 Cs, Apr. 2014.<br>[29] M. Peters, W. Ammar, C. Bhagavatula, and R. Power. 2017. Semi-supervised sequence tagging with bidirectional language models. In Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers). 1756–1765. DOI:10.18653/v1/P17-1161<br>[30] M. Peters et al. 2018. Deep contextualized word representations. In Proceedings of the Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long Papers). 2227–2237. DOI:10.18653/v1/N18-1202<br>[31] M. Rondeau and Y. Su. 2015. Full-rank linear-chain NeuroCRF for sequence labeling. In 2015 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP’15). 5281–5285. DOI:10.1109/ICASSP.2015.7178979<br>[32] M. A. Rondeau and Y. Su. 2015. Recent improvements to NeuroCRFs for named entity recognition. In Proceedings of the IEEE Workshop on Automatic Speech Recognition and Understanding (ASRU’15). 390–396. DOI:10.1109/ASRU.2015.7404821.<br>[33] X. Ma and E. Hovy. 2016. End-to-end sequence labeling via bi-directional LSTM-CNNS-CRF. ArXiv Prepr. ArXiv160301354, 2016.<br>[34] E. Strubell, P. Verga, D. Belanger, and A. McCallum. 2017. Fast and accurate sequence labeling with iterated dilated convolutions. ArXiv170202098 Cs, Feb. 2017.<br>[35] F. Liu, T. Baldwin, and T. Cohn. 2017. Capturing long-range contextual dependencies with memory-enhanced conditional random fields. ArXiv Prepr. ArXiv170903637, 2017.<br>[36] K. Riaz. 2010. Rule-based named entity recognition in Urdu. In Proceedings of the Named Entities Workshop. 126–135. Retrieved from <a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=1870457.1870476">http://dl.acm.org/citation.cfm?id=1870457.1870476</a>.<br>[37] R. Alfred, L. C. Leong, C. K. On, and P. Anthony. 2014. Malay named entity recognition based on rule-based approach. Int. J. Mach. Learn. Comput. 4, 3 (2014), 300.<br>[38] D. M. Bikel, R. Schwartz, and R. M. Weischedel. 1999. An algorithm that learns what’s in a name. Mach. Learn. 34, 1–3 (1999), 211–231. DOI:10.1023/A:1007558221122<br>[39] R. Ageishi and T. Miura. 2008. Named entity recognition based on a hidden Markov model in part-of-speech tagging. In Proceedings of the 1st International Conference on the Applications of Digital Information and Web Technologies (ICADIWT’08). 397–402. DOI:10.1109/ICADIWT.2008.4664380<br>[40] A. E. Borthwick. 1999. A Maximum Entropy Approach to Named Entity Recognition. Ph.D. Dissertation. New York University, New York, NY.<br>[41] A. McCallum and W. Li. 2003. Early results for named entity recognition with conditional random fields, feature induction and web-enhanced lexicons. In Proceedings of the 7th Conference on Natural Language Learning at HLT-NAACL, Volume 4. 188–191. DOI:10.3115/1119176.1119206<br>[42] G. Fu and K.-K. Luke. 2005. Chinese named entity recognition using lexicalized HMMs. SIGKDD Explor. Newsl. 7, 1 (2005), 19–25. DOI:10.1145/1089815.1089819<br>[43] X. Yu, S. Mayhew, M. Sammons, and D. Roth. 2019. On the strength of character language models for multilingual named entity recognition. In Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing Association for Computational Linguistics. 3073–3077. Retrieved from <a target="_blank" rel="noopener" href="https://aclweb.org/anthology/papers/D/D18/D18-1345/">https://aclweb.org/anthology/papers/D/D18/D18-1345/</a>.<br>[44] D. Khashabi et al. 2018. Cogcompnlp: Your Swiss army knife for NLP. In Proceedings of the 11th International Con-ference on Language Resources and Evaluation (LREC’18).<br>[45] S. Strassel and J. Tracey. 2016. Lorelei language packs: Data, tools, and resources for technology development in low resource languages. In Proceedings of the 10th International Conference on Language Resources and Evaluation(LREC’16). 3273–3280.<br>[46] E. Brill. 1995. Transformation-based error-driven learning and natural language processing: A case study in part-of-speech tagging. Comput. Linguist. 21, 4 (1995), 543–565.<br>[47] Q. L. L. Buco, J. L. L. Capcap, J. C. A. Hermocilla, C. S. Yumul, R. A. Sagum, and A. G. Pastrana. 2013. The application of transformation-based learning in the development of a named entity recognition system for Filipino text. J. Ind. Intell. Inf. 1, 1 (2013).<br>[48] S. Cucerzan and D. Yarowsky. 2002. Language independent NER using a unified model of internal and contextual evidence. In Proceedings of the 6th Conference on Natural Language Learning, Volume 20. 1–4. DOI:10.3115/1118853.1118860<br>[49] R. A. Leonandya, B. Distiawan, and N. H. Praptono. 2015. A semi-supervised algorithm for Indonesian named entity recognition. In Proceedings of the 3rd International Symposium on Computational and Business Intelligence (ISCBI’15).45–50. DOI:10.1109/ISCBI.2015.15<br>[50] J. Straková, M. Straka, and J. Hajič. 2016. Neural networks for featureless named entity recognition in Czech. In Proceedings of the International Conference on Text, Speech, and Dialogue. 173–181.<br>[51] L. Liu et al. 2018. Empower sequence labeling with task-aware neural language model. In Proceedings of the AAAI Conference on Artificial Intelligence.<br>[52] X.-D. Doan, T.-T. Dang, and M. L. Nguyen. 2019. Effectiveness of character language model for Vietnamese named entity recognition. In Proceedings of the 32nd Pacific Asia Conference on Language, Information and Computation.Retrieved from <a target="_blank" rel="noopener" href="https://aclweb.org/anthology/papers/Y/Y18/Y18-1018/">https://aclweb.org/anthology/papers/Y/Y18/Y18-1018/</a>.<br>[53] C. Lee. 2017. LSTM-CRF models for named entity recognition. IEICE Trans. Inf. Syst. 100, 4 (2017), 882–887.<br>[54] G. Lample, M. Ballesteros, S. Subramanian, K. Kawakami, and C. Dyer. 2016. Neural architectures for named entity recognition. In Proceedings of NAACL-HLT, Association for Computational Linguistics. 260–270. DOI:10.18653/v1/N16-1030<br>[55] W. Wang, F. Bao, and G. Gao. 2016. Mongolian named entity recognition with bidirectional recurrent neural net-works. InProceedings of the IEEE 28th International Conference on Tools with Artificial Intelligence (ICTAI’16). 495–500. DOI:10.1109/ICTAI.2016.0082<br>[56] O. Täckström. 2012. Nudging the envelope of direct transfer methods for multilingual named entity recognition. In Proceedings of the NAACL-HLT Workshop on the Induction of Linguistic Structure. Retrieved from <a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=2390426.2390435">http://dl.acm.org/citation.cfm?id=2390426.2390435</a>.<br>[57] O. Täckström, R. McDonald, and J. Uszkoreit. 2012. Cross-lingual word clusters for direct transfer of linguistic struc-ture. In Proceedings of the Conference of the North American Chapter of the Association for Computational Linguistics:Human Language Technologies. Retrieved from <a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=2382029.2382096">http://dl.acm.org/citation.cfm?id=2382029.2382096</a>.<br>[58] L. Qu, G. Ferraro, L. Zhou, W. Hou, and T. Baldwin. 2016. Named entity recognition for novel types by transfer learning. In Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing, Association for Computational Linguistics. 899–905. DOI:10.18653/v1/D16-1087<br>[59] L. Chen, A. Moschitti, G. Castellucci, A. Favalli, and R. Romagnoli. 2018. Transfer learning for industrial applica-tions of named entity recognition. In Proceedings of the 2nd Workshop on Natural Language for Artificial Intelligence (NL4AI’18) co-located with 17th International Conference of the Italian Association for Artificial Intelligence (AI*IA2018). 129–140. Retrieved from <a target="_blank" rel="noopener" href="http://ceur-ws.org/Vol-2244/paper_12.pdf">http://ceur-ws.org/Vol-2244/paper_12.pdf</a>.<br>[60] S. Mayhew, C.-T. Tsai, and D. Roth. 2017. Cheap translation for cross-lingual named entity recognition. In Pro- ceedings of the 2017 Conference on Empirical Methods in Natural Language Processing, Association for Computational Linguistics. 2536–2545. DOI:10.18653/v1/D17-1269<br>[61] R. Murthy, M. M. Khapra, and P. Bhattacharyya. 2018. Improving NER tagging performance in low-resource lan-guages via multilingual learning. ACM Trans. Asian Low-Resour. Lang. Inf. Proc. 18, 2 (2018), 9:1–9:20. DOI:10.1145/3238797<br>[62] X. Feng, X. Feng, B. Qin, Z. Feng, and T. Liu. 2018. Improving low resource named entity recognition using cross-lingual knowledge transfer. In Proceedings of the 27th International Joint Conference on Artificial Intelligence. 4071–4077. Retrieved from <a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=3304222.3304336">http://dl.acm.org/citation.cfm?id=3304222.3304336</a>.<br>[63] P. Cao, Y. Chen, K. Liu, J. Zhao, and S. Liu. 2018. Adversarial transfer learning for Chinese named entity recognition       with self-attention mechanism. 182–192. Retrieved from <a target="_blank" rel="noopener" href="https://aclweb.org/anthology/papers/D/D18/D18-1017/">https://aclweb.org/anthology/papers/D/D18/D18-1017/</a>.<br>[64] A. Rahimi, Y. Li, and T. Cohn. 2019. Massively multilingual transfer for NER. In Proceedings of the 57th Conference     of the Association for Computational Linguistics. 151–164.<br>[65] A. Johnson, P. Karanasou, J. Gaspers, and D. Klakow. 2019. Cross-lingual transfer learning for Japanese named entity      recognition. In Proceedings of the Conference of the North American Chapter of the Association for Computational      Linguistics: Human Language Technologies, Volume 2 (Industry Papers). 182–189.<br>[66] A. Bharadwaj, D. Mortensen, C. Dyer, and J. Carbonell. 2016. Phonologically aware neural model for named en- tity recognition in low resource transfer settings. In Proceedings of the Conference on Empirical Methods in Natural      Language Processing. 1462–1472.<br>[67] J. Xie, Z. Yang, G. Neubig, N. A. Smith, and J. G. Carbonell. 2018. Neural cross-lingual named entity recognition     with minimal resources. In Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing.      369–379. DOI:10.18653/v1/D18-1034<br>[68] Z. Nasar, S. W. Jaffry, and M. K. Malik. 2018. Information extraction from scientific articles: A survey. Scientometrics.      DOI:10.1007/s11192-018-2921-5<br>[69] M. Abdelmagid, M. Himmat, and A. Ahmed. 2014. Survey on information extraction from chemical compound lit-      eratures: Techniques and challenges. J. Theor. Appl. Inf. Technol. 67, 2 (2014), 284–289.<br>[70] G. Duck, G. Nenadic, M. Filannino, A. Brass, D. L. Robertson, and R. Stevens. 2016. A survey of bioinformatics      database and software usage through mining the literature. PLoS One 11, 6 (2016), e0157989. DOI:10.1371/journal.      pone.0157989<br>[71] B. Shickel, P. Tighe, A. Bihorac, and P. Rashidi. 2017. Deep EHR: A survey of recent advances in deep learning    techniques for electronic health record (EHR) analysis. ArXiv Prepr. ArXiv170603446, 2017.<br>[72] T. Eftimov, B. Koroušić Seljak, and P. Korošec. 2017. A rule-based named-entity recognition method for knowledge extraction of evidence-based dietary recommendations. PLoS One 12, 6 (2017), e0179488. DOI:10.1371/journal.pone.0179488<br>[73] D. M. de Oliveira, A. H. F. Laender, A. Veloso, and A. S. da Silva. 2013. FS-NER: A lightweight filter-stream approach to named entity recognition on Twitter data. In Proceedings of the 22nd International Conference on World Wide Web.597–604. DOI:10.1145/2487788.2488003<br>[74] D. Bonadiman, A. Severyn, and A. Moschitti. 2015. Deep neural networks for named entity recognition in Italian. In Proceedings of the 2nd Italian Conference on Computational Linguistics (CLiC It’15).<br>[75] J. Xu, H. He, X. Sun, X. Ren, and S. Li. 2018. Cross-domain and semisupervised named entity recognition in Chinese social media: A unified model. IEEE/ACM Trans. Audio Speech Lang. Proc. 26, 11 (2018), 2142–2152. DOI:10.1109/TASLP.2018.2856625<br>[76] Z. Zhao et al. 2016. ML-CNN: A novel deep learning based disease named entity recognition architecture. In Pro-ceedings of the IEEE International Conference on Bioinformatics and Biomedicine (BIBM’16). 794–794. DOI:10.1109/BIBM.2016.7822625<br>[77] J. Li et al. 2016. BioCreative V CDR task corpus: A resource for chemical disease relation extraction. Datab.- J. Biol.Datab. Curat. May (2016). DOI:10.1093/database/baw068<br>[78] R. I. Doğan, R. Leaman, and Z. Lu. 2014. NCBI disease corpus: A resource for disease name recognition and conceptnormalization. J. Biomed. Inform. 47 (2014), 1–10. DOI:10.1016/j.jbi.2013.12.006<br>[79] X. Dong, L. Qian, Y. Guan, L. Huang, Q. Yu, and J. Yang. 2016. A multiclass classification method based on deeplearning for named entity recognition in electronic medical records. In Proceedings of the New York Scientific Data Summit (NYSDS’16). 1–10. DOI:10.1109/NYSDS.2016.7747810<br>[80] L. Wang, S. Li, Q. Yan, and G. Zhou. 2018. Domain-specific named entity recognition with document-level optimiza-tion. ACM Trans. Asian Low-Resour. Lang. Inf. Proc. 17, 4 (2018), 33:1–33:15. DOI:10.1145/3213544<br>[81] J. R. Finkel and C. D. Manning. 2009. Nested named entity recognition. In Proceedings of the Conference on Empir-ical Methods in Natural Language Processing, Volume 1. 141–150. Retrieved from <a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=1699510.1699529">http://dl.acm.org/citation.cfm?id=1699510.1699529</a>.<br>[82] W. Lu and D. Roth. 2015. Joint mention extraction and classification with mention hypergraphs. In Proceedings ofthe Conference on Empirical Methods in Natural Language Processing. 857–867.<br>[83] A. Katiyar and C. Cardie. 2018. Nested named entity recognition revisited. In Proceedings of the Conference of theNorth American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1(Long Papers). 861–871.<br>[84] M. Ju, M. Miwa, and S. Ananiadou. 2018. A neural layered model for nested named entity recognition. In Proceedingsof the Conference of the North American Chapter of the Association for Computational Linguistics: Human LanguageTechnologies, Volume 1 (Long Papers). 1446–1459.<br>[85] K. Mai et al. 2018. An empirical study on fine-grained named entity recognition. In Proceedings of the 27th Interna-tional Conference on Computational Linguistics. 711–722.<br>[86] N. Reimers and I. Gurevych. 2017. Optimal hyperparameters for deep LSTM-Networks for sequence labeling tasks.Retrieved from <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1707.06799">https://arxiv.org/abs/1707.06799</a>.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/2021/03/25/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%9F%BA%E7%A1%80/%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%8A%80%E6%9C%AF%E8%BF%9B%E5%B1%952-%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB/">http://xishansnow.github.io/2021/03/25/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%9F%BA%E7%A1%80/%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%8A%80%E6%9C%AF%E8%BF%9B%E5%B1%952-%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a><a class="post-meta__tags" href="/tags/Knowledge-Graph/">Knowledge Graph</a><a class="post-meta__tags" href="/tags/%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96/">信息抽取</a><a class="post-meta__tags" href="/tags/Information-Extract/">Information Extract</a></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_03.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/03/25/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%9F%BA%E7%A1%80/%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%8A%80%E6%9C%AF%E8%BF%9B%E5%B1%951-%E6%A6%82%E8%BF%B0/"><img class="prev-cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_06.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">信息抽取技术进展【1】 -- 概述</div></div></a></div><div class="next-post pull-right"><a href="/2021/03/24/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/2021-03-24-Spark%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"><img class="next-cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_11.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Apache Spark简明教程</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/05/27/地理知识图谱/2020-05-02-地理信息抽取技术概述/" title="地理知识图谱「 2 」-- 地理信息抽取技术"><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_13.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-27</div><div class="title">地理知识图谱「 2 」-- 地理信息抽取技术</div></div></a></div><div><a href="/2020/05/15/知识图谱基础/2020-05-15-1领域知识图谱构建流程与构建工具/" title="领域知识图谱「 1 」"><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_20.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-15</div><div class="title">领域知识图谱「 1 」</div></div></a></div><div><a href="/2020/05/15/知识图谱基础/2020-05-15-2知识表示与知识图谱/" title="领域知识图谱「 2 」"><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_07.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-15</div><div class="title">领域知识图谱「 2 」</div></div></a></div><div><a href="/2020/05/15/知识图谱基础/2020-05-22-19 difference among ontology taxmony/" title="概念解释 -- Ontology、Taxonomy、Folksonomy和Thesauri的不同"><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_08.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-15</div><div class="title">概念解释 -- Ontology、Taxonomy、Folksonomy和Thesauri的不同</div></div></a></div><div><a href="/2020/05/15/知识图谱基础/2020-06-30-为什么要做图嵌入和节点嵌入/" title="概念解释"><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_06.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-15</div><div class="title">概念解释</div></div></a></div><div><a href="/2021/03/25/知识图谱基础/信息抽取技术进展1-概述/" title="信息抽取技术进展【1】 -- 概述"><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_06.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-25</div><div class="title">信息抽取技术进展【1】 -- 概述</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%8A%80%E6%9C%AF%E8%BF%9B%E5%B1%95%E3%80%902%E3%80%91-%E2%80%93-%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB"><span class="toc-text">信息抽取技术进展【2】 – 命名实体识别</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80"><span class="toc-text">1 基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB%EF%BC%88NER%EF%BC%89"><span class="toc-text">（1）命名实体识别（NER）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%BA%8F%E5%88%97%E6%A0%87%E8%AE%B0"><span class="toc-text">（2）序列标记</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E5%B8%B8%E7%94%A8%E6%A0%87%E6%B3%A8%E6%96%B9%E6%B3%95"><span class="toc-text">（3）常用标注方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%9C%89%E5%85%B3%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB%E7%9A%84%E7%BB%BC%E8%BF%B0%E6%96%87%E7%AB%A0"><span class="toc-text">2 有关命名实体识别的综述文章</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%8B%B1%E8%AF%AD%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF"><span class="toc-text">3 英语命名实体识别技术</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E9%9D%9E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%96%B9%E6%B3%95"><span class="toc-text">3.1 非神经网络方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%96%B9%E6%B3%95"><span class="toc-text">3.2 神经网络方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80-%E5%A4%9A%E8%AF%AD%E8%A8%80%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB%E6%8A%80%E6%9C%AF"><span class="toc-text">4 其他语言&#x2F;多语言命名实体识别技术</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E9%9D%9E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%96%B9%E6%B3%95"><span class="toc-text">4.1 非神经网络方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%96%B9%E6%B3%95"><span class="toc-text">4.2 神经网络方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95"><span class="toc-text">4.3 迁移学习方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (document.getElementsByClassName('mermaid').length) {
+  if (window.mermaidJsLoad) mermaid.init()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(() => {
+      window.mermaidJsLoad = true
+      mermaid.initialize({
+        theme: 'default',
+      })
+      false && mermaid.init()
+    })
+  }
+}</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk({
+      clientID: 'fb7f9ed2eecc530e7df2',
+      clientSecret: 'a016744e60828e5c99fc93a01d496a5a031196e2',
+      repo: 'blog_comment',
+      owner: 'xishansnow',
+      admin: ['xishansnow'],
+      id: 'ead85d49cb373734be959646f3975cd7',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    })
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script></div></body></html>
