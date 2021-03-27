@@ -1,0 +1,311 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NLP预训练模型【3】 -- seq2seq编码器与解码器 | 西山晴雪的博客</title><meta name="keywords" content="词嵌入,分布式表示,自然语言处理,预训练模型"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="seq2seq编码器与解码器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP预训练模型【3】 -- seq2seq编码器与解码器">
+<meta property="og:url" content="http://xishansnow.github.io/2021/03/27/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/2021-03-27-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E3%80%903%E3%80%91--%20%E6%B7%B1%E5%B1%82%E9%A2%84%E8%AE%AD%E7%BB%83%E7%BC%96%E7%A0%81%E5%99%A8-seq2seq/index.html">
+<meta property="og:site_name" content="西山晴雪的博客">
+<meta property="og:description" content="seq2seq编码器与解码器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_19.png">
+<meta property="article:published_time" content="2021-03-27T02:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-27T14:23:59.229Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="词嵌入">
+<meta property="article:tag" content="分布式表示">
+<meta property="article:tag" content="自然语言处理">
+<meta property="article:tag" content="预训练模型">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_19.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://xishansnow.github.io/2021/03/27/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/2021-03-27-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E3%80%903%E3%80%91--%20%E6%B7%B1%E5%B1%82%E9%A2%84%E8%AE%AD%E7%BB%83%E7%BC%96%E7%A0%81%E5%99%A8-seq2seq/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-27 22:23:59'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">78</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 知识库</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间索引</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/project/"><i class="fa-fw fas fa-cogs"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 论文</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/article/"><i class="fa-fw fas fa-books"></i><span> 学术论文</span></a></li><li><a class="site-page" href="https://xishansnow.github.io"><i class="fa-fw fas fa-books"></i><span> GitBook01</span></a></li><li><a class="site-page" href="https://xishansnow.github.io"><i class="fa-fw fas fa-books"></i><span> GitBook02</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-camera-retro"></i><span> 摄影</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 全部作品</span></a></li><li><a class="site-page" href="/gallery/landscape/"><i class="fa-fw fas fa-image"></i><span> 风光摄影</span></a></li><li><a class="site-page" href="/gallery/portrait/"><i class="fa-fw fas fa-portrait"></i><span> 肖像摄影</span></a></li><li><a class="site-page" href="/gallery/literal/"><i class="fa-fw fas fa-archive"></i><span> 人文摄影</span></a></li><li><a class="site-page" href="/gallery/dailylife/"><i class="fa-fw fas fa-camera"></i><span> 日常摄影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/link/food/"><i class="fa-fw fas fa-utensils"></i><span> 美食博主</span></a></li><li><a class="site-page" href="/link/photography"><i class="fa-fw fas fa-camera"></i><span> 摄影大神</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_19.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 知识库</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间索引</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/project/"><i class="fa-fw fas fa-cogs"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 论文</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/article/"><i class="fa-fw fas fa-books"></i><span> 学术论文</span></a></li><li><a class="site-page" href="https://xishansnow.github.io"><i class="fa-fw fas fa-books"></i><span> GitBook01</span></a></li><li><a class="site-page" href="https://xishansnow.github.io"><i class="fa-fw fas fa-books"></i><span> GitBook02</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-camera-retro"></i><span> 摄影</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 全部作品</span></a></li><li><a class="site-page" href="/gallery/landscape/"><i class="fa-fw fas fa-image"></i><span> 风光摄影</span></a></li><li><a class="site-page" href="/gallery/portrait/"><i class="fa-fw fas fa-portrait"></i><span> 肖像摄影</span></a></li><li><a class="site-page" href="/gallery/literal/"><i class="fa-fw fas fa-archive"></i><span> 人文摄影</span></a></li><li><a class="site-page" href="/gallery/dailylife/"><i class="fa-fw fas fa-camera"></i><span> 日常摄影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/link/food/"><i class="fa-fw fas fa-utensils"></i><span> 美食博主</span></a></li><li><a class="site-page" href="/link/photography"><i class="fa-fw fas fa-camera"></i><span> 摄影大神</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">NLP预训练模型【3】 -- seq2seq编码器与解码器</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-03-27T02:00:00.000Z" title="发表于 2021-03-27 10:00:00">2021-03-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-03-27T14:23:59.229Z" title="更新于 2021-03-27 22:23:59">2021-03-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
+<li><a href="#1-%E4%BB%80%E4%B9%88%E6%98%AFseq2seq">1. 什么是seq2seq</a></li>
+<li><a href="#2-%E7%BC%96%E7%A0%81%E5%99%A8">2. 编码器</a></li>
+<li><a href="#3-%E8%A7%A3%E7%A0%81%E5%99%A8">3. 解码器</a></li>
+<li><a href="#4-%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B">4. 训练模型</a></li>
+<li><a href="#5-seq2seq%E6%A8%A1%E5%9E%8B%E9%A2%84%E6%B5%8B">5. seq2seq模型预测</a><ul>
+<li><a href="#51-%E8%B4%AA%E5%A9%AA%E6%90%9C%E7%B4%A2">5.1 贪婪搜索</a></li>
+<li><a href="#52-%E7%A9%B7%E4%B8%BE%E6%90%9C%E7%B4%A2">5.2 穷举搜索</a></li>
+<li><a href="#53-%E6%9D%9F%E6%90%9C%E7%B4%A2">5.3 束搜索</a></li>
+</ul>
+</li>
+<li><a href="#6-bleu%E5%BE%97%E5%88%86">6. BLEU得分</a></li>
+<li><a href="#7-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0">7. 代码实现</a></li>
+<li><a href="#8-%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">8. 参考文献</a></li>
+</ul>
+<h2 id="1-什么是seq2seq"><a href="#1-什么是seq2seq" class="headerlink" title="1. 什么是seq2seq"></a>1. 什么是seq2seq</h2><p>在⾃然语⾔处理的很多应⽤中，输⼊和输出都可以是不定⻓序列。以机器翻译为例，输⼊可以是⼀段不定⻓的英语⽂本序列，输出可以是⼀段不定⻓的法语⽂本序列，例如：</p>
+<p>英语输⼊：“They”、“are”、“watching”、“.” </p>
+<p>法语输出：“Ils”、“regardent”、“.” </p>
+<p>当输⼊和输出都是不定⻓序列时，我们可以使⽤编码器—解码器（encoder-decoder）或者seq2seq模型。<strong>序列到序列模型，简称seq2seq模型。这两个模型本质上都⽤到了两个循环神经⽹络，分别叫做编码器和解码器。编码器⽤来分析输⼊序列，解码器⽤来⽣成输出序列。两 个循环神经网络是共同训练的。</strong></p>
+<p>下图描述了使⽤编码器—解码器将上述英语句⼦翻译成法语句⼦的⼀种⽅法。在训练数据集中，我们可以在每个句⼦后附上特殊符号“&lt;eos&gt;”（end of sequence）以表⽰序列的终⽌。编码器每个时间步的输⼊依次为英语句⼦中的单词、标点和特殊符号“&lt;eos&gt;”。下图中使⽤了编码器在 最终时间步的隐藏状态作为输⼊句⼦的表征或编码信息。解码器在各个时间步中使⽤输⼊句⼦的 编码信息和上个时间步的输出以及隐藏状态作为输⼊。我们希望解码器在各个时间步能正确依次 输出翻译后的法语单词、标点和特殊符号“&lt;eos&gt;”。需要注意的是，解码器在最初时间步的输⼊ ⽤到了⼀个表⽰序列开始的特殊符号“<bos>”（beginning of sequence）。 </p>
+<p><img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_11-10-4.png"></p>
+<h2 id="2-编码器"><a href="#2-编码器" class="headerlink" title="2. 编码器"></a>2. 编码器</h2><p>编码器的作⽤是把⼀个不定⻓的输⼊序列变换成⼀个定⻓的背景变量 c，并在该背景变量中编码输⼊序列信息。常⽤的编码器是循环神经⽹络。</p>
+<p>让我们考虑批量⼤小为1的时序数据样本。假设输⼊序列是 x1, . . . , xT，例如 xi 是输⼊句⼦中的第 i 个词。在时间步 t，循环神经⽹络将输⼊ xt 的特征向量 xt 和上个时间步的隐藏状态 <img src="https://latex.codecogs.com/gif.latex?h_%7Bt-1%7D">变换为当前时间步的隐藏状态ht。我们可以⽤函数 f 表达循环神经⽹络隐藏层的变换：</p>
+<p><img src="https://latex.codecogs.com/gif.latex?h_t=f(x_t,h_%7Bt-1%7D)"></p>
+<p>接下来，编码器通过⾃定义函数 q 将各个时间步的隐藏状态变换为背景变量：</p>
+<p><img src="https://latex.codecogs.com/gif.latex?c=q(h_1,...,h_T)"></p>
+<p>例如，当选择 <em>q</em>(<em><strong>h</strong></em>1*, . . . ,* <em><strong>h</strong>*</em>T* ) = <em><strong>h</strong>*</em>T* 时，背景变量是输⼊序列最终时间步的隐藏状态<em><strong>h</strong>*</em>T*。</p>
+<p>以上描述的编码器是⼀个单向的循环神经⽹络，每个时间步的隐藏状态只取决于该时间步及之前的输⼊⼦序列。我们也可以使⽤双向循环神经⽹络构造编码器。在这种情况下，编码器每个时间步的隐藏状态同时取决于该时间步之前和之后的⼦序列（包括当前时间步的输⼊），并编码了整个序列的信息。</p>
+<h2 id="3-解码器"><a href="#3-解码器" class="headerlink" title="3. 解码器"></a>3. 解码器</h2><p>刚刚已经介绍，编码器输出的背景变量 c 编码了整个输⼊序列 x1, . . . , xT 的信息。给定训练样本中的输出序列 y1, y2, . . . , yT′ ，对每个时间步 t′（符号与输⼊序列或编码器的时间步 t 有区别），解码器输出 yt′ 的条件概率将基于之前的输出序列<img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_15-39-17.png">和背景变量 c，即：</p>
+<p><img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_15-45-12.png"></p>
+<p>为此，我们可以使⽤另⼀个循环神经⽹络作为解码器。在输出序列的时间步 t′，解码器将上⼀时间步的输出 <img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_15-46-6.png">以及背景变量 c 作为输⼊，并将它们与上⼀时间步的隐藏状态  <img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_15-46-54.png">变换为当前时间步的隐藏状态st′。因此，我们可以⽤函数 g 表达解码器隐藏层的变换：</p>
+<p><img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_15-47-36.png"></p>
+<p>有了解码器的隐藏状态后，我们可以使⽤⾃定义的输出层和softmax运算来计算 <img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_15-49-45.png">，例如，基于当XQ前时间步的解码器隐藏状态 st′、上⼀时间步的输出<img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_15-46-54.png">以及背景变量 c 来计算当前时间步输出 yt′ 的概率分布。</p>
+<h2 id="4-训练模型"><a href="#4-训练模型" class="headerlink" title="4. 训练模型"></a>4. 训练模型</h2><p>根据最⼤似然估计，我们可以最⼤化输出序列基于输⼊序列的条件概率：</p>
+<p><img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_15-51-22.png"></p>
+<p>并得到该输出序列的损失：</p>
+<p><img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_15-52-25.png"></p>
+<p>在模型训练中，所有输出序列损失的均值通常作为需要最小化的损失函数。在上图所描述的模型预测中，我们需要将解码器在上⼀个时间步的输出作为当前时间步的输⼊。与此不同，在训练中我们也可以将标签序列（训练集的真实输出序列）在上⼀个时间步的标签作为解码器在当前时间步的输⼊。这叫作强制教学（teacher forcing）。</p>
+<h2 id="5-seq2seq模型预测"><a href="#5-seq2seq模型预测" class="headerlink" title="5. seq2seq模型预测"></a>5. seq2seq模型预测</h2><p>以上介绍了如何训练输⼊和输出均为不定⻓序列的编码器—解码器。本节我们介绍如何使⽤编码器—解码器来预测不定⻓的序列。</p>
+<p>在准备训练数据集时，我们通常会在样本的输⼊序列和输出序列后面分别附上⼀个特殊符号“&lt;eos&gt;”表⽰序列的终⽌。我们在接下来的讨论中也将沿⽤上⼀节的全部数学符号。为了便于讨论，假设解码器的输出是⼀段⽂本序列。设输出⽂本词典Y（包含特殊符号“&lt;eos&gt;”）的⼤小为|Y|，输出序列的最⼤⻓度为T′。所有可能的输出序列⼀共有 <img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_15-53-47.png">种。这些输出序列中所有特殊符号“&lt;eos&gt;”后⾯的⼦序列将被舍弃。</p>
+<h3 id="5-1-贪婪搜索"><a href="#5-1-贪婪搜索" class="headerlink" title="5.1 贪婪搜索"></a>5.1 贪婪搜索</h3><p>贪婪搜索（greedy search）。对于输出序列任⼀时间步t′，我们从|Y|个词中搜索出条件概率最⼤的词：</p>
+<p><img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_15-55-26.png"></p>
+<p>作为输出。⼀旦搜索出“&lt;eos&gt;”符号，或者输出序列⻓度已经达到了最⼤⻓度T′，便完成输出。我们在描述解码器时提到，基于输⼊序列⽣成输出序列的条件概率是<img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_15-56-6.png">。我们将该条件概率最⼤的输出序列称为最优输出序列。而贪婪搜索的主要问题是不能保证得到最优输出序列。</p>
+<p>下⾯来看⼀个例⼦。假设输出词典⾥⾯有“A”“B”“C”和“&lt;eos&gt;”这4个词。下图中每个时间步<br>下的4个数字分别代表了该时间步⽣成“A”“B”“C”和“&lt;eos&gt;”这4个词的条件概率。在每个时间步，贪婪搜索选取条件概率最⼤的词。因此，图10.9中将⽣成输出序列“A”“B”“C”“&lt;eos&gt;”。该输出序列的条件概率是0.5 × 0.4 × 0.4 × 0.6 = 0.048。</p>
+<p><img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_13-44-5.png"></p>
+<p>接下来，观察下面演⽰的例⼦。与上图中不同，在时间步2中选取了条件概率第⼆⼤的词“C”<br>。由于时间步3所基于的时间步1和2的输出⼦序列由上图中的“A”“B”变为了下图中的“A”“C”，下图中时间步3⽣成各个词的条件概率发⽣了变化。我们选取条件概率最⼤的词“B”。此时时间步4所基于的前3个时间步的输出⼦序列为“A”“C”“B”，与上图中的“A”“B”“C”不同。因此，下图中时间步4⽣成各个词的条件概率也与上图中的不同。我们发现，此时的输出序列“A”“C”“B”“&lt;eos&gt;”的条件概率是0.5 × 0.3 × 0.6 × 0.6 = 0.054，⼤于贪婪搜索得到的输出序列的条件概率。因此，贪婪搜索得到的输出序列“A”“B”“C”“&lt;eos&gt;”并⾮最优输出序列。</p>
+<p><img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_13-47-56.png"></p>
+<h3 id="5-2-穷举搜索"><a href="#5-2-穷举搜索" class="headerlink" title="5.2 穷举搜索"></a>5.2 穷举搜索</h3><p>如果⽬标是得到最优输出序列，我们可以考虑穷举搜索（exhaustive search）：穷举所有可能的输出序列，输出条件概率最⼤的序列。</p>
+<p>虽然穷举搜索可以得到最优输出序列，但它的计算开销<img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_15-59-0.png">很容易过⼤。例如，当|Y| =10000且T′ = 10时，我们将评估 <img src="https://latex.codecogs.com/gif.latex?10000%5E%7B10%7D=10%5E%7B40%7D">个序列：这⼏乎不可能完成。而贪婪搜索的计算开销是 <img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_15-59-0.png">，通常显著小于穷举搜索的计算开销。例如，当|Y| = 10000且T′ = 10时，我们只需评估<img src="https://latex.codecogs.com/gif.latex?10000*10=10%5E5">个序列。</p>
+<h3 id="5-3-束搜索"><a href="#5-3-束搜索" class="headerlink" title="5.3 束搜索"></a>5.3 束搜索</h3><p>束搜索（beam search）是对贪婪搜索的⼀个改进算法。它有⼀个束宽（beam size）超参数。我们将它设为 k。在时间步 1 时，选取当前时间步条件概率最⼤的 k 个词，分别组成 k 个候选输出序列的⾸词。在之后的每个时间步，基于上个时间步的 k 个候选输出序列，从 k |Y| 个可能的输出序列中选取条件概率最⼤的 k 个，作为该时间步的候选输出序列。最终，我们从各个时间步的候选输出序列中筛选出包含特殊符号“&lt;eos&gt;”的序列，并将它们中所有特殊符号“&lt;eos&gt;”后⾯的⼦序列舍弃，得到最终候选输出序列的集合。</p>
+<p><img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_14-0-5.png"></p>
+<p>束宽为2，输出序列最⼤⻓度为3。候选输出序列有A、C、AB、CE、ABD和CED。我们将根据这6个序列得出最终候选输出序列的集合。在最终候选输出序列的集合中，我们取以下分数最⾼的序列作为输出序列：</p>
+<p><img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_16-5-41.png"></p>
+<p>其中 L 为最终候选序列⻓度，α ⼀般可选为0.75。分⺟上的 Lα 是为了惩罚较⻓序列在以上分数中较多的对数相加项。分析可知，束搜索的计算开销为<img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_16-6-24.png">。这介于贪婪搜索和穷举搜索的计算开销之间。此外，贪婪搜索可看作是束宽为 1 的束搜索。束搜索通过灵活的束宽 k 来权衡计算开销和搜索质量。</p>
+<h2 id="6-BLEU得分"><a href="#6-BLEU得分" class="headerlink" title="6. BLEU得分"></a>6. BLEU得分</h2><p>评价机器翻译结果通常使⽤BLEU（Bilingual Evaluation Understudy）(双语评估替补)。对于模型预测序列中任意的⼦序列，BLEU考察这个⼦序列是否出现在标签序列中。</p>
+<p>具体来说，设词数为 n 的⼦序列的精度为 pn。它是预测序列与标签序列匹配词数为 n 的⼦序列的数量与预测序列中词数为 n 的⼦序列的数量之⽐。举个例⼦，假设标签序列为A、B、C、D、E、F，预测序列为A、B、B、C、D，那么：</p>
+<p><img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_16-7-11.png"></p>
+<p>预测序列一元词组：A/B/C/D，都在标签序列里存在，所以P1=4/5，以此类推，p2 = 3/4, p3 = 1/3, p4 = 0。设 <img src="https://latex.codecogs.com/gif.latex?len_%7Blabel%7D,len_%7Bpred%7D">分别为标签序列和预测序列的词数，那么，BLEU的定义为：</p>
+<p><img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_16-8-52.png"></p>
+<p>其中 k 是我们希望匹配的⼦序列的最⼤词数。可以看到当预测序列和标签序列完全⼀致时，BLEU为1。</p>
+<p>因为匹配较⻓⼦序列⽐匹配较短⼦序列更难，BLEU对匹配较⻓⼦序列的精度赋予了更⼤权重。例如，当 pn 固定在0.5时，随着n的增⼤，<img src="https://gitee.com/kkweishe/images/raw/master/ML/2019-8-29_16-10-11.png">。另外，模型预测较短序列往往会得到较⾼pn 值。因此，上式中连乘项前⾯的系数是为了惩罚较短的输出而设的。举个例⼦，当k = 2时，假设标签序列为A、B、C、D、E、F，而预测序列为A、 B。虽然p1 = p2 = 1，但惩罚系数exp(1-6/2) ≈ 0.14，因此BLEU也接近0.14。</p>
+<h2 id="7-代码实现"><a href="#7-代码实现" class="headerlink" title="7. 代码实现"></a>7. 代码实现</h2><p><a target="_blank" rel="noopener" href="https://github.com/NLP-LOVE/ML-NLP/blob/master/NLP/16.5%20seq2seq/seq2seq.ipynb">TensorFlow  seq2seq的基本实现</a></p>
+<h2 id="8-参考文献"><a href="#8-参考文献" class="headerlink" title="8. 参考文献"></a>8. 参考文献</h2><p><a target="_blank" rel="noopener" href="https://www.lanzous.com/i5lqo4f">动手学深度学习</a></p>
+<hr>
+<blockquote>
+<p>作者：<a target="_blank" rel="noopener" href="https://github.com/NLP-LOVE/ML-NLP">@mantchs</a></p>
+<p>GitHub：<a target="_blank" rel="noopener" href="https://github.com/NLP-LOVE/ML-NLP">https://github.com/NLP-LOVE/ML-NLP</a></p>
+<p>欢迎大家加入讨论！共同完善此项目！群号：【541954936】<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=863f915b9178560bd32ca07cd090a7d9e6f5f90fcff5667489697b1621cecdb3"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="NLP面试学习群" title="NLP面试学习群"></a></p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/2021/03/27/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/2021-03-27-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E3%80%903%E3%80%91--%20%E6%B7%B1%E5%B1%82%E9%A2%84%E8%AE%AD%E7%BB%83%E7%BC%96%E7%A0%81%E5%99%A8-seq2seq/">http://xishansnow.github.io/2021/03/27/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/2021-03-27-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E3%80%903%E3%80%91--%20%E6%B7%B1%E5%B1%82%E9%A2%84%E8%AE%AD%E7%BB%83%E7%BC%96%E7%A0%81%E5%99%A8-seq2seq/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AF%8D%E5%B5%8C%E5%85%A5/">词嵌入</a><a class="post-meta__tags" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E8%A1%A8%E7%A4%BA/">分布式表示</a><a class="post-meta__tags" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a><a class="post-meta__tags" href="/tags/%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B/">预训练模型</a></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_19.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/03/27/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/2021-03-27-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E3%80%902%E3%80%91--%20%E7%A6%BB%E6%95%A3%E8%A1%A8%E7%A4%BA%E5%92%8C%E6%B5%85%E5%B1%82%E8%AF%8D%E5%B5%8C%E5%85%A5/"><img class="prev-cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_02.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">NLP预训练模型【2】 -- 离散表示与分布式表示</div></div></a></div><div class="next-post pull-right"><a href="/2021/03/27/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/2021-03-27-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E3%80%905%E3%80%91--%20%E6%B7%B1%E5%B1%82%E9%A2%84%E8%AE%AD%E7%BB%83%E7%BC%96%E7%A0%81%E5%99%A8-%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6/"><img class="next-cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_03.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">NLP预训练模型【5】 -- 注意力机制</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/03/27/自然语言处理/2021-03-27-预训练模型【2】-- 离散表示和浅层词嵌入/" title="NLP预训练模型【2】 -- 离散表示与分布式表示"><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_02.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-27</div><div class="title">NLP预训练模型【2】 -- 离散表示与分布式表示</div></div></a></div><div><a href="/2021/03/27/自然语言处理/2021-03-27-预训练模型【5】-- 深层预训练编码器-注意力机制/" title="NLP预训练模型【5】 -- 注意力机制"><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_03.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-27</div><div class="title">NLP预训练模型【5】 -- 注意力机制</div></div></a></div><div><a href="/2021/03/27/自然语言处理/2021-03-27-预训练模型【4】-- 深层预训练编码器-transformer/" title="NLP预训练模型【4】 -- Transformer"><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_12.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-27</div><div class="title">NLP预训练模型【4】 -- Transformer</div></div></a></div><div><a href="/2021/03/27/自然语言处理/2021-03-27-预训练模型【6】-- 深层预训练编码器-BERT/" title="NLP预训练模型【6】 -- BERT"><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_08.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-27</div><div class="title">NLP预训练模型【6】 -- BERT</div></div></a></div><div><a href="/2021/03/27/自然语言处理/2021-03-27-预训练模型【7】-- 深层预训练编码器-XLNet - 副本/" title="NLP预训练模型【7】 -- XLNet"><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_08.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-27</div><div class="title">NLP预训练模型【7】 -- XLNet</div></div></a></div><div><a href="/2021/03/27/自然语言处理/2021-03-27-预训练模型【1】-- 总览/" title="NLP预训练模型【1】 -- 总览"><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_10.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-27</div><div class="title">NLP预训练模型【1】 -- 总览</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AFseq2seq"><span class="toc-text">1. 什么是seq2seq</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BC%96%E7%A0%81%E5%99%A8"><span class="toc-text">2. 编码器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%A7%A3%E7%A0%81%E5%99%A8"><span class="toc-text">3. 解码器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B"><span class="toc-text">4. 训练模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-seq2seq%E6%A8%A1%E5%9E%8B%E9%A2%84%E6%B5%8B"><span class="toc-text">5. seq2seq模型预测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E8%B4%AA%E5%A9%AA%E6%90%9C%E7%B4%A2"><span class="toc-text">5.1 贪婪搜索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E7%A9%B7%E4%B8%BE%E6%90%9C%E7%B4%A2"><span class="toc-text">5.2 穷举搜索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%9D%9F%E6%90%9C%E7%B4%A2"><span class="toc-text">5.3 束搜索</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-BLEU%E5%BE%97%E5%88%86"><span class="toc-text">6. BLEU得分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">7. 代码实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">8. 参考文献</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (document.getElementsByClassName('mermaid').length) {
+  if (window.mermaidJsLoad) mermaid.init()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(() => {
+      window.mermaidJsLoad = true
+      mermaid.initialize({
+        theme: 'default',
+      })
+      false && mermaid.init()
+    })
+  }
+}</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk({
+      clientID: 'fb7f9ed2eecc530e7df2',
+      clientSecret: 'a016744e60828e5c99fc93a01d496a5a031196e2',
+      repo: 'blog_comment',
+      owner: 'xishansnow',
+      admin: ['xishansnow'],
+      id: '6d0ad74dad1e7cce45adc82ee838618e',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    })
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script></div></body></html>
