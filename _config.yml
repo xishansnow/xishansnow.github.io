@@ -102,10 +102,6 @@ theme: butterfly
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  # repo:
-    #  github:  git@github.com:xishansnow/xishansnow.github.io.git
-    #  gitee:  git@gitee.com:XiShanSnow/XiShanSnow.git
-
   - type:  git
     repo:  
       github:   git@github.com:xishansnow/xishansnow.github.io.git
@@ -113,16 +109,4 @@ deploy:
     branch:     master
 
 
-    # type:  git
-    # repo:  git@gitee.com:XiShanSnow/XiShanSnow.git
-    # branch:  master
-
-  # - type: git
-  #   repo: git@gitee.com:XiShanSnow/XiShanSnow.git
-  #   branch: dev
-  #   extend_dirs: /
-  #   ignore_hidden: false
-  #   ignore_pattern:
-  #       public: .
-  #       node_modules: .
 # _config.yaml
