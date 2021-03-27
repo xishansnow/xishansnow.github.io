@@ -1,0 +1,555 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>西山晴雪的博客 | 西山晴雪的博客</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="NLP预训练模型的全面总结【摘要】 **预训练模型(Pre-trained Models,预训练模型)**的出现将NLP带入了一个全新时代。2020年3月，邱锡鹏老师发表了关于NLP预训练模型的综述《Pre-trained Models for Natural Language Processing: A Survey》[1]，系统地对预训练模型进行了归纳分类。本文以此论文为参考，同时也整合了专栏">
+<meta property="og:type" content="article">
+<meta property="og:title" content="西山晴雪的博客">
+<meta property="og:url" content="http://xishansnow.github.io/2021/03/26/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%9F%BA%E7%A1%80/%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E5%A4%A7%E5%85%A8/index.html">
+<meta property="og:site_name" content="西山晴雪的博客">
+<meta property="og:description" content="NLP预训练模型的全面总结【摘要】 **预训练模型(Pre-trained Models,预训练模型)**的出现将NLP带入了一个全新时代。2020年3月，邱锡鹏老师发表了关于NLP预训练模型的综述《Pre-trained Models for Natural Language Processing: A Survey》[1]，系统地对预训练模型进行了归纳分类。本文以此论文为参考，同时也整合了专栏">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_13.png">
+<meta property="article:published_time" content="2021-03-26T15:17:35.904Z">
+<meta property="article:modified_time" content="2021-03-26T16:17:37.611Z">
+<meta property="article:author" content="西山晴雪">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_13.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://xishansnow.github.io/2021/03/26/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%9F%BA%E7%A1%80/%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E5%A4%A7%E5%85%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-27 00:17:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">32</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">78</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 知识库</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间索引</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/project/"><i class="fa-fw fas fa-cogs"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 论文</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/article/"><i class="fa-fw fas fa-books"></i><span> 学术论文</span></a></li><li><a class="site-page" href="https://xishansnow.github.io"><i class="fa-fw fas fa-books"></i><span> GitBook01</span></a></li><li><a class="site-page" href="https://xishansnow.github.io"><i class="fa-fw fas fa-books"></i><span> GitBook02</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-camera-retro"></i><span> 摄影</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 全部作品</span></a></li><li><a class="site-page" href="/gallery/landscape/"><i class="fa-fw fas fa-image"></i><span> 风光摄影</span></a></li><li><a class="site-page" href="/gallery/portrait/"><i class="fa-fw fas fa-portrait"></i><span> 肖像摄影</span></a></li><li><a class="site-page" href="/gallery/literal/"><i class="fa-fw fas fa-archive"></i><span> 人文摄影</span></a></li><li><a class="site-page" href="/gallery/dailylife/"><i class="fa-fw fas fa-camera"></i><span> 日常摄影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/link/food/"><i class="fa-fw fas fa-utensils"></i><span> 美食博主</span></a></li><li><a class="site-page" href="/link/photography"><i class="fa-fw fas fa-camera"></i><span> 摄影大神</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_13.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 知识库</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间索引</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/project/"><i class="fa-fw fas fa-cogs"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 论文</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/article/"><i class="fa-fw fas fa-books"></i><span> 学术论文</span></a></li><li><a class="site-page" href="https://xishansnow.github.io"><i class="fa-fw fas fa-books"></i><span> GitBook01</span></a></li><li><a class="site-page" href="https://xishansnow.github.io"><i class="fa-fw fas fa-books"></i><span> GitBook02</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-camera-retro"></i><span> 摄影</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 全部作品</span></a></li><li><a class="site-page" href="/gallery/landscape/"><i class="fa-fw fas fa-image"></i><span> 风光摄影</span></a></li><li><a class="site-page" href="/gallery/portrait/"><i class="fa-fw fas fa-portrait"></i><span> 肖像摄影</span></a></li><li><a class="site-page" href="/gallery/literal/"><i class="fa-fw fas fa-archive"></i><span> 人文摄影</span></a></li><li><a class="site-page" href="/gallery/dailylife/"><i class="fa-fw fas fa-camera"></i><span> 日常摄影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/link/food/"><i class="fa-fw fas fa-utensils"></i><span> 美食博主</span></a></li><li><a class="site-page" href="/link/photography"><i class="fa-fw fas fa-camera"></i><span> 摄影大神</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">无题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-03-26T15:17:35.904Z" title="发表于 2021-03-26 23:17:35">2021-03-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-03-26T16:17:37.611Z" title="更新于 2021-03-27 00:17:37">2021-03-27</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">7.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>26分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="NLP预训练模型的全面总结"><a href="#NLP预训练模型的全面总结" class="headerlink" title="NLP预训练模型的全面总结"></a>NLP预训练模型的全面总结</h1><p>【摘要】 **预训练模型(Pre-trained Models,预训练模型)**的出现将NLP带入了一个全新时代。2020年3月，邱锡鹏老师发表了关于NLP预训练模型的综述《Pre-trained Models for Natural Language Processing: A Survey》[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_1">1]</a>，系统地对预训练模型进行了归纳分类。本文以此论文为参考，同时也整合了专栏之前已经介绍过的《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56382372">nlp中的词向量对比</a>》和《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/76912493">nlp中的预训练语言模型总结</a>》两篇文章，以QA形式对与训练模型进行全面总结归纳。</p>
+<p>本文引自公众号 「高能AI」</p>
+<blockquote>
+<p>笔者注：本文总结与原综述论文也有一些不同之处（详见文末），如有错误或不当之处请指正。很多总结归纳的点不太好拿捏，大家多给意见～</p>
+</blockquote>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/NER_fc0b6.jpg"></p>
+<h2 id="一、为什么要进行预训练？"><a href="#一、为什么要进行预训练？" class="headerlink" title="一、为什么要进行预训练？"></a>一、为什么要进行预训练？</h2><p>​    深度学习时代，为充分训练深层模型参数并防止过拟合，通常需要更多标注数据喂养。在NLP领域，标注数据是一个昂贵资源。预训练模型从大量无标注数据中进行预训练使许多NLP任务获得显著的性能提升。总的来看，预训练模型的优势包括：</p>
+<ol>
+<li>在庞大的无标注数据上进行预训练可以获取更通用的语言表示，并有利于下游任务；</li>
+<li>为模型提供了一个更好的初始化参数，在目标任务上具备更好的泛化性能、并加速收敛；</li>
+<li>是一种有效的正则化手段，避免在小数据集上过拟合（一个随机初始化的深层模型容易对小数据集过拟合）。</li>
+</ol>
+<h2 id="二、什么是词嵌入和分布式表示？预训练模型与分布式表示的关系？"><a href="#二、什么是词嵌入和分布式表示？预训练模型与分布式表示的关系？" class="headerlink" title="二、什么是词嵌入和分布式表示？预训练模型与分布式表示的关系？"></a>二、什么是词嵌入和分布式表示？预训练模型与分布式表示的关系？</h2><p><strong><u>词嵌入</u></strong></p>
+<ul>
+<li><p>词嵌入是自然语言处理中语言模型与表征学习技术的统称。</p>
+</li>
+<li><p>概念上而言，词嵌入是指把一个维数为所有词数量的高维空间嵌入到一个维数低得多的连续向量空间中，每个单词或词组被映射为实数域上的向量</p>
+</li>
+<li><p>词嵌入是一种分布式表示，向量的每一维度都没有实际意义，而整体代表一个具体概念</p>
+</li>
+</ul>
+<p><strong><u>分布式表示</u></strong></p>
+<ul>
+<li>分布式表示相较于传统的独热编码（one-hot）而言，表示具备更强的表示能力</li>
+<li>独热编码存在维度灾难和语义鸿沟（不能进行相似度计算）等问题</li>
+<li>传统的分布式表示方法根据全局语料进行训练，是机器学习时代的产物，包括：矩阵分解（SVD/LSA）、LDA等。</li>
+</ul>
+<p><strong><u>预训练模型</u></strong></p>
+<ul>
+<li>与训练模型也属于分布式表示的范畴，本文的预训练模型主要介绍深度学习时代、自NNLM[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_2">2]</a>以来的现代词嵌入。</li>
+</ul>
+<h2 id="三、预训练模型有哪两大范式？对比不同的预训练编码器？"><a href="#三、预训练模型有哪两大范式？对比不同的预训练编码器？" class="headerlink" title="三、预训练模型有哪两大范式？对比不同的预训练编码器？"></a>三、预训练模型有哪两大范式？对比不同的预训练编码器？</h2><p>预训练模型的发展经历从“浅层的词嵌入”到“深层编码”两个阶段，对应预训练模型两大范式：<strong>「浅层词嵌入」</strong>和<strong>「预训练编码器」</strong>。</p>
+<h3 id="3-1-浅层词嵌入（-Non-Contextual-Embeddings）"><a href="#3-1-浅层词嵌入（-Non-Contextual-Embeddings）" class="headerlink" title="3.1 浅层词嵌入（ Non-Contextual Embeddings）"></a><strong>3.1 浅层词嵌入（</strong> Non-Contextual Embeddings<strong>）</strong></h3><p>​    浅层词嵌入，这一类预训练模型范式是我们通常所说的“词向量”，其主要特点是：</p>
+<ul>
+<li><p>学习到的是上下文独立的静态词嵌入</p>
+</li>
+<li><p>主要代表为NNLM[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_2">2]</a>、word2vec（CBOW[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_3">3]</a>、Skip-Gram[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_3">3]</a>）、Glove[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_4">4]</a>等</p>
+</li>
+<li><p>这类词嵌入通常采取浅层网络进行训练，而应用于下游任务时，整个模型的其余部分仍需要从头开始学习。</p>
+</li>
+<li><p>因此，对于这一范式的预训练模型没有必要采取深层神经网络进行训练，采取浅层网络加速训练也可以产生好的词嵌入[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_3">3]</a>。</p>
+<p> 浅层词嵌入的主要缺陷为：</p>
+</li>
+<li><p>词嵌入与上下文无关，每个单词的嵌入向量始终是相同，因此不能解决一词多义的问题。</p>
+</li>
+<li><p>通常会出现OOV问题，为了解决这个问题，相关文献提出了字符级表示或sub-word表示，如CharCNN[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_5">5]</a> 、FastText[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_6">6]</a> 和 Byte-Pair Encoding [<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_7">7]</a>。</p>
+</li>
+</ul>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/NER_9335c.png"></p>
+<center>**图1: 常见的3种浅层词嵌入对比：NNLM、word2vec、Glove**</center>
+
+<p>​    上图给出了三种常见的浅层词嵌入之间的对比，Glove可以被看作是更换了目标函数和权重函数的全局word2vec。此外，相关文献也提出了句子和文档级别的嵌入方式，如 Skip-thought[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_8">8]</a> 、Context2Vec[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_9">9]</a> 等。</p>
+<h3 id="3-2-预训练编码器（Contextual-Embeddings）"><a href="#3-2-预训练编码器（Contextual-Embeddings）" class="headerlink" title="3.2 预训练编码器（Contextual Embeddings）"></a><strong>3.2 预训练编码器（</strong>Contextual Embeddings<strong>）</strong></h3><p>​    第二类预训练模型范式为预训练编码器，主要目的是通过一个预训练的编码器能够输出上下文相关的词向量，解决一词多义的问题。这一类预训练编码器输出的向量称之为「上下文相关的词嵌入」。</p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/NER_b238c.png"></p>
+<center>**图2: NLP编码器对比**</center>
+
+<p>​    图2给出了NLP各种编码器间的对比。预训练模型中预训练编码器通常采用LSTM和Transformer（Transformer-XL），其中Transformer又依据其attention-mask方式分为Transformer-Encoder和Transformer-Decoder两部分。此外，Transformer也可看作是一种图神经网络GNN[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_10">10]</a>。</p>
+<p>​    这一类「预训练编码器」范式的预训练模型主要代表有<strong>ELMO</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_11">11]</a>、<strong>GPT-1</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_12">12]</a>、<strong>BERT</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_13">13]</a>、<strong>XLNet</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_14">14]</a>等。</p>
+<h2 id="四、预训练模型按照任务类型如何分类？"><a href="#四、预训练模型按照任务类型如何分类？" class="headerlink" title="四、预训练模型按照任务类型如何分类？"></a>四、预训练模型按照任务类型如何分类？</h2><h3 id="4-1-与训练模型的分类"><a href="#4-1-与训练模型的分类" class="headerlink" title="4.1 与训练模型的分类"></a>4.1 与训练模型的分类</h3><p>​    预训练模型按照任务类型可分为2大类：监督学习 和 无监督学习/自监督学习。</p>
+<ul>
+<li><p>监督学习：</p>
+<ul>
+<li>在NLP-预训练模型中的主要代表就是<strong>CoVe</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_15">15]</a>，CoVe作为机器翻译的encoder部分可以应用于多种NLP下游任务。除了CoVe外，NLP中的绝大多数预训练模型属于自监督学习。</li>
+</ul>
+</li>
+<li><p>自监督学习</p>
+<ul>
+<li>是无监督学习的一种方法[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_16">16]</a>，自监督学习[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_17">17]</a>主要是利用辅助任务从大规模的无监督数据中挖掘自身的监督信息，通过这种构造的监督信息对网络进行训练，从而可以学习到对下游任务有价值的表征。因此，从“构造监督信息”这个角度来看，自监督也可看作是监督学习和无监督学习的一种融合[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_1">1]</a>。严格地讲，从是否由人工标注来看，自监督学习属于无监督学习的范畴。</li>
+</ul>
+</li>
+</ul>
+<p>综合各种自监督学习的分类方式，笔者将NLP-预训练模型在自监督学习中分为两种类型[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_16">16]</a>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_17">17]</a>：</p>
+<ul>
+<li>基于上下文（Context Based）</li>
+<li>基于对比（Contrastive Based）。</li>
+</ul>
+<h3 id="4-2-基于上下文（Context-Based）的自监督学习方法"><a href="#4-2-基于上下文（Context-Based）的自监督学习方法" class="headerlink" title="4.2 基于上下文（Context Based）的自监督学习方法"></a><strong>4.2 基于上下文（Context Based）的自监督学习方法</strong></h3><p>​    基于上下文的预训练模型，主要基于数据本身的上下文信息构造辅助任务，在NLP中我们通常引入语言模型作为训练目标。预训练模型中的语言模型主要分为三大类：</p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/NER_fc0b5.png"></p>
+<h4 id="第一类：自回归语言模型（LM）"><a href="#第一类：自回归语言模型（LM）" class="headerlink" title="第一类：自回归语言模型（LM）"></a><strong>第一类：自回归语言模型（LM）</strong></h4><p>$$<br>p(x_1,T)=\prod\limits_{t=1}^T{p(x_t|x_{0:t-1})}<br>$$</p>
+<ul>
+<li><p>优点：</p>
+</li>
+<li><ul>
+<li><strong>语言模型（language model，LM）联合概率的无偏估计</strong>，即为传统的语言模型，考虑被预测单词之间的相关性，天然适合处理自然生成任务；</li>
+</ul>
+</li>
+<li><p>缺点：</p>
+</li>
+<li><ul>
+<li>联合概率按照文本序列<strong>顺序拆解</strong>（从左至右分解），无法获取双向上下文信息表征；</li>
+</ul>
+</li>
+<li><p>代表模型：ELMO、GPT-1、GPT-2[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_18">18]</a>、ULMFiT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_19">19]</a>、SiATL[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_20">20]</a>；</p>
+</li>
+</ul>
+<h4 id="第二类：自编码语言模型（DAE）"><a href="#第二类：自编码语言模型（DAE）" class="headerlink" title="第二类：自编码语言模型（DAE）"></a><strong>第二类：自编码语言模型（DAE）</strong></h4><p>$$<br>p(x_1,T)\approx\sum\limits_{t=1}^T{m_tlogp(x_t|\tilde{x})}<br>$$</p>
+<ul>
+<li><p>优点：</p>
+</li>
+<li><ul>
+<li>本质为<strong>降噪自编码(DAE)<strong>特征表示，通过引入噪声[MASK]构建</strong>MLM</strong>(Masked language model)，获取双向上下文信息表征（本文将自编码语言模型统一称为<strong>DAE</strong>，旨在采用部分损坏的输入，旨在恢复原始的未失真输入）；如果当前token被预测，则 <img src="https://www.zhihu.com/equation?tex=m_%7Bt%7D=1" alt="[公式]"> 否则 <img src="https://www.zhihu.com/equation?tex=m_%7Bt%7D=0" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=%5Ctilde%7Bx%7D" alt="[公式]"> 为原始文本被替换后的输入。</li>
+</ul>
+</li>
+<li><p>缺点：</p>
+</li>
+<li><ul>
+<li>引入独立性假设，为<strong>语言模型联合概率的有偏估计</strong>，没有考虑预测token之间的相关性；</li>
+<li>预训练时的「MASK」噪声在finetune阶段不会出现，造成两阶段不匹配问题；为解决这一问题，在15%被预测的token中，80%被替换为「MASK」，10%被随机替换，10%被替换为原词。</li>
+</ul>
+</li>
+<li><p>代表模型：BERT、MASS [<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_21">21]</a>、T5[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_22">22]</a>、RoBERTa[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_23">23]</a>、UniLM[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_24">24]</a>、XLM[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_25">25]</a>、SpanBERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_26">26]</a>、ERNIE-Baidu[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_27">27]</a>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_28">28]</a>、E-BERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_29">29]</a>、ERNIE-THU[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_30">30]</a>、BART[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_31">31]</a>。</p>
+</li>
+</ul>
+<p>​    <strong>BERT</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_13">13]</a>是自编码语言模型的一个典型代表，但其采用的MLM策略和Transformer-Encoder结构，导致其不适合直接处理生成任务。为了解决这一问题，也可采用基于<strong>Seq2Seq MLM</strong>方法：encoder部分采取masked策略，而decoder部分以自回归的方式预测encoder部分被mask的token。此外，还有很多基于自编码语言模型的预训练模型提出了不同的MLM增强策略，称之为 Enhanced Masked Language Modeling (<strong>E-MLM</strong>) [<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_1">1]</a>。</p>
+<p>上述DAE具体的预训练模型方法见图4。</p>
+<h4 id="第三类：排列语言模型（PLM）"><a href="#第三类：排列语言模型（PLM）" class="headerlink" title="第三类：排列语言模型（PLM）"></a><strong>第三类：排列语言模型（PLM）</strong></h4><p>排列语言模型（Permuted Language Model，PLM）综合了LM和DAE-LM两者的优点。严格来讲，PLM和LM是标准的自回归语言模型（注：PLM是一种广义的自回归方法[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_14">14]</a>），而MLM不是一个标准的语言模型，其引入独立性假设，<strong>隐式地学习</strong>预测token（mask部分本身的强相关性）之间的关系。如果衡量序列中被建模的依赖关系的数量，标准的自回归语言模型可以达到上界，不依赖于任何独立假设。LM和PLM能够通过自回归方式来<strong>显式地学习</strong>预测token之间的关系。然而，LM无法对双向上下文进行表征，借鉴 NADE[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_32">32]</a>的思想，PLM将这种传统的自回归语言模型（LM）进行推广，将顺序拆解变为<strong>随机拆解</strong>（从左至右分解），产生上下文相关的双向特征表示。</p>
+<p>PLM最为典型的代表就是<strong>XLNet</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_14">14]</a>，这是对标准语言模型的一个复兴[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_33">33]</a>：提出一个框架来连接标准语言模型建模方法和预训练方法。</p>
+<p>一个关键问题：为什么PLM可以实现双向上下文的建模？<strong>PLM的本质就是语言模型联合概率的多种分解机制的体现，</strong>其将LM的顺序拆解推广到<strong>随机拆解。</strong>PLM没有改变原始文本序列的自然位置，只是定义了token预测的顺序。PLM只是针对语言模型建模不同排列下的因式分解排列，并不是词的位置信息的重新排列。</p>
+<p>最后，我们对基于上述三类语言模型的预训练模型进行总结：</p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/image-20210326234806591.png" alt="image-20210326234806591"><center> <strong>图4: 基于上下文（Context Based）的3种语言模型预训练模型总结</strong> </center></p>
+<h3 id="4-3-基于对比（Contrastive-Based）的自监督模型"><a href="#4-3-基于对比（Contrastive-Based）的自监督模型" class="headerlink" title="4.3 基于对比（Contrastive Based）的自监督模型"></a><strong>4.3 基于对比（Contrastive Based）的自监督模型</strong></h3><p>​    基于对比（Contrastive Based），不同于<strong>Context Based</strong>主要基于数据本身的上下文信息构造辅助任利用，Contrastive Based主要利用样本间的约束信息构造辅助任务，这类方法也是 Contrastive learning[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_34">34]</a>（CTL）。CTL假设观察到的文本对（正样本）在语义上比随机采样的文本（负样本）更相似。CTL 背后的原理是「在对比中学习」。相较于语言建模，CTL 的计算复杂度更低，因而在预训练中是理想的替代训练标准。</p>
+<p>​    CTL通过构建正样本（positive）和负样本（negative），然后度量正负样本的距离来实现自监督学习[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_17">17]</a>:可以使用点积的方式构造距离函数，然后构造一个 softmax 分类器，以正确分类正样本和负样本。鼓励相似性度量函数将较大的值分配给正例，将较小的值分配给负例：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+%5Cmathcal%7BL%7D_%7BN%7D=-%5Cmathbb%7BE%7D_%7Bx,y+,y-%7D%5Cleft%5B%5Clog+%5Cfrac%7B%5Cexp+%5Cleft(s%5Cleft(x,y%5E%7B+%7D%5Cright)%5Cright)%7D%7B%5Cexp+%5Cleft(s(x,y%5E%7B+%7D)+%5Cright)+%5Csum_%7Bj=1%7D%5E%7BN-1%7D+%5Cexp+%5Cleft(s(x,y_%7Bj%7D%5E%7B-%7D)%5Cright)%7D%5Cright%5D+%5Cend%7Bequation%7D" alt="[公式]"></p>
+<p>相似性度量函数通常可采取两种方式： <img src="https://www.zhihu.com/equation?tex=s(x,y)=f_%7Benc(x)%7D%5E%7BT%7Df_%7Benc(x)%7D" alt="[公式]"> 或<img src="https://www.zhihu.com/equation?tex=s(x,y)=f_%7Benc%7D(x%5Coplus+y)" alt="[公式]"></p>
+<h4 id="第一类：-Deep-InfoMax-DIM"><a href="#第一类：-Deep-InfoMax-DIM" class="headerlink" title="第一类： Deep InfoMax (DIM)"></a><strong>第一类： Deep InfoMax (DIM)</strong></h4><p>​    DIM 方法来源于CV领域，对于全局的特征（编码器最终的输出）和局部特征（编码器中间层的特征），DIM需要判断全局特征和局部特征是否来自同一图像[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_17">17]</a>。</p>
+<p>​    <strong>InfoWord</strong> [<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_35">35]</a>将DIM引入到NLP中，用Mutual Information的一个下界InfoNCE来重新解释BERT和XLNET的objective，并提出一个新的DIM objective以最大化一个句子的global representation和其中一个ngram的local representation之间的Mutual Information。</p>
+<h4 id="第二类：Replaced-Token-Detection-RTD"><a href="#第二类：Replaced-Token-Detection-RTD" class="headerlink" title="第二类：Replaced Token Detection (RTD)"></a><strong>第二类：Replaced Token Detection (RTD)</strong></h4><p>​    噪声对比估计（Noise-Contrastive Estimation，NCE）[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_36">36]</a>通过训练一个二元分类器来区分真实样本和假样本，可以很好的训练词嵌入。RTD于与 NCE 相同，根据上下文语境来预测token是否替换 。</p>
+<ul>
+<li><strong>word2vec</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_3">3]</a>中的negative sampling可看作是RTD，负样本从词表中进行带权采样。</li>
+<li><strong>ELECTRA</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_37">37]</a>提出了一种新的预训练任务框架，构建生成器-判别器，生成器通过MLM任务对被mask的token进行预测，迭代器判断原始句子中的每个token是否被replace过。生成器相当于对输入进行了筛选，使判别器的任务更难，从而学习到更好的表示。生成器-判别器共享embedding，生成器部分采用small-bert，判别器部分对每一个token采用sigmoid计算loss。finetune阶段只采用判别器部分。RTD也被看作解决MLM中「MASK」在预训练和finetune间差异的一种手段。</li>
+<li><strong>WKLM</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_38">38]</a>在实体level进行替换，替换为具有相同实体类型的实体名称。</li>
+</ul>
+<h4 id="第三类：Next-Sentence-Prediction-NSP"><a href="#第三类：Next-Sentence-Prediction-NSP" class="headerlink" title="第三类：Next Sentence Prediction (NSP)"></a><strong>第三类：Next Sentence Prediction (NSP)</strong></h4><p>​    NSP 区分两个输入句子是否为训练语料库中的连续片段，第二个句子50%为第一句子实际的连续片段，50%从其他语料随机选择。NSP可以引导模型理解两个输入句子之间的关系，从而使对此信息敏感的下游任务受益，如QA任务。而RoBERTa[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_23">23]</a>表明：NSP在对单个文档中的文本块进行训练时，去除NSP任务或在下游任务上可以稍微提高性能。</p>
+<h4 id="第四类：Sentence-Order-Prediction-SOP"><a href="#第四类：Sentence-Order-Prediction-SOP" class="headerlink" title="第四类：Sentence Order Prediction (SOP)"></a><strong>第四类：Sentence Order Prediction (SOP)</strong></h4><p>​    SOP 使用同一文档中的两个连续片段作为正样本，而相同的两个连续片段互换顺序作为负样本。NSP融合了主题预测和相关性预测，主题预测更容易，这使得模型进行预测时仅依赖于主题学习。与NSP不同，SOP使用同一文档中的两个连续段作为正样本，但顺序互换为负样本。采取SOP任务的预训练模型有ALBERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_39">39]</a>、StructBERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_40">40]</a>、BERTje[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_41">41]</a>。</p>
+<p>​    图5对上述基于对比（Contrastive Based）的四类预训练模型进行了总结：</p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/image-20210326235013242.png" alt="image-20210326235013242"></p>
+<center> **图5: 基于对比（Contrastive Based）的预训练模型总结**</center>
+
+<h2 id="五、预训练模型有哪些拓展？"><a href="#五、预训练模型有哪些拓展？" class="headerlink" title="五、预训练模型有哪些拓展？"></a>五、预训练模型有哪些拓展？</h2><h3 id="5-1-引入知识"><a href="#5-1-引入知识" class="headerlink" title="5.1 引入知识"></a><strong>5.1 引入知识</strong></h3><p>预训练模型通常从通用大型文本语料库中学习通用语言表示，但是缺少特定领域的知识。预训练模型中设计一些辅助的预训练任务，将外部知识库中的领域知识整合到预训练模型中被证明是有效的[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_1">1]</a>。</p>
+<ul>
+<li><strong>ERNIE-THU</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_30">30]</a>将在知识图谱中预先训练的实体嵌入与文本中相应的实体提及相结合，以增强文本表示。由于语言表征的预训练过程和知识表征过程有很大的不同，会产生两个独立的向量空间。为解决上述问题，在有实体输入的位置，将实体向量和文本表示通过非线性变换进行融合，以融合词汇、句法和知识信息。</li>
+<li><strong>LIBERT</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_42">42]</a>（语言知识的BERT）通过附加的语言约束任务整合了语言知识。</li>
+<li><strong>SentiLR</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_43">43]</a>集成了每个单词的情感极性，以将MLM扩展到标签感知MLM（LA-MLM），ABSA任务上都达到SOTA。</li>
+<li><strong>SenseBERT</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_44">44]</a> 不仅能够预测被mask的token，还能预测它们在给定语境下的实际含义。使用英语词汇数据库 WordNet 作为标注参照系统，预测单词在语境中的实际含义，显著提升词汇消歧能力。</li>
+<li><strong>KnowBERT</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_45">45]</a> 与实体链接模型以端到端的方式合并实体表示。</li>
+<li><strong>KG-BERT</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_46">46]</a>显示输入三元组形式，采取两种方式进行预测：构建三元组识别和关系分类，共同优化知识嵌入和语言建模目标。这些工作通过实体嵌入注入知识图的结构信息。</li>
+<li><strong>K-BERT</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_47">47]</a>将从KG提取的相关三元组显式地注入句子中，以获得BERT的扩展树形输入。</li>
+<li><strong>K-Adapter</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_48">48]</a>通过针对不同的预训练任务独立地训练不同的适配器来注入多种知识，从而可以不断地注入知识，以解决注入多种知识时可能会出现灾难性遗忘问题。</li>
+<li>此外，这类预训练模型还有WKLM[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_38">38]</a>、KEPLER[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_49">49]</a>和[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_50">50]</a>等。</li>
+</ul>
+<h3 id="5-2-模型压缩"><a href="#5-2-模型压缩" class="headerlink" title="5.2 模型压缩"></a><strong>5.2 模型压缩</strong></h3><p>由于预训练的语言模型通常包含至少数亿个参数，因此很难将它们部署在现实应用程序中的在线服务和资源受限的设备上。模型压缩是减小模型尺寸并提高计算效率的有效方法。</p>
+<p>5种预训练模型的压缩方法为：</p>
+<ul>
+<li><p><strong>pruning（剪枝）</strong>：将模型中影响较小的部分舍弃。</p>
+</li>
+<li><ul>
+<li>如Compressing BERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_51">51]</a>，还有结构化剪枝 LayerDrop [<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_52">52]</a>，其在训练时进行Dropout，预测时再剪掉Layer，不像知识蒸馏需要提前固定student模型的尺寸大小。</li>
+</ul>
+</li>
+<li><p><strong>quantization（量化）</strong>：将高精度模型用低精度来表示；</p>
+</li>
+<li><ul>
+<li>如Q-BERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_53">53]</a>和Q8BERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_54">54]</a>，量化通常需要兼容的硬件。</li>
+</ul>
+</li>
+<li><p><strong>parameter sharing （参数共享）</strong>：相似模型单元间的参数共享；</p>
+</li>
+<li><ul>
+<li>ALBERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_39">39]</a>主要是通过矩阵分解和跨层参数共享来做到对参数量的减少。</li>
+</ul>
+</li>
+<li><p><strong>module replacing（模块替换）</strong>：</p>
+</li>
+<li><ul>
+<li>BERT-of-Theseus[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_55">55]</a>根据伯努利分布进行采样，决定使用原始的大模型模块还是小模型，只使用task loss。</li>
+</ul>
+</li>
+<li><p><strong>knowledge distillation （知识蒸馏）</strong>：通过一些优化目标从大型、知识丰富、fixed的teacher模型学习一个小型的student模型。蒸馏机制主要分为3种类型：</p>
+</li>
+<li><ul>
+<li>从软标签蒸馏：DistilBERT [<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_56">56]</a>、EnsembleBERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_57">57]</a></li>
+<li>从其他知识蒸馏：TinyBERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_58">58]</a>、BERT-PKD、MobileBERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_59">59]</a> 、 MiniLM[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_60">60]</a> 、DualTrain[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_61">61]</a></li>
+<li>蒸馏到其他结构：Distilled-BiLSTM[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_62">62]</a></li>
+<li><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/NER_8521e.png"></li>
+</ul>
+</li>
+</ul>
+<center> **图6: 不同的知识蒸馏预训练模型** </center>
+
+<h3 id="5-3-多模态"><a href="#5-3-多模态" class="headerlink" title="5.3 多模态"></a><strong>5.3 多模态</strong></h3><p>随着预训练模型在NLP领域的成功，许多研究者开始关注多模态领域的预训练模型，主要为通用的视觉和语言特征编码表示而设计。多模态的预训练模型在一些庞大的跨模式数据语料库（带有文字的语音、视频、图像）上进行了预训练，如带有文字的语音、视频、图像等，主要有 VideoBERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_63">63]</a>、CBT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_64">64]</a> 、UniViLM[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_65">65]</a>、 ViL-BERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_66">66]</a> 、 LXMERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_67">67]</a>、 VisualBERT [<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_68">68]</a>、 B2T2[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_69">69]</a> 、Unicoder-VL[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_70">70]</a> 、UNITER [<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_71">71]</a>、 VL-BERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_72">72]</a> 、 SpeechBERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_73">73]</a>。</p>
+<h3 id="5-4-领域预训练"><a href="#5-4-领域预训练" class="headerlink" title="5.4 领域预训练"></a><strong>5.4 领域预训练</strong></h3><p>大多数PTM都在诸如Wikipedia的通用语料中训练，而在领域化的特定场景会收到限制。如基于生物医学文本的BioBERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_74">74]</a>，基于科学文本的SciBERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_75">75]</a>，基于临床文本的Clinical-BERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_76">76]</a>。一些工作还尝试将预训练模型适应目标领域的应用，如医疗实体标准化[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_77">77]</a>、专利分类PatentBERT [<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_78">78]</a>、情感分析SentiLR[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_79">79]</a>关键词提取[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_80">80]</a>。</p>
+<h3 id="5-5-多语言和特定语言"><a href="#5-5-多语言和特定语言" class="headerlink" title="5.5 多语言和特定语言"></a><strong>5.5 多语言和特定语言</strong></h3><p>学习跨语言共享的多语言文本表示形式对于许多跨语言的NLP任务起着重要的作用。</p>
+<ul>
+<li><strong>Multilingual-BERT</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_81">81]</a>在104种 Wikipedia文本上进行MLM训练（共享词表），每个训练样本都是单语言文档，没有专门设计的跨语言目标，也没有任何跨语言数据，M-BERT也可以很好的执行跨语言任务。</li>
+<li><strong>XLM</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_25">25]</a>通过融合跨语言任务（翻译语言模型）改进了M-BERT，该任务通过拼接平行语料句子对进行MLM训练。</li>
+<li><strong>Unicoder</strong>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_82">82]</a>提出了3种跨语言预训练任务：1)cross-lingual word recovery；2) cross-lingual paraphrase classification;3) cross-lingual masked language model.</li>
+</ul>
+<p>虽然多语言的预训练模型在跨语言上任务表现良好，但用单一语言训练的预训练模型明显好于多语言的预训练模型。此外一些单语言的预训练模型被提出：BERT-wwm[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_83">83]</a>， ZEN[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_84">84]</a>, NEZHA[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_85">85]</a> , ERNIE-Baidu[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_27">27]</a>[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_28">28]</a>, BERTje[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_86">86]</a>, CamemBERT[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_87">87]</a>, FlauBERT [<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_88">88]</a>, RobBERT [<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_89">89]</a>。</p>
+<h2 id="六-如何对预训练模型进行迁移学习？"><a href="#六-如何对预训练模型进行迁移学习？" class="headerlink" title="六: 如何对预训练模型进行迁移学习？"></a>六: 如何对预训练模型进行迁移学习？</h2><p>预训练模型从大型语料库中获取通用语言知识，如何有效地将其知识适应下游任务是一个关键问题。迁移学习的方式主要有归纳迁移（顺序迁移学习、多任务学习）、领域自适应（转导迁移）、跨语言学习等。NLP中预训练模型的迁移方式是顺序迁移学习。</p>
+<h3 id="6-1-如何迁移？"><a href="#6-1-如何迁移？" class="headerlink" title="6.1 如何迁移？"></a><strong>6.1 如何迁移？</strong></h3><p>1）选择合适的<strong>预训练任务</strong>：语言模型是PTM是最为流行的预训练任务；同的预训练任务有其自身的偏置，并且对不同的任务会产生不同的效果。例如，NSP任务可以使诸如问答（QA）和自然语言推论（NLI）之类的下游任务受益。</p>
+<p>2）选择合适的<strong>模型架构</strong>：例如BERT采用的MLM策略和Transformer-Encoder结构，导致其不适合直接处理生成任务。</p>
+<p>3）选择合适的<strong>数据</strong>：下游任务的数据应该近似于预训练模型的预训练任务，现在已有有很多现成的预训练模型可以方便地用于各种特定领域或特定语言的下游任务。</p>
+<p>4）选择合适的<strong>layers</strong>进行transfer：主要包括Embedding迁移、top layer迁移和all layer迁移。如word2vec和Glove可采用Embedding迁移，BERT可采用top layer迁移，Elmo可采用all layer迁移。</p>
+<p>5）<strong>特征集成</strong>还是<strong>fine-tune</strong>？对于特征集成预训练参数是freeze的，而fine-tune是unfreeze的。特征集成方式却需要特定任务的体系结构，fine-tune方法通常比特征提取方法更为通用和方便。</p>
+<h3 id="6-2-fine-tune策略"><a href="#6-2-fine-tune策略" class="headerlink" title="6.2 fine-tune策略"></a><strong>6.2 fine-tune策略</strong></h3><p>通过更好的微调策略进一步激发预训练模型性能</p>
+<ul>
+<li>两阶段fine-tune策略：如第一阶段对中间任务或语料进行finetune，第二阶段再对目标任务fine-tune。第一阶段通常可根据特定任务的数据继续进行fine-tune预训练。</li>
+<li>多任务fine-tune：MTDNN[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_90">90]</a>在多任务学习框架下对BERT进行了fine-tune，这表明多任务学习和预训练是互补的技术。</li>
+<li>采取额外的适配器：fine-tune的主要缺点是其参数效率低，每个下游任务都有自己的fine-tune参数。因此，更好的解决方案是在固定原始参数的同时，将一些可fine-tune的适配器注入预训练模型。</li>
+<li>逐层阶段：逐渐冻结而不是同时对所有层进行fine-tune，也是一种有效的fine-tune策略。</li>
+</ul>
+<h2 id="七、预训练模型还有哪些问题需要解决？"><a href="#七、预训练模型还有哪些问题需要解决？" class="headerlink" title="七、预训练模型还有哪些问题需要解决？"></a>七、预训练模型还有哪些问题需要解决？</h2><p>（本部分来自[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_91">91]</a>，有删减和修正）</p>
+<p>虽然 预训练模型已经在很多 NLP 任务中显示出了他们强大的能力，然而由于语言的复杂性，仍存在诸多挑战。综述论文给出了五个未来 预训练模型发展方向的建议。</p>
+<h3 id="7-1-预训练模型的上限"><a href="#7-1-预训练模型的上限" class="headerlink" title="7.1 预训练模型的上限"></a><strong>7.1 预训练模型的上限</strong></h3><p>目前，预训练模型并没有达到其上限。大多数的预训练模型可通过使用更长训练步长和更大数据集来提升其性能。目前NLP中的SOTA也可通过加深模型层数来更进一步提升。这将导致更加高昂的训练成本。因此，一个更加务实的方向是在现有的软硬件基础上，设计出更高效的模型结构、自监督预训练任务、优化器和训练技巧等。例如， ELECTRA [<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_37">37]</a>就是此方向上很好的一个解决方案。</p>
+<h3 id="7-2-面向任务的预训练和模型压缩"><a href="#7-2-面向任务的预训练和模型压缩" class="headerlink" title="7.2 面向任务的预训练和模型压缩"></a><strong>7.2 面向任务的预训练和模型压缩</strong></h3><p>在实践中，不同的目标任务需要 预训练模型拥有不同功能。而 预训练模型与下游目标任务间的差异通常在于两方面：模型架构与数据分布。尽管较大的预训练模型通常情况下会带来更好的性能表现，但在低计算资源下如何使用是一个实际问题。例如，对于 NLP 的 PTM 来说，对于模型压缩的研究只是个开始，Transformer 的全连接架构也使得模型压缩具有挑战性。</p>
+<h3 id="7-3-预训练模型的架构设计"><a href="#7-3-预训练模型的架构设计" class="headerlink" title="7.3 预训练模型的架构设计"></a><strong>7.3 预训练模型的架构设计</strong></h3><p>对于预训练模型，Transformer 已经被证实是一个高效的架构。然而 Transformer 最大的局限在于其计算复杂度（输入序列长度的平方倍）。受限于 GPU 显存大小，目前大多数 PTM 无法处理超过 512 个 token 的序列长度。打破这一限制需要改进 Transformer 的结构设计，例如 Transformer-XL[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_92">92]</a>。</p>
+<h3 id="7-4-finetune中的知识迁移"><a href="#7-4-finetune中的知识迁移" class="headerlink" title="7.4 finetune中的知识迁移"></a><strong>7.4 finetune中的知识迁移</strong></h3><p>finetune是目前将 PTM 的知识转移至下游任务的主要方法，但效率却很低，每个下游任务都需要有特定的finetune参数。一个可以改进的解决方案是固定预训练模型的原始参数，并为特定任务添加小型的finetune适配器，这样就可以使用共享的预训练模型 服务于多个下游任务。</p>
+<h3 id="7-5-预训练模型的解释性与可靠性"><a href="#7-5-预训练模型的解释性与可靠性" class="headerlink" title="7.5 预训练模型的解释性与可靠性"></a><strong>7.5 预训练模型的解释性与可靠性</strong></h3><p>预训练模型 的可解释性与可靠性仍然需要从各个方面去探索，它能够帮助我们理解 PTM 的工作机制，为更好的使用及性能改进提供指引。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>本文定义了预训练模型两大范式：浅层词嵌入和预训练编码器。不同于原文，XLNet在原综述论文中被归为Transformer-Encoder，本文认为将其归为Transformer-XL更合适。</li>
+<li>本文预训练模型按照自监督学习的分类不同于原文。本文按照基于上下文（Context Based）和基于对比（Contrastive Based）两种方式归类；将原文的LM、MLM、DAE、PLM归为Context Based；</li>
+<li>本文将原文MLM和DAE统一为DAE；</li>
+<li>其他：1）在3.1.2的E-MLM段落中，可以将StructBERT拿出来，只放在SOP；2）3.1.5对ELECTRA的描述，应采取ELECTRA原文中的主要方法（参数共享），两阶段的方法只是一种实验尝试；3）在puring部分可以补充LayerDrop；4）应将UniLM归为MLM；；</li>
+</ol>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_1_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_1_1">b</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_1_2">c</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_1_3">d</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_1_4">e</a>Pre-trained Models for Natural Language Processing: A Survey <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2003.08271v2">https://arxiv.org/abs/2003.08271v2</a></li>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_2_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_2_1">b</a>A neural probabilistic language model.</li>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_3_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_3_1">b</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_3_2">c</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_3_3">d</a> Distributed representations of words and phrases and their compositionality.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_4_0">^</a>GloVe: Global vectors for word representation</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_5_0">^</a>Character-aware neural language models.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_6_0">^</a>Enriching word vectors with subword information.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_7_0">^</a>Neural machine translation of rare words with subword units.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_8_0">^</a>Skip-thought vectors</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_9_0">^</a>Context2Vec: Learning generic context embedding with bidirec- tional LSTM.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_10_0">^</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/110805093">https://zhuanlan.zhihu.com/p/110805093</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_11_0">^</a>Deep contextualized word representations.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_12_0">^</a>Improving language understanding by generative pre-training.</li>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_13_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_13_1">b</a>BERT: pre-training of deep bidirectional trans- formers for language understanding</li>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_14_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_14_1">b</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_14_2">c</a>XLnet: Generalized Autoregressive Pretraining for Language Understanding</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_15_0">^</a>Learned in translation: Contextualized word vectors.</li>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_16_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_16_1">b</a>Self-supervised Visual Feature Learning with Deep Neural Networks: A Survey</li>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_17_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_17_1">b</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_17_2">c</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_17_3">d</a>Self-supervised Learning 再次入门 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/108906502">https://zhuanlan.zhihu.com/p/108906502</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_18_0">^</a> Language models are unsuper- vised multitask learners</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_19_0">^</a>ULMFiT：Universal Language Model Fine-tuning)</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_20_0">^</a>SiATL：An Embarrassingly Simple Approach for Transfer Learning from Pretrained Language Models</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_21_0">^</a>MASS: masked sequence to sequence pre-training for language generation.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_22_0">^</a>Exploring the limits of transfer learning with a uni- fied text-to-text transformer</li>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_23_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_23_1">b</a>RoBERTa: A ro- bustly optimized BERT pretraining approach</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_24_0">^</a>Unified language model pre-training for natural language un- derstanding and generation.</li>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_25_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_25_1">b</a>Cross-lingual lan- guage model pretraining.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_26_0">^</a>SpanBERT: Improving pre- training by representing and predicting spans.</li>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_27_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_27_1">b</a>ERNIE: enhanced representation through knowledge integration</li>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_28_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_28_1">b</a>ERNIE 2.0: A continual pre-training framework for language understanding</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_29_0">^</a>BERT is not a knowledge base (yet): Factual knowledge vs. name-based reasoning in unsupervised QA</li>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_30_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_30_1">b</a>ERNIE: enhanced language representation with informative entities</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_31_0">^</a>BART: denoising sequence-to- sequence pre-training for natural language generation, transla- tion, and comprehension.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_32_0">^</a>Neural autoregressive distribution estimation</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_33_0">^</a>他们创造了横扫NLP的XLNet：专访CMU博士杨植麟</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_34_0">^</a>A theoretical analysis of contrastive unsupervised representation learning.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_35_0">^</a>A mutual information maximization perspective of language representation learning</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_36_0">^</a>Noise-contrastive estimation: A new estimation principle for unnormalized sta- tistical models.</li>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_37_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_37_1">b</a>ELECTRA: Pre-training text encoders as discriminators rather than generators</li>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_38_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_38_1">b</a>Pretrained encyclopedia: Weakly supervised knowledge-pretrained language model</li>
+<li>^<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_39_0">a</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_39_1">b</a>ALBERT: A lite BERT for self-supervised learning of language representations.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_40_0">^</a>StructBERT: Incorporating language struc- tures into pre-training for deep language understanding</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_41_0">^</a>BERTje: A dutch BERT model</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_42_0">^</a>Informing unsupervised pre- training with external linguistic knowledge</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_43_0">^</a>Sentilr: Linguistic knowledge enhanced lan- guage representation for sentiment analysis</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_44_0">^</a>SenseBERT: Driving some sense into BERT</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_45_0">^</a>Knowledge enhanced contextual word representations</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_46_0">^</a>KG-BERT: BERT for Knowledge Graph Completion</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_47_0">^</a>K-BERT: Enabling lan- guage representation with knowledge graph</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_48_0">^</a>K-adapter: Infusing knowledge into pre-trained models with adapters</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_49_0">^</a>KEPLER: A unified model for knowledge embedding and pre-trained language representation</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_50_0">^</a>Enhancing pre-trained language representations with rich knowledge for machine reading comprehension.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_51_0">^</a>Compressing BERT: Studying the effects of weight pruning on transfer learning</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_52_0">^</a>REDUCING TRANSFORMER DEPTH ON DEMAND WITH STRUCTURED DROPOUT</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_53_0">^</a>Q- BERT: Hessian based ultra low precision quantization of BERT.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_54_0">^</a>Q8BERT: Quantized 8bit BERT.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_55_0">^</a>BERT-of-Theseus: Compressing BERT by pro- gressive module replacing</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_56_0">^</a>DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_57_0">^</a>MT-DNN：Improving Multi-Task Deep Neural Networks via Knowledge Distillation for Natural Language Understanding</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_58_0">^</a>TinyBERT: Distilling BERT for natural language understanding</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_59_0">^</a>MobileBERT: Task-agnostic com- pression of BERT by progressive knowledge transfer</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_60_0">^</a>MiniLM: Deep self-attention distillation for task-agnostic compression of pre-trained transformers.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_61_0">^</a>Extreme language model compression with optimal subwords and shared projections</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_62_0">^</a>Distilling task-specific knowledge from BERT into simple neural networks</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_63_0">^</a>VideoBERT: A joint model for video and language representation learning</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_64_0">^</a>Contrastive bidirectional transformer for temporal representation learning</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_65_0">^</a>Univilm: A unified video and language pre-training model for multimodal under- standing and generation.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_66_0">^</a>ViL- BERT: Pretraining task-agnostic visiolinguistic representa- tions for vision-and-language tasks.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_67_0">^</a>LXMERT: learning cross- modality encoder representations from transformers.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_68_0">^</a>VisualBERT: A simple and performant base- line for vision and language.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_69_0">^</a>Fusion of detected objects in text for visual question answering.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_70_0">^</a>Unicoder-vl: A universal encoder for vision and language by cross-modal pre-training</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_71_0">^</a>UNITER: learning universal image-text representations.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_72_0">^</a>VL-BERT: pre-training of generic visual- linguistic representations</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_73_0">^</a>SpeechBERT: Cross-modal pre-trained language model for end-to-end spoken question answering.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_74_0">^</a>BioBERT: a pre-trained biomedical language representation model for biomedical text mining.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_75_0">^</a>SciBERT: A pre- trained language model for scientific text</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_76_0">^</a>Clin- icalBERT: Modeling clinical notes and predicting hospital readmission.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_77_0">^</a>BERT-based rank- ing for biomedical entity normalization.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_78_0">^</a>PatentBERT: Patent clas- sification with fine-tuning a pre-trained BERT model.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_79_0">^</a>SentiLR: Linguistic knowledge enhanced lan- guage representation for sentiment analysis.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_80_0">^</a>Progress notes clas- sification and keyword extraction using attention-based deep learning models with BERT.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_81_0">^</a> <a target="_blank" rel="noopener" href="https://github.com/google-research/bert/blob/master/multilingual.md">https://github.com/google-research/bert/blob/master/multilingual.md</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_82_0">^</a>Unicoder: A universal language encoder by pre-training with multiple cross-lingual tasks.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_83_0">^</a>Pre-training with whole word masking for chinese BERT</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_84_0">^</a>ZEN: pre-training chinese text encoder enhanced by n-gram representations.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_85_0">^</a>NEZHA: Neural contextualized representa- tion for chinese language understanding</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_86_0">^</a>BERTje: A dutch BERT model.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_87_0">^</a> CamemBERT: a tasty french language model</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_88_0">^</a>FlauBERT: Unsupervised language model pre-training for french</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_89_0">^</a>Rob-BERT: a dutch RoBERTa-based language model.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_90_0">^</a>Multi-task deep neural networks for natural language understanding.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_91_0">^</a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/114785639">https://zhuanlan.zhihu.com/p/114785639</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115014536#ref_92_0">^</a>Transformer-XL: Atten- tive language models beyond a fixed-length context.</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/2021/03/26/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%9F%BA%E7%A1%80/%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E5%A4%A7%E5%85%A8/">http://xishansnow.github.io/2021/03/26/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%9F%BA%E7%A1%80/%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E5%A4%A7%E5%85%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_13.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/03/27/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/2021-03-27-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E3%80%901%E3%80%91--%20%E6%80%BB%E8%A7%88/"><img class="prev-cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_09.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">NLP预训练模型【1】 -- 总览</div></div></a></div><div class="next-post pull-right"><a href="/2021/03/25/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%9F%BA%E7%A1%80/2021-03-25-%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96%E6%8A%80%E6%9C%AF%E8%BF%9B%E5%B1%95%E3%80%904%E3%80%91--%20%E6%96%B0%E7%9A%84%E6%8C%91%E6%88%98/"><img class="next-cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_07.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">信息抽取技术进展【4】 -- 新的挑战</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#NLP%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%85%A8%E9%9D%A2%E6%80%BB%E7%BB%93"><span class="toc-text">NLP预训练模型的全面总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%BF%9B%E8%A1%8C%E9%A2%84%E8%AE%AD%E7%BB%83%EF%BC%9F"><span class="toc-text">一、为什么要进行预训练？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E8%AF%8D%E5%B5%8C%E5%85%A5%E5%92%8C%E5%88%86%E5%B8%83%E5%BC%8F%E8%A1%A8%E7%A4%BA%EF%BC%9F%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E8%A1%A8%E7%A4%BA%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%9F"><span class="toc-text">二、什么是词嵌入和分布式表示？预训练模型与分布式表示的关系？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E6%9C%89%E5%93%AA%E4%B8%A4%E5%A4%A7%E8%8C%83%E5%BC%8F%EF%BC%9F%E5%AF%B9%E6%AF%94%E4%B8%8D%E5%90%8C%E7%9A%84%E9%A2%84%E8%AE%AD%E7%BB%83%E7%BC%96%E7%A0%81%E5%99%A8%EF%BC%9F"><span class="toc-text">三、预训练模型有哪两大范式？对比不同的预训练编码器？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%B5%85%E5%B1%82%E8%AF%8D%E5%B5%8C%E5%85%A5%EF%BC%88-Non-Contextual-Embeddings%EF%BC%89"><span class="toc-text">3.1 浅层词嵌入（ Non-Contextual Embeddings）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E9%A2%84%E8%AE%AD%E7%BB%83%E7%BC%96%E7%A0%81%E5%99%A8%EF%BC%88Contextual-Embeddings%EF%BC%89"><span class="toc-text">3.2 预训练编码器（Contextual Embeddings）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E6%8C%89%E7%85%A7%E4%BB%BB%E5%8A%A1%E7%B1%BB%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E7%B1%BB%EF%BC%9F"><span class="toc-text">四、预训练模型按照任务类型如何分类？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E4%B8%8E%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-text">4.1 与训练模型的分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%9F%BA%E4%BA%8E%E4%B8%8A%E4%B8%8B%E6%96%87%EF%BC%88Context-Based%EF%BC%89%E7%9A%84%E8%87%AA%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95"><span class="toc-text">4.2 基于上下文（Context Based）的自监督学习方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%B1%BB%EF%BC%9A%E8%87%AA%E5%9B%9E%E5%BD%92%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%EF%BC%88LM%EF%BC%89"><span class="toc-text">第一类：自回归语言模型（LM）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%B1%BB%EF%BC%9A%E8%87%AA%E7%BC%96%E7%A0%81%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%EF%BC%88DAE%EF%BC%89"><span class="toc-text">第二类：自编码语言模型（DAE）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%B1%BB%EF%BC%9A%E6%8E%92%E5%88%97%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%EF%BC%88PLM%EF%BC%89"><span class="toc-text">第三类：排列语言模型（PLM）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%9F%BA%E4%BA%8E%E5%AF%B9%E6%AF%94%EF%BC%88Contrastive-Based%EF%BC%89%E7%9A%84%E8%87%AA%E7%9B%91%E7%9D%A3%E6%A8%A1%E5%9E%8B"><span class="toc-text">4.3 基于对比（Contrastive Based）的自监督模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%B1%BB%EF%BC%9A-Deep-InfoMax-DIM"><span class="toc-text">第一类： Deep InfoMax (DIM)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%B1%BB%EF%BC%9AReplaced-Token-Detection-RTD"><span class="toc-text">第二类：Replaced Token Detection (RTD)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%B1%BB%EF%BC%9ANext-Sentence-Prediction-NSP"><span class="toc-text">第三类：Next Sentence Prediction (NSP)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%B1%BB%EF%BC%9ASentence-Order-Prediction-SOP"><span class="toc-text">第四类：Sentence Order Prediction (SOP)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E6%9C%89%E5%93%AA%E4%BA%9B%E6%8B%93%E5%B1%95%EF%BC%9F"><span class="toc-text">五、预训练模型有哪些拓展？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%BC%95%E5%85%A5%E7%9F%A5%E8%AF%86"><span class="toc-text">5.1 引入知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9"><span class="toc-text">5.2 模型压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E5%A4%9A%E6%A8%A1%E6%80%81"><span class="toc-text">5.3 多模态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E9%A2%86%E5%9F%9F%E9%A2%84%E8%AE%AD%E7%BB%83"><span class="toc-text">5.4 领域预训练</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E5%A4%9A%E8%AF%AD%E8%A8%80%E5%92%8C%E7%89%B9%E5%AE%9A%E8%AF%AD%E8%A8%80"><span class="toc-text">5.5 多语言和特定语言</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD-%E5%A6%82%E4%BD%95%E5%AF%B9%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E8%BF%9B%E8%A1%8C%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%EF%BC%9F"><span class="toc-text">六: 如何对预训练模型进行迁移学习？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%A6%82%E4%BD%95%E8%BF%81%E7%A7%BB%EF%BC%9F"><span class="toc-text">6.1 如何迁移？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-fine-tune%E7%AD%96%E7%95%A5"><span class="toc-text">6.2 fine-tune策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E8%BF%98%E6%9C%89%E5%93%AA%E4%BA%9B%E9%97%AE%E9%A2%98%E9%9C%80%E8%A6%81%E8%A7%A3%E5%86%B3%EF%BC%9F"><span class="toc-text">七、预训练模型还有哪些问题需要解决？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%8A%E9%99%90"><span class="toc-text">7.1 预训练模型的上限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-%E9%9D%A2%E5%90%91%E4%BB%BB%E5%8A%A1%E7%9A%84%E9%A2%84%E8%AE%AD%E7%BB%83%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9"><span class="toc-text">7.2 面向任务的预训练和模型压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-text">7.3 预训练模型的架构设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-4-finetune%E4%B8%AD%E7%9A%84%E7%9F%A5%E8%AF%86%E8%BF%81%E7%A7%BB"><span class="toc-text">7.4 finetune中的知识迁移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%A7%A3%E9%87%8A%E6%80%A7%E4%B8%8E%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="toc-text">7.5 预训练模型的解释性与可靠性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (document.getElementsByClassName('mermaid').length) {
+  if (window.mermaidJsLoad) mermaid.init()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(() => {
+      window.mermaidJsLoad = true
+      mermaid.initialize({
+        theme: 'default',
+      })
+      false && mermaid.init()
+    })
+  }
+}</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk({
+      clientID: 'fb7f9ed2eecc530e7df2',
+      clientSecret: 'a016744e60828e5c99fc93a01d496a5a031196e2',
+      repo: 'blog_comment',
+      owner: 'xishansnow',
+      admin: ['xishansnow'],
+      id: '6d938e3623c6d072445ef227a4752fc7',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    })
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script></div></body></html>
