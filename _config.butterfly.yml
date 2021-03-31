@@ -16,8 +16,8 @@ menu:
    项目: /project/ || fas fa-cogs 
    论文 || fas fa-book-open:
     - 学术论文 || /article/ || fas fa-books
-    - GitBook01 || https://xishansnow.github.io || fas fa-books
-    - GitBook02 || https://xishansnow.github.io || fas fa-books
+    - GitBook01 || https://xishansnow.gitee.io || fas fa-books
+    - GitBook02 || https://xishansnow.gitee.io || fas fa-books
 
    摄影 || fas fa-camera-retro:
     - 全部作品 || /gallery/ || fas fa-images
@@ -66,7 +66,7 @@ copy:
 # formal:
 #   icon: link || the description
 social:
-   fab fa-github: https://github.com/xishansnow || Github
+   fab fa-github: https://gitee.com/XiShanSnow || Gitee
    fas fa-envelope: mailto:XiShanSnow@gmail.com || Email   
 
 # ------------------------------------------------------------------------------------------------------------网站搜索设置---------------------
@@ -108,12 +108,12 @@ katex:
 
 #  网站图标
 # Favicon（網站圖標）
-favicon: /img/favicon.png
+favicon: /img/favi.jpg
 
 # 个人头像
 # Avatar (頭像)
 avatar:
-  img: /img/favicon.png
+  img: /img/favi.jpg
   effect: false
 
 # Disable all banner image
@@ -711,8 +711,8 @@ aside:
     button:
       enable: true
       icon: fab fa-github
-      text: 个人GitHub
-      link: https://github.com/xishansnow
+      text: 个人Gitee
+      link: https://gitee.com/xishansnow
 
   card_announcement: #公告区块
     enable: false
