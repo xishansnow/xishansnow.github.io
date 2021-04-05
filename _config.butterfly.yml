@@ -20,7 +20,7 @@ menu:
     - GitBook02 || https://xishansnow.gitee.io || fas fa-books
 
    摄影 || fas fa-camera-retro:
-    - 全部作品 || /gallery/ || fas fa-images
+    - 全部 || /gallery/ || fas fa-images
     - 风光摄影 || /gallery/landscape/ || fas fa-image
     - 肖像摄影 || /gallery/portrait/ || fas fa-portrait
     - 人文摄影 || /gallery/literal/ || fas fa-archive
@@ -94,11 +94,11 @@ local_search:
 # MathJax
 mathjax:
   enable: true
-  per_page: false   # Front-matter 需要加 mathjax: true 才有效
+  per_page: true   # Front-matter 需要加 mathjax: true 才有效
 
 # KaTeX
 katex:
-  enable: false
+  enable: true
   per_page: false
   hide_scrollbar: true
 
@@ -652,8 +652,8 @@ beautify:
 font:
   global-font-size: 15px
   code-font-size: 15px
-  font-family:
-  code-font-family:
+  font-family:  -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Lato, Roboto, "PingFang SC", "Microsoft JhengHei", "Microsoft YaHei", sans-serif
+  code-font-family:  consolas, Menlo, "PingFang SC", "Microsoft JhengHei", "Microsoft YaHei", sans-serif
 
 # 左上角网站名字 主页居中网站名字的字体设置
 # Font settings for the site title and site subtitle

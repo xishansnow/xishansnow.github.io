@@ -24,7 +24,7 @@ tags:
 
 
 
-结论写在前面：大多数情况下，直接用BIO就可以了; 大多数情况下BIO和BIOES的结果差不太多，文末展示了各个数据集上的结果。
+结论写在前面：大多数情况下，直接用 BIO 就可以了; 大多数情况下 BIO 和 BIOES 的结果差不太多，文末展示了各个数据集上的结果。
 
 ## 1. IO
 
@@ -43,7 +43,7 @@ tags:
 
 ## 3. IOB（即IOB-1）
 
- IOB与BIO字母对应的含义相同，其不同点是IOB中，标签B仅用于两个连续的同类型命名实体的边界区分，不用于命名实体的起始位置
+ IOB 与 BIO 字母对应的含义相同，其不同点是 IOB 中，标签 B 仅用于两个连续的同类型命名实体的边界区分，不用于命名实体的起始位置
 
 这里举个例子： 
 
@@ -55,7 +55,7 @@ The IOB scheme is similar to the BIO scheme, however, here the tag B- is only us
 ~~~
 
 
- 因为IOB的整体效果不好，所以出现了IOB-2，约定了所有命名实体均以B tag开头。这样IOB-2就与BIO的标注方式等价了。
+ 因为 IOB 的整体效果不好，所以出现了 IOB-2，约定了所有命名实体均以 B tag 开头。这样 IOB-2 就与 BIO 的标注方式等价了。
 
 ## 4. BIOES
 
@@ -91,12 +91,12 @@ The IOB scheme is similar to the BIO scheme, however, here the tag B- is only us
 
 ## 总结
 
-​     综上所述，诸多主流的序列标注方法本质上就有4种：IO、BIO、IOB、BIOES，这里简单分析一下：  
+​     综上所述，诸多主流的序列标注方法本质上就有 4 种：IO、BIO、IOB、BIOES，这里简单分析一下：  
 
-- IO缺少头部表示，导致很多任务上效果不好，很少使用
-- IOB因为缺少B-tag作为实体标注的头部表示，丢失了部分标注信息，导致很多任务上的效果不佳
-- BIO解决了IOB的问题，所以整体效果优于IOB
-- BIOES额外提供了End的信息，并给出了单个词汇的S-tag，提供了更多的信息，可能效果更优，但其需要预测的标签更多（多了E和S），效果也可能受到影响。
+- IO 缺少头部表示，导致很多任务上效果不好，很少使用
+- IOB 因为缺少 B-tag 作为实体标注的头部表示，丢失了部分标注信息，导致很多任务上的效果不佳
+- BIO 解决了 IOB 的问题，所以整体效果优于 IOB
+- BIOES 额外提供了 End 的信息，并给出了单个词汇的 S-tag，提供了更多的信息，可能效果更优，但其需要预测的标签更多（多了 E 和 S），效果也可能受到影响。
 
 
 
@@ -112,17 +112,17 @@ The IOB scheme is similar to the BIO scheme, however, here the tag B- is only us
 
 **结论：**
 
-- **可以看到IOB表现很糟糕，BIO和BIOES各有优劣**
-- **有人反馈说：BIO和BIOES在很多任务上的表现差异不大，可能是小数点后3-4位的差别。**
+- **可以看到 IOB 表现很糟糕，BIO 和 BIOES 各有优劣**
+- **有人反馈说：BIO 和 BIOES 在很多任务上的表现差异不大，可能是小数点后 3-4 位的差别。**
 
 - **所有上述结果均为英文数据集上的结果，中文数据上暂无对比结果**
 
 ## 其他
 
-基于BIOES这个标注格式，衍生出了更加复杂的标注方法，明确了命名实体边界的边界比如：BMEWO+（There is also BMEWO+, which put more information about surrounding word class to Outside tokens (thus "O plus")）
+基于 BIOES 这个标注格式，衍生出了更加复杂的标注方法，明确了命名实体边界的边界比如：BMEWO+（There is also BMEWO+, which put more information about surrounding word class to Outside tokens (thus "O plus")）
 
 这里给出一个图表以示区别：
 
 ![](https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/NER_b7c1c.png)
 
-BMEWO+标注方法的效果方面有待检验。感兴趣的小伙伴可关注一下Ref 2,在文章中还给出了多种标注方法的复杂度分析。 
+BMEWO+标注方法的效果方面有待检验。感兴趣的小伙伴可关注一下 Ref 2,在文章中还给出了多种标注方法的复杂度分析。 
