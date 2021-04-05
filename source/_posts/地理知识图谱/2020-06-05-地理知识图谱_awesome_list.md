@@ -79,9 +79,9 @@ tags:
 
 ### 3.3 查询优化
 
-- W3C 的 SPARQL 标准：		https://www.w3.org/TR/rdf-sparql-query/
+- W3C的SPARQL标准：		https://www.w3.org/TR/rdf-sparql-query/
 
-- OGC 的 GeoSPARQL 标准： https://www.ogc.org/standards/geosparql
+- OGC的GeoSPARQL标准： https://www.ogc.org/standards/geosparql
 - 
 
 ## 三、地理空间信息抽取
@@ -104,7 +104,7 @@ tags:
 
 ## 五、地理空间图谱融合
 
-5.1 实体连接
+5.1实体连接
 
 
 
