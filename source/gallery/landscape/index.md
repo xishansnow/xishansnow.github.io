@@ -16,5 +16,6 @@ top_img:
     {% galleryGroup '美国红杉树国家公园' '...' '/gallery/landscape/RedWood/' 	https://gitee.com/XiShanSnow/imagebed/raw/master/images/landscape/Redwood_20210330231624_e0.webp %}
     {% galleryGroup '美国大提顿国家公园' '...' '/gallery/landscape/GrandTeton/' 	https://gitee.com/XiShanSnow/imagebed/raw/master/images/landscape/grand_teton_20210401204844_52.webp %}
     {% galleryGroup '挪威夏日' '摄影师：Morten Rustad' '/gallery/landscape/Norway/' 	https://gitee.com/XiShanSnow/imagebed/raw/master/images/landscape/grand_teton_20210401210609_27.webp %}        
+    {% galleryGroup '南美阿塔卡马沙漠' '...' '/gallery/landscape/atacama/' https://gitee.com/XiShanSnow/imagebed/raw/master/images/landscape/dustinFarrell_20210408_201710_b2.webp %}
     {% galleryGroup '其他' '...' '/gallery/landscape/others/' 	https://gitee.com/XiShanSnow/imagebed/raw/master/images/landscape/marc_adamus_magic_meadows.png %}
 </div>
