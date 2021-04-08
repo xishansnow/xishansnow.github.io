@@ -1,7 +1,12 @@
 ---
 layout:     post
+<<<<<<< HEAD
 title:      " Power Shell的使用与配置 "
 date:       2021-04-08 12:00:00
+=======
+title:      " power shell的使用与配置 "
+date:       2021-03-16 12:00:00
+>>>>>>> 69aeacd59f044d882b9a2419b75da6d576f829a5
 author:     "西山晴雪"
 categories:  "软件安装与使用"
 tags:
