@@ -17,11 +17,15 @@ tags:
 
 ## 1. Power Shell的安装
 
+见power shell的github主页，可以下载安装各种稳定版和预览版
 
+https://github.com/PowerShell/PowerShell
 
 ## 2. Windows Terminal的安装
 
+Windows Terminal好用了很多，支持多种配置文件和界面配置，一经发布得到很多人的喜欢，尤其是配合wsl、power shell等效果非常好。可以通过微软商店来安装，也可以到其github主页下载安装
 
+https://github.com/microsoft/terminal/
 
 ## 3. Power Shell 的常用配置
 
@@ -71,4 +75,4 @@ tags:
     - 安装软件：scoop install 软件名
     - 卸载软件：scoop uninstall 软件名
   
-  - 注意：scoop一般会安装在"~/scoop"目录下。
+  - 注意：scoop及其安装的软件默认在"~/scoop"目录下。
