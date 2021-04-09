@@ -3,7 +3,8 @@ layout:     post
 title:      " Power Shell的使用与配置 "
 date:       2021-04-08 12:00:00
 author:     "西山晴雪"
-categories:  "软件安装与使用"
+categories: 
+	- [软件安装与使用, PowerShell]
 tags:
     - 软件安装与使用
     - powershell

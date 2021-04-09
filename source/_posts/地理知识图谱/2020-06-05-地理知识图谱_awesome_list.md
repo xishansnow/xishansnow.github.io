@@ -1,9 +1,10 @@
 ---
 layout:     post
-title:      "地理知识图谱「 5 」-- 地理知识图谱相关研究领域总结"
+title:      "地理知识图谱awesome list"
 date:       2020-05-25 10:00:00
 author:     "西山晴雪"
-categories: "地理知识图谱"
+categories: 
+	- [地理知识图谱, 地理知识图谱综述]
 tags:
     - 地理知识图谱
     - 地理空间语义网
