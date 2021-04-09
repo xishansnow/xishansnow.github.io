@@ -10,24 +10,24 @@
 menu:
    主页: / || fas fa-home
    知识库||fas fa-compass:
-    - 时间索引 || /archives/ || fas fa-archive
-    - 标签索引 ||  /tags/ || fas fa-tags
-    - 分类索引 || /categories/ || fas fa-folder-open   
+    时间索引:  /archives/ || fas fa-archive
+    标签索引:  /tags/ || fas fa-tags
+    分类索引:  /categories/ || fas fa-folder-open   
    项目: /project/ || fas fa-cogs 
    论文 || fas fa-book-open:
-    - 学术论文 || /article/ || fas fa-books
-    - GitBook01 || https://xishansnow.gitee.io || fas fa-books
-    - GitBook02 || https://xishansnow.gitee.io || fas fa-books
+    学术论文:  /article/ || fas fa-books
+    GitBook01: https://xishansnow.gitee.io || fas fa-books
+    GitBook02: https://xishansnow.gitee.io || fas fa-books
 
    摄影 || fas fa-camera-retro:
-    - 全部 || /gallery/ || fas fa-images
-    - 风光摄影 || /gallery/landscape/ || fas fa-image
-    - 肖像摄影 || /gallery/portrait/ || fas fa-portrait
-    - 人文摄影 || /gallery/literal/ || fas fa-archive
-    - 日常摄影 || /gallery/dailylife/ || fas fa-camera
+    全部: /gallery/ || fas fa-images
+    风光摄影: /gallery/landscape/ || fas fa-image
+    肖像摄影: /gallery/portrait/ || fas fa-portrait
+    人文摄影: /gallery/literal/ || fas fa-archive
+    日常摄影: /gallery/dailylife/ || fas fa-camera
    链接 || fas fa-link:
-    - 美食博主 ||  /link/food/ || fas fa-utensils
-    - 摄影大神 ||  /link/photography || fas fa-camera
+    美食博主:  /link/food/ || fas fa-utensils
+    摄影大神:  /link/photography || fas fa-camera
 
    关于: /about/ || fas fa-heart
   #  Home: / || fas fa-home
