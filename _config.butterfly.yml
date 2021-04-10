@@ -22,7 +22,7 @@ menu:
     矢量数据:  /categories/时空大数据引擎/矢量数据仓库/ || fas fa-align-left
     栅格数据:  /categories/时空大数据引擎/栅格数据仓库/ || fas fa-chess-board  
     轨迹数据:  /categories/时空大数据引擎/轨迹数据仓库/ || fas fa-code-branch    
-    地理空间高性能计算: /categories/时空大数据引擎/地理空间高性能计算/ || fas fa-cogs       
+    高性能计算: /categories/时空大数据引擎/地理空间高性能计算/ || fas fa-cogs       
    GeoAI ||fas fa-compass:       
     综述类文献:  /categories/GeoAI/GeoAI综述/ || fas fa-dove    
     地理空间表征学习:  /categories/GeoAI/地理空间表征学习/ || fas fa-barcode
