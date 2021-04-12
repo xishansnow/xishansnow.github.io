@@ -1,0 +1,692 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title> 贝叶斯学派之-- 概率图模型  | 西山晴雪的博客</title><meta name="keywords" content="机器学习,贝叶斯,概率图模型,贝叶斯网络,马尔可夫网络"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="概率图模型体系[原文]https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;33397147 HMM、MEMM、CRF** 一、Preface之前刚接触NLP时做相关的任务，也必然地涉及到了序列处理任务，然后自然要接触到概率图模型。当时在全网搜中文资料，陆续失望地发现竟然真的没有讲得清楚的博文，发现基本是把李航老师书里或CRF tutorial等资料的文字论述和公式抄来抄去的。当然，没有说别人">
+<meta property="og:type" content="article">
+<meta property="og:title" content=" 贝叶斯学派之-- 概率图模型 ">
+<meta property="og:url" content="http://xishansnow.github.io/2021/04/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/2021-04-15-%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%E4%BD%93%E7%B3%BB/index.html">
+<meta property="og:site_name" content="西山晴雪的博客">
+<meta property="og:description" content="概率图模型体系[原文]https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;33397147 HMM、MEMM、CRF** 一、Preface之前刚接触NLP时做相关的任务，也必然地涉及到了序列处理任务，然后自然要接触到概率图模型。当时在全网搜中文资料，陆续失望地发现竟然真的没有讲得清楚的博文，发现基本是把李航老师书里或CRF tutorial等资料的文字论述和公式抄来抄去的。当然，没有说别人">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_20.png">
+<meta property="article:published_time" content="2021-04-11T12:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-12T10:06:32.755Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="贝叶斯">
+<meta property="article:tag" content="概率图模型">
+<meta property="article:tag" content="贝叶斯网络">
+<meta property="article:tag" content="马尔可夫网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_20.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/2021/04/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/2021-04-15-%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%E4%BD%93%E7%B3%BB/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-04-12 18:06:32'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">52</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">143</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">34</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 地理知识图谱</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-atom"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%BB%BA%E6%A8%A1/"><i class="fa-fw fas fa-atom"></i><span> 知识表示与建模</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%8E%B7%E5%8F%96%E4%B8%8E%E8%9E%8D%E5%90%88/"><i class="fa-fw fas fa-biohazard"></i><span> 知识获取与融合</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86%E4%B8%8E%E6%9F%A5%E8%AF%A2/"><i class="fa-fw fas fa-box"></i><span> 知识管理与查询</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%A1%A5%E5%85%A8%E4%B8%8E%E6%8E%A8%E7%90%86/"><i class="fa-fw fas fa-blender"></i><span> 知识补全与推理</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E9%97%AE%E7%AD%94/"><i class="fa-fw fas fa-brain"></i><span> 知识问答系统</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B/"><i class="fa-fw fas fa-archive"></i><span> 应用案例</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 时空大数据引擎</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-coins"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E7%9F%A2%E9%87%8F%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-align-left"></i><span> 矢量数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E6%A0%85%E6%A0%BC%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-chess-board"></i><span> 栅格数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E8%BD%A8%E8%BF%B9%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-code-branch"></i><span> 轨迹数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E9%AB%98%E6%80%A7%E8%83%BD%E8%AE%A1%E7%AE%97/"><i class="fa-fw fas fa-cogs"></i><span> 高性能计算</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> GeoAI</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/GeoAI%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-dove"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E8%A1%A8%E5%BE%81%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-barcode"></i><span> 地理空间表征学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E9%A2%84%E6%B5%8B%E5%92%8C%E7%A9%BA%E9%97%B4%E6%8F%92%E5%80%BC/"><i class="fa-fw fas fa-bacteria"></i><span> 时空预测和空间插值</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%AF%B9%E5%9C%B0%E8%B5%84%E6%BA%90%E7%8E%AF%E5%A2%83%E8%A7%82%E6%B5%8B/"><i class="fa-fw fas fa-globe-asia"></i><span> 对地资源环境观测</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%9C%B0%E7%90%86%E6%96%87%E6%9C%AC%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/"><i class="fa-fw fas fa-atlas"></i><span> 地理文本语义分析</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/project/"><i class="fa-fw fas fa-cogs"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 论文</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/article/"><i class="fa-fw fas fa-books"></i><span> 学术论文</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://xishansnow.gitee.io"><i class="fa-fw fas fa-books"></i><span> GitBook01</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://xishansnow.gitee.io"><i class="fa-fw fas fa-books"></i><span> GitBook02</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-camera-retro"></i><span> 摄影</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 全部</span></a></li><li><a class="site-page child" href="/gallery/landscape/"><i class="fa-fw fas fa-image"></i><span> 风光摄影</span></a></li><li><a class="site-page child" href="/gallery/portrait/"><i class="fa-fw fas fa-portrait"></i><span> 肖像摄影</span></a></li><li><a class="site-page child" href="/gallery/literal/"><i class="fa-fw fas fa-archive"></i><span> 人文摄影</span></a></li><li><a class="site-page child" href="/gallery/dailylife/"><i class="fa-fw fas fa-camera"></i><span> 日常摄影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 知识库</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/food/"><i class="fa-fw fas fa-utensils"></i><span> 美食博主</span></a></li><li><a class="site-page child" href="/link/photography"><i class="fa-fw fas fa-camera"></i><span> 摄影大神</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_20.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 地理知识图谱</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-atom"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%BB%BA%E6%A8%A1/"><i class="fa-fw fas fa-atom"></i><span> 知识表示与建模</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%8E%B7%E5%8F%96%E4%B8%8E%E8%9E%8D%E5%90%88/"><i class="fa-fw fas fa-biohazard"></i><span> 知识获取与融合</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86%E4%B8%8E%E6%9F%A5%E8%AF%A2/"><i class="fa-fw fas fa-box"></i><span> 知识管理与查询</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%A1%A5%E5%85%A8%E4%B8%8E%E6%8E%A8%E7%90%86/"><i class="fa-fw fas fa-blender"></i><span> 知识补全与推理</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E9%97%AE%E7%AD%94/"><i class="fa-fw fas fa-brain"></i><span> 知识问答系统</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B/"><i class="fa-fw fas fa-archive"></i><span> 应用案例</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 时空大数据引擎</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-coins"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E7%9F%A2%E9%87%8F%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-align-left"></i><span> 矢量数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E6%A0%85%E6%A0%BC%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-chess-board"></i><span> 栅格数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E8%BD%A8%E8%BF%B9%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-code-branch"></i><span> 轨迹数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E9%AB%98%E6%80%A7%E8%83%BD%E8%AE%A1%E7%AE%97/"><i class="fa-fw fas fa-cogs"></i><span> 高性能计算</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> GeoAI</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/GeoAI%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-dove"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E8%A1%A8%E5%BE%81%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-barcode"></i><span> 地理空间表征学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E9%A2%84%E6%B5%8B%E5%92%8C%E7%A9%BA%E9%97%B4%E6%8F%92%E5%80%BC/"><i class="fa-fw fas fa-bacteria"></i><span> 时空预测和空间插值</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%AF%B9%E5%9C%B0%E8%B5%84%E6%BA%90%E7%8E%AF%E5%A2%83%E8%A7%82%E6%B5%8B/"><i class="fa-fw fas fa-globe-asia"></i><span> 对地资源环境观测</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%9C%B0%E7%90%86%E6%96%87%E6%9C%AC%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/"><i class="fa-fw fas fa-atlas"></i><span> 地理文本语义分析</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/project/"><i class="fa-fw fas fa-cogs"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 论文</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/article/"><i class="fa-fw fas fa-books"></i><span> 学术论文</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://xishansnow.gitee.io"><i class="fa-fw fas fa-books"></i><span> GitBook01</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://xishansnow.gitee.io"><i class="fa-fw fas fa-books"></i><span> GitBook02</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-camera-retro"></i><span> 摄影</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 全部</span></a></li><li><a class="site-page child" href="/gallery/landscape/"><i class="fa-fw fas fa-image"></i><span> 风光摄影</span></a></li><li><a class="site-page child" href="/gallery/portrait/"><i class="fa-fw fas fa-portrait"></i><span> 肖像摄影</span></a></li><li><a class="site-page child" href="/gallery/literal/"><i class="fa-fw fas fa-archive"></i><span> 人文摄影</span></a></li><li><a class="site-page child" href="/gallery/dailylife/"><i class="fa-fw fas fa-camera"></i><span> 日常摄影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 知识库</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/food/"><i class="fa-fw fas fa-utensils"></i><span> 美食博主</span></a></li><li><a class="site-page child" href="/link/photography"><i class="fa-fw fas fa-camera"></i><span> 摄影大神</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title"> 贝叶斯学派之-- 概率图模型 </h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-11T12:00:00.000Z" title="发表于 2021-04-11 20:00:00">2021-04-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-04-12T10:06:32.755Z" title="更新于 2021-04-12 18:06:32">2021-04-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">机器学习与深度学习</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/">概率图模型</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">11.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>37分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="概率图模型体系"><a href="#概率图模型体系" class="headerlink" title="概率图模型体系"></a>概率图模型体系</h1><p>[原文]<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/33397147">https://zhuanlan.zhihu.com/p/33397147</a></p>
+<h2 id="HMM、MEMM、CRF"><a href="#HMM、MEMM、CRF" class="headerlink" title="HMM、MEMM、CRF**"></a>HMM、MEMM、CRF**</h2><p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/geoai_20210411205911_38.webp" alt="概率图模型体系：HMM、MEMM、CRF"></p>
+<h2 id="一、Preface"><a href="#一、Preface" class="headerlink" title="一、Preface"></a><strong>一、Preface</strong></h2><p>之前刚接触NLP时做相关的任务，也必然地涉及到了序列处理任务，然后自然要接触到概率图模型。当时在全网搜中文资料，陆续失望地发现竟然真的没有讲得清楚的博文，发现基本是把李航老师书里或CRF tutorial等资料的文字论述和公式抄来抄去的。当然，没有说别人讲的是错的，只是觉得，要是没有把东西说的让读者看得懂，那也是没意义啊。或者有些吧，就是讲了一大堆的东西，貌似也明白了啥，但还是不能让我很好的理解CRF这些模型究竟是个啥，完了还是有一头雾水散不开的感觉。试想，一堆公式扔过来，没有个感性理解的过渡，怎么可能理解的了。我甚至觉得，如果博客让人看不懂，那说明要么自己没理解透要么就是思维不清晰讲不清楚。所以默想，深水区攻坚还是要靠自己，然后去做调研做research，所以就写了个这个学习记录。</p>
+<p>所以概率图的研究学习思考列入了我的任务清单。不过平时的时间又非常的紧，只能陆陆续续的思考着，所以时间拖得也真是长啊。</p>
+<p>这是个学习笔记。相比其他的学习模型，概率图貌似确实是比较难以理解的。这里我基本全部用自己的理解加上自己的语言习惯表达出来，off the official form，表达尽量接地气。我会尽量将我所有理解过程中的每个关键小细节都详细描述出来，以使对零基础的初学者友好。包括理论的来龙去脉，抽象具象化，模型的构成，模型的训练过程，会注重类比的学习。</p>
+<p>根据现有资料，我是按照概率图模型将HMM，MEMM，CRF放在这里一起对比学习。之所以把他们拿在一起，是因为他们都用于标注问题。并且之所以放在概率图框架下，是完全因为自己top-down思维模式使然。另外，概率图下还有很多的模型，这儿只学习标注模型。</p>
+<p>正儿八经的，我对这些个概率图模型有了彻悟，是从我明白了生成式模型与判别式模型的那一刻。一直在思考从概率图模型角度讲他们的区别到底在哪。</p>
+<p>另外，篇幅略显长，但咱们不要急躁，好好看完这篇具有良好的上下文的笔记，那肯定是能理解的，或者就多看几遍。</p>
+<p>个人学习习惯就是，<strong>要尽可能地将一群没有结构的知识点融会贯通，再用一条树状结构的绳将之串起来，结构化，就是说要成体系，这样把绳子头一拎所有的东西都能拿起来</strong>。学习嘛，应该要是一个熵减的过程，卓有成效的学习应该是混乱度越来越小！这个思维方式对我影响还是蛮大的。</p>
+<p>在正式内容之前，还是先要明确下面这一点，最好脑子里形成一个定势：</p>
+<blockquote>
+<p>统计机器学习所有的模型（个别instant model和优化算法以及其他的特种工程知识点除外）的工作流程都是如此：<br>a.训练模型参数，得到模型（由参数唯一确定），<br>b.预测给定的测试数据。<br>拿这个流程去挨个学习模型，思路上会非常顺畅。这一点可参见我<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/35866596/answer/236886066">另一篇文字</a>介绍。</p>
+</blockquote>
+<p>除此之外，对初学者的关于机器学习的入门学习方式也顺带表达一下(empirical speaking)：</p>
+<blockquote>
+<p>a.完整特征工程竞赛<br>b.野博客理论入门理解<br>c.再回到代码深入理解模型内部<br>d.再跨理论，查阅经典理论巨作。这时感性理性都有一定高度，会遇到很多很大的理解上的疑惑，这时3大经典可能就可以发挥到最大作用了。</p>
+</blockquote>
+<p>很多beginer，就比如说学CRF模型，然后一上来就摆一套复杂的公式，什么我就问，这能理解的了吗？这是正确的开启姿势吗？当然了，也要怪那些博主，直接整一大堆核心公式，实际上读者的理解门槛可能就是一个过渡性的细枝末节而已。没有上下文的教育肯定是失败的（这一点我又想吐槽国内绝大部分本科的院校教育模式）。所以说带有完整上下文信息以及过程来龙去脉交代清楚才算到位吧。</p>
+<p>而不是一上来就死啃被人推荐的“经典资料”，这一点相信部分同学会理解。好比以前本科零基础学c++ JAVA，上来就看primr TIJ，结果浪费了时间精力一直在门外兜圈。总结方法吸取教训，应该快速上手代码，才是最高效的。经典最好是用来查阅的工具书，我目前是李航周志华和经典的那3本迭代轮询看了好多轮，经常会反复查询某些model或理论的来龙去脉；有时候要查很多相关的东西，看这些书还是难以贯通，然后发现有些人的博客写的会更容易去理解。所以另外，学习资料渠道也要充分才行。</p>
+<p>最后提示一下，<strong>请务必按照标题层级结构和目录一级一级阅读，防止跟丢。</strong></p>
+<h2 id="二、Prerequisite"><a href="#二、Prerequisite" class="headerlink" title="二、Prerequisite"></a><strong>二、Prerequisite</strong></h2><h2 id="2-1-概率图"><a href="#2-1-概率图" class="headerlink" title="2.1 概率图"></a><strong>2.1 概率图</strong></h2><p>之前刚接触CRF时，一上来试图越过一堆繁琐的概率图相关概念，不过sad to say, 这是后面的前驱知识，后面还得反过来补这个点。所以若想整体把握，系统地拿下这一块，应该还是要越过这块门槛的。</p>
+<p>当然了，一开始只需略略快速看一篇，后面可再返过来补查。</p>
+<h2 id="2-1-1-概览"><a href="#2-1-1-概览" class="headerlink" title="2.1.1 概览"></a><strong>2.1.1 概览</strong></h2><p>在统计概率图（probability graph models）中，参考宗成庆老师的书，是这样的体系结构（个人非常喜欢这种类型的图）：  </p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/geoai_20210411210212_20.webp" alt=""></p>
+<p>在概率图模型中，数据(样本)由公式 $G(V，E)$ 建模表示：</p>
+<ul>
+<li><p>$V$ 表示节点，即随机变量（放在此处的，可以是一个token或者一个label），具体地，用 $Y=(y_1,y_2,…,y_n)$  为随机变量建模，注意 $Y$ 现在是代表了一批随机变量（想象对应一条sequence，包含了很多的token），   $P(Y)$ 为这些随机变量的分布；  </p>
+</li>
+<li><p>$E$ 表示边，即概率依赖关系。具体咋理解，还是要在后面结合 $HMM$ 或  $CRF$ 的图具体解释。</p>
+</li>
+</ul>
+<h2 id="2-1-2-有向图-vs-无向图"><a href="#2-1-2-有向图-vs-无向图" class="headerlink" title="2.1.2 有向图 vs. 无向图"></a><strong>2.1.2 有向图 vs. 无向图</strong></h2><p>上图可以看到，贝叶斯网络（信念网络）都是有向的，马尔科夫网络无向。所以，贝叶斯网络适合为有单向依赖的数据建模，马尔科夫网络适合实体之间互相依赖的建模。具体地，他们的核心差异表现在如何求 $P(Y)$  ，即怎么表示 $Y=(y_1,y_2,…,y_n)$    这个的联合概率。</p>
+<p><strong>1. 有向图</strong></p>
+<p>对于有向图模型，这么求联合概率：</p>
+<script type="math/tex; mode=display">
+P ( x _ { 1 } , \cdots , x _ { n } ) = \prod _ { i = 0 } P ( x _ { i } | \pi ( x _ { i } ) )</script><p>举个例子，对于下面这个有向图的随机变量(注意，这个图我画的还是比较广义的)：</p>
+<p><img src="https://pic1.zhimg.com/v2-5b3f6b4a2d905297b7f73a89e92ee618_b.jpg" alt=""></p>
+<p><img src="https://pic1.zhimg.com/80/v2-5b3f6b4a2d905297b7f73a89e92ee618_720w.jpg" alt=""></p>
+<p>应该这样表示他们的联合概率:</p>
+<script type="math/tex; mode=display">
+P\left(x_{1}, \cdots, x_{n}\right)=P\left(x_{1}\right) \cdot P\left(x_{2} \mid x_{1}\right) \cdot P\left(x_{3} \mid x_{2}\right) \cdot P\left(x_{4} \mid x_{2}\right) \cdot P\left(x_{5} \mid x_{3}, x_{4}\right)</script><p>应该很好理解吧。</p>
+<p><strong>2. 无向图</strong></p>
+<p>对于无向图，我看资料一般就指马尔科夫网络(注意，这个图我画的也是比较广义的)。</p>
+<p><img src="https://pic4.zhimg.com/v2-1d8faeb71d690d02e110c7cd1d39eed3_b.jpg" alt=""></p>
+<p><img src="https://pic4.zhimg.com/80/v2-1d8faeb71d690d02e110c7cd1d39eed3_720w.jpg" alt=""></p>
+<p>如果一个graph太大，可以用因子分解将 <img src="https://www.zhihu.com/equation?tex=P%3D%28Y%29" alt="[公式]"> 写为若干个联合概率的乘积。咋分解呢，将一个图分为若干个“小团”，注意每个团必须是“最大团”（就是里面任何两个点连在了一块，具体……算了不解释，就是最大连通子图），则有：</p>
+<script type="math/tex; mode=display">
+P(Y)=\frac{1}{Z(x)} \prod \limits_{c} \psi_{c}\left(Y_{c}\right)</script><p>其中$ Z(x)=\sum\limits_{Y} \prod\limits_{c} \psi_{c}\left(Y_{c}\right) $，公式应该不难理解吧，归一化是为了让结果算作概率。</p>
+<p>所以像上面的无向图：</p>
+<script type="math/tex; mode=display">
+P(Y)=\frac{1}{Z(x)}\left(\psi_{1}\left(X_{1}, X_{3}, X_{4}\right) \cdot \psi_{2}\left(X_{2}, X_{3}, X_{4}\right)\right)</script><p>其中， <img src="https://www.zhihu.com/equation?tex=+%5Cpsi_%7Bc%7D%28Y_%7Bc%7D+%29" alt="[公式]"> 是一个最大团 <img src="https://www.zhihu.com/equation?tex=C" alt="[公式]"> 上随机变量们的联合概率，一般取指数函数的：</p>
+<script type="math/tex; mode=display">
+\psi_{c}\left(Y_{c}\right)=e^{-E\left(Y_{c}\right)}=e^{\sum_{k} \lambda_{k} f_{k}(c, y \mid c, x)}</script><p>好了，管这个东西叫做<code>势函数</code>。注意$e^{\sum_{k} \lambda_{k} f_{k}(c, y \mid c, x)}$  是否有看到CRF的影子。</p>
+<p>那么概率无向图的联合概率分布可以在因子分解下表示为：</p>
+<script type="math/tex; mode=display">
+P(Y)=\frac{1}{Z(x)} \prod_{c} \psi_{c}\left(Y_{c}\right)=\frac{1}{Z(x)} \prod_{c} e^{\sum_{k} \lambda_{k} f_{k}(c, y \mid c, x)}=\frac{1}{Z(x)} e^{\sum_{c} \sum_{k} \lambda_{k} f_{k}\left(y_{i}, y_{i-1}, x, i\right)}</script><p>注意，这里的理解还蛮重要的，注意递推过程，敲黑板，这是CRF的开端！<br>这个由<code>Hammersly-Clifford law</code>保证，具体不展开。</p>
+<h2 id="2-1-3-马尔科夫假设-amp-马尔科夫性"><a href="#2-1-3-马尔科夫假设-amp-马尔科夫性" class="headerlink" title="2.1.3 马尔科夫假设&amp;马尔科夫性"></a><strong>2.1.3 马尔科夫假设&amp;马尔科夫性</strong></h2><p>这个也属于前馈知识。</p>
+<p><strong>1. 马尔科夫假设</strong></p>
+<p>额应该是齐次马尔科夫假设，这样假设：马尔科夫链$ \left(x_{1}, \cdots, x_{n}\right) $  里的 $x_i$ 总是只受  $x_{i-1}$ 一个人的影响。<br>马尔科夫假设这里相当于就是个1-gram。</p>
+<p>马尔科夫过程呢？即，在一个过程中，每个状态的转移只依赖于前n个状态，并且只是个n阶的模型。最简单的马尔科夫过程是一阶的，即只依赖于器哪一个状态。</p>
+<p><strong>2. 马尔科夫性</strong></p>
+<p>马尔科夫性是是保证或者判断概率图是否为概率无向图的条件。</p>
+<p>三点内容：a. 成对，b. 局部，c. 全局。</p>
+<p>我觉得这个不用展开。</p>
+<h2 id="2-2-判别式（discriminative）模型-vs-生成式-generative-模型"><a href="#2-2-判别式（discriminative）模型-vs-生成式-generative-模型" class="headerlink" title="2.2 判别式（discriminative）模型 vs. 生成式(generative)模型"></a><strong>2.2 判别式（discriminative）模型 vs. 生成式(generative)模型</strong></h2><p>在监督学习下，模型可以分为判别式模型与生成式模型。</p>
+<p>重点来了。上面有提到，我理解了HMM、CRF模型的区别是从理解了判别式模型与生成式模型的那刻，并且瞬间对其他的模型有一个恍然大悟。我记得是一年前就开始纠结这两者的区别，但我只能说，栽在了一些烂博客上，大部分都没有自己的insightful理解，也就是一顿官话，也真是难以理解。后来在知乎上一直琢磨别人的答案，然后某日早晨终于豁然开朗，就是这种感觉。</p>
+<p>好了，我要用自己的理解来转述两者的区别了below。</p>
+<p>先问个问题，根据经验，A批模型（神经网络模型、SVM、perceptron、LR、DT……）与B批模型（NB、LDA……），有啥区别不？（这个问题需要一些模型使用经验）应该是这样的：</p>
+<blockquote>
+<p>1. A批模型是这么工作的，他们直接将数据的Y（或者label），根据所提供的features，学习，最后画出了一个明显或者比较明显的边界（具体怎么做到的？通过复杂的函数映射，或者决策叠加等等mechanism），这一点线性LR、线性SVM应该很明显吧。  </p>
+<p>2. B批模型是这么工作的，他们先从训练样本数据中，将所有的数据的分布情况摸透，然后最终确定一个分布，来作为我的所有的输入数据的分布，并且他是一个联合分布  $P(X,Y)$  (注意 $X$  包含所有的特征 $x_i$  ， $Y$  包含所有的label)。然后我来了新的样本数据（inference），好，通过学习来的模型的联合分布 $P(X,Y)$  ，再结合新样本给的 $X$  ，通过条件概率就能出来  $Y$ ：  $ P(Y \mid X)=\frac{P(X, Y)}{P(X)} $ </p>
+<p>好了，应该说清楚了。</p>
+</blockquote>
+<p><strong>1. 判别式模型</strong></p>
+<p>那么A批模型对应了判别式模型。根据上面的两句话的区别，可以知道判别模型的特征了，所以有句话说：**判别模型是直接对 $P(Y|X)$  建模，就是说，直接根据 $X$ 特征来对 $Y$ 建模训练。</p>
+<p>具体地，我的训练过程是确定构件 $P(Y|X)$    模型里面“复杂映射关系”中的参数，完了再去inference一批新的sample。</p>
+<p>所以判别式模型的特征总结如下：</p>
+<ol>
+<li>对 $P(Y|X)$  建模</li>
+<li>对所有的样本只构建一个模型，确认总体判别边界</li>
+<li>观测到输入什么特征，就预测最可能的label</li>
+<li>另外，判别式的优点是：对数据量要求没生成式的严格，速度也会快，小数据量下准确率也会好些。</li>
+</ol>
+<p><strong>2. 生成式模型</strong></p>
+<p>同样，B批模型对应了生成式模型。并且需要注意的是，在模型训练中，我学习到的是 $X$ 与 $Y$ 的联合模型 $P(X,Y)$   ，也就是说，<strong>我在训练阶段是只对 $P(X,Y)$  建模</strong>，我需要确定维护这个联合概率分布的所有的信息参数。完了之后在inference再对新的sample计算 $P(Y|X)$ ，导出 $Y$  ,但这已经不属于建模阶段了。</p>
+<p>结合NB过一遍生成式模型的工作流程。学习阶段，建模：$ P(X, Y)=P(X \mid Y) P(Y) $  （当然，NB具体流程去隔壁参考）,然后$ P(Y \mid X)=\frac{P(X, Y)}{P(X)} $  。 </p>
+<p>另外，LDA也是这样，只是他更过分，需要确定很多个概率分布，而且建模抽样都蛮复杂的。</p>
+<p>所以生成式总结下有如下特点：</p>
+<ol>
+<li>对 $P(X,Y)$  建模</li>
+<li>这里我们主要讲分类问题，所以是要对每个label（ $y_i$  ）都需要建模，最终选择最优概率的label为结果，所以没有什么判别边界。（对于序列标注问题，那只需要构件一个model）</li>
+<li>中间生成联合分布，并可生成采样数据。</li>
+<li>生成式模型的优点在于，所包含的信息非常齐全，我称之为“上帝信息”，所以不仅可以用来输入label，还可以干其他的事情。生成式模型关注结果是如何产生的。但是生成式模型需要非常充足的数据量以保证采样到了数据本来的面目，所以速度相比之下，慢。</li>
+</ol>
+<p>这一点明白后，后面讲到的HMM与CRF的区别也会非常清晰。 </p>
+<p>最后identity the picture below:</p>
+<p><img src="https://pic2.zhimg.com/v2-9dfdfb246a1e6922ff8835d7fdf45e05_b.jpg" alt=""></p>
+<p><img src="https://pic2.zhimg.com/80/v2-9dfdfb246a1e6922ff8835d7fdf45e05_720w.jpg" alt=""></p>
+<h2 id="2-3-序列建模"><a href="#2-3-序列建模" class="headerlink" title="2.3 序列建模"></a><strong>2.3 序列建模</strong></h2><p>为了号召零门槛理解，现在解释如何为序列问题建模。</p>
+<p><img src="https://pic2.zhimg.com/v2-5358abb09290b93a5642fd81702dfe41_b.jpg" alt=""></p>
+<p><img src="https://pic2.zhimg.com/80/v2-5358abb09290b93a5642fd81702dfe41_720w.jpg" alt=""></p>
+<p>序列包括时间序列以及general sequence，但两者无异。连续的序列在分析时也会先离散化处理。常见的序列有如：时序数据、本文句子、语音数据、等等。</p>
+<p>广义下的序列有这些特点：</p>
+<ul>
+<li>节点之间有关联依赖性/无关联依赖性</li>
+<li>序列的节点是随机的/确定的</li>
+<li>序列是线性变化/非线性的</li>
+<li>……</li>
+</ul>
+<p>对不同的序列有不同的问题需求，常见的序列建模方法总结有如下：</p>
+<ol>
+<li>拟合，预测未来节点（或走势分析）：</li>
+</ol>
+<p>a. 常规序列建模方法：AR、MA、ARMA、ARIMA</p>
+<p>b. 回归拟合</p>
+<p>c. Neural Networks</p>
+<p>2. 判断不同序列类别，即分类问题：HMM、CRF、General Classifier（ML models、NN models）</p>
+<p>3. 不同时序对应的状态的分析，即序列标注问题：HMM、CRF、RecurrentNNs</p>
+<p>在本篇文字中，我们只关注在2. &amp; 3.类问题下的建模过程和方法。</p>
+<h2 id="三、HMM"><a href="#三、HMM" class="headerlink" title="三、HMM"></a><strong>三、HMM</strong></h2><p>最早接触的是HMM。较早做过一个项目，关于声波手势识别，跟声音识别的机制一样，使用的正是HMM的一套方法。后来又用到了_kalman filter_,之后做序列标注任务接触到了CRF，所以整个概率图模型还是接触的方面还蛮多。</p>
+<h2 id="3-1-理解HMM"><a href="#3-1-理解HMM" class="headerlink" title="3.1 理解HMM"></a><strong>3.1 理解HMM</strong></h2><p>在2.2、2.3中提序列的建模问题时，我们只是讨论了常规的序列数据，e.g., <img src="https://www.zhihu.com/equation?tex=%EF%BC%88X_%7B1%7D%2C%5Ccdots%2CX_%7Bn%7D%EF%BC%89" alt="[公式]"> ,像2.3的图片那样。像这种序列一般用马尔科夫模型就可以胜任。实际上我们碰到的更多的使用HMM的场景是每个节点 <img src="https://www.zhihu.com/equation?tex=+X_%7Bi%7D" alt="[公式]"> 下还附带着另一个节点 <img src="https://www.zhihu.com/equation?tex=+Y_%7Bi%7D" alt="[公式]"> ，正所谓<strong>隐含</strong>马尔科夫模型，那么除了正常的节点，还要将<strong>隐含状态节点</strong>也得建模进去。正儿八经地，将 <img src="https://www.zhihu.com/equation?tex=X_%7Bi%7D+%E3%80%81+Y_%7Bi%7D+" alt="[公式]"> 换成 <img src="https://www.zhihu.com/equation?tex=i_%7Bi%7D+%E3%80%81o_%7Bi%7D" alt="[公式]"> ,并且他们的名称变为状态节点、观测节点。状态节点正是我的隐状态。</p>
+<p>HMM属于典型的生成式模型。对照2.1的讲解，应该是要从训练数据中学到数据的各种分布，那么有哪些分布呢以及是什么呢？直接正面回答的话，正是<strong>HMM的5要素</strong>，其中有3个就是整个数据的不同角度的概率分布：</p>
+<ul>
+<li><img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> ，隐藏状态集 <img src="https://www.zhihu.com/equation?tex=N+%3D+%5Clbrace+q_%7B1%7D%2C+%5Ccdots%2C+q_%7BN%7D+%5Crbrace" alt="[公式]"> , 我的隐藏节点不能随意取，只能限定取包含在隐藏状态集中的符号。</li>
+<li><img src="https://www.zhihu.com/equation?tex=M" alt="[公式]"> ，观测集 <img src="https://www.zhihu.com/equation?tex=M+%3D+%5Clbrace+v_%7B1%7D%2C+%5Ccdots%2C+v_%7BM%7D+%5Crbrace" alt="[公式]"> , 同样我的观测节点不能随意取，只能限定取包含在观测状态集中的符号。</li>
+<li><img src="https://www.zhihu.com/equation?tex=A" alt="[公式]"> ，状态转移概率矩阵，这个就是其中一个概率分布。他是个矩阵， <img src="https://www.zhihu.com/equation?tex=+A%3D+%5Ba_%7Bij%7D%5D_%7BN+%5Ctimes+N%7D+" alt="[公式]"> （N为隐藏状态集元素个数），其中 <img src="https://www.zhihu.com/equation?tex=a_%7Bij%7D+%3D+P%28i_%7Bt%2B1%7D%7Ci_%7Bt%7D%29%EF%BC%8C+i_%7Bt%7D" alt="[公式]"> 即第i个隐状态节点,即所谓的状态转移嘛。</li>
+<li><img src="https://www.zhihu.com/equation?tex=B" alt="[公式]"> ，观测概率矩阵，这个就是另一个概率分布。他是个矩阵， <img src="https://www.zhihu.com/equation?tex=B+%3D+%5Bb_%7Bij%7D%5D_%7BN+%5Ctimes+M%7D" alt="[公式]"> （N为隐藏状态集元素个数，M为观测集元素个数），其中 <img src="https://www.zhihu.com/equation?tex=b_%7Bij%7D+%3D+P%28o_%7Bt%7D%7Ci_%7Bt%7D%29%EF%BC%8C+o_%7Bt%7D" alt="[公式]"> 即第i个观测节点, <img src="https://www.zhihu.com/equation?tex=+i_%7Bt%7D" alt="[公式]"> 即第i个隐状态节点,即所谓的观测概率（发射概率）嘛。</li>
+<li><img src="https://www.zhihu.com/equation?tex=%CF%80" alt="[公式]"> ，在第一个隐状态节点 <img src="https://www.zhihu.com/equation?tex=i_%7Bt%7D" alt="[公式]"> ,我得人工单独赋予，我第一个隐状态节点的隐状态是 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> 中的每一个的概率分别是多少，然后 <img src="https://www.zhihu.com/equation?tex=%CF%80" alt="[公式]"> 就是其概率分布。</li>
+</ul>
+<p>所以图看起来是这样的：</p>
+<p><img src="https://pic4.zhimg.com/v2-d4077c2dbd9899d8896751a28490c9c7_b.jpg" alt=""></p>
+<p><img src="https://pic4.zhimg.com/80/v2-d4077c2dbd9899d8896751a28490c9c7_720w.jpg" alt=""></p>
+<p>看的很清楚，我的模型先去学习要确定以上5要素，之后在inference阶段的工作流程是：首先，隐状态节点 <img src="https://www.zhihu.com/equation?tex=i_%7Bt%7D" alt="[公式]"> 是不能直接观测到的数据节点， <img src="https://www.zhihu.com/equation?tex=o_%7Bt%7D" alt="[公式]"> 才是能观测到的节点，并且注意箭头的指向表示了依赖生成条件关系， <img src="https://www.zhihu.com/equation?tex=i_%7Bt%7D" alt="[公式]"> 在A的指导下生成下一个隐状态节点 <img src="https://www.zhihu.com/equation?tex=i_%7Bt%2B1%7D" alt="[公式]"> ，并且 <img src="https://www.zhihu.com/equation?tex=i_%7Bt%7D" alt="[公式]"> 在 <img src="https://www.zhihu.com/equation?tex=B" alt="[公式]"> 的指导下生成依赖于该 <img src="https://www.zhihu.com/equation?tex=i_%7Bt%7D" alt="[公式]"> 的观测节点 <img src="https://www.zhihu.com/equation?tex=o_%7Bt%7D" alt="[公式]"> , 并且我只能观测到序列 <img src="https://www.zhihu.com/equation?tex=%EF%BC%88o_%7B1%7D%2C+%5Ccdots%2C+o_%7Bi%7D%29" alt="[公式]"> 。</p>
+<p>好，举例子说明（序列标注问题，POS，标注集BES）：</p>
+<blockquote>
+<p>input: “学习出一个模型，然后再预测出一条指定”  </p>
+<p>expected output: 学/B 习/E 出/S 一/B 个/E 模/B 型/E ，/S 然/B 后/E 再/E 预/B 测/E ……  </p>
+<p>其中，input里面所有的char构成的字表，形成观测集 <img src="https://www.zhihu.com/equation?tex=M" alt="[公式]"> ，因为字序列在inference阶段是我所能看见的；标注集BES构成隐藏状态集 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> ，这是我无法直接获取的，也是我的预测任务；至于 <img src="https://www.zhihu.com/equation?tex=A%E3%80%81B%E3%80%81%CF%80" alt="[公式]"> ，这些概率分布信息（上帝信息）都是我在学习过程中所确定的参数。</p>
+</blockquote>
+<p>然后一般初次接触的话会疑问：为什么要这样？……好吧，就应该是这样啊，根据具有同时带着隐藏状态节点和观测节点的类型的序列，在HMM下就是这样子建模的。</p>
+<p>下面来点高层次的理解：</p>
+<ol>
+<li>根据概率图分类，可以看到HMM属于有向图，并且是生成式模型，直接对联合概率分布建模 <img src="https://www.zhihu.com/equation?tex=P%28O%2CI%29+%3D+%5Csum_%7Bt%3D1%7D%5E%7BT%7DP%28O_%7Bt%7D+%7C+O_%7Bt-1%7D%29P%28I_%7Bt%7D+%7C+O_%7Bt%7D%29" alt="[公式]"> (注意，这个公式不在模型运行的任何阶段能体现出来，只是我们都去这么来表示HMM是个生成式模型，他的联合概率 <img src="https://www.zhihu.com/equation?tex=P%28O%2CI%29" alt="[公式]"> 就是这么计算的)。</li>
+<li>并且B中 <img src="https://www.zhihu.com/equation?tex=b_%7Bij%7D+%3D+P%28o_%7Bt%7D%7Ci_%7Bt%7D%29" alt="[公式]"> ，这意味着o对i有依赖性。</li>
+<li>在A中， <img src="https://www.zhihu.com/equation?tex=a_%7Bij%7D+%3D+P%28i_%7Bt%2B1%7D%7Ci_%7Bt%7D%29" alt="[公式]"> ，也就是说只遵循了一阶马尔科夫假设，1-gram。试想，如果数据的依赖超过1-gram，那肯定HMM肯定是考虑不进去的。这一点限制了HMM的性能。</li>
+</ol>
+<h2 id="3-2-模型运行过程"><a href="#3-2-模型运行过程" class="headerlink" title="3.2 模型运行过程"></a><strong>3.2 模型运行过程</strong></h2><p>模型的运行过程（工作流程）对应了HMM的3个问题。</p>
+<h2 id="3-2-1-学习训练过程"><a href="#3-2-1-学习训练过程" class="headerlink" title="3.2.1 学习训练过程"></a><strong>3.2.1 学习训练过程</strong></h2><p>对照2.1的讲解，HMM学习训练的过程，就是找出数据的分布情况，也就是模型参数的确定。</p>
+<p>主要学习算法按照训练数据除了观测状态序列 <img src="https://www.zhihu.com/equation?tex=%EF%BC%88o_%7B1%7D%2C+%5Ccdots%2C+o_%7Bi%7D%29" alt="[公式]"> 是否还有隐状态序列 <img src="https://www.zhihu.com/equation?tex=%EF%BC%88i_%7B1%7D%2C+%5Ccdots%2C+i_%7Bi%7D%29" alt="[公式]"> 分为：</p>
+<ul>
+<li>极大似然估计, with 隐状态序列</li>
+<li>Baum-Welch(前向后向), without 隐状态序列</li>
+</ul>
+<p>感觉不用做很多的介绍，都是很实实在在的算法，看懂了就能理解。简要提一下。</p>
+<p><strong>1. 极大似然估计</strong></p>
+<p>一般做NLP的序列标注等任务，在训练阶段肯定是有隐状态序列的。所以极大似然估计法是非常常用的学习算法，我见过的很多代码里面也是这么计算的。比较简单。</p>
+<ul>
+<li>step1. 算A</li>
+</ul>
+<p><img src="https://www.zhihu.com/equation?tex=%5Chat%7Ba_%7Bij%7D%7D+%3D+%5Cfrac%7BA_%7Bij%7D%7D%7B%5Csum_%7Bj%3D1%7D%5E%7BN%7DA_%7Bij%7D%7D+" alt="[公式]"></p>
+<ul>
+<li>step2. 算B</li>
+</ul>
+<p><img src="https://www.zhihu.com/equation?tex=%5Chat%7Bb_%7Bj%7D%7D%28k%29+%3D+%5Cfrac%7BB_%7Bjk%7D%7D%7B%5Csum_%7Bk%3D1%7D%5E%7BM%7DB_%7Bjk%7D%7D" alt="[公式]"></p>
+<ul>
+<li>step3. 直接估计 <img src="https://www.zhihu.com/equation?tex=%CF%80" alt="[公式]"></li>
+</ul>
+<p>比如说，在代码里计算完了就是这样的：</p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/geoai_20210411222500_0e.webp" alt=""></p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/geoai_20210411222504_09.webp" alt=""></p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/geoai_20210411222507_3f.webp" alt=""></p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/geoai_20210411222513_af.webp" alt=""></p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/geoai_20210411222516_d7.webp" alt=""></p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/geoai_20210411222520_ab.webp" alt=""></p>
+<p><strong>2. Baum-Welch(前向后向)</strong></p>
+<p>就是一个EM的过程，如果你对EM的工作流程有经验的话，对这个Baum-Welch一看就懂。EM的过程就是初始化一套值，然后迭代计算，根据结果再调整值，再迭代，最后收敛……好吧，这个理解是没有捷径的，去隔壁钻研EM吧。</p>
+<p>这里只提一下核心。因为我们手里没有隐状态序列 <img src="https://www.zhihu.com/equation?tex=%EF%BC%88i_%7B1%7D%2C+%5Ccdots%2C+i_%7Bi%7D%29" alt="[公式]"> 信息，所以我先必须给初值 <img src="https://www.zhihu.com/equation?tex=a_%7Bij%7D%5E%7B0%7D%2C+b_%7Bj%7D%28k%29%5E%7B0%7D%2C+%5Cpi%5E%7B0%7D" alt="[公式]"> ，初步确定模型，然后再迭代计算出 <img src="https://www.zhihu.com/equation?tex=a_%7Bij%7D%5E%7Bn%7D%2C+b_%7Bj%7D%28k%29%5E%7Bn%7D%2C+%5Cpi%5E%7Bn%7D" alt="[公式]"> ,中间计算过程会用到给出的观测状态序列 <img src="https://www.zhihu.com/equation?tex=%EF%BC%88o_%7B1%7D%2C+%5Ccdots%2C+o_%7Bi%7D%29" alt="[公式]"> 。另外，收敛性由EM的XXX定理保证。</p>
+<h2 id="3-2-2-序列标注（解码）过程"><a href="#3-2-2-序列标注（解码）过程" class="headerlink" title="3.2.2 序列标注（解码）过程"></a><strong>3.2.2 序列标注（解码）过程</strong></h2><p>好了，学习完了HMM的分布参数，也就确定了一个HMM模型。需要注意的是，这个HMM是对我这一批全部的数据进行训练所得到的参数。</p>
+<p>序列标注问题也就是“预测过程”，通常称为解码过程。对应了序列建模问题3.。对于序列标注问题，我们只需要学习出一个HMM模型即可，后面所有的新的sample我都用这一个HMM去apply。</p>
+<p>我们的目的是，在学习后已知了 <img src="https://www.zhihu.com/equation?tex=P%28Q%2CO%29" alt="[公式]"> ,现在要求出 <img src="https://www.zhihu.com/equation?tex=P%28Q%7CO%29" alt="[公式]"> ，进一步</p>
+<p><img src="https://www.zhihu.com/equation?tex=Q_%7Bmax%7D+%3D+argmax_%7BallQ%7D%5Cfrac%7BP%28Q%2CO%29%7D%7BP%28O%29%7D" alt="[公式]"></p>
+<p>再直白点就是，我现在要在给定的观测序列下找出一条隐状态序列，条件是这个隐状态序列的概率是最大的那个。</p>
+<p>具体地，都是用Viterbi算法解码，是用DP思想减少重复的计算。Viterbi也是满大街的，不过要说的是，Viterbi不是HMM的专属，也不是任何模型的专属，他只是恰好被满足了被HMM用来使用的条件。谁知，现在大家都把Viterbi跟HMM捆绑在一起了, shame。</p>
+<p>Viterbi计算有向无环图的一条最大路径，应该还好理解。如图：</p>
+<p><img src="https://pic1.zhimg.com/v2-71f1ea9abbab357f7d9bad1138ee7344_b.jpg" alt=""></p>
+<p><img src="https://pic1.zhimg.com/80/v2-71f1ea9abbab357f7d9bad1138ee7344_720w.jpg" alt=""></p>
+<p>关键是注意，每次工作热点区只涉及到t 与 t-1,这对应了DP的无后效性的条件。如果对某些同学还是很难理解，请参考<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20136144">这个答案</a>下@Kiwee的回答吧。</p>
+<h2 id="3-2-3-序列概率过程"><a href="#3-2-3-序列概率过程" class="headerlink" title="3.2.3 序列概率过程"></a><strong>3.2.3 序列概率过程</strong></h2><p>我通过HMM计算出序列的概率又有什么用？针对这个点我把这个问题详细说一下。</p>
+<p>实际上，序列概率过程对应了序列建模问题2.，即序列分类。<br>在3.2.2第一句话我说，在序列标注问题中，我用一批完整的数据训练出了一支HMM模型即可。好，那在序列分类问题就不是训练一个HMM模型了。我应该这么做（结合语音分类识别例子）：</p>
+<blockquote>
+<p>目标：识别声音是A发出的还是B发出的。<br>HMM建模过程：<br>1. 训练：我将所有A说的语音数据作为dataset_A,将所有B说的语音数据作为dataset_B（当然，先要分别对dataset A ,B做预处理encode为元数据节点，形成sequences）,然后分别用dataset_A、dataset_B去训练出HMM_A/HMM_B<br>2. inference：来了一条新的sample（sequence），我不知道是A的还是B的，没问题，分别用HMM_A/HMM_B计算一遍序列的概率得到 <img src="https://www.zhihu.com/equation?tex=P_%7BA%7D%EF%BC%88S%EF%BC%89%E3%80%81P_%7BB%7D%EF%BC%88S%EF%BC%89" alt="[公式]"> ，比较两者大小，哪个概率大说明哪个更合理，更大概率作为目标类别。</p>
+</blockquote>
+<p>所以，本小节的理解重点在于，<strong>如何对一条序列计算其整体的概率</strong>。即目标是计算出 <img src="https://www.zhihu.com/equation?tex=P%28O%7C%CE%BB%29" alt="[公式]"> 。这个问题前辈们在他们的经典中说的非常好了，比如参考李航老师整理的：</p>
+<ul>
+<li>直接计算法（穷举搜索）</li>
+<li>前向算法</li>
+<li>后向算法</li>
+</ul>
+<p>后面两个算法采用了DP思想，减少计算量，即每一次直接引用前一个时刻的计算结果以避免重复计算，跟Viterbi一样的技巧。</p>
+<p>还是那句，因为这篇文档不是专门讲算法细节的，所以不详细展开这些。毕竟，所有的科普HMM、CRF的博客貌似都是在扯这些算法，妥妥的街货，就不搬运了。</p>
+<h2 id="四、MEMM"><a href="#四、MEMM" class="headerlink" title="四、MEMM"></a><strong>四、MEMM</strong></h2><p>MEMM，即最大熵马尔科夫模型，这个是在接触了HMM、CRF之后才知道的一个模型。说到MEMM这一节时，得转换思维了，因为现在这MEMM属于判别式模型。</p>
+<p>不过有一点很尴尬，MEMM貌似被使用或者讲解引用的不及HMM、CRF。</p>
+<h2 id="4-1-理解MEMM"><a href="#4-1-理解MEMM" class="headerlink" title="4.1 理解MEMM"></a><strong>4.1 理解MEMM</strong></h2><p>这里还是啰嗦强调一下，MEMM正因为是判别模型，所以不废话，我上来就直接为了确定边界而去建模，比如说序列求概率（分类）问题，我直接考虑找出函数分类边界。这一点跟HMM的思维方式发生了很大的变化，如果不对这一点有意识，那么很难理解为什么MEMM、CRF要这么做。</p>
+<p>HMM中，观测节点 <img src="https://www.zhihu.com/equation?tex=o_%7Bi%7D" alt="[公式]"> 依赖隐藏状态节点 <img src="https://www.zhihu.com/equation?tex=i_%7Bi%7D" alt="[公式]"> ,也就意味着我的观测节点只依赖当前时刻的隐藏状态。但在更多的实际场景下，观测序列是需要很多的特征来刻画的，比如说，我在做NER时，我的标注 <img src="https://www.zhihu.com/equation?tex=i_%7Bi%7D" alt="[公式]"> 不仅跟当前状态 <img src="https://www.zhihu.com/equation?tex=o_%7Bi%7D" alt="[公式]"> 相关，而且还跟前后标注 <img src="https://www.zhihu.com/equation?tex=o_%7Bj%7D%28j+%5Cneq+i%29" alt="[公式]"> 相关，比如字母大小写、词性等等。</p>
+<p>为此，提出来的MEMM模型就是能够直接允许<strong>“定义特征”</strong>，直接学习条件概率，即 <img src="https://www.zhihu.com/equation?tex=P%28i_%7Bi%7D%7Ci_%7Bi-1%7D%2Co_%7Bi%7D%29+%28i+%3D+1%2C%5Ccdots%2Cn%29" alt="[公式]"> , 总体为：</p>
+<p><img src="https://www.zhihu.com/equation?tex=P%28I%7CO%29+%3D+%5Cprod_%7Bt%3D1%7D%5E%7Bn%7DP%28i_%7Bi%7D%7Ci_%7Bi-1%7D%2Co_%7Bi%7D%29%2C+i+%3D+1%2C%5Ccdots%2Cn" alt="[公式]"></p>
+<p>并且， <img src="https://www.zhihu.com/equation?tex=P%28i%7Ci%5E%7B%27%7D%2Co%29" alt="[公式]"> 这个概率通过最大熵分类器建模（取名MEMM的原因）:</p>
+<p><img src="https://www.zhihu.com/equation?tex=P%28i%7Ci%5E%7B%27%7D%2Co%29+%3D+%5Cfrac%7B1%7D%7BZ%28o%2Ci%5E%7B%27%7D%29%7D+exp%28%5Csum_%7Ba%7D%29%5Clambda_%7Ba%7Df_%7Ba%7D%28o%2Ci%29" alt="[公式]"></p>
+<p>重点来了，这是ME的内容，也是理解MEMM的关键： <img src="https://www.zhihu.com/equation?tex=Z%28o%2Ci%5E%7B%27%7D%29" alt="[公式]"> 这部分是归一化； <img src="https://www.zhihu.com/equation?tex=f_%7Ba%7D%28o%2Ci%29" alt="[公式]"> 是<strong>特征函数</strong>，具体点，这个函数是需要去定义的; <img src="https://www.zhihu.com/equation?tex=%CE%BB" alt="[公式]"> 是特征函数的权重，这是个未知参数，需要从训练阶段学习而得。</p>
+<p>比如我可以这么定义特征函数：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+f_%7Ba%7D%28o%2Ci%29+%3D+%5Cbegin%7Bcases%7D+1%26+%5Ctext%7B%E6%BB%A1%E8%B6%B3%E7%89%B9%E5%AE%9A%E6%9D%A1%E4%BB%B6%7D%EF%BC%8C%5C%5C+0%26+%5Ctext%7Bother%7D+%5Cend%7Bcases%7D+%5Cend%7Bequation%7D" alt="[公式]"></p>
+<p>其中，特征函数 <img src="https://www.zhihu.com/equation?tex=+f_%7Ba%7D%28o%2Ci%29" alt="[公式]"> 个数可任意制定， <img src="https://www.zhihu.com/equation?tex=%EF%BC%88a+%3D+1%2C+%5Ccdots%2C+n%EF%BC%89" alt="[公式]"></p>
+<p>所以总体上，MEMM的建模公式这样：</p>
+<p><img src="https://www.zhihu.com/equation?tex=P%28I%7CO%29+%3D+%5Cprod_%7Bt%3D1%7D%5E%7Bn%7D%5Cfrac%7B+exp%28%5Csum_%7Ba%7D%29%5Clambda_%7Ba%7Df_%7Ba%7D%28o%2Ci%29+%7D%7BZ%28o%2Ci_%7Bi-1%7D%29%7D+%2C+i+%3D+1%2C%5Ccdots%2Cn" alt="[公式]"></p>
+<p>是的，公式这部分之所以长成这样，是由ME模型决定的。</p>
+<p>请务必注意，理解<strong>判别模型</strong>和<strong>定义特征</strong>两部分含义，这已经涉及到CRF的雏形了。</p>
+<p>所以说，他是判别式模型，直接对条件概率建模。 上图：</p>
+<p><img src="https://pic4.zhimg.com/v2-cb2cc25593fcaf06e682191d551ba03b_b.jpg" alt=""></p>
+<p><img src="https://pic4.zhimg.com/80/v2-cb2cc25593fcaf06e682191d551ba03b_720w.jpg" alt=""></p>
+<p>MEMM需要两点注意：</p>
+<ol>
+<li>与HMM的 <img src="https://www.zhihu.com/equation?tex=o_%7Bi%7D" alt="[公式]"> 依赖 <img src="https://www.zhihu.com/equation?tex=i_%7Bi%7D" alt="[公式]"> 不一样，MEMM当前隐藏状态 <img src="https://www.zhihu.com/equation?tex=i_%7Bi%7D" alt="[公式]"> 应该是依赖当前时刻的观测节点 <img src="https://www.zhihu.com/equation?tex=o_%7Bi%7D" alt="[公式]"> 和上一时刻的隐藏节点 <img src="https://www.zhihu.com/equation?tex=i_%7Bi-1%7D" alt="[公式]"></li>
+<li>需要注意，之所以图的箭头这么画，是由MEMM的公式决定的，而公式是creator定义出来的。</li>
+</ol>
+<p>好了，走一遍完整流程。</p>
+<blockquote>
+<p>step1. 先预定义特征函数 <img src="https://www.zhihu.com/equation?tex=f_%7Ba%7D%28o%2Ci%29" alt="[公式]"> ，<br>step2. 在给定的数据上，训练模型，确定参数，即确定了MEMM模型<br>step3. 用确定的模型做序列标注问题或者序列求概率问题。</p>
+</blockquote>
+<h2 id="4-2-模型运行过程"><a href="#4-2-模型运行过程" class="headerlink" title="4.2 模型运行过程"></a><strong>4.2 模型运行过程</strong></h2><p>MEMM模型的工作流程也包括了学习训练问题、序列标注问题、序列求概率问题。</p>
+<h2 id="4-2-1-学习训练过程"><a href="#4-2-1-学习训练过程" class="headerlink" title="4.2.1 学习训练过程"></a><strong>4.2.1 学习训练过程</strong></h2><p>一套MEMM由一套参数唯一确定，同样地，我需要通过训练数据学习这些参数。MEMM模型很自然需要学习里面的特征权重λ。</p>
+<p>不过跟HMM不用的是，因为HMM是生成式模型，参数即为各种概率分布元参数，数据量足够可以用最大似然估计。而判别式模型是用函数直接判别，学习边界，MEMM即通过特征函数来界定。但同样，MEMM也有极大似然估计方法、梯度下降、牛顿迭代发、拟牛顿下降、BFGS、L-BFGS等等。各位应该对各种优化方法有所了解的。</p>
+<p>嗯，具体详细求解过程貌似问题不大。</p>
+<h2 id="4-2-2-序列标注过程"><a href="#4-2-2-序列标注过程" class="headerlink" title="4.2.2 序列标注过程"></a><strong>4.2.2 序列标注过程</strong></h2><p>还是跟HMM一样的，用学习好的MEMM模型，在新的sample（观测序列 <img src="https://www.zhihu.com/equation?tex=+o_%7B1%7D%2C+%5Ccdots%2C+o_%7Bi%7D" alt="[公式]"> ）上找出一条概率最大最可能的隐状态序列 <img src="https://www.zhihu.com/equation?tex=i_%7B1%7D%2C+%5Ccdots%2C+i_%7Bi%7D" alt="[公式]"> 。</p>
+<p>只是现在的图中的每个隐状态节点的概率求法有一些差异而已,正确将每个节点的概率表示清楚，路径求解过程还是一样，采用viterbi算法。</p>
+<h2 id="4-2-3-序列求概率过程"><a href="#4-2-3-序列求概率过程" class="headerlink" title="4.2.3 序列求概率过程"></a><strong>4.2.3 序列求概率过程</strong></h2><p>跟HMM举的例子一样的，也是分别去为每一批数据训练构建特定的MEMM，然后根据序列在每个MEMM模型的不同得分概率，选择最高分数的模型为wanted类别。</p>
+<p>应该可以不用展开，吧……</p>
+<h2 id="4-3-标注偏置？"><a href="#4-3-标注偏置？" class="headerlink" title="4.3 标注偏置？"></a><strong>4.3 标注偏置？</strong></h2><p>MEMM讨论的最多的是他的labeling bias 问题。</p>
+<p><strong>1. 现象</strong></p>
+<p>是从街货上烤过来的……</p>
+<p><img src="https://pic2.zhimg.com/v2-40f9945cdffb12cfec84bebc7b7e3be5_b.jpg" alt=""></p>
+<p><img src="https://pic2.zhimg.com/80/v2-40f9945cdffb12cfec84bebc7b7e3be5_720w.jpg" alt=""></p>
+<p>用Viterbi算法解码MEMM，状态1倾向于转换到状态2，同时状态2倾向于保留在状态2。 解码过程细节（需要会viterbi算法这个前提）：</p>
+<blockquote>
+<p>P(1-&gt; 1-&gt; 1-&gt; 1)= 0.4 x 0.45 x 0.5 = 0.09 ，<br>P(2-&gt;2-&gt;2-&gt;2)= 0.2 X 0.3 X 0.3 = 0.018，<br>P(1-&gt;2-&gt;1-&gt;2)= 0.6 X 0.2 X 0.5 = 0.06，<br>P(1-&gt;1-&gt;2-&gt;2)= 0.4 X 0.55 X 0.3 = 0.066</p>
+</blockquote>
+<p>但是得到的最优的状态转换路径是1-&gt;1-&gt;1-&gt;1，为什么呢？因为状态2可以转换的状态比状态1要多，从而使转移概率降低,即MEMM倾向于选择拥有更少转移的状态。</p>
+<p><strong>2. 解释原因</strong></p>
+<p>直接看MEMM公式：</p>
+<p><img src="https://www.zhihu.com/equation?tex=P%28I%7CO%29+%3D+%5Cprod_%7Bt%3D1%7D%5E%7Bn%7D%5Cfrac%7B+exp%28%5Csum_%7Ba%7D%29%5Clambda_%7Ba%7Df_%7Ba%7D%28o%2Ci%29+%7D%7BZ%28o%2Ci_%7Bi-1%7D%29%7D+%2C+i+%3D+1%2C%5Ccdots%2Cn" alt="[公式]"></p>
+<p><img src="https://www.zhihu.com/equation?tex=%E2%88%91" alt="[公式]"> 求和的作用在概率中是归一化，但是这里归一化放在了指数内部，管这叫local归一化。 来了，viterbi求解过程，是用dp的状态转移公式（MEMM的没展开，请参考CRF下面的公式），因为是局部归一化，所以MEMM的viterbi的转移公式的第二部分出现了问题，导致dp无法正确的递归到全局的最优。</p>
+<p><img src="https://www.zhihu.com/equation?tex=+%5Cdelta_%7Bi%2B1%7D+%3D+max_%7B1+%5Cle+j+%5Cle+m%7D%5Clbrace+%5Cdelta_%7Bi%7D%28I%29+%2B+%5Csum_%7Bi%7D%5E%7BT%7D%5Csum_%7Bk%7D%5E%7BM%7D%5Clambda_%7Bk%7Df_%7Bk%7D%28O%2CI_%7Bi-1%7D%2CI_%7Bi%7D%2Ci%29+%5Crbrace+" alt="[公式]"></p>
+<h2 id="五、CRF"><a href="#五、CRF" class="headerlink" title="五、CRF"></a><strong>五、CRF</strong></h2><p>我觉得一旦有了一个清晰的工作流程，那么按部就班地，没有什么很难理解的地方，因为整体框架已经胸有成竹了，剩下了也只有添砖加瓦小修小补了。有了上面的过程基础，CRF也是类似的，只是有方法论上的细微区别。</p>
+<h2 id="5-1-理解CRF"><a href="#5-1-理解CRF" class="headerlink" title="5.1 理解CRF"></a><strong>5.1 理解CRF</strong></h2><p>请看第一张概率图模型构架图，CRF上面是马尔科夫随机场（马尔科夫网络），而条件随机场是在给定的随机变量 <img src="https://www.zhihu.com/equation?tex=X" alt="[公式]"> （具体，对应观测序列 <img src="https://www.zhihu.com/equation?tex=o_%7B1%7D%2C+%5Ccdots%2C+o_%7Bi%7D" alt="[公式]"> ）条件下，随机变量 <img src="https://www.zhihu.com/equation?tex=Y" alt="[公式]"> （具体，对应隐状态序列 <img src="https://www.zhihu.com/equation?tex=i_%7B1%7D%2C+%5Ccdots%2C+i_%7Bi%7D" alt="[公式]"> 的马尔科夫随机场。<br>广义的CRF的定义是： 满足 <img src="https://www.zhihu.com/equation?tex=P%28Y_%7Bv%7D%7CX%2CY_%7Bw%7D%2Cw+%5Cneq+v%29+%3D+P%28Y_%7Bv%7D%7CX%2CY_%7Bw%7D%2Cw+%5Csim+v%29+" alt="[公式]"> 的马尔科夫随机场叫做条件随机场（CRF）。</p>
+<p>不过一般说CRF为序列建模，就专指CRF线性链（linear chain CRF）：</p>
+<p><img src="https://pic3.zhimg.com/v2-c5e2e782e35f6412ed65e58cdda0964e_b.jpg" alt=""></p>
+<p><img src="https://pic3.zhimg.com/80/v2-c5e2e782e35f6412ed65e58cdda0964e_720w.jpg" alt=""></p>
+<p>在2.1.2中有提到过，概率无向图的联合概率分布可以在因子分解下表示为：</p>
+<p><img src="https://www.zhihu.com/equation?tex=P%28Y+%7C+X%29%3D%5Cfrac%7B1%7D%7BZ%28x%29%7D+%5Cprod_%7Bc%7D%5Cpsi_%7Bc%7D%28Y_%7Bc%7D%7CX+%29+%3D+%5Cfrac%7B1%7D%7BZ%28x%29%7D+%5Cprod_%7Bc%7D+e%5E%7B%5Csum_%7Bk%7D%5Clambda_%7Bk%7Df_%7Bk%7D%28c%2Cy%7Cc%2Cx%29%7D+%3D+%5Cfrac%7B1%7D%7BZ%28x%29%7D+e%5E%7B%5Csum_%7Bc%7D%5Csum_%7Bk%7D%5Clambda_%7Bk%7Df_%7Bk%7D%28y_%7Bi%7D%2Cy_%7Bi-1%7D%2Cx%2Ci%29%7D" alt="[公式]"></p>
+<p>而在线性链CRF示意图中，每一个（ <img src="https://www.zhihu.com/equation?tex=I_%7Bi%7D+%5Csim+O_%7Bi%7D" alt="[公式]"> ）对为一个最大团,即在上式中 <img src="https://www.zhihu.com/equation?tex=c+%3D+i" alt="[公式]"> 。并且线性链CRF满足 <img src="https://www.zhihu.com/equation?tex=P%28I_%7Bi%7D%7CO%2CI_%7B1%7D%2C%5Ccdots%2C+I_%7Bn%7D%29+%3D+P%28I_%7Bi%7D%7CO%2CI_%7Bi-1%7D%2CI_%7Bi%2B1%7D%29+" alt="[公式]"> 。</p>
+<p><strong>所以CRF的建模公式如下：</strong></p>
+<p><img src="https://www.zhihu.com/equation?tex=P%28I+%7C+O%29%3D%5Cfrac%7B1%7D%7BZ%28O%29%7D+%5Cprod_%7Bi%7D%5Cpsi_%7Bi%7D%28I_%7Bi%7D%7CO+%29+%3D+%5Cfrac%7B1%7D%7BZ%28O%29%7D+%5Cprod_%7Bi%7D+e%5E%7B%5Csum_%7Bk%7D%5Clambda_%7Bk%7Df_%7Bk%7D%28O%2CI_%7Bi-1%7D%2CI_%7Bi%7D%2Ci%29%7D+%3D+%5Cfrac%7B1%7D%7BZ%28O%29%7D+e%5E%7B%5Csum_%7Bi%7D%5Csum_%7Bk%7D%5Clambda_%7Bk%7Df_%7Bk%7D%28O%2CI_%7Bi-1%7D%2CI_%7Bi%7D%2Ci%29%7D" alt="[公式]"></p>
+<p>我要敲黑板了，这个公式是非常非常关键的，注意递推过程啊，我是怎么从 <img src="https://www.zhihu.com/equation?tex=%E2%88%8F" alt="[公式]"> 跳到 <img src="https://www.zhihu.com/equation?tex=e%5E%7B%5Csum%7D" alt="[公式]"> 的。</p>
+<p>不过还是要多啰嗦一句，想要理解CRF，必须判别式模型的概念要深入你心。正因为是判别模型，所以不废话，我上来就直接为了确定边界而去建模，因为我创造出来就是为了这个分边界的目的的。比如说序列求概率（分类）问题，我直接考虑找出函数分类边界。所以才为什么会有这个公式。所以再看到这个公式也别懵逼了，he was born for discriminating the given data from different classes. 就这样。不过待会还会具体介绍特征函数部分的东西。</p>
+<p>除了建模总公式，关键的CRF重点概念在MEMM中已强调过：<strong>判别式模型</strong>、<strong>特征函数</strong>。</p>
+<p><strong>1. 特征函数</strong></p>
+<p>上面给出了CRF的建模公式：</p>
+<p><img src="https://www.zhihu.com/equation?tex=P%28I+%7C+O%29%3D%5Cfrac%7B1%7D%7BZ%28O%29%7D+e%5E%7B%5Csum_%7Bi%7D%5E%7BT%7D%5Csum_%7Bk%7D%5E%7BM%7D%5Clambda_%7Bk%7Df_%7Bk%7D%28O%2CI_%7Bi-1%7D%2CI_%7Bi%7D%2Ci%29%7D" alt="[公式]"></p>
+<ul>
+<li><p>下标_i_表示我当前所在的节点（token）位置。  </p>
+</li>
+<li><p>下标_k_表示我这是第几个特征函数，并且每个特征函数都附属一个权重 <img src="https://www.zhihu.com/equation?tex=%5Clambda_%7Bk%7D" alt="[公式]"> ，也就是这么回事，每个团里面，我将为 <img src="https://www.zhihu.com/equation?tex=token_%7Bi%7D" alt="[公式]"> 构造M个特征，每个特征执行一定的限定作用，然后建模时我再为每个特征函数加权求和。  </p>
+</li>
+<li><p><img src="https://www.zhihu.com/equation?tex=Z%28O%29" alt="[公式]"> 是用来归一化的，为什么？想想LR以及softmax为何有归一化呢，一样的嘛，形成概率值。  </p>
+</li>
+<li><p>再来个重要的理解。 <img src="https://www.zhihu.com/equation?tex=P%28I%7CO%29" alt="[公式]"> 这个表示什么？具体地，表示了在给定的一条观测序列 <img src="https://www.zhihu.com/equation?tex=O%3D%28o_%7B1%7D%2C%5Ccdots%2C+o_%7Bi%7D%29" alt="[公式]"> 条件下，我用CRF所求出来的隐状态序列 <img src="https://www.zhihu.com/equation?tex=I%3D%28i_%7B1%7D%2C%5Ccdots%2C+i_%7Bi%7D%29" alt="[公式]"> 的概率，注意，这里的_I_是一条序列，有多个元素（一组随机变量），而至于观测序列 <img src="https://www.zhihu.com/equation?tex=O%3D%28o_%7B1%7D%2C%5Ccdots%2C+o_%7Bi%7D%29" alt="[公式]"> ，它可以是一整个训练语料的所有的观测序列；也可以是在inference阶段的一句sample，比如说对于序列标注问题，我对一条sample进行预测，可能能得到 <img src="https://www.zhihu.com/equation?tex=P_%7Bj%7D%28I+%7C+O%29%EF%BC%88j%3D1%2C%E2%80%A6%2CJ%EF%BC%89" alt="[公式]">_J_条隐状态_I_，但我肯定最终选的是最优概率的那条（by viterbi）。这一点希望你能理解。</p>
+</li>
+</ul>
+<p>对于CRF，可以为他定义两款特征函数：转移特征&amp;状态特征。 我们将建模总公式展开：</p>
+<p><img src="https://www.zhihu.com/equation?tex=P%28I+%7C+O%29%3D%5Cfrac%7B1%7D%7BZ%28O%29%7D+e%5E%7B%5Csum_%7Bi%7D%5E%7BT%7D%5Csum_%7Bk%7D%5E%7BM%7D%5Clambda_%7Bk%7Df_%7Bk%7D%28O%2CI_%7Bi-1%7D%2CI_%7Bi%7D%2Ci%29%7D%3D%5Cfrac%7B1%7D%7BZ%28O%29%7D+e%5E%7B+%5B+%5Csum_%7Bi%7D%5E%7BT%7D%5Csum_%7Bj%7D%5E%7BJ%7D%5Clambda_%7Bj%7Dt_%7Bj%7D%28O%2CI_%7Bi-1%7D%2CI_%7Bi%7D%2Ci%29+%2B+%5Csum_%7Bi%7D%5E%7BT%7D%5Csum_%7Bl%7D%5E%7BL%7D%5Cmu_%7Bl%7Ds_%7Bl%7D%28O%2CI_%7Bi%7D%2Ci%29+%5D+%7D" alt="[公式]"></p>
+<p>其中：</p>
+<ul>
+<li><p><img src="https://www.zhihu.com/equation?tex=t_%7Bj%7D" alt="[公式]"> 为i处的转移特征，对应权重 <img src="https://www.zhihu.com/equation?tex=%5Clambda_%7Bj%7D" alt="[公式]"> ,每个 <img src="https://www.zhihu.com/equation?tex=token_%7Bi%7D" alt="[公式]"> 都有J个特征,转移特征针对的是前后token之间的限定。  </p>
+</li>
+<li><p>举个例子：</p>
+</li>
+</ul>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+t_%7Bk%3D1%7D%28o%2Ci%29+%3D+%5Cbegin%7Bcases%7D+1%26+%5Ctext%7B%E6%BB%A1%E8%B6%B3%E7%89%B9%E5%AE%9A%E8%BD%AC%E7%A7%BB%E6%9D%A1%E4%BB%B6%EF%BC%8C%E6%AF%94%E5%A6%82%E5%89%8D%E4%B8%80%E4%B8%AAtoken%E6%98%AF%E2%80%98I%E2%80%99%7D%EF%BC%8C%5C%5C+0%26+%5Ctext%7Bother%7D+%5Cend%7Bcases%7D+%5Cend%7Bequation%7D" alt="[公式]"></p>
+<ul>
+<li><p>sl为i处的状态特征，对应权重μl,每个tokeni都有L个特征  </p>
+</li>
+<li><p>举个例子：</p>
+</li>
+</ul>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+s_%7Bl%3D1%7D%28o%2Ci%29+%3D+%5Cbegin%7Bcases%7D+1%26+%5Ctext%7B%E6%BB%A1%E8%B6%B3%E7%89%B9%E5%AE%9A%E7%8A%B6%E6%80%81%E6%9D%A1%E4%BB%B6%EF%BC%8C%E6%AF%94%E5%A6%82%E5%BD%93%E5%89%8Dtoken%E7%9A%84POS%E6%98%AF%E2%80%98V%E2%80%99%7D%EF%BC%8C%5C%5C+0%26+%5Ctext%7Bother%7D+%5Cend%7Bcases%7D+%5Cend%7Bequation%7D" alt="[公式]"></p>
+<p>不过一般情况下，我们不把两种特征区别的那么开，合在一起：</p>
+<p><img src="https://www.zhihu.com/equation?tex=P%28I+%7C+O%29%3D%5Cfrac%7B1%7D%7BZ%28O%29%7D+e%5E%7B%5Csum_%7Bi%7D%5E%7BT%7D%5Csum_%7Bk%7D%5E%7BM%7D%5Clambda_%7Bk%7Df_%7Bk%7D%28O%2CI_%7Bi-1%7D%2CI_%7Bi%7D%2Ci%29%7D" alt="[公式]"></p>
+<p>满足特征条件就取值为1，否则没贡献，甚至你还可以让他打负分，充分惩罚。</p>
+<p>再进一步理解的话，我们需要把特征函数部分抠出来：</p>
+<p><img src="https://www.zhihu.com/equation?tex=Score+%3D+%5Csum_%7Bi%7D%5E%7BT%7D%5Csum_%7Bk%7D%5E%7BM%7D%5Clambda_%7Bk%7Df_%7Bk%7D%28O%2CI_%7Bi-1%7D%2CI_%7Bi%7D%2Ci%29+" alt="[公式]"></p>
+<p>是的，我们为 <img src="https://www.zhihu.com/equation?tex=token_%7Bi%7D" alt="[公式]"> 打分，满足条件的就有所贡献。最后将所得的分数进行log线性表示，求和后归一化，即可得到概率值……完了又扯到了log线性模型。现在稍作解释：</p>
+<blockquote>
+<p>log-linear models take the following form:<br><img src="https://www.zhihu.com/equation?tex=P%28y%7Cx%3B%5Comega%29+%3D+%5Cfrac%7B+exp%28%5Comega%C2%B7%5Cphi%28x%2Cy%29%29+%7D%7B+%5Csum_%7By%5E%7B%27%7D%5Cin+Y+%7Dexp%28%5Comega%C2%B7%5Cphi%28x%2Cy%5E%7B%E2%80%98%7D%29%29+%7D" alt="[公式]"></p>
+</blockquote>
+<p>我觉得对LR或者sotfmax熟悉的对这个应该秒懂。然后CRF完美地满足这个形式，所以又可以归入到了log-linear models之中。</p>
+<h2 id="5-2-模型运行过程"><a href="#5-2-模型运行过程" class="headerlink" title="5.2 模型运行过程"></a><strong>5.2 模型运行过程</strong></h2><p>模型的工作流程，跟MEMM是一样的：</p>
+<ul>
+<li>step1. 先预定义特征函数 <img src="https://www.zhihu.com/equation?tex=+f_%7Ba%7D%28o%2Ci%29" alt="[公式]"> ，</li>
+<li>step2. 在给定的数据上，训练模型，确定参数 <img src="https://www.zhihu.com/equation?tex=%5Clambda_%7Bk%7D" alt="[公式]"></li>
+<li>step3. 用确定的模型做<code>序列标注问题</code>或者<code>序列求概率问题</code>。</li>
+</ul>
+<p>可能还是没做到100%懂，结合例子说明：</p>
+<blockquote>
+<p>……</p>
+</blockquote>
+<h2 id="5-2-1-学习训练过程"><a href="#5-2-1-学习训练过程" class="headerlink" title="5.2.1 学习训练过程"></a><strong>5.2.1 学习训练过程</strong></h2><p>一套CRF由一套参数λ唯一确定（先定义好各种特征函数）。</p>
+<p>同样，CRF用极大似然估计方法、梯度下降、牛顿迭代、拟牛顿下降、IIS、BFGS、L-BFGS等等。各位应该对各种优化方法有所了解的。其实能用在log-linear models上的求参方法都可以用过来。</p>
+<p>嗯，具体详细求解过程貌似问题不大。</p>
+<h2 id="5-2-2-序列标注过程"><a href="#5-2-2-序列标注过程" class="headerlink" title="5.2.2 序列标注过程"></a><strong>5.2.2 序列标注过程</strong></h2><p>还是跟HMM一样的，用学习好的CRF模型，在新的sample（观测序列 <img src="https://www.zhihu.com/equation?tex=o_%7B1%7D%2C+%5Ccdots%2C+o_%7Bi%7D" alt="[公式]"> ）上找出一条概率最大最可能的隐状态序列 <img src="https://www.zhihu.com/equation?tex=i_%7B1%7D%2C+%5Ccdots%2C+i_%7Bi%7D" alt="[公式]"> 。</p>
+<p>只是现在的图中的每个隐状态节点的概率求法有一些差异而已,正确将每个节点的概率表示清楚，路径求解过程还是一样，采用viterbi算法。</p>
+<p>啰嗦一下，我们就定义i处的局部状态为 <img src="https://www.zhihu.com/equation?tex=%5Cdelta_%7Bi%7D%28I%29" alt="[公式]"> ,表示在位置i处的隐状态的各种取值可能为_I_，然后递推位置i+1处的隐状态，写出来的DP转移公式为：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cdelta_%7Bi%2B1%7D+%3D+max_%7B1+%5Cle+j+%5Cle+m%7D%5Clbrace+%5Cdelta_%7Bi%7D%28I%29+%2B+%5Csum_%7Bi%7D%5E%7BT%7D%5Csum_%7Bk%7D%5E%7BM%7D%5Clambda_%7Bk%7Df_%7Bk%7D%28O%2CI_%7Bi-1%7D%2CI_%7Bi%7D%2Ci%29+%5Crbrace" alt="[公式]"></p>
+<p>这里没写规范因子 <img src="https://www.zhihu.com/equation?tex=Z%28O%29" alt="[公式]"> 是因为不规范化不会影响取最大值后的比较。</p>
+<p>具体还是不展开为好。</p>
+<h2 id="5-2-3-序列求概率过程"><a href="#5-2-3-序列求概率过程" class="headerlink" title="5.2.3 序列求概率过程"></a><strong>5.2.3 序列求概率过程</strong></h2><p>跟HMM举的例子一样的，也是分别去为每一批数据训练构建特定的CRF，然后根据序列在每个MEMM模型的不同得分概率，选择最高分数的模型为wanted类别。只是貌似很少看到拿CRF或者MEMM来做分类的，直接用网络模型不就完了不……</p>
+<p>应该可以不用展开，吧……</p>
+<h2 id="5-3-CRF-分析"><a href="#5-3-CRF-分析" class="headerlink" title="5.3 CRF++分析"></a><strong>5.3 CRF++分析</strong></h2><p>本来做task用CRF++跑过baseline,后来在对CRF做调研时，非常想透析CRF++的工作原理，以identify以及verify做的各种假设猜想。当然，也看过其他的CRF实现源码。</p>
+<p>所以干脆写到这里来，结合CRF++实例讲解过程。</p>
+<p>有一批语料数据，并且已经tokenized好了：</p>
+<blockquote>
+<p>Nuclear<br>theory<br>devoted<br>major<br>efforts<br>……</p>
+</blockquote>
+<p>并且我先确定了13个标注元素：</p>
+<blockquote>
+<p>B_MAT<br>B_PRO<br>B_TAS<br>E_MAT<br>E_PRO<br>E_TAS<br>I_MAT<br>I_PRO<br>I_TAS<br>O<br>S_MAT<br>S_PRO<br>S_TAS</p>
+</blockquote>
+<p><strong>1. 定义模板</strong></p>
+<p>按道理应该是定义特征函数才对吧？好的，在CRF++下，应该是先定义特征模板，然后用模板自动批量产生大量的特征函数。我之前也蛮confused的，用完CRF++还以为模板就是特征，后面就搞清楚了：每一条模板将在每一个token处生产若干个特征函数。</p>
+<p>CRF++的模板（template）有U系列（unigram）、B系列(bigram)，不过我至今搞不清楚B系列的作用，因为U模板都可以完成2-gram的作用。</p>
+<blockquote>
+<p>U00:%x[-2,0]<br>U01:%x[-1,0]<br>U02:%x[0,0]<br>U03:%x[1,0]<br>U04:%x[2,0]  </p>
+<p>U05:%x[-2,0]/%x[-1,0]/%x[0,0]<br>U06:%x[-1,0]/%x[0,0]/%x[1,0]<br>U07:%x[0,0]/%x[1,0]/%x[2,0]<br>U08:%x[-1,0]/%x[0,0]<br>U09:%x[0,0]/%x[1,0]  </p>
+<p>B</p>
+</blockquote>
+<p>所以，U00 - U09 我定义了10个模板。</p>
+<p><strong>2. 产生特征函数</strong></p>
+<p>是的，会产生大量的特征。 U00 - U04的模板产生的是状态特征函数；U05 - U09的模板产生的是转移特征函数。</p>
+<p>在CRF++中，每个特征都会try每个标注label（这里有13个），总共将生成 <img src="https://www.zhihu.com/equation?tex=N+%2A+L+%3D+i+%2A+k%5E%7B%27%7D+%2A+L" alt="[公式]"> 个特征函数以及对应的权重出来。N表示每一套特征函数 <img src="https://www.zhihu.com/equation?tex=N%3D+i+%2A+k%5E%7B%27%7D" alt="[公式]"> ，L表示标注集元素个数。</p>
+<p>比如训练好的CRF模型的部分特征函数是这样存储的：</p>
+<blockquote>
+<p>22607 B<br>790309 U00:%<br>3453892 U00:%)<br>2717325 U00:&amp;<br>2128269 U00:’t<br>2826239 U00:(0.3534<br>2525055 U00:(0.593–1.118<br>197093 U00:(1)<br>2079519 U00:(1)L=14w2−12w−FμνaFaμν<br>2458547 U00:(1)δn=∫−∞En+1ρ˜(E)dE−n<br>1766024 U00:(1.0g<br>2679261 U00:(1.1wt%)<br>1622517 U00:(100)<br>727701 U00:(1000–5000A)<br>2626520 U00:(10a)<br>2626689 U00:(10b)<br>……<br>2842814 U07:layer/thicknesses/Using<br>2847533 U07:layer/thicknesses/are<br>2848651 U07:layer/thicknesses/in<br>331539 U07:layer/to/the<br>1885871 U07:layer/was/deposited<br>……（数量非常庞大）</p>
+</blockquote>
+<p>其实也就是对应了这样些个特征函数：</p>
+<blockquote>
+<p>func1 = if (output = B and feature=”U02:一”) return 1 else return 0<br>func2 = if (output = M and feature=”U02:一”) return 1 else return 0<br>func3 = if (output = E and feature=”U02:一”) return 1 else return 0<br>func4 = if (output = S and feature=”U02:一”) return 1 else return 0</p>
+</blockquote>
+<p>比如模板U06会从语料中one by one逐句抽出这些各个特征：</p>
+<blockquote>
+<p>一/个/人/……<br>个/人/走/……</p>
+</blockquote>
+<p><strong>3. 求参</strong></p>
+<p>对上述的各个特征以及初始权重进行迭代参数学习。</p>
+<p>在CRF++ 训练好的模型里，权重是这样的：</p>
+<blockquote>
+<p>0.3972716048310705<br>0.5078838237171732<br>0.6715316559507898<br>-0.4198827647512405<br>-0.4233310655891150<br>-0.4176580083832543<br>-0.4860489836004728<br>-0.6156475863742051<br>-0.6997919485753300<br>0.8309956709647820<br>0.3749695682658566<br>0.2627347894057647<br>0.0169732441379157<br>0.3972716048310705<br>0.5078838237171732<br>0.6715316559507898<br>……（数量非常庞大，与每个label的特征函数对应，我这有300W个）</p>
+</blockquote>
+<p><strong>4. 预测解码</strong></p>
+<p>结果是这样的：</p>
+<blockquote>
+<p>Nuclear B_TAS<br>theory E_TAS<br>devoted O<br>major O<br>efforts O<br>……</p>
+</blockquote>
+<h2 id="5-4-LSTM-CRF"><a href="#5-4-LSTM-CRF" class="headerlink" title="5.4 LSTM+CRF"></a><strong>5.4 LSTM+CRF</strong></h2><p>LSTM+CRF这个组合其实我在知乎上答过问题，然后顺便可以整合到这里来。</p>
+<p><strong>1、perspectively</strong></p>
+<p>大家都知道，LSTM已经可以胜任序列标注问题了，为每个token预测一个label（LSTM后面接:分类器）；而CRF也是一样的，为每个token预测一个label。</p>
+<p>但是，他们的预测机理是不同的。CRF是全局范围内统计归一化的条件状态转移概率矩阵，再预测出一条指定的sample的每个token的label；LSTM（RNNs，不区分here）是依靠神经网络的超强非线性拟合能力，在训练时将samples通过复杂到让你窒息的高阶高纬度异度空间的非线性变换，学习出一个模型，然后再预测出一条指定的sample的每个token的label。</p>
+<p><strong>2、LSTM+CRF</strong></p>
+<p>既然LSTM都OK了，为啥researchers搞一个LSTM+CRF的hybrid model?</p>
+<p>哈哈，因为a single LSTM预测出来的标注有问题啊！举个segmentation例子(BES; char level)，plain LSTM 会搞出这样的结果：</p>
+<blockquote>
+<p><strong>input</strong>: “学习出一个模型，然后再预测出一条指定”<br><strong>expected output</strong>: 学/B 习/E 出/S 一/B 个/E 模/B 型/E ，/S 然/B 后/E 再/E 预/B 测/E ……<br><strong>real output</strong>: 学/B 习/E 出/S 一/B 个/B 模/B 型/E ，/S 然/B 后/B 再/E 预/B 测/E ……</p>
+</blockquote>
+<p>看到不，用LSTM，整体的预测accuracy是不错indeed, 但是会出现上述的错误：在B之后再来一个B。这个错误在CRF中是不存在的，因为CRF的特征函数的存在就是为了对given序列观察学习各种特征（n-gram，窗口），这些特征就是在限定窗口size下的各种词之间的关系。然后一般都会学到这样的一条规律（特征）：B后面接E，不会出现E。这个限定特征会使得CRF的预测结果不出现上述例子的错误。当然了，CRF还能学到更多的限定特征，那越多越好啊！</p>
+<p>好了，那就把CRF接到LSTM上面，把LSTM在time_step上把每一个hidden_state的tensor输入给CRF，让LSTM负责在CRF的特征限定下，依照新的loss function，学习出一套新的非线性变换空间。</p>
+<p>最后，不用说，结果还真是好多了呢。</p>
+<p><a href="https://link.zhihu.com/?target=https%3A//github.com/scofield7419/sequence-labeling-BiLSTM-CRF">LSTM+CRF codes</a>, here. Go just take it.</p>
+<h2 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a><strong>六、总结</strong></h2><p><strong>1. 总体对比</strong></p>
+<p>应该看到了熟悉的图了，现在看这个图的话，应该可以很清楚地get到他所表达的含义了。这张图的内容正是按照生成式&amp;判别式来区分的，NB在sequence建模下拓展到了HMM；LR在sequence建模下拓展到了CRF。</p>
+<p><img src="https://pic1.zhimg.com/v2-376fd85a490e161978130ddd759244d4_b.jpg" alt=""></p>
+<p><img src="https://pic1.zhimg.com/80/v2-376fd85a490e161978130ddd759244d4_720w.jpg" alt=""></p>
+<p><strong>2. HMM vs. MEMM vs. CRF</strong></p>
+<p>将三者放在一块做一个总结：</p>
+<ol>
+<li>HMM -&gt; MEMM： HMM模型中存在两个假设：一是输出观察值之间严格独立，二是状态的转移过程中当前状态只与前一状态有关。但实际上序列标注问题不仅和单个词相关，而且和观察序列的长度，单词的上下文，等等相关。MEMM解决了HMM输出独立性假设的问题。因为HMM只限定在了观测与状态之间的依赖，而MEMM引入自定义特征函数，不仅可以表达观测之间的依赖，还可表示当前观测与前后多个状态之间的复杂依赖。</li>
+<li>MEMM -&gt; CRF:</li>
+</ol>
+<ul>
+<li>CRF不仅解决了HMM输出独立性假设的问题，还解决了MEMM的标注偏置问题，MEMM容易陷入局部最优是因为只在局部做归一化，而CRF统计了全局概率，在做归一化时考虑了数据在全局的分布，而不是仅仅在局部归一化，这样就解决了MEMM中的标记偏置的问题。使得序列标注的解码变得最优解。</li>
+<li>HMM、MEMM属于有向图，所以考虑了x与y的影响，但没讲x当做整体考虑进去（这点问题应该只有HMM）。CRF属于无向图，没有这种依赖性，克服此问题。</li>
+</ul>
+<p><strong>3. Machine Learning models vs. Sequential models</strong></p>
+<p>为了一次将概率图模型理解的深刻到位，我们需要再串一串，更深度与原有的知识体系融合起来。</p>
+<p>机器学习模型，按照学习的范式或方法，以及加上自己的理解，给常见的部分的他们整理分了分类（主流上，都喜欢从训练样本的歧义型分，当然也可以从其他角度来）：</p>
+<p>（注意到，没有把神经网络体系加进来。因为NNs的范式很灵活，不太适用这套分法，largely, off this framework）</p>
+<p>Generally speaking，机器学习模型，尤其是有监督学习，一般是为一条sample预测出一个label，作为预测结果。 但与典型常见的机器学习模型不太一样，序列模型（概率图模型）是试图为一条sample里面的每个基本元数据分别预测出一个label。这一点，往往是beginner伊始难以理解的。</p>
+<p>具体的实现手段差异，就是：ML models通过直接预测得出label；Sequential models是给每个token预测得出label还没完，还得将他们每个token对应的labels进行组合，具体的话，用viterbi来挑选最好的那个组合。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/2021/04/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/2021-04-15-%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%E4%BD%93%E7%B3%BB/">http://xishansnow.github.io/2021/04/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/2021-04-15-%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%E4%BD%93%E7%B3%BB/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF/">贝叶斯</a><a class="post-meta__tags" href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/">概率图模型</a><a class="post-meta__tags" href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C/">贝叶斯网络</a><a class="post-meta__tags" href="/tags/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E7%BD%91%E7%BB%9C/">马尔可夫网络</a></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_20.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/2021-04-12-%E5%8D%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/"><img class="prev-cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_06.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"> 弱监督之不完全学习任务 -- 半监督学习概述 </div></div></a></div><div class="next-post pull-right"><a href="/2021/04/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/2021-04-10-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%BA%94%E5%A4%A7%E6%B5%81%E6%B4%BE/"><img class="next-cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_19.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info"> 机器学习的五大流派 </div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/04/11/机器学习与深度学习/2021-04-10-机器学习五大流派/" title=" 机器学习的五大流派 "><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_19.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-11</div><div class="title"> 机器学习的五大流派 </div></div></a></div><div><a href="/2021/04/08/最优化理论/2021-04-04-数值优化算法【4】-- Adam方法/" title=" 数值优化算法【4】--   Adam 方法 "><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_01.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-08</div><div class="title"> 数值优化算法【4】--   Adam 方法 </div></div></a></div><div><a href="/2021/04/10/机器学习与深度学习/2021-04-10-神经网络的优化方法/" title=" 深度神经网络的优化方法 "><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_18.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-10</div><div class="title"> 深度神经网络的优化方法 </div></div></a></div><div><a href="/2021/04/11/机器学习与深度学习/2021-04-13-无监督学习之线性模型/" title=" 无监督之聚类与降维任务--线性模型（Clusting、PCA、NMF） "><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_12.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-11</div><div class="title"> 无监督之聚类与降维任务--线性模型（Clusting、PCA、NMF） </div></div></a></div><div><a href="/2021/04/11/机器学习与深度学习/2021-04-14-无监督学习之近邻嵌入/" title=" 无监督之聚类与降维任务--近邻嵌入方法（从LLE到t-SNE） "><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_14.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-11</div><div class="title"> 无监督之聚类与降维任务--近邻嵌入方法（从LLE到t-SNE） </div></div></a></div><div><a href="/2021/04/03/最优化理论/2021-04-03-数值优化算法【1】-- 机器学习常用优化算法/" title=" 数值优化算法【1】-- 常用优化算法 "><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_18.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-03</div><div class="title"> 数值优化算法【1】-- 常用优化算法 </div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%E4%BD%93%E7%B3%BB"><span class="toc-text">概率图模型体系</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HMM%E3%80%81MEMM%E3%80%81CRF"><span class="toc-text">HMM、MEMM、CRF**</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81Preface"><span class="toc-text">一、Preface</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Prerequisite"><span class="toc-text">二、Prerequisite</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%A6%82%E7%8E%87%E5%9B%BE"><span class="toc-text">2.1 概率图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-1-%E6%A6%82%E8%A7%88"><span class="toc-text">2.1.1 概览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-2-%E6%9C%89%E5%90%91%E5%9B%BE-vs-%E6%97%A0%E5%90%91%E5%9B%BE"><span class="toc-text">2.1.2 有向图 vs. 无向图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-3-%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E5%81%87%E8%AE%BE-amp-%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%80%A7"><span class="toc-text">2.1.3 马尔科夫假设&amp;马尔科夫性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E5%88%A4%E5%88%AB%E5%BC%8F%EF%BC%88discriminative%EF%BC%89%E6%A8%A1%E5%9E%8B-vs-%E7%94%9F%E6%88%90%E5%BC%8F-generative-%E6%A8%A1%E5%9E%8B"><span class="toc-text">2.2 判别式（discriminative）模型 vs. 生成式(generative)模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E5%BA%8F%E5%88%97%E5%BB%BA%E6%A8%A1"><span class="toc-text">2.3 序列建模</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81HMM"><span class="toc-text">三、HMM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E7%90%86%E8%A7%A3HMM"><span class="toc-text">3.1 理解HMM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E6%A8%A1%E5%9E%8B%E8%BF%90%E8%A1%8C%E8%BF%87%E7%A8%8B"><span class="toc-text">3.2 模型运行过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-1-%E5%AD%A6%E4%B9%A0%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B"><span class="toc-text">3.2.1 学习训练过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-2-%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8%EF%BC%88%E8%A7%A3%E7%A0%81%EF%BC%89%E8%BF%87%E7%A8%8B"><span class="toc-text">3.2.2 序列标注（解码）过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-3-%E5%BA%8F%E5%88%97%E6%A6%82%E7%8E%87%E8%BF%87%E7%A8%8B"><span class="toc-text">3.2.3 序列概率过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81MEMM"><span class="toc-text">四、MEMM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E7%90%86%E8%A7%A3MEMM"><span class="toc-text">4.1 理解MEMM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E6%A8%A1%E5%9E%8B%E8%BF%90%E8%A1%8C%E8%BF%87%E7%A8%8B"><span class="toc-text">4.2 模型运行过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-1-%E5%AD%A6%E4%B9%A0%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B"><span class="toc-text">4.2.1 学习训练过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-2-%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8%E8%BF%87%E7%A8%8B"><span class="toc-text">4.2.2 序列标注过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-3-%E5%BA%8F%E5%88%97%E6%B1%82%E6%A6%82%E7%8E%87%E8%BF%87%E7%A8%8B"><span class="toc-text">4.2.3 序列求概率过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E6%A0%87%E6%B3%A8%E5%81%8F%E7%BD%AE%EF%BC%9F"><span class="toc-text">4.3 标注偏置？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81CRF"><span class="toc-text">五、CRF</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%E7%90%86%E8%A7%A3CRF"><span class="toc-text">5.1 理解CRF</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%E6%A8%A1%E5%9E%8B%E8%BF%90%E8%A1%8C%E8%BF%87%E7%A8%8B"><span class="toc-text">5.2 模型运行过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-1-%E5%AD%A6%E4%B9%A0%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B"><span class="toc-text">5.2.1 学习训练过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-2-%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8%E8%BF%87%E7%A8%8B"><span class="toc-text">5.2.2 序列标注过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-3-%E5%BA%8F%E5%88%97%E6%B1%82%E6%A6%82%E7%8E%87%E8%BF%87%E7%A8%8B"><span class="toc-text">5.2.3 序列求概率过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-CRF-%E5%88%86%E6%9E%90"><span class="toc-text">5.3 CRF++分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-4-LSTM-CRF"><span class="toc-text">5.4 LSTM+CRF</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">六、总结</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>if (document.getElementsByClassName('mermaid').length) {
+  if (window.mermaidJsLoad) mermaid.init()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(() => {
+      window.mermaidJsLoad = true
+      mermaid.initialize({
+        theme: 'default',
+      })
+      false && mermaid.init()
+    })
+  }
+}</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: 'fb7f9ed2eecc530e7df2',
+      clientSecret: 'a016744e60828e5c99fc93a01d496a5a031196e2',
+      repo: 'blog_comment',
+      owner: 'xishansnow',
+      admin: ['xishansnow'],
+      id: '0b8ffc228831ef5e26b720dfaf87e537',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script></div></body></html>
