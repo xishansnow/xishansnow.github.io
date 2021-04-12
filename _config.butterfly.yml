@@ -113,7 +113,7 @@ local_search:
 # MathJax
 mathjax:
   enable: true
-  per_page: true   # Front-matter 需要加 mathjax: true 才有效
+  per_page: false   # Front-matter 需要加 mathjax: true 才有效
 
 # KaTeX
 katex:

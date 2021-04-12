@@ -1,8 +1,8 @@
 ---
 layout:     post
-title:      "NLP预训练模型【4】 -- Transformer"
+title:      "NLP预训练模型【5】 -- Transformer"
 description:   "Transformer"
-date:       2021-03-27 13:00:00
+date:       2021-03-27 14:00:00
 author:     "西山晴雪"
 categories: 
 	- [自然语言处理, 预训练模型]
@@ -17,26 +17,9 @@ tags:
     - 解码器
 ---
 
-## 目录
-- [目录](#目录)
-- [1. 什么是Transformer](#1-什么是transformer)
-- [2. Transformer结构](#2-transformer结构)
-  - [2.1 总体结构](#21-总体结构)
-  - [2.2 Encoder层结构](#22-encoder层结构)
-    - [2.2.1 Positional Encoding](#221-positional-encoding)
-    - [2.2.2 Self-Attention](#222-self-attention)
-    - [2.2.3 Multi-Headed Attention](#223-multi-headed-attention)
-    - [2.2.4 Layer normalization](#224-layer-normalization)
-    - [2.2.5 Feed Forward Neural Network](#225-feed-forward-neural-network)
-  - [2.3 Decoder层结构](#23-decoder层结构)
-    - [2.3.1 masked mutil-head attetion](#231-masked-mutil-head-attetion)
-    - [2.3.2 Output层](#232-output层)
-  - [2.4 动态流程图](#24-动态流程图)
-- [3. Transformer为什么需要进行Multi-head Attention](#3-transformer为什么需要进行multi-head-attention)
-- [4. Transformer相比于RNN/LSTM，有什么优势？为什么？](#4-transformer相比于rnnlstm有什么优势为什么)
-- [5. 为什么说Transformer可以代替seq2seq？](#5-为什么说transformer可以代替seq2seq)
-- [6. 代码实现](#6-代码实现)
-- [7. 参考文献](#7-参考文献)
+# NLP预训练模型【5】 -- Transformer
+
+
 
 ## 1. 什么是Transformer
 
