@@ -6059,9 +6059,11 @@ blockquote.pullquote.right {
 [data-theme='dark'] .post-outdate-notice,
 [data-theme='dark'] .error-img,
 [data-theme='dark'] #article-container iframe,
-[data-theme='dark'] img,
 [data-theme='dark'] .gist,
 [data-theme='dark'] .ads-wrap {
+  filter: brightness(0.8);
+}
+[data-theme='dark'] img {
   filter: brightness(0.8);
 }
 [data-theme='dark'] #aside-content .aside-list > .aside-list-item:not(:last-child) {
