@@ -5,9 +5,9 @@ title:      " 空间聚集时的冷热点分析 -- Getis-Ord's G指数  "
 description:   " 空间聚集时的冷热点分析 -- Getis-Ord's G指数 "
 date:       2021-04-19 10:00:00
 author:     "西山晴雪"
-mathjax:	true
+mathjax:    true
 categories: 
-	- [GeoAI, 空间统计学工具]
+    - [GeoAI, 空间统计学工具]
 tags:
     - GeoAI
     - 空间统计学工具 
