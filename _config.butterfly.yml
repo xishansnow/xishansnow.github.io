@@ -31,10 +31,10 @@ menu:
     地理文本语义分析:  /categories/GeoAI/地理文本语义分析/ || fas fa-atlas    
     空间统计学工具:  /categories/GeoAI/空间统计学工具/ || fas fa-bacteria
    项目: /project/ || fas fa-cogs 
-   论文 || fas fa-book-open:
+   书籍 || fas fa-book-open:
     《空间统计学》: https://xishansnow.github.io/spatialSTAT_CN/index.html   || fas fa-books
     《地理知识图谱》: https://xishansnow.github.io/geokg/index.html || fas fa-books
-    学术论文:  /article/ || fas fa-books
+    《贝叶斯数据分析》: https://xishansnow.github.io/bayesianPrincipal/index.html || fas fa-books
    摄影 || fas fa-camera-retro:
     全部: /gallery/ || fas fa-images
     风光摄影: /gallery/landscape/ || fas fa-image
