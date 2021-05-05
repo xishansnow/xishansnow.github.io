@@ -32,6 +32,8 @@ menu:
     空间统计学工具:  /categories/GeoAI/空间统计学工具/ || fas fa-bacteria
    项目: /project/ || fas fa-cogs 
    论文 || fas fa-book-open:
+    《用Python做贝叶斯分析》: https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html   || fas fa-books
+    《做贝叶斯数据分析》: https://xishansnow.github.io/bayesianPrincipal/index.html   || fas fa-books
     《空间统计学》: https://xishansnow.github.io/spatialSTAT_CN/index.html   || fas fa-books
     《地理知识图谱》: https://xishansnow.github.io/geokg/index.html || fas fa-books
     学术论文:  /article/ || fas fa-books
