@@ -1,0 +1,279 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>西山晴雪的博客 | 西山晴雪的博客</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="深度学习中的不确定性：What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision DRACO于 2021-03-01 20:51:24  371   收藏  1  分类专栏： 深度学习 机器学习 文章标签： 不确定学习 版权声明：本文为博主原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出">
+<meta property="og:type" content="article">
+<meta property="og:title" content="西山晴雪的博客">
+<meta property="og:url" content="http://xishansnow.github.io/2021/05/01/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/2021-05-01-%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-What%20Uncertainties%20Do%20We%20Need%20in%20Bayesian%20Deep%20Learning%20for%20Computer%20Vision/index.html">
+<meta property="og:site_name" content="西山晴雪的博客">
+<meta property="og:description" content="深度学习中的不确定性：What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision DRACO于 2021-03-01 20:51:24  371   收藏  1  分类专栏： 深度学习 机器学习 文章标签： 不确定学习 版权声明：本文为博主原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_12.png">
+<meta property="article:published_time" content="2021-05-01T15:13:43.858Z">
+<meta property="article:modified_time" content="2021-05-01T15:13:43.963Z">
+<meta property="article:author" content="西山晴雪">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_12.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/2021/05/01/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/2021-05-01-%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-What%20Uncertainties%20Do%20We%20Need%20in%20Bayesian%20Deep%20Learning%20for%20Computer%20Vision/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-05-01 23:13:43'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">169</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">35</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 地理知识图谱</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-atom"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%BB%BA%E6%A8%A1/"><i class="fa-fw fas fa-atom"></i><span> 知识表示与建模</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%8E%B7%E5%8F%96%E4%B8%8E%E8%9E%8D%E5%90%88/"><i class="fa-fw fas fa-biohazard"></i><span> 知识获取与融合</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86%E4%B8%8E%E6%9F%A5%E8%AF%A2/"><i class="fa-fw fas fa-box"></i><span> 知识管理与查询</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%A1%A5%E5%85%A8%E4%B8%8E%E6%8E%A8%E7%90%86/"><i class="fa-fw fas fa-blender"></i><span> 知识补全与推理</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E9%97%AE%E7%AD%94/"><i class="fa-fw fas fa-brain"></i><span> 知识问答系统</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B/"><i class="fa-fw fas fa-archive"></i><span> 应用案例</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 时空大数据引擎</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-coins"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E7%9F%A2%E9%87%8F%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-align-left"></i><span> 矢量数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E6%A0%85%E6%A0%BC%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-chess-board"></i><span> 栅格数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E8%BD%A8%E8%BF%B9%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-code-branch"></i><span> 轨迹数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E9%AB%98%E6%80%A7%E8%83%BD%E8%AE%A1%E7%AE%97/"><i class="fa-fw fas fa-cogs"></i><span> 高性能计算</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> GeoAI</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/GeoAI%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-dove"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E8%A1%A8%E5%BE%81%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-barcode"></i><span> 地理空间表征学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E9%A2%84%E6%B5%8B%E5%92%8C%E7%A9%BA%E9%97%B4%E6%8F%92%E5%80%BC/"><i class="fa-fw fas fa-bacteria"></i><span> 时空预测和空间插值</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%AF%B9%E5%9C%B0%E8%B5%84%E6%BA%90%E7%8E%AF%E5%A2%83%E8%A7%82%E6%B5%8B/"><i class="fa-fw fas fa-globe-asia"></i><span> 对地资源环境观测</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%9C%B0%E7%90%86%E6%96%87%E6%9C%AC%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/"><i class="fa-fw fas fa-atlas"></i><span> 地理文本语义分析</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E5%AD%A6%E5%B7%A5%E5%85%B7/"><i class="fa-fw fas fa-bacteria"></i><span> 空间统计学工具</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/project/"><i class="fa-fw fas fa-cogs"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 论文</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fas fa-books"></i><span> 《用Python做贝叶斯分析》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/bayesianPrincipal/index.html"><i class="fa-fw fas fa-books"></i><span> 《做贝叶斯数据分析》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fas fa-books"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/geokg/index.html"><i class="fa-fw fas fa-books"></i><span> 《地理知识图谱》</span></a></li><li><a class="site-page child" href="/article/"><i class="fa-fw fas fa-books"></i><span> 学术论文</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-camera-retro"></i><span> 摄影</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 全部</span></a></li><li><a class="site-page child" href="/gallery/landscape/"><i class="fa-fw fas fa-image"></i><span> 风光摄影</span></a></li><li><a class="site-page child" href="/gallery/portrait/"><i class="fa-fw fas fa-portrait"></i><span> 肖像摄影</span></a></li><li><a class="site-page child" href="/gallery/literal/"><i class="fa-fw fas fa-archive"></i><span> 人文摄影</span></a></li><li><a class="site-page child" href="/gallery/dailylife/"><i class="fa-fw fas fa-camera"></i><span> 日常摄影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 知识库</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/food/"><i class="fa-fw fas fa-utensils"></i><span> 美食博主</span></a></li><li><a class="site-page child" href="/link/photography"><i class="fa-fw fas fa-camera"></i><span> 摄影大神</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_12.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 地理知识图谱</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-atom"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%BB%BA%E6%A8%A1/"><i class="fa-fw fas fa-atom"></i><span> 知识表示与建模</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%8E%B7%E5%8F%96%E4%B8%8E%E8%9E%8D%E5%90%88/"><i class="fa-fw fas fa-biohazard"></i><span> 知识获取与融合</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86%E4%B8%8E%E6%9F%A5%E8%AF%A2/"><i class="fa-fw fas fa-box"></i><span> 知识管理与查询</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%A1%A5%E5%85%A8%E4%B8%8E%E6%8E%A8%E7%90%86/"><i class="fa-fw fas fa-blender"></i><span> 知识补全与推理</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E9%97%AE%E7%AD%94/"><i class="fa-fw fas fa-brain"></i><span> 知识问答系统</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B/"><i class="fa-fw fas fa-archive"></i><span> 应用案例</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 时空大数据引擎</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-coins"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E7%9F%A2%E9%87%8F%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-align-left"></i><span> 矢量数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E6%A0%85%E6%A0%BC%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-chess-board"></i><span> 栅格数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E8%BD%A8%E8%BF%B9%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-code-branch"></i><span> 轨迹数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E9%AB%98%E6%80%A7%E8%83%BD%E8%AE%A1%E7%AE%97/"><i class="fa-fw fas fa-cogs"></i><span> 高性能计算</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> GeoAI</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/GeoAI%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-dove"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E8%A1%A8%E5%BE%81%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-barcode"></i><span> 地理空间表征学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E9%A2%84%E6%B5%8B%E5%92%8C%E7%A9%BA%E9%97%B4%E6%8F%92%E5%80%BC/"><i class="fa-fw fas fa-bacteria"></i><span> 时空预测和空间插值</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%AF%B9%E5%9C%B0%E8%B5%84%E6%BA%90%E7%8E%AF%E5%A2%83%E8%A7%82%E6%B5%8B/"><i class="fa-fw fas fa-globe-asia"></i><span> 对地资源环境观测</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%9C%B0%E7%90%86%E6%96%87%E6%9C%AC%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/"><i class="fa-fw fas fa-atlas"></i><span> 地理文本语义分析</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E5%AD%A6%E5%B7%A5%E5%85%B7/"><i class="fa-fw fas fa-bacteria"></i><span> 空间统计学工具</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/project/"><i class="fa-fw fas fa-cogs"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 论文</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fas fa-books"></i><span> 《用Python做贝叶斯分析》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/bayesianPrincipal/index.html"><i class="fa-fw fas fa-books"></i><span> 《做贝叶斯数据分析》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fas fa-books"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/geokg/index.html"><i class="fa-fw fas fa-books"></i><span> 《地理知识图谱》</span></a></li><li><a class="site-page child" href="/article/"><i class="fa-fw fas fa-books"></i><span> 学术论文</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-camera-retro"></i><span> 摄影</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 全部</span></a></li><li><a class="site-page child" href="/gallery/landscape/"><i class="fa-fw fas fa-image"></i><span> 风光摄影</span></a></li><li><a class="site-page child" href="/gallery/portrait/"><i class="fa-fw fas fa-portrait"></i><span> 肖像摄影</span></a></li><li><a class="site-page child" href="/gallery/literal/"><i class="fa-fw fas fa-archive"></i><span> 人文摄影</span></a></li><li><a class="site-page child" href="/gallery/dailylife/"><i class="fa-fw fas fa-camera"></i><span> 日常摄影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 知识库</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/food/"><i class="fa-fw fas fa-utensils"></i><span> 美食博主</span></a></li><li><a class="site-page child" href="/link/photography"><i class="fa-fw fas fa-camera"></i><span> 摄影大神</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">无题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-05-01T15:13:43.858Z" title="发表于 2021-05-01 23:13:43">2021-05-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-05-01T15:13:43.963Z" title="更新于 2021-05-01 23:13:43">2021-05-01</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="深度学习中的不确定性：What-Uncertainties-Do-We-Need-in-Bayesian-Deep-Learning-for-Computer-Vision"><a href="#深度学习中的不确定性：What-Uncertainties-Do-We-Need-in-Bayesian-Deep-Learning-for-Computer-Vision" class="headerlink" title="深度学习中的不确定性：What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision"></a>深度学习中的不确定性：What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision</h1><p><img src="https://csdnimg.cn/release/blogv2/dist/pc/img/original.png" alt=""></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/chanbo8205">DRACO于</a> 2021-03-01 20:51:24 <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/articleReadEyes.png" alt=""> 371 <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollect.png" alt=""> <img src="https://csdnimg.cn/release/blogv2/dist/pc/img/tobarCollectionActive.png" alt=""> 收藏  1 </p>
+<p>分类专栏： <a target="_blank" rel="noopener" href="https://blog.csdn.net/chanbo8205/category_8775912.html">深度学习</a> <a target="_blank" rel="noopener" href="https://blog.csdn.net/chanbo8205/category_8946138.html">机器学习</a> 文章标签： <a target="_blank" rel="noopener" href="https://so.csdn.net/so/search/s.do?q=%E4%B8%8D%E7%A1%AE%E5%AE%9A%E5%AD%A6%E4%B9%A0&amp;t=blog&amp;o=vip&amp;s=&amp;l=&amp;f=&amp;viparticle=">不确定学习</a></p>
+<p>版权声明：本文为博主原创文章，遵循 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-sa/4.0/">CC 4.0 BY-SA</a> 版权协议，转载请附上原文出处链接和本声明。</p>
+<p>本文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/chanbo8205/article/details/114265553">https://blog.csdn.net/chanbo8205/article/details/114265553</a></p>
+<p>版权</p>
+<p>转载 ： <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/98756147">https://zhuanlan.zhihu.com/p/98756147</a><br>原文：What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision? (NIPS 2017)</p>
+<p>深度学习模型给出的预测结果并不总是可靠的。在无人驾驶等安全性要求较高的领域中，完全依赖深度模型进行决策有可能导致灾难性的后果。如果能够让深度学习模型<strong>对于错误的预测给出一个较高的不确定性，我们就能判断一个预测结果可信程度</strong>。因此，我们需要对不确定性进行建模。</p>
+<p>衡量不确定性最直观的方法就是方差。对于一组数据<img src="https://img-blog.csdnimg.cn/20210301162826838.png" alt="在这里插入图片描述"> ，其方差的计算公式如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210301162835807.png" alt="在这里插入图片描述"></p>
+<p>一个单独输出值是得不到方差的。如果说我们能够用同一个模型，对同一个样本进行T次预测，而且这T次的预测值各不相同，就能够计算方差。问题是同一个模型同一个样本，怎么得到不同的输出呢？概率学家就说了，我们让学到的模型参数<img src="https://img-blog.csdnimg.cn/20210301162903840.png" alt="在这里插入图片描述">不是确定的值，而是一个分布，那么就可以从这个分布中采样，每一次采样，得到的weight都是不同的，这样结果也是不同的，目的就达到了。</p>
+<p>但是，怎么学习这样的分布呢？概率学家又说了，有现成的呀，dropout就是。使用了dropout来训练DNN时，模型的参数可以看成是服从一个<strong>伯努利分布</strong>。<strong>在预测的时候，仍然将dropout打开，预测T次，均值就是最终的预测值，而方差就是不确定度</strong>。这样就得到深度学习的不确定度了。这种方法也被称为<strong>MC Dropout贝叶斯神经网络</strong>。</p>
+<p>但是，不确定性有两种。一种称之为<strong>偶然不确定性</strong>（Aleatoric Uncertainty），是由于<strong>观测数据中的固有噪声导致</strong>的。这种不确定性是无法被消除的。另外一种称之为<strong>感知不确定性</strong>（Epistemic Uncertainty），<strong>与模型相关，是由于训练不完全导致的</strong>。如果给它更多的训练数据来弥补现有模型知识上的不足，这种不确定性从理论上来说是可以消除的。<strong>MC Dropout只能得到关于模型的感知不确定性，而不能捕获数据的偶然不确定性</strong>，这是有问题的。这就是本文要解决的问题了。</p>
+<h2 id="贝叶斯神经网络"><a href="#贝叶斯神经网络" class="headerlink" title="贝叶斯神经网络"></a>贝叶斯神经网络</h2><p>假定模型参数服从一个高斯先验分布： <img src="https://img-blog.csdnimg.cn/2021030120335460.png" alt="在这里插入图片描述"> 。给定观测数据集 <img src="https://img-blog.csdnimg.cn/20210301203406966.png" alt="[公式]"> 时，可以使用贝叶斯推断来计算模型参数的后验分布 <img src="https://img-blog.csdnimg.cn/20210301203417894.png" alt="[公式]"> 。对于回归任务，通常假定似然是一个高斯分布：<img src="https://img-blog.csdnimg.cn/20210301203433644.png" alt="[公式]"> 。其中， <img src="https://img-blog.csdnimg.cn/20210301203445613.png" alt="[公式]"> 为模型的输出， <img src="https://img-blog.csdnimg.cn/20210301203454405.png" alt="[公式]"> 为噪声项。而对于分类任务，则经常对输出进行归一化，用softmax对其进行压缩处理： <img src="https://img-blog.csdnimg.cn/202103012035033.png" alt="[公式]"></p>
+<p>贝叶斯神经网络虽然很好定义，但是实际操作起来比较困难。主要原因在于边际分布 <img src="https://img-blog.csdnimg.cn/202103012035328.png" alt="[公式]"> 没法算。而这一项又是贝叶斯推断所必需的。因此只能通过近似的方法来逼近真实的参数分布。</p>
+<p>贝叶斯推断公式：<br><img src="https://img-blog.csdnimg.cn/20210301203543891.png" alt="在这里插入图片描述"><br>Dropout变分推断是一种常用的近似方法。这种方法在除了在训练时要使用dropout之外，在预测时，也要将dropout打开，执行T次预测取其平均值。理论证明这种方法等价于在最小化KL散度。</p>
+<p>利用Dropout进行训练时，其最小化目标为<br><img src="https://img-blog.csdnimg.cn/20210301203620546.png" alt="在这里插入图片描述"><br>其中，第一项为负对数似然，第二项为正则化参数。p 为dropout中的随机失活率。 <img src="https://img-blog.csdnimg.cn/20210301203712197.png" alt="[公式]"> 。N为数据点个数。</p>
+<p>在回归任务中，通常假设似然是一个高斯分布，那么负对数似然可以写为如下形式：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210301203726530.png" alt="[公式]"></p>
+<p><img src="https://img-blog.csdnimg.cn/20210301203803709.png" alt="[公式]"> 表示模型输出值的噪声，一定意义上衡量了输出的不确定程度。</p>
+<h2 id="感知不确定性"><a href="#感知不确定性" class="headerlink" title="感知不确定性"></a>感知不确定性</h2><p>感知不确定性是关于模型参数的。为了捕获这个不确定性，我们可以从模型参数的分布中采样多次，得到T 个模型，用这T个模型对同一个样本做预测，看看 T次的预测结果有多么的不稳定。</p>
+<p>对于分类问题，T次预测的概率为：<br><img src="https://img-blog.csdnimg.cn/20210301203911664.png" alt="在这里插入图片描述"><br>其中，<img src="https://img-blog.csdnimg.cn/20210301203927103.png" alt="在这里插入图片描述">。不确定性可以用熵来衡量： <img src="https://img-blog.csdnimg.cn/20210301203934254.png" alt="[公式]"><br>。</p>
+<p>对于回归问题，不确定性可以用输出值的方差来表示： <img src="https://img-blog.csdnimg.cn/20210301203942914.png" alt="[公式]"><br>其中， <img src="https://img-blog.csdnimg.cn/2021030120395158.png" alt="[公式]"> 表示输出的均值。</p>
+<h2 id="偶然不确定性"><a href="#偶然不确定性" class="headerlink" title="偶然不确定性"></a>偶然不确定性</h2><p>偶然不确定性衡量的是数据本身存在的噪声，某种程度上衡量了一个instance的预测难度，因此可以将它看作是instance的一个函数：对于预测结果比较离谱的instance，这个函数值应该比较大；而对于容易预测的instance，相应的函数值应该较小。可以用以下的损失函数来对其进行建模，</p>
+<p><img src="https://img-blog.csdnimg.cn/202103012040417.png" alt="[公式]"><br><img src="https://img-blog.csdnimg.cn/20210301204048322.png" alt="[公式]"> 即表示Xi偶然不确定性。这里没有对模型参数执行变分推断，而是用了MAP，只能得到一组单一的模型参数值而不是一个分布，因而也无法捕获模型参数的感知不确定性。由此而实现了两种不确定性的分离。</p>
+<p>简单来说，感知不确定性是用多次预测结果的方差来决定的，在多次预测中，所用的模型参数都是不一样的，因此这种做法捕获了模型参数的感知不确定性。而偶然不确定性是由样本的特征决定的，和模型参数是无关的。</p>
+<h2 id="将两种不确定性结合"><a href="#将两种不确定性结合" class="headerlink" title="将两种不确定性结合"></a>将两种不确定性结合</h2><h3 id="回归任务"><a href="#回归任务" class="headerlink" title="回归任务"></a>回归任务</h3><p>为了将两种不确定性结合到同一个模型中，我们需要两组输出：一组是最终的预测结果 <img src="https://img-blog.csdnimg.cn/20210301204523653.png" alt="[公式]"> ，另一组是样本的偶然不确定性 <img src="https://img-blog.csdnimg.cn/20210301204531657.png" alt="[公式]"> 。即</p>
+<p><img src="https://img-blog.csdnimg.cn/20210301204538575.png" alt="[公式]"></p>
+<p>通过最小化以下的损失函数来训练模型：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210301204546464.png" alt="[公式]"></p>
+<p>在论文中的深度回归任务中，D 表示图片X中的像素点数量，i 为像素的索引。上面的损失包含了两部分：一部分是回归模型的残差，用于捕获模型参数的感知不确定性；另一部分是像素点的偶然不确定性，充当正则化项。注意到，在学习偶然不确定性时，其实是不需要标记的。<br>如果一个像素i 很难预测对，为了最小化整个损失， <img src="https://img-blog.csdnimg.cn/20210301204716634.png" alt="[公式]"> 会相应地变大，而 <img src="https://img-blog.csdnimg.cn/20210301204730716.png" alt="[公式]"> 又会防止 <img src="https://img-blog.csdnimg.cn/20210301204724197.png" alt="[公式]"> 变得无穷大。并不需要 <img src="https://img-blog.csdnimg.cn/20210301204753724.png" alt="[公式]"> 的ground truth。</p>
+<p>实际训练中， <img src="https://img-blog.csdnimg.cn/20210301204812132.png" alt="[公式]"> 其实相当于一项自适应的权重，对于难以预测的样本，数据中存在较多的固有噪声，这项权重比较小；而对于容易预测的样本，数据中存在的固有噪声比较少，这项权重会比较大。这会让模型在训练过程中区别地对待不同的样本。</p>
+<h3 id="分类任务"><a href="#分类任务" class="headerlink" title="分类任务"></a>分类任务</h3><p>在分类任务中，对于一个像素i，模型会输出一个预测向量fi，然后再通过softmax操作得到一组概率Pi。假定预测向量服从一个高斯分布：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210301204857512.png" alt="[公式]"></p>
+<p>这里 <img src="https://img-blog.csdnimg.cn/20210301204905807.png" alt="[公式]"> 和 <img src="https://img-blog.csdnimg.cn/20210301204912573.png" alt="[公式]"> 是网络参数为 W 时的输出。相当于对向量 <img src="https://img-blog.csdnimg.cn/20210301204925533.png" alt="[公式]"> 施加了一个方差为 <img src="https://img-blog.csdnimg.cn/20210301204935298.png" alt="[公式]">的噪声。</p>
+<p>训练模型的损失函数可以写为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210301204943528.png" alt="[公式]"></p>
+<p>第二项实则为交叉熵损失函数化简后的结果。</p>
+<p>交叉熵损失的简单推导：<br>假定一共有C个类别，像素i 属于类别c， <img src="https://img-blog.csdnimg.cn/20210301205031889.png" alt="[公式]"> ，那么像素 i 交叉熵损失为<br><img src="https://img-blog.csdnimg.cn/20210301205045192.png" alt="[公式]"></p>
+<p>因为要执行T次预测，因此损失也要取T次的平均，由此得到了公式 (1)。</p>
+<p>简单来说，贝叶斯神经网络或者MC Dropout能够捕获感知不确定性，额外添加的 <img src="https://img-blog.csdnimg.cn/20210301204955130.png" alt="[公式]"> 则用来捕获偶然不确定性。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/2021/05/01/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/2021-05-01-%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-What%20Uncertainties%20Do%20We%20Need%20in%20Bayesian%20Deep%20Learning%20for%20Computer%20Vision/">http://xishansnow.github.io/2021/05/01/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/2021-05-01-%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-What%20Uncertainties%20Do%20We%20Need%20in%20Bayesian%20Deep%20Learning%20for%20Computer%20Vision/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_12.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/05/01/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/2021-05-01-%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-Multi-Task%20Learning%20Using%20Uncertainty%20to%20Weigh%20Losses%20for%20Scene%20Geometry%20and%20Semantics/"><img class="prev-cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_12.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2021/05/01/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/2021-05-01-%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-Deep%20Learning%20is%20Not%20Good%20Enough/"><img class="next-cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_05.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info"></div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%EF%BC%9AWhat-Uncertainties-Do-We-Need-in-Bayesian-Deep-Learning-for-Computer-Vision"><span class="toc-text">深度学习中的不确定性：What Uncertainties Do We Need in Bayesian Deep Learning for Computer Vision</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-text">贝叶斯神经网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%84%9F%E7%9F%A5%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7"><span class="toc-text">感知不确定性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%81%B6%E7%84%B6%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7"><span class="toc-text">偶然不确定性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%86%E4%B8%A4%E7%A7%8D%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%BB%93%E5%90%88"><span class="toc-text">将两种不确定性结合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E5%BD%92%E4%BB%BB%E5%8A%A1"><span class="toc-text">回归任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%B1%BB%E4%BB%BB%E5%8A%A1"><span class="toc-text">分类任务</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (document.getElementsByClassName('mermaid').length) {
+  if (window.mermaidJsLoad) mermaid.init()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(() => {
+      window.mermaidJsLoad = true
+      mermaid.initialize({
+        theme: 'default',
+      })
+      false && mermaid.init()
+    })
+  }
+}</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: 'fb7f9ed2eecc530e7df2',
+      clientSecret: 'a016744e60828e5c99fc93a01d496a5a031196e2',
+      repo: 'blog_comment',
+      owner: 'xishansnow',
+      admin: ['xishansnow'],
+      id: '4530564c680a63238b42b7e9a2482c86',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script></div></body></html>
