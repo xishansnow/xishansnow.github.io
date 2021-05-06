@@ -47,11 +47,11 @@ menu:
     时间索引:  /archives/ || fas fa-archive
     标签索引:  /tags/ || fas fa-tags
     分类索引:  /categories/ || fas fa-folder-open   
-   链接 || fas fa-link:
+  链接 || fas fa-link:
     美食博主:  /link/food/ || fas fa-utensils
     摄影大神:  /link/photography || fas fa-camera
 
-   关于: /about/ || fas fa-heart
+  关于: /about/ || fas fa-heart
   #  Home: / || fas fa-home
   #  Archives: /archives/ || fas fa-archive
   #  Tags: /tags/ || fas fa-tags
