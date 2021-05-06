@@ -8,8 +8,8 @@
 #   name || link || icon
 
 menu:
-   主页: / || fas fa-home
-   地理知识图谱 ||fas fa-compass:
+  主页: / || fas fa-home
+  地理知识图谱 ||fas fa-compass:
     综述类文献:  /categories/地理知识图谱/地理知识图谱综述/ || fas fa-atom
     知识表示与建模:  /categories/地理知识图谱/地理知识表示与建模/ || fas fa-atom
     知识获取与融合:  /categories/地理知识图谱/地理知识获取与融合/ || fas fa-biohazard
@@ -17,33 +17,33 @@ menu:
     知识补全与推理:  /categories/地理知识图谱/地理知识补全与推理/ || fas fa-blender
     知识问答系统:  /categories/地理知识图谱/地理知识问答/ || fas fa-brain        
     应用案例:  /categories/地理知识图谱/地理知识应用案例/ || fas fa-archive    
-   时空大数据引擎 ||fas fa-compass:       
+  时空大数据引擎 ||fas fa-compass:       
     综述类文献:  /categories/时空大数据引擎/时空大数据引擎综述/ || fas fa-coins    
     矢量数据:  /categories/时空大数据引擎/矢量数据仓库/ || fas fa-align-left
     栅格数据:  /categories/时空大数据引擎/栅格数据仓库/ || fas fa-chess-board  
     轨迹数据:  /categories/时空大数据引擎/轨迹数据仓库/ || fas fa-code-branch    
     高性能计算: /categories/时空大数据引擎/地理空间高性能计算/ || fas fa-cogs       
-   GeoAI ||fas fa-compass:       
+  GeoAI ||fas fa-compass:       
     综述类文献:  /categories/GeoAI/GeoAI综述/ || fas fa-dove    
     地理空间表征学习:  /categories/GeoAI/地理空间表征学习/ || fas fa-barcode
     时空预测和空间插值:  /categories/GeoAI/时空预测和空间插值/ || fas fa-bacteria
     对地资源环境观测:  /categories/GeoAI/对地资源环境观测/ || fas fa-globe-asia
     地理文本语义分析:  /categories/GeoAI/地理文本语义分析/ || fas fa-atlas    
     空间统计学工具:  /categories/GeoAI/空间统计学工具/ || fas fa-bacteria
-   项目: /project/ || fas fa-cogs 
-   论文 || fas fa-book-open:
+  项目: /project/ || fas fa-cogs 
+  论文 || fas fa-book-open:
     《Bayesian Analysis with Python》: https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html   || fas fa-books
     《Doing Bayesian Data Analysis》: https://xishansnow.github.io/bayesianPrincipal/index.html   || fas fa-books
     《空间统计学》: https://xishansnow.github.io/spatialSTAT_CN/index.html   || fas fa-books
     《地理知识图谱》: https://xishansnow.github.io/geokg/index.html || fas fa-books
     # 学术论文:  /article/ || fas fa-books
-   摄影 || fas fa-camera-retro:
+  摄影 || fas fa-camera-retro:
     全部: /gallery/ || fas fa-images
     风光摄影: /gallery/landscape/ || fas fa-image
     肖像摄影: /gallery/portrait/ || fas fa-portrait
     人文摄影: /gallery/literal/ || fas fa-archive
     日常摄影: /gallery/dailylife/ || fas fa-camera
-   知识库||fas fa-compass:
+  知识库||fas fa-compass:
     时间索引:  /archives/ || fas fa-archive
     标签索引:  /tags/ || fas fa-tags
     分类索引:  /categories/ || fas fa-folder-open   
