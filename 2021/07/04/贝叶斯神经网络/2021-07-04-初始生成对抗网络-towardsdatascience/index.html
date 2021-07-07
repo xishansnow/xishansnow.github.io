@@ -1,0 +1,422 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>   初识生成对抗网络 (GAN)  | 西山晴雪的博客</title><meta name="keywords" content="神经网络,贝叶斯统计,生成模型,生成对抗网络"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="初识生成对抗网络 (GAN)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="   初识生成对抗网络 (GAN) ">
+<meta property="og:url" content="http://xishansnow.github.io/2021/07/04/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/2021-07-04-%E5%88%9D%E5%A7%8B%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C-towardsdatascience/index.html">
+<meta property="og:site_name" content="西山晴雪的博客">
+<meta property="og:description" content="初识生成对抗网络 (GAN)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_19.png">
+<meta property="article:published_time" content="2021-07-04T02:00:00.000Z">
+<meta property="article:modified_time" content="2021-07-07T03:57:16.945Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="神经网络">
+<meta property="article:tag" content="贝叶斯统计">
+<meta property="article:tag" content="生成模型">
+<meta property="article:tag" content="生成对抗网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_19.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/2021/07/04/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/2021-07-04-%E5%88%9D%E5%A7%8B%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C-towardsdatascience/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-07 11:57:16'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">76</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">184</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">43</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 地理知识图谱</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-atom"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%BB%BA%E6%A8%A1/"><i class="fa-fw fas fa-atom"></i><span> 知识表示与建模</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%8E%B7%E5%8F%96%E4%B8%8E%E8%9E%8D%E5%90%88/"><i class="fa-fw fas fa-biohazard"></i><span> 知识获取与融合</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86%E4%B8%8E%E6%9F%A5%E8%AF%A2/"><i class="fa-fw fas fa-box"></i><span> 知识管理与查询</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%A1%A5%E5%85%A8%E4%B8%8E%E6%8E%A8%E7%90%86/"><i class="fa-fw fas fa-blender"></i><span> 知识补全与推理</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E9%97%AE%E7%AD%94/"><i class="fa-fw fas fa-brain"></i><span> 知识问答系统</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B/"><i class="fa-fw fas fa-archive"></i><span> 应用案例</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 时空大数据引擎</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-coins"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E7%9F%A2%E9%87%8F%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-align-left"></i><span> 矢量数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E6%A0%85%E6%A0%BC%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-chess-board"></i><span> 栅格数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E8%BD%A8%E8%BF%B9%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-code-branch"></i><span> 轨迹数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E9%AB%98%E6%80%A7%E8%83%BD%E8%AE%A1%E7%AE%97/"><i class="fa-fw fas fa-cogs"></i><span> 高性能计算</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> GeoAI</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/GeoAI%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-dove"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E8%A1%A8%E5%BE%81%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-barcode"></i><span> 地理空间表征学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E9%A2%84%E6%B5%8B%E5%92%8C%E7%A9%BA%E9%97%B4%E6%8F%92%E5%80%BC/"><i class="fa-fw fas fa-bacteria"></i><span> 时空预测和空间插值</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%AF%B9%E5%9C%B0%E8%B5%84%E6%BA%90%E7%8E%AF%E5%A2%83%E8%A7%82%E6%B5%8B/"><i class="fa-fw fas fa-globe-asia"></i><span> 对地资源环境观测</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%9C%B0%E7%90%86%E6%96%87%E6%9C%AC%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/"><i class="fa-fw fas fa-atlas"></i><span> 地理文本语义分析</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E5%AD%A6%E5%B7%A5%E5%85%B7/"><i class="fa-fw fas fa-bacteria"></i><span> 空间统计学工具</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯统计</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%9F%BA%E7%A1%80%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/"><i class="fa-fw fas fa-dove"></i><span> 基础贝叶斯统计</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%88%86%E5%B1%82%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/"><i class="fa-fw fas fa-dove"></i><span> 分层贝叶斯统计</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-barcode"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-bacteria"></i><span> 贝叶斯深度学习</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%97%B6%E7%A9%BA%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fas fa-globe-asia"></i><span> 时空贝叶斯方法</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fas fa-books"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/DoingBayesianDataAnalysis/index.html"><i class="fa-fw fas fa-books"></i><span> 《Doing Bayesian Data Analysis》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BDL_Book/index.html"><i class="fa-fw fas fa-books"></i><span> 《Bayesian Neural Networks》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fas fa-books"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/geokg/index.html"><i class="fa-fw fas fa-books"></i><span> 《地理知识图谱》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://exacity.github.io/deeplearningbook-chinese/"><i class="fa-fw fas fa-books"></i><span> 《深度学习》</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-camera-retro"></i><span> 摄影</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 全部</span></a></li><li><a class="site-page child" href="/gallery/landscape/"><i class="fa-fw fas fa-image"></i><span> 风光摄影</span></a></li><li><a class="site-page child" href="/gallery/portrait/"><i class="fa-fw fas fa-portrait"></i><span> 肖像摄影</span></a></li><li><a class="site-page child" href="/gallery/literal/"><i class="fa-fw fas fa-archive"></i><span> 人文摄影</span></a></li><li><a class="site-page child" href="/gallery/dailylife/"><i class="fa-fw fas fa-camera"></i><span> 日常摄影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 知识库</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/food/"><i class="fa-fw fas fa-utensils"></i><span> 美食博主</span></a></li><li><a class="site-page child" href="/link/photography"><i class="fa-fw fas fa-camera"></i><span> 摄影大神</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_19.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 地理知识图谱</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-atom"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%A1%A8%E7%A4%BA%E4%B8%8E%E5%BB%BA%E6%A8%A1/"><i class="fa-fw fas fa-atom"></i><span> 知识表示与建模</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%8E%B7%E5%8F%96%E4%B8%8E%E8%9E%8D%E5%90%88/"><i class="fa-fw fas fa-biohazard"></i><span> 知识获取与融合</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86%E4%B8%8E%E6%9F%A5%E8%AF%A2/"><i class="fa-fw fas fa-box"></i><span> 知识管理与查询</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E8%A1%A5%E5%85%A8%E4%B8%8E%E6%8E%A8%E7%90%86/"><i class="fa-fw fas fa-blender"></i><span> 知识补全与推理</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E9%97%AE%E7%AD%94/"><i class="fa-fw fas fa-brain"></i><span> 知识问答系统</span></a></li><li><a class="site-page child" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B/"><i class="fa-fw fas fa-archive"></i><span> 应用案例</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 时空大数据引擎</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-coins"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E7%9F%A2%E9%87%8F%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-align-left"></i><span> 矢量数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E6%A0%85%E6%A0%BC%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-chess-board"></i><span> 栅格数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E8%BD%A8%E8%BF%B9%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/"><i class="fa-fw fas fa-code-branch"></i><span> 轨迹数据</span></a></li><li><a class="site-page child" href="/categories/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E9%AB%98%E6%80%A7%E8%83%BD%E8%AE%A1%E7%AE%97/"><i class="fa-fw fas fa-cogs"></i><span> 高性能计算</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> GeoAI</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/GeoAI%E7%BB%BC%E8%BF%B0/"><i class="fa-fw fas fa-dove"></i><span> 综述类文献</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E8%A1%A8%E5%BE%81%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-barcode"></i><span> 地理空间表征学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E9%A2%84%E6%B5%8B%E5%92%8C%E7%A9%BA%E9%97%B4%E6%8F%92%E5%80%BC/"><i class="fa-fw fas fa-bacteria"></i><span> 时空预测和空间插值</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%AF%B9%E5%9C%B0%E8%B5%84%E6%BA%90%E7%8E%AF%E5%A2%83%E8%A7%82%E6%B5%8B/"><i class="fa-fw fas fa-globe-asia"></i><span> 对地资源环境观测</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%9C%B0%E7%90%86%E6%96%87%E6%9C%AC%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90/"><i class="fa-fw fas fa-atlas"></i><span> 地理文本语义分析</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E5%AD%A6%E5%B7%A5%E5%85%B7/"><i class="fa-fw fas fa-bacteria"></i><span> 空间统计学工具</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯统计</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%9F%BA%E7%A1%80%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/"><i class="fa-fw fas fa-dove"></i><span> 基础贝叶斯统计</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%88%86%E5%B1%82%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/"><i class="fa-fw fas fa-dove"></i><span> 分层贝叶斯统计</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-barcode"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-bacteria"></i><span> 贝叶斯深度学习</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%97%B6%E7%A9%BA%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fas fa-globe-asia"></i><span> 时空贝叶斯方法</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fas fa-books"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/DoingBayesianDataAnalysis/index.html"><i class="fa-fw fas fa-books"></i><span> 《Doing Bayesian Data Analysis》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BDL_Book/index.html"><i class="fa-fw fas fa-books"></i><span> 《Bayesian Neural Networks》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fas fa-books"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/geokg/index.html"><i class="fa-fw fas fa-books"></i><span> 《地理知识图谱》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://exacity.github.io/deeplearningbook-chinese/"><i class="fa-fw fas fa-books"></i><span> 《深度学习》</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-camera-retro"></i><span> 摄影</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 全部</span></a></li><li><a class="site-page child" href="/gallery/landscape/"><i class="fa-fw fas fa-image"></i><span> 风光摄影</span></a></li><li><a class="site-page child" href="/gallery/portrait/"><i class="fa-fw fas fa-portrait"></i><span> 肖像摄影</span></a></li><li><a class="site-page child" href="/gallery/literal/"><i class="fa-fw fas fa-archive"></i><span> 人文摄影</span></a></li><li><a class="site-page child" href="/gallery/dailylife/"><i class="fa-fw fas fa-camera"></i><span> 日常摄影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 知识库</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 链接</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/food/"><i class="fa-fw fas fa-utensils"></i><span> 美食博主</span></a></li><li><a class="site-page child" href="/link/photography"><i class="fa-fw fas fa-camera"></i><span> 摄影大神</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">   初识生成对抗网络 (GAN) </h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-07-04T02:00:00.000Z" title="发表于 2021-07-04 10:00:00">2021-07-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-07-07T03:57:16.945Z" title="更新于 2021-07-07 11:57:16">2021-07-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/">贝叶斯统计</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">贝叶斯深度学习</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">贝叶斯神经网络</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">7.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>21分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="初识生成对抗网络-GAN"><a href="#初识生成对抗网络-GAN" class="headerlink" title="初识生成对抗网络 (GAN)"></a>初识生成对抗网络 (GAN)</h1><p>原文链接: <a target="_blank" rel="noopener" href="https://towardsdatascience.com/understanding-generative-adversarial-networks-gans-cd6e4651a29">原文</a></p>
+<h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1 介绍"></a>1 介绍</h2><p>Yann LeCun将其描述为「过去10年机器学习中最有趣的想法」。当然，来自深度学习领域这样一位杰出研究人员的这种称赞总是对我们所谈论的主题的一个很好的广告！而且，事实上，剖成对抗性网络（甘斯的简称）都产生了巨大的成功，因为他们在2014年的一篇文章中介绍了由Ian J.古德费洛和共同作者<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1406.2661">剖成对抗性篮网</a>。</p>
+<p>那么生成对抗网络是什么？是什么让他们如此「有趣」？在这篇文章中，我们将看到对抗性训练是一个启发性的想法，其简洁美观，代表了机器学习的真正概念进展，尤其是生成模型（与反向传播相同的方式是一个简单但非常聪明的技巧，使神经网络的基本思想变得如此受欢迎和高效）。</p>
+<p>在进入细节之前，让我们快速概述一下<a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/gan/">GAN</a>的用途。生成对抗网络属于一组生成模型。这意味着他们能够生成/生成（我们将看到如何）新内容。为了说明这种「生成模型」的概念，我们可以看一些用GAN获得的结果的众所周知的例子。</p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/bayesian_stat_20210705180745b9.webp" alt=""></p>
+<p>Ian Goodfellow和共同作者的GAN能力的例证。这些是由生成对抗网络在对两个数据集进行训练后生成的样本：MNIST和TFD。对于两者，最右边的列包含与直接相邻生成的样本最接近的真实数据。这向我们展示了生成的数据是真正生成的，而不仅仅是由网络记忆。（来源：「Generative Adversarial Nets」论文）</p>
+<p>当然，这种生成新内容的能力使GAN看起来有点「神奇」，至少在第一眼看上去。在以下部分中，我们将克服GAN的明显魔力，以深入了解这些模型背后的想法，数学和建模。我们不仅会讨论生成对抗网络所依赖的基本概念，而且我们将逐步建立并从一开始就推出导致这些想法的推理。</p>
+<p>不用多说，让我们一起重新发现GAN！</p>
+<blockquote>
+<p><strong>注意</strong>：虽然我们试图使本文尽可能独立，但仍需要机器学习的基本先验知识。然而，大多数概念将在需要时保留，否则将提供一些参考。我们真的试图让这篇文章尽可能顺利阅读。不要犹豫，在评论部分提及您希望阅读的更多内容（关于该主题的可能的其他文章）。</p>
+</blockquote>
+<p><strong>大纲</strong></p>
+<p>在下面的第一节中，我们将讨论从给定分布生成随机变数的过程。然后，在第2节中，我们将通过一个例子展示GAN试图解决的问题可以表示为随机变数生成问题。在第3节中，我们将讨论基于匹配的生成网络，并展示它们如何回答第2节中描述的问题。最后在第4节中，我们将介绍GAN。更具体地说，我们将展示具有其损失功能的一般架构，并且我们将与之前的所有部分建立链接。</p>
+<p>-</p>
+<h2 id="2-生成随机变数"><a href="#2-生成随机变数" class="headerlink" title="2 生成随机变数"></a>2 生成随机变数</h2><p>在本节中，我们将讨论生成随机变数的过程：我们提醒一些现有方法，尤其是逆变换方法，它允许从简单的均匀随机变数生成复杂的随机变数。尽管所有这些看起来与我们的物质主题GAN相差甚远，但我们将在下一节中看到与生成模型存在的深层联系。</p>
+<h3 id="2-1-可以伪随机生成均匀随机变数"><a href="#2-1-可以伪随机生成均匀随机变数" class="headerlink" title="2.1 可以伪随机生成均匀随机变数"></a>2.1 可以伪随机生成均匀随机变数</h3><p>计算机基本上是确定性的。因此，从理论上讲，生成真正随机的数字是不可能的（即使我们可以说「真正的随机性是什么？」这个问题很困难）。但是，可以定义生成数字序列的演算法，其特性非常接近理论随机数序列的属性。特别是，计算机能够使用伪随机数生成器生成一系列数字，这些数字近似地遵循0和1之间的均匀随机分布。统一的情况是一个非常简单的情况，可以在其上建立更复杂的随机变数不同的方法。</p>
+<h3 id="2-2-随机变数表示为操作或过程的结果"><a href="#2-2-随机变数表示为操作或过程的结果" class="headerlink" title="2.2 随机变数表示为操作或过程的结果"></a>2.2 随机变数表示为操作或过程的结果</h3><p>存在旨在产生更复杂的随机变数的不同技术。其中我们可以找到，例如，逆变换方法，拒绝抽样，Metropolis-Hasting演算法等。所有这些方法都依赖于不同的数学技巧，这些技巧主要在于表示我们想要生成的随机变数作为操作（通过更简单的随机变数）或过程的结果。</p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Rejection_sampling">拒绝抽样</a>表示随机变数是一个过程的结果，该过程不是从复杂分布中采样，而是从众所周知的简单分布中采样，并根据某些条件接受或拒绝采样值。重复此过程直到采样值被接受，我们可以证明，在正确接受条件下，有效采样的值将遵循正确的分布。</p>
+<p>在<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm">Metropolis-Hasting演算法中</a>，想法是找到马尔可夫链（MC），使得该MC的静态分布对应于我们想要对随机变数进行采样的分布。一旦这个MC发现，我们可以在这个MC上模拟足够长的轨迹来考虑我们已经达到稳定状态，然后我们以这种方式获得的最后一个值可以被认为是从感兴趣的分布中得出的。</p>
+<p>我们不会再进一步​​了解拒绝抽样和Metropolis-Hasting的细节，因为这些方法不会引导我们遵循GAN背后的概念（尽管如此，感兴趣的读者可以参考指向的维基百科文章及其中的链接） 。但是，让我们更多地关注逆变换方法。</p>
+<h3 id="2-3-逆变换方法"><a href="#2-3-逆变换方法" class="headerlink" title="2.3 逆变换方法"></a>2.3 逆变换方法</h3><p>逆变换方法的想法只是为了表示我们的复杂性 – 在本文中，「复杂」应该始终被理解为「不简单」而不是数学意义 – 随机变数作为应用于函数的函数的结果统一随机变数我们知道如何生成。</p>
+<p>我们在下面的一个例子中考虑。设X是我们想要采样的复杂随机变数，U是[0,1]上的均匀随机变数，我们知道如何从中采样。我们提醒随机变数由其<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cumulative_distribution_function">累积分布函数</a>（CDF）完全定义。随机变数的CDF是从随机变数的定义域到区间[0,1]的函数，并且在一个维度中定义，使得</p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125538.jpg" alt=""></p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125538.jpg" alt=""></p>
+<p>在我们的均匀随机变数U的特定情况下，我们有</p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125546.jpg" alt=""></p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125546.jpg" alt=""></p>
+<p>为简单起见，我们在此假设函数CDF_X是可逆的并且表示其反函数</p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125555.jpg" alt=""></p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125555.jpg" alt=""></p>
+<p>（通过使用函数的广义逆，可以很容易地将该方法扩展到不可逆的情况，但它实际上不是我们想要关注的主要点）。然后，如果我们定义</p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125605.jpg" alt=""></p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125605.jpg" alt=""></p>
+<p>我们有</p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125616.jpg" alt=""></p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125616.jpg" alt=""></p>
+<p>我们可以看到，Y和X具有相同的CDF，然后定义相同的随机变数。因此，通过如上定义Y（作为均匀随机变数的函数），我们设法定义了具有目标分布的随机变数。</p>
+<p>总而言之，逆变换方法是通过使均匀随机变数经过精心设计的「变换函数」（逆CDF）来生成遵循给定分布的随机变数的方式。事实上，这种「逆变换方法」的概念可以扩展到「变换方法」的概念，「变换方法」更广泛地说，它是由一些较简单的随机变数生成随机变数（不一定是均匀的，然后变换函数是不再是逆CDF）。从概念上讲，「变换函数」的目的是使初始概率分布变形/重塑：变换函数从初始分布与目标分布相比过高，并将其置于过低的位置。</p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/bayesian_stat_202107051808121b.webp" alt=""></p>
+<p>逆变换方法的图示。蓝色：均匀分布在[0,1]上。橙色：标准高斯分布。灰色：从均匀到高斯分布的映射（逆CDF）。</p>
+<p>-</p>
+<h2 id="3-生成模型"><a href="#3-生成模型" class="headerlink" title="3 生成模型"></a>3 生成模型</h2><h3 id="3-1-生成非常复杂的随机变量"><a href="#3-1-生成非常复杂的随机变量" class="headerlink" title="3.1 生成非常复杂的随机变量"></a>3.1 生成非常复杂的随机变量</h3><p>假设我们有兴趣生成大小为n乘n像素的狗的黑白方形图像。我们可以将每个数据重新整形为N = n×n维向量（通过将列堆叠在彼此之上），使得狗的图像可以由向量表示。然而，这并不意味着所有的矢量都代表一只狗形状回到正方形！因此，我们可以说，有效地给出看起来像狗的东西的N维向量根据整个N维向量空间上的非常特定的概率分布来分布（该空间的某些点很可能代表狗，而它是对其他人来说极不可能）。同样的精神，在这个N维向量空间上存在猫，鸟等图像的概率分布。</p>
+<p>然后，生成狗的新图像的问题等同于在N维向量空间上生成跟随「狗概率分布」的新向量的问题。事实上，我们面临着针对特定概率分布生成随机变数的问题。</p>
+<p>在这一点上，我们可以提到两件重要的事情。首先，我们提到的「狗概率分布」是在非常大的空间上非常复杂的分布。其次，即使我们可以假设存在这样的基础分布（实际上存在看起来像狗的图像而其他图像看起来不像），我们显然不知道如何明确地表达这种分布。之前的两点都使得从该分布生成随机变数的过程非常困难。然后让我们尝试解决以下两个问题。</p>
+<h3 id="3-2-使用神经网络的变换方法作为函数"><a href="#3-2-使用神经网络的变换方法作为函数" class="headerlink" title="3.2 使用神经网络的变换方法作为函数"></a>3.2 使用神经网络的变换方法作为函数</h3><p>当我们尝试生成狗的新图像时，我们的第一个问题是N维向量空间上的「狗概率分布」是一个非常复杂的问题，我们不知道如何直接生成复杂的随机变数。然而，正如我们非常清楚如何生成N个不相关的均匀随机变数，我们可以使用变换方法。为此，我们需要将N维随机变数表示为应用于简单N维随机变数的非常复杂函数的结果！</p>
+<p>在这里，我们可以强调这样的事实：找到变换函数并不像我们在描述逆变换方法时所做的那样只采用累积分布函数（我们显然不知道）的闭式逆。转换函数无法明确表达，因此，我们必须从数据中学习它。</p>
+<p>在这些情况下，大多数情况下，非常复杂的功能自然意味着神经网络建模。然后，我们的想法是通过一个神经网络对变换函数进行建模，该神经网络将一个简单的N维均匀随机变数作为输入，并作为输出返回另一个N维随机变数，在训练之后，该随机变数应遵循正确的「狗概率分布」 。一旦设计了网络架构，我们仍然需要对其进行培训。在接下来的两节中，我们将讨论培训这些生成网络的两种方法，包括GAN背后的对抗训练的想法！</p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/bayesian_stat_20210705180719ab.webp" alt=""></p>
+<p>使用神经网络的生成模型概念的插图。显然，我们真正谈论的维度远高于此处所表示的维度。</p>
+<p>-</p>
+<h2 id="4-生成匹配网络"><a href="#4-生成匹配网络" class="headerlink" title="4 生成匹配网络"></a>4 生成匹配网络</h2><blockquote>
+<p><strong>免责声明</strong>：「生成匹配网络」的名称不是标准的。但是，我们可以在文献中找到，例如，「Generative Moments Matching Networks」或「Generative Features Matching Networks」。我们只是想在这里使用稍微更一般的面额来描述我们所描述的内容。</p>
+</blockquote>
+<h3 id="4-1-训练生成模型"><a href="#4-1-训练生成模型" class="headerlink" title="4.1 训练生成模型"></a>4.1 训练生成模型</h3><p>到目前为止，我们已经证明了我们生成狗的新图像的问题可以被重新描述为在N维向量空间中生成跟随「狗概率分布」的随机向量的问题，并且我们建议使用变换方法，用神经网络来模拟变换函数。</p>
+<p>现在，我们仍然需要训练（优化）网络来表达正确的变换功能。为此，我们可以建议两种不同的训练方法：直接训练方法和间接训练方法。直接训练方法包括比较真实和生成的概率分布，并通过网络反向传播差异（误差）。这是规则生成匹配网络（GMNs）的想法。对于间接训练方法，我们不直接比较真实和生成的分布。相反，我们通过使这两个分布经过选择的下游任务来训练生成网络，使得生成网络相对于下游任务的优化过程将强制生成的分布接近真实分布。最后一个想法是生成对抗网络（GAN）背后的一个，我们将在下一节中介绍。但就目前而言，让我们从直接方法和GMN开始。</p>
+<h3 id="4-2-比较基于样本的两个概率分布"><a href="#4-2-比较基于样本的两个概率分布" class="headerlink" title="4.2 比较基于样本的两个概率分布"></a>4.2 比较基于样本的两个概率分布</h3><p>如上所述，GMN的想法是通过直接将生成的分布与真实分布进行比较来训练生成网络。但是，我们不知道如何明确表达真正的「狗概率分布」，我们也可以说生成的分布过于复杂而无法明确表达。因此，基于显式表达式的比较是不可能的。但是，如果我们有一种比较基于样本的概率分布的方法，我们可以使用它来训练网络。实际上，我们有一个真实数据的样本，我们可以在训练过程的每次迭代中生成生成数据的样本。</p>
+<p>虽然理论上可以使用任何能够有效比较基于样本的两个分布的距离（或相似性度量），但我们可以特别提到最大均值差异（MMD）方法。MMD定义了可以基于这些分布的样本计算（估计）的两个概率分布之间的距离。虽然它不完全超出了本文的范围，但我们决定不再花费更多时间来描述MDD。但是，我们的项目很快就会发布一篇文章，其中将包含有关它的更多详细信息。想要了解MMD的更多信息的读者可以参考<a target="_blank" rel="noopener" href="http://www.gatsby.ucl.ac.uk/~gretton/papers/testing_workshop.pdf">这些幻灯片</a>，<a target="_blank" rel="noopener" href="http://www.gatsby.ucl.ac.uk/~gretton/papers/GreBorRasSchSmo07.pdf">本文</a>或<a target="_blank" rel="noopener" href="http://www.jmlr.org/papers/volume13/gretton12a/gretton12a.pdf">本文</a>。</p>
+<h3 id="4-3-反向传播分布匹配错误"><a href="#4-3-反向传播分布匹配错误" class="headerlink" title="4.3 反向传播分布匹配错误"></a>4.3 反向传播分布匹配错误</h3><p>因此，一旦我们定义了一种基于样本比较两种分布的方法，我们就可以定义GMN中生成网络的训练过程。给定具有均匀概率分布的随机变数作为输入，我们希望所生成的输出的概率分布是「狗概率分布」。然后，GMN的想法是通过重复以下步骤来优化网络：</p>
+<ul>
+<li>产生一些统一的输入</li>
+<li>使这些输入通过网络并收集生成的输出</li>
+<li>比较真实的「狗概率分布」和基于可用样本生成的一个（例如计算真实狗图像样本与生成的样本的样本之间的MMD距离）</li>
+<li>使用反向传播来进行梯度下降的一个步骤，以降低真实分布和生成分布之间的距离（例如MMD）</li>
+</ul>
+<p>如上所述，当遵循这些步骤时，我们在网络上应用梯度下降，其具有损失函数，该函数是当前迭代中的真实分布与生成分布之间的距离。</p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/bayesian_stat_2021070518083213.webp" alt=""></p>
+<p>生成匹配网络采用简单的随机输入，生成新数据，直接比较生成数据的分布与真实数据的分布，并反向传播匹配误差以训练网络。</p>
+<p>-</p>
+<h2 id="5-生成对抗网络"><a href="#5-生成对抗网络" class="headerlink" title="5 生成对抗网络"></a>5 生成对抗网络</h2><h3 id="5-1-「间接」训练方法"><a href="#5-1-「间接」训练方法" class="headerlink" title="5.1 「间接」训练方法"></a>5.1 「间接」训练方法</h3><p>上面提出的「直接」方法在训练生成网络时直接比较生成的分布与真实分布。规则GAN的好主意在于用间接的替代方式替换这种直接比较，后者采用这两种分布的下游任务的形式。然后对该任务进行生成网络的训练，使得它迫使所生成的分布越来越接近真实分布。</p>
+<p>GAN的下游任务是真实样本和生成样本之间的歧视任务。或者我们可以说「非歧视」任务，因为我们希望歧视尽可能地失败。因此，在GAN架构中，我们有一个鉴别器，它可以获取真实数据和生成数据的样本，并尝试尽可能地对它们进行分类，以及一个经过培训的发生器，以尽可能地欺骗鉴别器。让我们看一个简单的例子，为什么我们提到的直接和间接方法理论上应该导致相同的最优生成器。</p>
+<h3 id="5-2-理想的情况：完美的发电机和鉴别器"><a href="#5-2-理想的情况：完美的发电机和鉴别器" class="headerlink" title="5.2 理想的情况：完美的发电机和鉴别器"></a>5.2 理想的情况：完美的发电机和鉴别器</h3><p>为了更好地理解为什么训练生成器以欺骗鉴别器将导致与直接训练生成器以匹配目标分布相同的结果，让我们采用简单的一维示例。我们暂时忘记了如何表示生成器和鉴别器，并将它们视为抽象概念（将在下一小节中指定）。而且，两者都被认为是「完美的」（具有无限的容量），因为它们不受任何类型（参数化）模型的约束。</p>
+<p>假设我们有一个真正的分布，例如一维高斯分布，并且我们想要一个从这个概率分布中采样的生成器。我们所谓的「直接」训练方法将包括迭代地调整生成器（梯度下降迭代）以校正真实分布和生成分布之间的测量差异/误差。最后，假设优化过程完美，我们应该最终得到与真实分布完全匹配的生成分布。</p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/bayesian_stat_20210705180841ab.webp" alt=""></p>
+<p>直接匹配方法的概念的例证。蓝色的分布是真实的，而生成的分布用橙色表示。通过迭代迭代，我们比较两个分布并通过梯度下降步骤调整网络权重。这里比较是在均值和方差上进行的（类似于截断矩匹配方法）。请注意（显然）这个例子非常简单，不需要迭代方法：目的只是为了说明上面给出的直觉。</p>
+<p>对于「间接」方法，我们还必须考虑一个鉴别器。我们现在假设这个鉴别器是一种oracle，它确切知道什么是真实和生成的分布，并且能够根据这些信息预测任何给定点的类（「真」或「生成」）。如果这两个分布很明显，那么鉴别器将能够轻松地进行分类，并且可以高度自信地将我们呈现给它的大多数点分类。如果我们想欺骗鉴别器，我们必须使生成的分布接近真实的分布。当两个分布在所有点上相等时，鉴别器将最难预测类：在这种情况下，</p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/bayesian_stat_20210705180911b3.webp" alt=""></p>
+<p>针对对抗方法的直觉。蓝色分布是真实的，橙色是生成的。在灰色中，右边有相应的y轴，如果它选择每个点中密度较高的类（假设「真」和「生成」数据的比例相等），我们就会显示鉴别器的真实概率。两个分布越接近，鉴别器就越错误。训练时，目标是将「绿色区域」（生成的分布太高）移向红色区域（生成的分布太低）。</p>
+<p>在这一点上，似乎有理由怀疑这种间接方法是否真的是一个好主意。实际上，它似乎更复杂（我们必须基于下游任务而不是直接基于分布来优化生成器）并且它需要我们在此认为是给定oracle的鉴别器，但实际上，它既不是已知的也不完美。对于第一点，直接比较基于样本的两个概率分布的难度抵消了间接方法的明显更高的复杂性。对于第二点，很明显，鉴别器是未知的。但是，它可以学到！</p>
+<h3 id="5-3-近似：对抗性神经网络"><a href="#5-3-近似：对抗性神经网络" class="headerlink" title="5.3 近似：对抗性神经网络"></a>5.3 近似：对抗性神经网络</h3><p>现在让我们描述采用GANs架构中的生成器和鉴别器的具体形式。生成器是一个模拟转换函数的神经网络。它将一个简单的随机变数作为输入，并且必须在训练后返回一个跟随目标分布的随机变数。由于它非常复杂和未知，我们决定用另一个神经网络对鉴别器进行建模。该神经网络模拟判别函数。它将一个点（在我们的狗示例中为N维向量）作为输入，并将该点的概率作为输出返回为「真」。</p>
+<p>请注意，我们现在强加一个参数化模型来表达生成器和鉴别器（而不是前一小节中的理想化版本）的事实，实际上并没有对上面给出的理论论证/直觉产生巨大影响：我们只是然后，在一些参数化空间而不是理想的全空间中工作，因此，在理想情况下我们应达到的最佳点可以被视为由参数化模型的精确容量「舍入」。</p>
+<p>一旦定义，两个网络就可以联合（同时）进行相反的目标训练：</p>
+<ul>
+<li>生成器的目标是欺骗鉴别器，因此训练生成神经网络以最大化最终分类错误（真实数据和生成数据之间）</li>
+<li>鉴别器的目标是检测伪造的数据，因此训练判别神经网络以最小化最终的分类错误</li>
+</ul>
+<p>因此，在训练过程的每次迭代中，更新生成网络的权重以增加分类错误（错误梯度上升到生成器的参数），同时更新判别网络的权重以减少此错误（误差梯度下降超过鉴别器的参数）。</p>
+<p><img src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/articles/bayesian_stat_20210705180921a3.webp" alt=""></p>
+<p>生成对抗网络表示。生成器将简单随机变数作为输入并生成新数据。鉴别器采用「真实」和「生成」数据并尝试区分它们，构建分类器。生成器的目标是欺骗鉴别器（通过将尽可能多的生成数据与真实数据混合来增加分类错误），并且鉴别器的目标是区分真实数据和生成数据。</p>
+<p>这些相反的目标和两个网络的对抗性训练的隐含概念解释了「对抗性网络」的名称：两个网络都试图相互击败，这样做，它们都变得越来越好。他们之间的竞争使这两个网络在各自的目标方面「进步」。从博弈论的角度来看，我们可以将此设置视为极小极大双玩家游戏，其中均衡状态对应于发生器从精确目标分布生成数据并且鉴别器预测「真实」或「生成」的情况「它接收的任何一点的概率为1/2。</p>
+<p>-</p>
+<h2 id="6-关于GAN的数学细节"><a href="#6-关于GAN的数学细节" class="headerlink" title="6 关于GAN的数学细节"></a>6 关于GAN的数学细节</h2><blockquote>
+<p><strong>注意</strong>：本节更具技术性，对于全面了解GAN并非绝对必要。所以，现在不想读一些数学的读者可以暂时跳过这一部分。对于其他人，让我们看看上面给出的直觉是如何在数学上形式化的。</p>
+<p><strong>放弃</strong>：下面的等式不是Ian Goodfellow的文章。我们在这里提出另一个数学形式化有两个原因：第一，保持更接近上面给出的直觉，第二，因为原始论文的方程已经非常清楚，只是重写它们是没有用的。另请注意，我们绝对不会参与与不同可能的损失函数相关的实际考虑（消失梯度或其他）。我们强烈建议读者也要看看原始论文的方程式：主要区别在于Ian Goodfellow和共同作者使用交叉熵误差而不是绝对误差（正如我们所做的那样）。此外，在下文中我们假设具有无限容量的发生器和鉴别器。</p>
+</blockquote>
+<p>神经网络建模本质上需要定义两件事：架构和损失函数。我们已经描述了生成对抗网络的架构。它包含两个网络：</p>
+<ul>
+<li>生成网络G（。），其采用密度为p_z的随机输入z，并返回输出x_g = G（z），该输出应遵循（训练后）目标概率分布</li>
+<li>一个判别网络D（。），它取一个可以是「真」的输入x（x_t，其密度用p_t表示）或「生成」的一个（x_g，其密度p_g是由密度p_z引起的密度通过G）并将x的概率D（x）返回为「真实」数据</li>
+</ul>
+<p>现在让我们仔细看看GAN的「理论」损失函数。如果我们以相同的比例向鉴别器「真实」和「生成」数据发送，则鉴别器的预期绝对误差可以表示为</p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125800.jpg" alt=""></p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125800.jpg" alt=""></p>
+<p>生成器的目标是欺骗鉴别器，其目标是能够区分真实数据和生成数据。因此，在训练生成器时，我们希望最大化此错误，同时我们尝试将其最小化以用于鉴别器。它给了我们</p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125809.jpg" alt=""></p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125809.jpg" alt=""></p>
+<p>对于任何给定的发生器G（以及诱导概率密度p_g），最佳可能的鉴别器是最小化的鉴别器</p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125820.jpg" alt=""></p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125820.jpg" alt=""></p>
+<p>为了最小化（相对于D）这个积分，我们可以最小化x的每个值的积分内的函数。然后，它为给定的发电机定义最佳可能的鉴别器</p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125831.jpg" alt=""></p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125831.jpg" alt=""></p>
+<p>（事实上​​，最好的因为x值，使得p_t（x）= p_g（x）可以用另一种方式处理，但对于后面的内容并不重要）。然后我们搜索G最大化</p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125841.jpg" alt=""></p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125841.jpg" alt=""></p>
+<p>同样，为了最大化（相对于G）这个积分，我们可以最大化x的每个值的积分内的函数。由于密度p_t独立于发电机G，我们不能比设置G更好</p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125850.jpg" alt=""></p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125850.jpg" alt=""></p>
+<p>当然，由于p_g是应该与1整合的概率密度，我们必然拥有最佳的G</p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125859.jpg" alt=""></p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125859.jpg" alt=""></p>
+<p>因此，我们已经证明，在具有无限容量发生器和鉴别器的理想情况下，对抗性设置的最佳点使得发生器产生与真密度相同的密度，并且鉴别器不能比真实的更好。一个案例中有两个，就像直觉告诉我们的那样。最后，还要注意G最大化</p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125910.jpg" alt=""></p>
+<p><img src="https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-07-15-125910.jpg" alt=""></p>
+<p>在这种形式下，我们最好看到G想要最大化鉴别器出错的预期概率。</p>
+<p>-</p>
+<h2 id="7-小贴士"><a href="#7-小贴士" class="headerlink" title="7 小贴士"></a>7 小贴士</h2><p>本文的主要内容是：</p>
+<ul>
+<li>计算机基本上可以生成简单的伪随机变数（例如，它们可以生成非常接近均匀分布的变数）</li>
+<li>存在不同的方法来生成更复杂的随机变数，包括「变换方法」的概念，其包括将随机变数表示为一些更简单的随机变数的函数。</li>
+<li>在机器学习中，生成模型试图从给定（复杂）概率分布生成数据</li>
+<li>深度学习生成模型被建模为神经网络（非常复杂的函数），它将一个简单的随机变数作为输入，并返回一个跟随目标分布的随机变数（「变换方法」）</li>
+<li>这些生成网络可以「直接」训练（通过比较生成数据与真实分布的分布）：这就是生成匹配网络的思想</li>
+<li>这些生成网络也可以「间接」训练（通过试图欺骗同时训练的另一个网络来区分「生成的」数据和「真实」数据）：这就是生成对抗网络的想法</li>
+</ul>
+<p>即使围绕GAN的「炒作」可能有点夸张，我们可以说Ian Goodfellow及其合着者提出的对抗性训练的想法确实很棒。这种扭曲损失函数从直接比较到间接比较的方式实际上可以激发深度学习领域的进一步工作。总而言之，让我们说我们不知道GAN的概念是否真的是「机器学习中过去10年中最有趣的想法」……但很明显它至少是最有趣的一个！</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/2021/07/04/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/2021-07-04-%E5%88%9D%E5%A7%8B%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C-towardsdatascience/">http://xishansnow.github.io/2021/07/04/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/2021-07-04-%E5%88%9D%E5%A7%8B%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C-towardsdatascience/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a><a class="post-meta__tags" href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/">贝叶斯统计</a><a class="post-meta__tags" href="/tags/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/">生成模型</a><a class="post-meta__tags" href="/tags/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/">生成对抗网络</a></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_19.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/07/07/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/2021-05-01-BDL-%E5%A4%9A%E4%BB%BB%E5%8A%A1%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7/"><img class="prev-cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/book_15.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2021/07/04/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/2021-07-04-%E5%88%9D%E8%AF%86%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8-towardsdatascience/"><img class="next-cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_06.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">   初识变分自编码器  (VAE)  </div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/07/01/贝叶斯神经网络/2021-07-01-变分自编码器教程-卡耐基梅隆/" title="   变分自编码器 (VAE) 教程 "><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_01.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-01</div><div class="title">   变分自编码器 (VAE) 教程 </div></div></a></div><div><a href="/2021/07/04/贝叶斯神经网络/2021-07-04-初识变分自编码器-towardsdatascience/" title="   初识变分自编码器  (VAE)  "><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_06.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-04</div><div class="title">   初识变分自编码器  (VAE)  </div></div></a></div><div><a href="/2021/04/10/机器学习与深度学习/2021-04-10-神经网络的优化方法/" title=" 深度神经网络的优化方法 "><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_10.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-10</div><div class="title"> 深度神经网络的优化方法 </div></div></a></div><div><a href="/2021/06/02/贝叶斯统计/2021-06-02-变分推断的傻瓜书/" title="   变分推断的傻瓜书  "><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_06.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-02</div><div class="title">   变分推断的傻瓜书  </div></div></a></div><div><a href="/2021/05/17/贝叶斯神经网络/2021-05-17-BDL-受限玻尔兹曼机/" title="   受限玻尔兹曼机与深度置信网络  "><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_08.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-17</div><div class="title">   受限玻尔兹曼机与深度置信网络  </div></div></a></div><div><a href="/2021/05/17/贝叶斯统计/2021-05-18-PGM-高斯混合模型/" title="   高斯混合模型  "><img class="cover" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/cover/coffe_06.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-17</div><div class="title">   高斯混合模型  </div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E8%AF%86%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C-GAN"><span class="toc-text">初识生成对抗网络 (GAN)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%8B%E7%BB%8D"><span class="toc-text">1 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E5%8F%98%E6%95%B0"><span class="toc-text">2 生成随机变数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%8F%AF%E4%BB%A5%E4%BC%AA%E9%9A%8F%E6%9C%BA%E7%94%9F%E6%88%90%E5%9D%87%E5%8C%80%E9%9A%8F%E6%9C%BA%E5%8F%98%E6%95%B0"><span class="toc-text">2.1 可以伪随机生成均匀随机变数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E9%9A%8F%E6%9C%BA%E5%8F%98%E6%95%B0%E8%A1%A8%E7%A4%BA%E4%B8%BA%E6%93%8D%E4%BD%9C%E6%88%96%E8%BF%87%E7%A8%8B%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="toc-text">2.2 随机变数表示为操作或过程的结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E9%80%86%E5%8F%98%E6%8D%A2%E6%96%B9%E6%B3%95"><span class="toc-text">2.3 逆变换方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B"><span class="toc-text">3 生成模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%94%9F%E6%88%90%E9%9D%9E%E5%B8%B8%E5%A4%8D%E6%9D%82%E7%9A%84%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F"><span class="toc-text">3.1 生成非常复杂的随机变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%BD%BF%E7%94%A8%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8F%98%E6%8D%A2%E6%96%B9%E6%B3%95%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0"><span class="toc-text">3.2 使用神经网络的变换方法作为函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%94%9F%E6%88%90%E5%8C%B9%E9%85%8D%E7%BD%91%E7%BB%9C"><span class="toc-text">4 生成匹配网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E8%AE%AD%E7%BB%83%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B"><span class="toc-text">4.1 训练生成模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E6%AF%94%E8%BE%83%E5%9F%BA%E4%BA%8E%E6%A0%B7%E6%9C%AC%E7%9A%84%E4%B8%A4%E4%B8%AA%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83"><span class="toc-text">4.2 比较基于样本的两个概率分布</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E5%88%86%E5%B8%83%E5%8C%B9%E9%85%8D%E9%94%99%E8%AF%AF"><span class="toc-text">4.3 反向传播分布匹配错误</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C"><span class="toc-text">5 生成对抗网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E3%80%8C%E9%97%B4%E6%8E%A5%E3%80%8D%E8%AE%AD%E7%BB%83%E6%96%B9%E6%B3%95"><span class="toc-text">5.1 「间接」训练方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E7%90%86%E6%83%B3%E7%9A%84%E6%83%85%E5%86%B5%EF%BC%9A%E5%AE%8C%E7%BE%8E%E7%9A%84%E5%8F%91%E7%94%B5%E6%9C%BA%E5%92%8C%E9%89%B4%E5%88%AB%E5%99%A8"><span class="toc-text">5.2 理想的情况：完美的发电机和鉴别器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E8%BF%91%E4%BC%BC%EF%BC%9A%E5%AF%B9%E6%8A%97%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-text">5.3 近似：对抗性神经网络</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%85%B3%E4%BA%8EGAN%E7%9A%84%E6%95%B0%E5%AD%A6%E7%BB%86%E8%8A%82"><span class="toc-text">6 关于GAN的数学细节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%B0%8F%E8%B4%B4%E5%A3%AB"><span class="toc-text">7 小贴士</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>if (document.getElementsByClassName('mermaid').length) {
+  if (window.mermaidJsLoad) mermaid.init()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(() => {
+      window.mermaidJsLoad = true
+      mermaid.initialize({
+        theme: 'default',
+      })
+      false && mermaid.init()
+    })
+  }
+}</script><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: 'fb7f9ed2eecc530e7df2',
+      clientSecret: 'a016744e60828e5c99fc93a01d496a5a031196e2',
+      repo: 'blog_comment',
+      owner: 'xishansnow',
+      admin: ['xishansnow'],
+      id: 'f1b9c32e25d4125ac2726b941208427b',
+      language: 'zh-CN',
+      perPage: 10,
+      distractionFreeMode: false,
+      pagerDirection: 'last',
+      createIssueManually: false,
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script></div></body></html>
