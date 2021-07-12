@@ -32,11 +32,13 @@ menu:
     空间统计学工具:  /categories/GeoAI/空间统计学工具/ || fas fa-bacteria
   # 项目: /project/ || fas fa-cogs 
   贝叶斯统计 ||fas fa-compass:
-    基础贝叶斯统计:  /categories/贝叶斯统计/基础贝叶斯统计/ || fas fa-dove    
-    分层贝叶斯统计:  /categories/贝叶斯统计/分层贝叶斯统计/ || fas fa-dove    
+    贝叶斯统计推断:  /categories/贝叶斯统计/贝叶斯统计推断/ || fas fa-dove    
+    基础贝叶斯模型:  /categories/贝叶斯统计/基础贝叶斯统计/ || fas fa-dove    
+    分层贝叶斯模型:  /categories/贝叶斯统计/分层贝叶斯统计/ || fas fa-dove    
+    时空贝叶斯模型:  /categories/贝叶斯统计/时空贝叶斯方法/ || fas fa-globe-asia   
     贝叶斯神经网络:  /categories/贝叶斯统计/贝叶斯神经网络/ || fas fa-barcode
     贝叶斯深度学习:  /categories/贝叶斯统计/贝叶斯深度学习/ || fas fa-bacteria
-    时空贝叶斯方法:  /categories/贝叶斯统计/时空贝叶斯方法/ || fas fa-globe-asia    
+    
   书籍 || fas fa-book-open:
     《Bayesian Analysis with Python》: https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html   || fas fa-books
     《Doing Bayesian Data Analysis》: https://xishansnow.github.io/DoingBayesianDataAnalysis/index.html   || fas fa-books
