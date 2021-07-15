@@ -37,7 +37,7 @@ menu:
     分层贝叶斯模型:  /categories/贝叶斯统计/分层贝叶斯统计/ || fas fa-dove    
     时空贝叶斯模型:  /categories/贝叶斯统计/时空贝叶斯方法/ || fas fa-globe-asia   
     贝叶斯神经网络:  /categories/贝叶斯统计/贝叶斯神经网络/ || fas fa-barcode
-    贝叶斯深度学习:  /categories/贝叶斯统计/贝叶斯深度学习/ || fas fa-bacteria
+ #   贝叶斯深度学习:  /categories/贝叶斯统计/贝叶斯深度学习/ || fas fa-bacteria
     
   书籍 || fas fa-book-open:
     《Bayesian Analysis with Python》: https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html   || fas fa-books
