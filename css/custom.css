@@ -42,9 +42,13 @@ h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
     margin-top: -0.09rem;
 }
 #content-inner.layout h4::before {
-    color: #a9e000 ;
-    margin-left: -1.05rem;
-    font-size: 0.8rem;
+    /* color: #a9e000 ; */
+    /* margin-left: -1.05rem; */
+    /* font-size: 0.8rem; */
+    /* margin-top: -0.09rem; */
+    color: #ffbf00 ;
+    margin-left: -1.22rem;
+    font-size: 0.95rem;
     margin-top: -0.09rem;
 }
 #content-inner.layout h5::before {
@@ -69,8 +73,9 @@ h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
     animation: ccc 3.2s linear infinite ;
 }
 
-#content-inner.layout h1, #content-inner.layout h2, #content-inner.layout h3, #content-inner.layout h4, #content-inner.layout h5, #content-inner.layout h6 {
-    /* text-indent:0em; */
+#content-inner.layout h4, #content-inner.layout h5, #content-inner.layout h6 {
+    font-size: 1.3rem;
+    margin-top: -0.23rem;
 }
 
 /* 页面设置icon转动速度调整 */
@@ -101,3 +106,5 @@ note{
 /*     overflow-x: auto; */
 /*     overflow-y: hidden; */
 /*     } */
+
+
