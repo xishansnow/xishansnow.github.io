@@ -73,8 +73,14 @@ h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
     animation: ccc 3.2s linear infinite ;
 }
 
-#content-inner.layout h4, #content-inner.layout h5, #content-inner.layout h6 {
+
+#content-inner.layout h2, #content-inner.layout h3 {
     font-size: 1.3rem;
+    margin-top: -0.23rem;
+}
+
+#content-inner.layout h4, #content-inner.layout h5, #content-inner.layout h6 {
+    font-size: 1.0rem;
     margin-top: -0.23rem;
 }
 
@@ -95,7 +101,8 @@ h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
     text-indent:2em;
     line-height:2em;
 }
-note{
+
+#note{
   text-indent:0em;
 }
 /* #content-inner.layout katex-display{ */
