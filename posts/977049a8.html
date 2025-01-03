@@ -1,0 +1,746 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>🔥 组合似然法概述 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="组合似然法概述"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/977049a8.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '🔥 组合似然法概述',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/book_01.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">🔥 组合似然法概述</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">🔥 组合似然法概述</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-30T02:00:00.000Z" title="发表于 2022-12-30 10:00:00">2022-12-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.184Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/">GeoAI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/">贝叶斯统计</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/">高斯过程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/">大数据专题</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/">可扩展性</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/">似然方法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">6.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>22分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>【摘 要】组合似然法是用于超大规模高斯随机场高效计算的主要方法之一，本文提供了对组合似然理论和应用的最新发展调查。论文考虑了一系列应用领域，包括地统计学、空间极值、时空模型、集群和纵向数据以及时间序列等。考虑到 Larribe 和 Fearnhead (2011) 已经发表了在统计遗传学方面的综述论文，本文省略了这一重要应用领域。本文重点介绍了组合似然理论发展、组合似然推断的效率和鲁棒性等知识现状。</p>
+<p>【原 文】 Varin, C., Reid, N. and Firth, D. (2011) ‘AN OVERVIEW OF COMPOSITE LIKELIHOOD METHODS’, Statistica Sinica, 21(1), pp. 5–42.</p>
+<h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h2><p>组合似然是通过将若干似然分量相乘得出的一个推断函数；所使用的似然分量集合通常由应用上下文决定。因为每个个体似然分量都是<code>条件密度</code>（或<code>边缘密度</code>，根据应用而定），所以从复合对数似然的导数得出的估计方程，是一个无偏估计方程。无论这些个体似然分量是否相互独立，根据其乘法所得到的推断函数都会包含所指定模型的似然性质。</p>
+<p>本文回顾了组合似然领域的近期工作，回顾了 2008 年 4 月在华威大学举办的组合似然研讨会上的贡献，并概述了此后的发展。本文补充并扩展了 Varin (2008)<sup class="refplus-num"><a href="#ref-Varin2008">[104]</a></sup> 的综述；特别是添加了更多关于从边缘似然和条件似然构造组合似然的一些细节、更多的应用领域、更详细地考虑了空间数据等。此外，Larribe 和 Fearnhead (2011) <sup class="refplus-num"><a href="#ref-Larribe2011">[56]</a></sup> 一文对统计遗传学中的组合似然进行了综述，因此本文未涉及该应用领域。
+
+本文结构如下：
+- 第 2 节概述了组合似然的主要推论结果，所有结果均基于估计方程和误差指定模型的`渐近理论`。
+- 第 3 节调查了提出组合似然的广泛应用领域，通常以伪似然或准似然等名称命名。
+- 第 4 节集中讨论一些理论问题。
+- 第 5 节考虑了组合似然的构造和推断的一些计算问题
+- 第 6 节总结了未解决的问题。
+
+## 2 组合似然推断
+
+### 2.1 定义和符号
+
+考虑一个具有概率密度函数 $f(y;θ)$ 的 $m$ 维随机向量 $Y$，其中 $θ \in \Theta$ 是未知的 $p$ 维参数向量。$\{\mathcal{A}_1,\ldots ,\mathcal{A}_K\}$ 表示似然为 $\mathcal{L}_k(θ;y) \propto f(y \in \mathcal{A}_k; θ)$ 的一组边缘或条件事件（例如 $K$ 个数据簇，每个簇中有若干数据点）。根据 Lindsay (1988) <sup class="refplus-num"><a href="#ref-Lindsay1988">[65]</a></sup>，组合似然指如下式所示的加权乘积：
+
+$$
+\mathcal{L}_C(θ; y)= \prod^K_{k=1} \mathcal{L}_k(θ; y)^{w_k} 
+$$
+
+其中 $w_k$ 是需要选择的非负权重。如果权重都相等，则可以忽略它们；选择不相等的权重可以提高计算效率，其方法将在`第 3 节`和`第 4 节`的特定应用中讨论。
+
+尽管上述定义允许对边缘密度和条件密度进行组合（Cox 和 Reid (2004) <sup class="refplus-num"><a href="#ref-Cox2004">[19]</a></sup>），但组合似然通常在条件版本和边缘版本中还是有所区分的。
+
+**（1）复合条件似然**
+
+也许组合似然的先例是 Besag (1974 <sup class="refplus-num"><a href="#ref-Besag1974">[7]</a></sup>, 1975 <sup class="refplus-num"><a href="#ref-Besag1975">[8]</a></sup>) 提出的用于空间过程中近似推断的 `伪似然`。这种伪似然是给定其邻居的单个观测的条件密度产物：
+
+$$
+\mathcal{L}_C(θ; y)= \prod^m_{r=1}  f(y_r | \{y_s : y_s \text{ is neighbour of } y_r \}; θ)
+$$
+
+Besag 提议的新变体涉及在条件事件和结果事件中使用观测数据块，参见 Vecchia (1988) <sup class="refplus-num"><a href="#ref-Vecchia1988">[110]</a></sup>  和 Stein、Chi 和 Welty (2004) <sup class="refplus-num"><a href="#ref-Stein2004">[100]</a></sup>。
+
+Liang (1987) 研究了如下类型的复合条件似然：
+
+$$
+\mathcal{L}_C(θ; y)= \prod^{m-1}_{r=1} \prod^{m}_{s=r+1} f(y_r|y_r + y_s; θ) \tag{2.1}
+$$
+
+并将它们应用于分层病例对照研究。有关此建议的进一步工作可以在 Hanfelt (2004) <sup class="refplus-num"><a href="#ref-Hanfelt2004">[42]</a></sup>、Wang 和 Williamson (2005) <sup class="refplus-num"><a href="#ref-Wang2005">[111]</a></sup> 、 Fujii 和 Yanagimoto (2005) <sup class="refplus-num"><a href="#ref-Fujii2005">[34]</a></sup> 中找到。
+
+Molenberghs 和 Verbeke（2005 年）<sup class="refplus-num"><a href="#ref-Molenberghs2005">[78]</a></sup> 在纵向数据研究的背景下， Mardia 等 (2008)<sup class="refplus-num"><a href="#ref-Mardia2008">[71]</a></sup> 在生物信息学中，通过池化成对条件密度来构建组合似然：
+
+$$
+\mathcal{L}_C(θ; y)= \prod^{m}_{r=1} \prod^{m}_{s=1} f(y_r|y_s; θ)
+$$
+
+或者通过池化完整条件密度：
+
+$$
+\mathcal{L}_C(θ; y)= \prod^{m}_{r=1} f(y_r|y_{(−r)}; θ)
+$$
+
+其中 $y_{-r}$ 表示除 $y_r$ 之外的所有观测值的向量。
+
+**（2）复合边缘似然**
+
+最简单的复合边缘似然是在工作独立假设下构建的伪似然，
+
+$$
+\mathcal{L}_{ind}(θ; y)= \prod^m_{r=1} f(y_r; θ)
+$$
+
+有时在文献中称为`独立似然`（Chandler 和 Bate (2007) <sup class="refplus-num"><a href="#ref-Chandler2007">[15]</a></sup>）。独立似然仅允许对边缘参数进行推断。如果对与依赖相关（如空间自相关性）的参数也感兴趣，则有必要对观测数据块进行建模，例如下式的 `成对似然（pairwise likelihood）` （Cox 和 Reid (2004) <sup class="refplus-num"><a href="#ref-Cox2004">[19]</a></sup>；Varin (2008) <sup class="refplus-num"><a href="#ref-Varin2008">[104]</a></sup>）。
+
+$$
+\mathcal{L}_{pair}(θ; y)= \prod^{m-1}_{r=1} \prod^{m}_{s=r+1} f(y_r,y_s; θ) \tag{2.2}
+$$
+
+此外，根据更大的观测集构建的类似扩展，可以参见 Caragea 和 Smith (2007) <sup class="refplus-num"><a href="#ref-Caragea2007">[12]</a></sup>。
+
+对于以依赖结构为重点的连续对称型响应，Curriero 和 Lele (1999) <sup class="refplus-num"><a href="#ref-Curriero1999">[21]</a></sup> 以及 Lele 和 Taper (2002) <sup class="refplus-num"><a href="#ref-Lele2002">[59]</a></sup> 提出了 `基于成对差异的复合边缘似然`：
+
+$$
+\mathcal{L}_{diff}(θ; y)= \prod^{m-1}_{r=1} \prod^{m}_{s=r+1} f(y_r − y_s; θ) \tag{2.3}
+$$
+
+**（3）术语**
+
+组合似然有几个不同的名称，包括 `伪似然（pseudolikelihood）`（Molenberghs 和 Verbeke (2005)<sup class="refplus-num"><a href="#ref-Molenberghs2005">[78]</a></sup> ）、`近似似然（approximate likelihood）`（Stein、Chi 和 Welty (2004) <sup class="refplus-num"><a href="#ref-Stein2004">[100]</a></sup>）和 `准似然（quasi-likelihood）`（Hjort 和 Omre (1994) <sup class="refplus-num"><a href="#ref-Hjort1994">[46]</a></sup>；Glasbey (2001) <sup class="refplus-num"><a href="#ref-Glasbey2001">[39]</a></sup>） ; Hjort 和 Varin (2008) <sup class="refplus-num"><a href="#ref-Hjort2008">[47]</a></sup>。
+
+前两个名称有些过于笼统而无法提供更多信息，而第三个名称容易造成误解，因为它与一个完善的替代方案有重复（McCullagh (1983) <sup class="refplus-num"><a href="#ref-McCullagh1983">[74]</a></sup>；Wedderburn (1974) <sup class="refplus-num"><a href="#ref-Wedderburn1974">[113]</a></sup>）。
+
+时间序列中的复合边缘似然有时被称为`切分数据似然（split-data likelihoods）`（Ryden (1994) <sup class="refplus-num"><a href="#ref-Ryden1994">[96]</a></sup>；Vandekerkhove (2005) <sup class="refplus-num"><a href="#ref-Vandekerkhove2005">[103]</a></sup>）。 在心理测量学文献中，基于组合似然的方法被称为`有限信息方法（limit information methods）`。
+
+在这篇综述中，我们将始终使用短语 `复合（边缘/条件）似然`，并使用符号 $\mathcal{L}_C(·)$ 和 $c\ell (\cdot)$ 来分别表示 `似然函数` 和 `对数似然函数`。如果有必要，我们会使用符号 $\mathcal{L}_{MC}$ 和 $\mathcal{L}_{CC}$ 分别区分`边缘组合似然`和`条件组合似然`。
+
+### 2.2 派生量
+
+与最大似然估计类似，`最大组合似然估计`寻找能够使组合似然最大化的参数 $\hat{\theta}_{CL}$ ，或等效地使复合对数似然 $c\ell(θ; y)= \sum^{K}_{k=1} \ell_k(θ; y)^{w_k}$ 最大化，其中 $\ell_k(θ ; y) = \log \mathcal{L}_k(θ; y)$。在标准问题设置中，可以通过求解 `复合得分函数` $u(θ; y)=\nabla_{\theta} c\ell(θ; y)$ 来找到 $\hat{\theta}_{CL}$，它是与对数似然项 $\ell_k(θ; y)$ 一一对应的多个得分的线性组合。
+
+组合似然可能会被视为一种误差指定的似然，其误差指定主要源于对构成伪似然的似然项之间不正确的工作独立性假设。因此，`Bartlett 第二恒等式` 不成立，我们需要区分如下灵敏度矩阵：
+
+$$
+H(θ)=E_θ \{−\nabla_{\theta} u(θ; Y )\} = \int  \{−\nabla_{\theta} u(θ; y)\} f(y; θ) dy
+$$
+
+和可变性矩阵为
+
+$$
+J(θ) = \text{var}_θ \{u(θ; Y)\}
+$$
+
+而 `Fisher 信息` 需要用 `Godambe 信息矩阵`代替（Godambe（1960）<sup class="refplus-num"><a href="#ref-Godambe1960">[40]</a></sup>）
+
+$$
+G(θ) = H(θ)J(θ)^{−1}H(θ) \tag{2.4}
+$$
+
+Godambe 信息矩阵也被称为`三明治信息矩阵`。我们为期望的 Fisher 信息保留符号 $I(θ) = \text{var} θ\{\nabla_{\theta} \log f(Y;θ)\}$；如果 $c\ell(θ)$ 是一个真正的对数似然函数，那么 $G = H = I$。根据 Lindsay （1982）<sup class="refplus-num"><a href="#ref-Lindsay1982">[64]</a></sup>，当对于所有 $θ$ 都有 $H(θ) = J(θ)$ 时，估计方程 $u(θ; y)$ 被称为信息无偏的。
+
+
+</p><div class="note info no-icon flat"><p>注解： 此节未完全理解。</p>
+</div>
+
+### 2.3 渐近理论
+
+**（1）组合似然与完整似然**
+
+在来自于 $\mathbb{R}^m$ 上的模型 $f(y;θ)$ 的 $n$ 个独立同分布观测 $Y_1,\ldots , Y_n$ 设置中，如果 $m$ 固定且 $n \rightarrow  \infty$，则可从 Kent (1982)<sup class="refplus-num"><a href="#ref-Kent1982">[52]</a></sup>, Lindsay (1988) <sup class="refplus-num"><a href="#ref-Lindsay1988">[65]</a></sup> 以及 Molenberghs 和 Verbeke (2005 <sup class="refplus-num"><a href="#ref-Molenberghs2005">[78]</a></sup>，第 9 章) 中得到一些标准渐近的理论结果。我们现在对其进行总结。
+
+由于：
+
+$$
+\begin{align*}
+\mathcal{L}_C(θ; y) &amp;= \prod^{n}_{i=1} \mathcal{L}_C(θ; y_i) \\
+c\ell(θ; y) &amp;= \sum^{n}_{i=1} c\ell(θ; y_i)
+\end{align*}
+$$
+
+在以组分对数密度为条件的规律性下，我们有一个关于 **组合似然分数统计量** 的中心极限定理，导致复合最大似然估计 $\hat{\theta}_{CL}$ 呈渐近正态分布的结果：
+
+$$
+\sqrt{n}(\hat{\theta}_{CL} − θ) \stackrel{d} \rightarrow \mathcal{N}_p\{0, G^{−1}(θ)\}
+$$
+
+其中 $\mathcal{N}_p(μ, \Sigma)$ 是具有所指示均值和方差的 $p$ 维正态分布，$G(θ)$ 是单个观测值中的 Godambe 信息矩阵，已经在式 (2.4) 中定义过。
+
+**$G(θ)$ 与预期 Fisher 信息 $I(θ)$ 之间的比率，决定了 $\hat{\theta}_{CL}$ 相对于完整模型的最大似然估计的渐近效率**。如果 $θ$ 是标量，则可以在 $θ$ 的范围内对其进行评估或抽取；例如 Cox 和 Reid（2004 年 <sup class="refplus-num"><a href="#ref-Cox2004">[19]</a></sup>）的图 1。
+
+**（2）组合似然与部分似然**
+
+假设科学兴趣在于参数 $θ =(ψ, τ)$ 的 $q$ 维子向量 $ψ$。用于检验 $H0 : ψ = ψ_0$ 的 Wald 组合似然版本和分数统计量很容易构造，并且具有通常的渐近 $\chi_q^2$ 分布，请参见 Molenberghs 和 Verbeke (2005) <sup class="refplus-num"><a href="#ref-Molenberghs2005">[78]</a></sup>。
+
+Wald 型统计量是:
+
+$$
+W_e = n(\hat{ψ}_{CL} − ψ_0)^T G_{ψψ}(\hat{\theta}_{CL})(\hat{ψ}_{CL} − ψ_0)
+$$
+
+其中 $G_{ψψ}$ 是与 $ψ$ 有关的 Godambe 信息的 $q × q$ 子矩阵。类似于分数的统计量是：
+
+$$
+W_u = \frac{1}{n} u_ψ \{ψ_0, \hat{\tau}_{CL}(ψ_0)\}^T&nbsp;\tilde{H}^{ψψ}&nbsp;\tilde{G}_{ψψ}&nbsp;\tilde{H}^{ψψ} u_ψ \{ψ_0, \hat{\tau}_{CL}(ψ_0)\}
+$$
+
+其中 $H^{ψψ}$ 是关于 $ψ$ 的 $H(θ)$ 的逆的 $q × q$ 子矩阵，并且 $\tilde{H} =H\{ψ_0, \hat{\tau}_{CL}(ψ_0)\}$。与普通似然推断一样，$W_e$ 和 $W_u$ 受到实际限制：$W_e$ 不是重参数化不变的，而 $W_u$ 可能在数值上不稳定。此外，还需要估计可变性和灵敏度矩阵 $H(θ)$ 和 $J(θ)$。虽然有时可以明确地评估它们，但更常见的是使用经验估计。由于 $H(θ)$ 是均值，其经验估计很简单，但 $J(θ)$ 的经验估计需要一些内部复制；见`第 5 节`。
+
+下式的组合似然比统计量似乎更可取，
+
+$$
+W =2 \left[ c\ell(\hat{\theta}_{CL}; y) − c\ell \{ ψ_0, \hat{\tau}_{CL}(ψ_0); y \} \right]
+$$
+
+但它具有非标准渐近分布的缺点：
+
+$$
+W \stackrel{d} \rightarrow \sum^{q}_{j=1} λ_j Z_j^2
+$$
+
+其中 $Z_1,\ldots ,Z_q$ 是独立的正态变量，$λ_1,\ldots,λ_q$ 是矩阵 $(H^{ψψ})^{−1}G^{ψψ}$ 的特征值。这个结果可以在误差指定似然的一般框架下得出，参见 Kent (1982) <sup class="refplus-num"><a href="#ref-Kent1982">[52]</a></sup> 和 White (1994)<sup class="refplus-num"><a href="#ref-White1994">[116]</a></sup> 的书。
+
+Geys、Molenberghs 和 Ryan (1999)<sup class="refplus-num"><a href="#ref-Geys1999">[37]</a></sup> 提出调整后的组合似然比统计量 $W^\prime = W/\bar{\lambda}$ 具有近似的 $\chi_q^2$ 分布，其中 $\bar{\lambda}$ 表示特征值 $λ_j$ 的平均值； Rotnitzky 和 Jewell (1990)<sup class="refplus-num"><a href="#ref-Rotnitzky1990">[95]</a></sup> 就独立似然提出了这一建议。 $W^\prime$ 的均值与其渐近 $\chi_q^2$ 分布的均值一致，但高阶矩不同。 Satterthwaite (1946) <sup class="refplus-num"><a href="#ref-Satterthwaite1946">[97]</a></sup> 调整 $W^{′′} = ν W/(q\bar{\lambda})$ 提供了一个更好的解决方案，具有近似 $\chi_ν^2$ 分布，其中重新缩放和有效自由度 $ν =(\sum^{q}_{j=1} λ_j)^2/ \sum^{q}_{j=1} λ_j^2$ 的选择使得 $W^{′ ′}$ 的均值和方差与近似分布的均值和方差一致（Varin (2008) <sup class="refplus-num"><a href="#ref-Varin2008">[104]</a></sup>；Lindsay、Pilla 和 Basak (2000) <sup class="refplus-num"><a href="#ref-Lindsay2000">[66]</a></sup>）。
+
+Chandler 和 Bate (2007) <sup class="refplus-num"><a href="#ref-Chandler2007">[15]</a></sup> 提出了一种不同类型的独立似然调整：本质上是在关于 $\hat{\theta}_{CL}$ 的 $θ$ 轴上拉伸复合对数似然，以确保至少近似地确保第二 Bartlett 恒等式成立，因此可以使用通常的 $\chi_q^2$ 近似。垂直重新缩放是另一种似然，在 Chandler 和 Bate（2007 年 <sup class="refplus-num"><a href="#ref-Chandler2007">[15]</a></sup>，第 6 节）中进行了简要讨论，并在 Pace、Salvan 和 Sartori（2011 年）<sup class="refplus-num"><a href="#ref-Pace2011">[84]</a></sup> 中扩展到组合似然。在标量参数情况下，垂直重新缩放与将复合对数似然比统计量除以 $J^{−1}H$ 效果相同。
+
+二次型的鞍点近似在 Kuonen (1999)<sup class="refplus-num"><a href="#ref-Kuonen1999">[55]</a></sup> 中被推导出来，似乎直接适用于 $W$ ，但我们不知道该应用的详细讨论。
+
+在典型情况下，组合似然函数的计算简单性允许使用参数自举。这具有在非标准设置中也能工作的优点，例如当零假设下的参数位于参数空间的边界时（Bellio 和 Varin（2005）<sup class="refplus-num"><a href="#ref-Bellio2005">[6]</a></sup>）。但其缺点是需要完全指定数据的联合模型，因此失去了模型的鲁棒性。
+
+**（3）模型选择**
+
+用于模型选择的 Akaike (AIC) 和贝叶斯 (BIC) 信息准则的类似物，很容易在组合似然框架中导出。它们具有通常的形式 $AIC = −2c\ell(\hat{\theta}_{CL}; y) + 2 \text{dim}(θ)$ 和 $BIC = −2c\ell( \hat{\theta}_{CL}; y) + \text{dim}(θ) \log n$，其中 $\text{dim}(θ)$ 是一个有效数参数，根据灵敏度矩阵和 Godambe 信息估计：$\text{dim}(θ)= \text{tr} \{ H(θ)G(θ)^{−1}\}$ 。这些信息准则的正式推导可以在 Varin 和 Vidoni (2005) <sup class="refplus-num"><a href="#ref-Varin2005">[106]</a></sup> 的复合 AIC 标准以及 Gao 和 Song (2010) <sup class="refplus-num"><a href="#ref-Gao2010">[35]</a></sup> 的复合 BIC 标准中找到。
+
+这些标准可用于模型平均（Claeskens 和 Hjort (2008) <sup class="refplus-num"><a href="#ref-Claeskens2008">[16]</a></sup>），或用于收缩方法中调整参数的选择。有关具有复合边缘似然的 Lasso 惩罚的示例，请参见 Gao 和 Song (2010) <sup class="refplus-num"><a href="#ref-Gao2010">[35]</a></sup>。
+
+在标准正则性条件下，上一节中的推论直接来自通常的渐近理论。考虑固定 $n$ 且增加 $m$ 的情况也很有趣，如单个 ($n = 1$) 长时间序列或空间数据集的情况。在这种情况下，渐近理论取决于内部复制的可用性：例如，在低阶自回归模型中，单个长序列具有足够的独立性以获得中心极限结果。
+
+Cox 和 Reid (2004)<sup class="refplus-num"><a href="#ref-Cox2004">[19]</a></sup> 使用泰勒级数展开，对成对似然的渐近方差及其修改版本进行了处理。由于这些扩展的有效性取决于 $θ$ 的一致性，而这对于 $m \rightarrow  \infty$ 一般不成立，因此该论证纯粹是非正式的，需要更严格的处理。 Cox 和 Reid (2004) <sup class="refplus-num"><a href="#ref-Cox2004">[19]</a></sup> 还建议，当固定 $n$ 且 $m \rightarrow \infty$ 时，可以在复合对数似然 $\ell_C(θ)=\ell_{pair}(θ) − am\ell_{ind}(θ)$ 中选择 $a \neq 0$ 以确保一致性，但据我们所知，还没有研究过这种策略的例子。
+
+## 3 应用
+
+### 3.1 高斯随机场
+
+大型数据集的地统计模型越来越普遍，尤其是在使用遥感等自动收集方法的情况下，用于近似推断的组合似然法非常有吸引力。
+
+地统计学应用中的典型模型是高斯随机场 $Y = \{ Y(c): c \in \mathcal{C} \subset \mathbb{R}^2 \}$，其均值函数 $μ(c)$ 和协方差矩阵 $\Sigma(θ)$ 的元素反映了空间相关性；Cressie (1993) <sup class="refplus-num"><a href="#ref-Cressie1993">[20]</a></sup> 给出了几个参数空间相关函数的例子。 $θ$ 的经典地统计学估计基于对样本变异函数进行曲线拟合的各种方法 (克里金法，Cressie (1993) <sup class="refplus-num"><a href="#ref-Cressie1993">[20]</a></sup>)。这些方法受到了强烈批评，因为在调整拟合算法时存在相当大的随意性，由此产生的估计量通常效率低下（Diggle 和 Ribeiro（2007 年 <sup class="refplus-num"><a href="#ref-Diggle2007">[25]</a></sup>，第 6.3 节））。最大似然估计会更有效，但需要对协方差矩阵 $\Sigma(θ)$ 求逆，通常计算成本为 $\mathcal{O}(m^3)$。对于许多现代空间或时空数据集来说，这种成本是令人望而却步的。
+
+设 $y_r = y(c_r)$ 是过程 $Y$ 在位置 $c_r$ 的观测值。源于 Besag (1974)<sup class="refplus-num"><a href="#ref-Besag1974">[7]</a></sup> 的工作，Vecchia (1988)<sup class="refplus-num"><a href="#ref-Vecchia1988">[110]</a></sup> 提出用复合条件似然来近似完全的似然：
+
+$$
+L_{CC}(θ; y) = f(y_1; θ) \prod^{m}_{r=2}  f(y_r|\mathcal{B}_r; θ)
+$$
+
+其中 $\mathcal{B}_r$ 是 $\{y_{r−1},\ldots,y_1\}$ 的一个子集，其选择是为了使 $\mathcal{L}_C$ 的计算可行。Vecchia (1988) <sup class="refplus-num"><a href="#ref-Vecchia1988">[110]</a></sup> 建议将 $\mathcal{B}_r$ 限制为 $y_r$ 的多个邻居。Vecchia 通过对怀俄明州萨拉托加河谷含水层的 $93$ 个观测井的水位空间分析，说明了这种复合条件似然的使用。
+
+Stein、Chi 和 Welty (2004) <sup class="refplus-num"><a href="#ref-Stein2004">[100]</a></sup> 进一步发展了 Vecchia 的提议，并用它来逼近有约束似然函数。作者表明，使用观测块代替单个观测可以提高统计效率：
+
+$$
+L_{CC}(θ; y)=f(z_1; θ) \prod^{B}_{b=2} f(z_b|\mathcal{B}_b^\prime;θ)
+$$
+
+其中 $z_1,\ldots,z_B$ 是 $B$ 个数据块，$\mathcal{B}_b^\prime$ 是 $\{z_{b−1},\ldots,z_1\}$ 的一个子集。 Stein、Chi 和 Welty (2004) <sup class="refplus-num"><a href="#ref-Stein2004">[100]</a></sup> 使用这种近似有约束似然方法来分析了密歇根湖超过 $13, 000$ 个叶绿素水平测量值的数据集。测量是以一种高度不规则的模式进行的，这给条件集合的选择带来了一些挑战。结果发现，在条件集合中包含一些远距离观测值，可以显著提高组合似然参数估计的效率。
+
+Stein、Chi 和 Welty（2004 年）<sup class="refplus-num"><a href="#ref-Stein2004">[100]</a></sup> 以及 Vecchia（1988 年）<sup class="refplus-num"><a href="#ref-Vecchia1988">[110]</a></sup> 的组合似然方法，在使用上的困难主要出现在观测顺序和条件集合 $\mathcal{B}_b$ 和 $\mathcal{B}_b^\prime$ 的选择上。为了克服这种复杂性，在 Caragea 和 Smith（2006 年 <sup class="refplus-num"><a href="#ref-Caragea2006">[11]</a></sup>、2007 年<sup class="refplus-num"><a href="#ref-Caragea2007">[12]</a></sup>）论文中，提出了 “大块似然” 、“小块似然” 和 “混合似然” 三种不同的似然近似，它们都基于将观测数据分成块。“大块似然” 包含从块均值的联合密度分布中估计 $θ$。“小块似然” 是由每个块中所有观测值的密度乘积形成的复合边缘似然：
+
+$$
+\mathcal{L}_{MC}(θ; y) = \prod^{B}_{b=1}  f(z_b; θ)
+$$
+
+其中 $z_1,\ldots,z_B$ 是观测数据中的 $B$ 个数据块。因此，虽然大块似然捕获空间过程的大样本性质，但却忽略了块内依赖性，而小块方法恰恰相反。两者之间的折衷被称为混合方法，该方法使用 “大块似然” 乘以以块均值为条件的 “复合条件似然”（该复合条件似然由块内观测数据的条件密度乘积形成）。效率研究表明，大块方法的性能较差，而小块和混合方法的工作效率相近。 Caragea 和 Smith（2006 年）<sup class="refplus-num"><a href="#ref-Caragea2006">[11]</a></sup> 说明了后两种方法在美国中南部降雨趋势空间估计方面的良好表现。
+
+关注最大似然估计的一个主要原因是难以检查多元正态性假设，上述这些分块策略也存在同样的困难。相比之下，式 (2.2) 的 `成对似然` 和式 (2.3) 的`成对差异组合似然`，只需要观测数据点对的双变量正态性，这更容易验证。Hjort 和 Omre（1994）<sup class="refplus-num"><a href="#ref-Hjort1994">[46]</a></sup> 首先建议在地统计模型中推断成对似然，然后由 Nott 和 Ryd en（1999）<sup class="refplus-num"><a href="#ref-Nott1999">[80]</a></sup> 进一步开发了图像模型。式 (2.3) 中基于差异的组合似然由 Curriero 和 Lele (1999) <sup class="refplus-num"><a href="#ref-Curriero1999">[21]</a></sup> 提出，并应用于 Mateu 等 (2007) 的三维地热场温度数据 <sup class="refplus-num"><a href="#ref-Mateu2007">[73]</a></sup>。
+
+### 3.2 空间极端事件
+
+危险环境事件的增加导致人们对空间极端事件的统计建模产生了浓厚的兴趣。`最大稳定模型（max-stable models）` 提供了解决该问题的灵活方法，该模型是基于 Smith (1990) <sup class="refplus-num"><a href="#ref-Smith1990">[99]</a></sup> 未发表的工作构建的基础高斯随机场获得。尽管这些模型具有吸引人的特性，但由于似然计算的维数诅咒，经典和贝叶斯推断都不切实际，请参见 Davison 和 Gholamrezaee (2009) <sup class="refplus-num"><a href="#ref-Davison2009">[23]</a></sup>。目前，仅导出了双变量边缘密度的表达式。因此，在 Davison 和 Gholamrezaee (2009) <sup class="refplus-num"><a href="#ref-Davison2009">[23]</a></sup> 以及 Padoan、Ribatet 和 Sisson (2010) <sup class="refplus-num"><a href="#ref-Padoan2010">[85]</a></sup> 中，`成对似然推断` 自然被认为是普通似然分析的替代品，分别应用于瑞士的最高温度和美国的最大降水量。在这些论文中，计算是使用 Ribatet (2009) <sup class="refplus-num"><a href="#ref-Ribatet2009">[93]</a></sup> 的 R 包 `SpatialExtremes` 进行的，这似乎是第一个实现组合似然法的公开软件。
+
+Smith 和 Stephenson (2009) <sup class="refplus-num"><a href="#ref-Smith2009">[98]</a></sup> 采用了一种相关方法，在其中使用 **成对似然** 代替了在最大稳定空间过程中无法进行贝叶斯推断的普通似然，作者通过英格兰西南部年度最大降雨量数据的分析说明了该方法。
+
+### 3.3 序列相关的随机效应
+
+在纵向和面板研究中，随机效应模型是对未观测到的异质性进行建模的流行选择。在这些模型中，结果被建模为以特定于主题的随机效应为条件的独立变量，通常假设所有测量都是恒定的。在大多数情况下，后一种假设可能并不现实：更好的模型还应该考虑特定主题测量中可能存在的序列依赖性。
+
+考虑在对象 $i=1, \ldots, n$ 处的 $r=1, \ldots, m_i$ 个时刻观测到的纵向计数 $Y_{i r}$。这种类型的数据可以自然地建模为条件独立的泊松变量：
+
+$$
+Y_{i r} \mid U_i \sim \operatorname{Po}\left\{U_i \exp \left(x_{i r}^{\mathrm{T}} \beta\right)\right\}
+$$
+
+其中 $U_i$ 是随机效应，$x_{ir}$ 是协变量向量，$\beta$ 是未知回归系数。一个常见假设是 $U_1、\ldots、U_n$ 是具有单位均值的独立 Gamma 变量。因此，$Y_{ir}$ 的边缘分布是负二项分布。为了说明序列相关性，Henderson 和 Shimakura (2003) <sup class="refplus-num"><a href="#ref-Henderson2003">[45]</a></sup> 建议通过假设每次测量具有不同的 Gamma 分布随机效应 $U_{\text {ir }}$ 来扩展上述模型，
+
+$$
+Y_{i r} \mid U_{i r} \sim \operatorname{Po}\left\{U_{i r} \exp \left(x_{i r}^{\mathrm{T}} \beta\right)\right\}
+$$
+
+同时指定 $U_{ir}$ 的联合分布来描述序列依赖。例如，Henderson 和 Shimakura (2003)<sup class="refplus-num"><a href="#ref-Henderson2003">[45]</a></sup> 提出了自回归依赖类型：
+
+$$
+\operatorname{cor}\left(U_{i r}, U_{j s}\right)= \begin{cases}\rho^{|r-s|} &amp; \text { if } i=j \\ 0 &amp; \text { if } i \neq j .\end{cases}
+$$
+
+不幸的是，上述公式的更高模型灵活性是以计算复杂性为代价的。似然函数涉及多项随序列长度 $m_i$ 呈指数增长的项。除了低维度，似然计算不切实际。因此，Henderson 和 Shimakura (2003) <sup class="refplus-num"><a href="#ref-Henderson2003">[45]</a></sup> 提出推断应基于成对似然：
+
+$$
+\mathcal{L}_{\text {pair }}(\theta ; y)=\prod_{i=1}^n \frac{1}{m_i-1} \prod_{r=1}^{m_i-1} \prod_{s=r+1}^{m_i} f\left(y_{i r}, y_{i s} ; \theta\right)
+$$
+
+正如 LeCessie 和 van Houwelingen (1994) <sup class="refplus-num"><a href="#ref-LeCessie1994">[57]</a></sup> 所建议的那样，权重 $1 /(m_i-1)$ 用于匹配独立情况下的普通似然。 Henderson 和 Shimakura (2003) <sup class="refplus-num"><a href="#ref-Henderson2003">[45]</a></sup> 通过对一项临床试验的分析说明了上述模型的成对似然推断，该临床试验分析了腹部手术后医院患者在连续时间间隔内服用镇痛剂的剂量。
+
+Fiocco、Putter 和 van Houwelingen (2009) <sup class="refplus-num"><a href="#ref-Fiocco2009">[33]</a></sup> 进一步发展了 Henderson 和 Shimakura (2003) 的工作，他们修改了自回归 Gamma 过程 $U_{ir}$ 以在涉及大量计数时增强数值稳定性。他们进一步建议采用 two-step 组合似然分析，其中首先根据独立似然估计回归和过度离散参数，然后从成对似然中分别获得相关参数。在他们的模拟研究中，Fiocco、Putter 和 van Houwelingen (2009) <sup class="refplus-num"><a href="#ref-Fiocco2009">[33]</a></sup> 发现这种两步法在从成对似然联合估计所有参数方面几乎没有效率损失，并将这种方法用于元分析研究生存曲线。
+
+Henderson 和 Shimakura (2003) <sup class="refplus-num"><a href="#ref-Henderson2003">[45]</a></sup> 以及 Fiocco、Putter 和 van Houwelingen (2009) <sup class="refplus-num"><a href="#ref-Fiocco2009">[33]</a></sup> 的动机是 Varin 和 Czado (2010) <sup class="refplus-num"><a href="#ref-Varin2010">[105]</a></sup> 工作的基础，他们提出了一个用于定序数据和二值纵向输出的自回归混合概率模型。响应 $Y_{ir}$ 被视为连续未观测变量 $Y_{ir}^*$ 的截尾版本，
+
+$$
+Y_{i r}=y_{i r} \quad \leftrightarrow \quad \alpha_{y_{i r}-1}<y_{i r}^*="" \leq="" \alpha_{y_{i="" r}},="" \quad="" y_{i="" r}="" \in\{1,="" \ldots,="" h\},="" $$="" 其中="" $-\infty="" \equiv="" \alpha_0<\alpha_1<\ldots<\alpha_{h-1}<\alpha_h="" \infty$="" 是适当的阈值参数。未观测到的="" $Y_{ir}^*$="" 用正态线性混合模型建模：="" Y_{i="" r}^{\mathrm{T}}="" \beta+U_i+\epsilon_{i="" r},="" $U_1,="" U_n$="" 是="" $n$="" 个均值为零、方差为="" $\sigma^2$="" 的独立正态分布随机效应。为了解释序列相关性，假设误差="" $\epsilon_{ir}$="" 是由一阶自回归过程产生的，="" \epsilon_{i="" r-1}+\left(1-\rho^2\right)^{1="" 2}="" \eta_{i="" $\eta_{i="" r}$="" 是独立标准正态量。因此，似然函数是="" 个维度为="" $m_1,="" m_n$="" 的矩形正态概率的乘积。除了具有少量测量值="" $m_i$="" 的纵向研究外，似然的评估需要耗时的蒙特卡罗方法，并且可能存在数值不稳定。因此，Varin="" 和="" Czado="" (2010)="" <sup="" class="refplus-num"><a href="#ref-Varin2010">[105]</a> 建议使用基于相距小于 $q$ 个单位的观测数据对的成对似然推断：
+
+$$
+\mathcal{L}_{\text{pair }}^{(q)}(\theta ; y)=\prod_{i=1}^n \prod_{\left\{r, s:\left|t_{i r}-t_{i s}\right| \leq q\right\}} f\left(y_{i r}, y_{i s} ; \theta\right),
+$$
+
+
+其中 $t_{ir}$ 是对主体 $i$ 的观测 $r$ 的时间。双变量概率 $f\left(y_{i r}, y_{i s} ; \theta\right)$ 很容易用标准统计软件中可用的非常精确的确定性正交方法计算，从而避免了模拟的需要。这项工作的动机是分析一项关于头痛严重程度决定因素的纵向研究：数据包括患者每天四次编写的疼痛严重程度日记，时间长度不同，从四天到近一年的连续测量；结果是头痛的严重程度，按六个级别的顺序量表测量。协变量数据包括个人和临床信息，以及天气状况。
+
+### 3.4 空间相关的随机效应
+
+在序列相关随机效应的情况下描述的数值困难随着空间相关随机效应而进一步增加。考虑具有线性预测器的广义线性模型： 
+
+$$
+g\left\{\mathrm{E}(Y(c)\}=x(c)^{\mathrm{T}} \beta+U(c), \quad c \in \mathcal{C} \subset \mathbb{R}^2,\right.
+$$
+
+其中 $g$ 是合适的链接函数，$\left\{U(c): c \in \mathcal{C} \subset \mathbb{R}^2\right\}$ 是零均值平稳高斯随机场地。这种类型的模型在 Diggle 和 Ribeiro (2007) 中被称为广义线性地统计模型。给定 $m$ 个位置 $c_1, \ldots, c_m$ 的观测值，似然函数用单个 $m$ 维积分表示，
+
+$$
+\mathcal{L}(\theta ; y)=\int_{\mathbb{R}^m} \prod_{r=1}^m f\left\{y\left(c_r\right) \mid u\left(c_r\right) ; \theta\right\} f\left\{u\left(c_1\right), \ldots, u\left(c_m\right) ; \theta\right\} \mathrm{d} u\left(c_1\right) \ldots \mathrm{d} u\left(c_m\right)
+$$
+
+即使对于适中的 $m$，其近似值也可能很困难。典型的解决方案基于模拟算法，例如蒙特卡罗期望最大化或马尔可夫链蒙特卡罗算法，请参阅 Diggle 和 Ribeiro (2007) 以供参考。对于大型数据集，模拟方法变得非常苛刻，因此成对似然是一种有效的替代方法。 Heagerty 和 Lele (1998) 首先研究了具有概率链接的二进制数据。他们提出了由相距不超过 $q$ 个单位的观测对形成的成对似然，
+
+$$
+\mathcal{L}_{\text {pair }}^{(q)}(\theta ; y)=\prod_{\left\{r, s:\left\|c_r-c_s\right\|_2 \leq q\right\}} f\left\{y\left(c_r\right), y\left(c_s\right) ; \theta\right\} .
+$$
+
+Heagerty 和 Lele (1998) 将这些想法用于马萨诸塞州舞毒蛾落叶的空间建模。
+
+Varin、Høst 和 Skare (2005) 调查了广义线性模型的成对似然性，并建议排除由距离太远的观测形成的对可能不仅在数值上有效，而且在统计上也有效。Apanasovich 等 (2008) 考虑逻辑回归的成对似然推理，其中线性预测变量由非参数项和空间相关随机效应的总和表示，用于解释短程依赖性。最后一项工作的动机是结肠癌发生过程中异常隐窝病灶的空间建模。
+
+### 3.5 联合混合模型
+
+相关的随机效应也用于多变量纵向剖面的联合建模。设 $\left(Y_{i r}^{(1)}, \ldots, Y_{i r}^{(d)}\right)^{\mathrm{T}}$ 是一个包含 $d$ 个结果的向量主题 $i=1, \ldots, n$ 偶尔 $r=1, \ldots, m_i$。此类数据的一种可能的建模策略包括为每个单一结果假设一个混合模型，然后使用合适的随机效应协方差矩阵对结果之间的关联进行建模。假设为便于阐述每个结果的随机截距广义线性模型，
+
+$$
+g\left\{\mathrm{E}\left(Y_{i r}^{(v)}\right)\right\}=x_{i r}^{\mathrm{T}} \beta+U_i^{(v)}, \quad v=1, \ldots, d
+$$
+
+其中 $U_i^{(v)}$ 是特定于结果 $v$ 和主题 $i(i=1, \ldots, n)$ 的随机效应。可以通过假设单个受试者的所有随机效应 $U_i^{(1)}, \ldots, U_i^{(d)}$ 的 $d$ 维多元正态分布来组合各种单变量混合模型$(i=1, \ldots, n)$。
+
+假设不同受试者之间的独立性，似然是：
+
+$$
+\mathcal{L}(\theta ; y)=\prod_{i=1}^n \mathcal{L}_i\left(\theta ; y_i^{(1)}, \ldots, y_i^{(d)}\right)
+$$
+
+$y_i^{(v)}=\left(y_{i 1}^{(v)}, \ldots, y_{i m_i}^{(v)}\right)^{\mathrm{T}} $表示主题$i$的结果$v$的所有观察向量。当结果的维度 $d$ 增加时，随机效应参数的数量 $\left(\begin{array}{l}d \\ 2\end{array}\right)+d$ 呈二次方增长，使得即使在可能性具有解析形式的正常线性混合模型的情况下，可能性的最大化也很快无法实现。
+
+
+Molenberghs 和 Verbeke (2005, Sec. 25) 提出通过“成对拟合”的方法来缓解这些计算困难。考虑从所有结果对构建的复合边际似然，
+
+$$
+\mathcal{L}_{\mathrm{MC}}\left(\theta_{1,2}, \ldots, \theta_{d-1, d} ; y\right)=\prod_{v=1}^{d-1} \prod_{w=v+1}^d \mathcal{L}\left(\theta_{v, w} ; y^{(v)}, y^{(w)}\right)
+$$
+
+其中 $\mathcal{L}\left(\theta_{v, w} ; y^{(v)}, y^{(w)}\right)$ 是基于结果 $v$ 和 $w$ 的可能性只要。与前面讨论的组合似然相反，这里假设了不同的特定对参数，即 $\theta_{v, w}$ 是 $\theta$ 的子集，属于 $\left(Y^{( v)}, Y^{(w)}\右)$。这种单独的参数化是必要的，以允许每个 $\operatorname{term} \mathcal{L}\left(\theta_{v, w} ; y^{(v)}, y^{(w)}\right 的不同最大化)$ 形成组合似然 (3.1)，从而解决与联合最大化相关的计算困难。
+
+设 $\omega=\left(\theta_{1,2}, \ldots, \theta_{d-1, d}\right)^{\mathrm{T}}$ 是包含所有 $\left( \begin{array}{l}d \\ 2\end{array}\right)$ 对特定参数。那么，$\hat{\omega}=\left(\hat{\theta}_{1,2}, \ldots, \hat{\theta}_{d-1, d}\right)^{\mathrm {T}}$ 定位组合似然 (3.1) 的最大值。据此，我们有
+
+$$
+\sqrt{n}(\hat{\omega}-\omega) \stackrel{d}{\rightarrow} \mathcal{N}\left\{0, \mathrm{G}^{-1}(\omega)\right\} .
+$$
+
+显然，$\omega$和原始参数$\theta$是一对多的对应关系，例如$\theta_{v, w}$和$\theta_{v, w}$有一些分量$\theta$ 的共同点。然后可以通过对 $\hat{\omega}$ 中所有相应的特定对估计进行平均来获得 $\theta$ 的单个估计。如果我们用 A 表示权重矩阵使得 $\hat{\theta}=\mathrm{A} \hat{\omega}$，那么推理是基于渐近分布
+
+$$
+\sqrt{n}(\hat{\theta}-\theta) \stackrel{d}{\rightarrow} \mathcal{N}\left\{0, \mathrm{~A}^{\mathrm{T}} \mathrm{G}^{-1}(\omega) \mathrm{A}\right\} .
+$$
+
+有关成对拟合方法的更多详细信息，请参阅 S. Fieuws 及其同事在听力阈值的多变量纵向分布中的应用（Fieuws 和 Verbeke (2006)；Fieuws、Verbeke 和 Molenberghs (2007)），关于心理认知功能的二元问卷电池（Fieuws 等人（2006 年）、Fieuws、Verbeke 和 Molenberghs（2007 年））以及肾移植失败的几种生化和生理标志物的分析（Fieuws 等人（2007 年））。 Barry 和 Bowman (2008) 将成对拟合方法应用于一项纵向研究，该研究旨在比较一组 49 名患有单侧唇腭裂婴儿的面部形状与一组 100 名年龄匹配的对照婴儿的面部形状。
+
+### 3.6 时变相关矩阵
+
+Engle、Shephard 和 Sheppard（2009 年）提出了用于高维投资组合风险管理的组合似然法。考虑在时间 $t=1, \ldots, T$ 观察到的对数收益 $y_t$ 的 $m$ 维向量。风险管理模型假设 $Y_t$ 是一个鞅差异序列
+
+$$
+\mathrm{E}\left(Y_t \mid \mathcal{F}_{t-1}\right)=0, \quad \operatorname{Cov}\left(Y_t \mid \mathcal{F}_{t-1}\right)=\mathrm{H}_t,
+$$
+
+其中 $\mathcal{F}_{t-1}$ 是时间 $t-1$ 之前的信息，$H_t$ 是时变协方差矩阵。为 $\mathrm{H}_t$ 提出的模型根据感兴趣的动力学参数 $\theta$ 和有害参数 $\lambda$ 进行参数化。标准推理基于两步法。首先，使用矩量法估计有害参数。然后，通过最大化在多重正态性的工作假设下构造的错误指定的可能性来获得感兴趣的参数，其中滋扰参数保持固定在基于时刻的估计中。
+
+上述拟合方法有两个困难来源。首先，该方法需要对 $T$ 个相关矩阵 $\mathrm{H}_t$ 求逆，每个都需要 $\mathcal{O}\left(\mathrm{m}^3\right)$ 操作。其次，即使这些反演是可能的，得到的 θ 估计器的精度也会很快失败，因为有害参数的维数会随着资产数量 K 的增加而增加。
+
+为了克服这些困难，Engle、Shephard 和 Sheppard（2009 年）研究了通过对资产子集的（错误指定的）对数似然求和而形成的复合边际似然的使用。这种方法解决了与高维矩阵求逆相关的数值难题。通过对特定于每个资产的有害参数使用矩估计器并假设跨资产的一组通用参数来解决有害参数数量增加的问题；这些共同参数是通过组合似然估计的。 Pakel、Shephard 和 Sheppard (2011) 进一步开发了这种方法，用于对一组 GARCH 模型进行组合似然分析，模拟研究表明，当存在大量短序列时，组合似然方法非常有效。
+
+
+### 3.7 具有缺失数据的边缘回归模型
+
+暂时略过。
+
+## 4 性质
+
+### 4.1 介绍
+
+使用任何版本的组合似然的动机通常出于计算性能考虑：避免计算，或者在某些情况下，对可能的高维响应向量的联合分布建模。这在组合似然应用于混合和随机效应模型时尤其如此，其中似然需要对随机效应的分布进行积分，如第 3 节所述。在这种情况下，组合似然本质上是一个误差指定的模型，兴趣已经通常关注组合似然估计相对于完全似然的相对效率。在下面的第 4.1 节中，我们总结了组合似然估计效率的主要结果。
+
+使用组合似然的另一个动机是鲁棒性的概念，在这种情况下是在高阶维度分布可能误差指定的情况下的鲁棒性。例如，如果成对似然用于相关二进制数据，则没有必要为三元组和四元组的联合概率选择模型，并且这些似然的数量可能与对的建模联合概率一致，通过构造，组合似然对这些替代方案具有鲁棒性。这是与鲁棒点估计不同的鲁棒性概念，并且在精神上更接近于通过广义估计方程实现的鲁棒性类型。然而，对于许多高维模型，尚不清楚哪些类型的高阶联合密度确实与建模的低阶边缘密度兼容，因此难以普遍研究鲁棒性问题。在下面的第 4.2 节中，我们总结了文献中关于稳健性的已知信息。
+
+组合似然也被用于在没有明显高维分布的情况下构建联合分布，例如在生存数据中使用脆弱模型（Fiocco、Putter 和 van Houwelingen（2009 年））。
+
+组合似然的另一个特征，例如在 Liang 和 Yu (2003) 中提到的，是似然曲面可以比完整联合似然更平滑，因此更容易最大化。这与组合似然计算的简易性有关，但略有不同，并且在精神上更接近于组合似然的稳健性：通过不指定模型的非常高维特征，我们可能允许参数上的结构不太复杂空间也是如此。 Renard、Molenberghs 和 Gey_s (2004) 使用术语计算鲁棒性；在模拟中，他们发现成对似然比基于惩罚拟似然的比较方法更能收敛。第 5 节将更详细地考虑计算方面。
+
+### 4.2 相对效率
+
+组合似然法在许多应用中看似高效，导致人们对这些方法的兴趣增加，相关文献增多。三种可能的效率比较类型是：(i) 通过 G(θ) 的分析计算计算渐近效率并与 Fisher 信息 I(θ) 进行比较，(ii) 使用基于模拟的 G(θ) 估计估计渐近效率和I(θ) 和 (iii) 使用基于模拟的 var(\hat{\theta}_{CL}) 和 var(\hat{\theta}) 估计的经验效率。第一个给出了最清晰的解释，尽管是在“渐近理想”的模型假设下，而第三个更接近于有限样本量可能实现的结果。基于模拟的研究的一个缺点是模型的许多方面必须提前指定，因此结果与其他略有不同的模型的相关性并不总是很清楚。当 θ 是向量时，可以使用行列式的比率来计算 G(θ) 与 I(θ) 比较的总体总结，但更常见的是比较与特定感兴趣参数对应的对角线分量。
+
+在特殊情况下，成对似然估计器是完全有效的，甚至与最大似然估计器相同。 Mardia、Hughes 和 Taylor (2007) 表明复合条件估计量与具有任意均值和协方差的多元正态分布中的最大似然估计量相同，Zi (2009) 对成对似然给出了相同的结果。玛迪亚等。 (2009) 通过表明复合条件估计量在子集下具有一定闭包属性的指数族中完全有效，对此提供了解释。在进一步的限制下，复合边缘估计量也是完全有效的。一个有趣的特例是等相关多元正态分布：单个观测向量具有均值 μ 和协方差矩阵 σ2\{(1 − ρ)I + ρ11T\}，其中 I 是维度 m 的单位矩阵，1 是 m -1 的向量。
+
+在 μ 和 σ 未知的情况下，成对最大似然估计量以及成对和完全复合条件最大似然估计量都与最大似然估计量相同。如果 μ 固定，同样的结果成立，但如果 σ2 固定，则 ρ 的组合似然估计不是完全有效的。虽然这个模型不包括在 Mardia 等人的关闭结果中。 (2009)，他们调整他们的讨论来说明为什么结果仍然是正确的。有可能是 Mardia 等人的方法。 (2009) 也可以用来解释组合似然法在更复杂的应用中的相对高效率，至少在某些特殊情况下是这样。例如，虽然双变量 von Mises 分布不属于 Mardia 等人处理的指数族类。 (2009)，该论文表明它接近于大多数参数值的类别：这澄清了 Mardia 等人提出的一些结果。 (2008) 在这个模型上
+
+Cox (1972) 提出了二次指数分布作为多元二进制数据的模型，Zhao 和 Prencticice (1990) 开发了该模型的推论。如 Cox 和 Reid (2004) 所述，它的似然函数等于由 probit 链接生成的二进制数据的成对似然函数。这提供了一个简单的示例，其中成对似然具有充分的效率。双向列联表也具有等于最大似然估计的成对似然估计（Mardia 等人 (2009)）
+
+Hjort 和 Varin (2008) 还详细研究了简化模型类中复合条件似然和复合边缘似然的属性。在他们的案例中，他们将注意力限制在马尔可夫链模型上，理论分析和详细计算都提供了强有力的证据，证明复合边缘似然推断既有效又稳健，并且优于复合条件似然推断。
+
+在他们的情况下，全部似然由下式给出
+
+\ell(θ; y)=∑ a,b ya,b \log pa,b(θ)
+
+其中 ya,b 是从 a 到 b 的转移次数，pa,b(θ) 是平稳转移概率函数，a,b 范围超过马尔可夫链中的状态数。这是一个弯曲的指数族模型，因此 Mardia 等人的理论。 (2009) 不适用。成对对数似然函数是
+
+c\ell(θ; y)=∑ a,b ya,b \log pa,b(θ)+∑ a ya+ \log pa(θ),
+
+其中 ya+ = ∑ b ya,b 和 pa(θ) 是链处于状态 a 的平衡概率。等式 (4.1) 在 Hjort 和 Varin (2008) 中被解释为惩罚对数似然，具有针对匹配均衡分布的惩罚函数。这为成对似然推断的效率和稳健性提供了不同的解释。
+
+Mardia等人的论文。 (2009) 以及 Hjort 和 Varin (2008) 试图建立一些关于组合似然的一般结果，尽管是在相对专业的环境中。我们审查过的关于组合似然的其他文献通常关注由应用驱动的特定模型的比较。在下面的段落中，我们重点介绍了最近在我们看来特别有用的效率方面的工作。
+
+在聚类数据模型中，第 i 个聚类内的观测值 yir,r =1,\ldots ,mi 是相关的，通常可以通过获取 G(θ) 和 J(θ) 的解析表达式来评估渐近相对效率。在这种情况下，可以获得对渐近相对效率的广泛研究，并且还有关于权重选择的文献，通常与集群大小相关，以实现最佳效率。对于成对似然，Joe 和 Lee (2009) 详细研究了聚类数据的权重选择，并表明权重的最佳选择取决于聚类内的依赖强度。分析研究的模型是多元正态模型，其中可以与最大似然估计量进行直接比较，以及通过二分多元正态观测创建的多元二元模型。 Kuk 和 Nott (2000)、LeCessie 和 van Houwelingen (1994) 以及 Zhao 和 Joe (2005) 推荐的权重 1/(mi − 1) 适用于簇内独立性的极限情况，但权重 1 /\{mi(mi − 1)\} 对于非常强的依赖性是最优的。 Joe 和 Lee (2009) 建议的折衷方案是 1/\[(mi − 1)\{1+0.5(mi − 1)\}]，它适用于一系列参数值和模型。然而，迄今为止的大多数应用程序都使用了更简单的权重 1/(mi − 1)。 Joe 和 Lee (2009) 还表明，权重的最佳选择取决于要估计的参数，进一步详细说明了 Kuk 和 Nott (2000) 和其他人的早期结果，这些结果表明未加权成对似然可能更适合推断关联参数，而加权改进了均值参数的估计。
+
+在对聚类数据建模时，一维边缘的参数通常是回归系数和方差，关联参数只出现在二维边缘。这表明使用不同的方法来推断这两组参数，并且在不同的上下文中出现了沿着这些思路的一些建议。 Zhao 和 Joe (2005) 探索了对边缘参数使用独立似然法和对关联参数使用成对似然法，尽管在大多数情况下，完全成对似然法被证明更有效。 Kuk (2007) 提出了一种非常有前途的混合方法，该方法对边缘参数使用最佳得分函数，对关联参数使用成对似然，被视为有害参数。这种混合方法被证明与交替逻辑回归相关但优于交替逻辑回归（Carey、Zeger 和 Diggle (2003)），并在序数计数数据和负二项式计数数据上进行了说明；后一种应用也在 Henderson 和 Shimakura (2003) 中得到处理。有关此方法的进一步讨论，请参阅 Varin (2008)。
+
+相同的数据结构 yir,r =1,\ldots ,mi 可能作为纵向数据出现，在这种情况下，观测值的序列相关性通常是模型的一部分。在这种情况下，推断问题更类似于时间序列分析，不同之处在于纵向数据通常是 n 个独立的短时间序列，而不是单个长时间序列。 Joe 和 Lee (2009) 对纵向数据的渐近效率进行了分析研究。时间序列分析中通常提出的加权方案会降低时间上相距很远的观测值的权重，Joe 和 Lee (2009) 发现选择权重以便仅从相邻对构建成对似然比涉及所有可能的完整成对似然更可取序列中的对
+
+对于时间序列模型，已经提出了边缘和条件组合似然，并选择了一种可能的加权方案来降低时间上相距甚远的观测值的权重。 Varin 和 Vidoni (2006) 对不同阶的复合边缘似然的模拟方差进行了明确比较，其中再次表明，在复合边缘公式中包含太远的观测值会导致效率损失。在 Lele（2006 年）的特定生态模型中介绍了非平稳时间序列的模拟，其中成对似然比独立似然更有效。
+
+有许多关于依赖于模拟的集群和纵向数据的渐近相对效率的研究，而不是渐近方差的分析计算。此类研究可以考虑更复杂的边缘和关联参数模型，但很难获得结果的全貌。显示二进制数据中成对似然的高相对效率的模拟研究示例包括 Renard 等 (2002)、Renard、Molenberghs 和 Geys (2004)、Fieuws 和 Verbeke (2006) 以及 Feddag 和 Bacci (2009)。最后一篇论文考虑了为项目反应理论中的纵向研究提出的多维 Rasch 模型。在所有这些论文中，成对似然具有良好的基于​​模拟的效率，相对于基于完整似然函数的推断，或者在某些情况下是它的近似值，但在这种情况下可能存在统计“文件抽屉”问题似然表现不佳的方法可能不太可能发表，至少在开发出一种似乎行之有效的方法之前是这样。
+
+稀疏聚类二元数据可能出现在精细分层研究中，Hanfelt (2004) 和 Wang 和 Williamson (2005) 使用 Liang (1987) 的复合条件似然 (2.1) 建议了两种版本的组合似然。 Wang 和 Williamson（2005 年）的模拟比较了边缘参数和关联参数的组合似然估计与从估计方程方法得出的估计。这两种方法具有相当的效率；作者指出，关联参数的组合似然方程通常有多个根，这使得在这种情况下基于组合似然的数值计算相当困难。对此做出解释会很有用，因为大多数对组合似然估计的数值方面发表评论的作者都报告说组合似然函数表现良好并且相对容易最大化。
+
+在 Hanfelt (2004) 稀疏二进制数据的方法中，有越来越多的干扰参数，需要对从复合条件似然导出的关联参数的估计方程进行调整。 Hjort 和 Varin (2008) 指出，在几个具有共同均值但方差不同的正态组的 Neyman-Scott 模型中，基于差异的成对似然给出了对共同方差的一致推断，即使组数增加也是如此。 Engle、Shephard 和 Sheppard (2009) 以及 Pakel、Shephard 和 Sheppard (2011) 也考虑了具有大量有害参数的组合似然推断。
+
+Heagerty 和 Lele (1998) 建议对通过多元概率模型生成的空间二进制数据使用成对似然。那里有限的模拟表明，成对似然估计器对于估计均值参数是有效的，但在估计方差参数方面效率稍差。请参阅 Bhat、Sener 和 Eluru (2010)，了解对空间相关有序响应的回归分析的扩展。 Varin、Høst 和 Skare（2005 年）讨论了空间广义线性混合模型的一般方法，并且提供的模拟显示泊松随机效应模型中均值和方差参数的成对似然推断比基于高概率的推断更好完全似然的维拉普拉斯近似。在空间广义线性混合模型中拟合成对和完全对数似然出现了几个计算问题，作者描述了一种 EM 型算法；见第 5 节。
+
+Caragea 和 Smith（2007 年）使用渐近效率的分析计算以及模拟，为高斯随机场选择三种可能的组合似然方法，如上文第 3.1 节所述。他们的结论大致是，使用附近观测组（“小块”）的方法比更接近独立似然的版本更有效，并且对于估计回归参数，混合方法稍微好一些。 Guan (2006) 提出的空间点过程模拟表明，自适应估计分配给每对似然的权重可能是有效的。
+
+虽然大多数模拟研究表明某些版本的组合似然具有很高的效率，但 Oliveira (2004) 提出了一个警告，其中提出了一种新的降雨空间模型。该模型基于离散和连续空间过程的混合来表示降雨的发生和数量，并且值得注意的是，模拟表明在空间相关函数中估计参数的成对似然性能非常差。
+
+Varin 和 Vidoni (2009) 以及 Joe 和 Lee (2009) 考虑了一般状态空间模型中成对似然的模拟效率，Andrieu、Doucet 和 Tadic (2005) 开发了一个适用于顺序蒙特卡洛推断的组合似然版本。
+
+### 4.3 鲁棒性
+
+许多作者将组合似然推断称为稳健的，因为组合似然仅需要对较低维条件或边缘密度的模型假设，而不需要完整联合分布的详细说明。因此，如果有多个联合分布具有相同的低维边缘或条件分布，则该家族的所有成员的推论都是相同的。
+
+少数论文更详细地研究了鲁棒性，通常是通过误差指定的模型进行模拟。例如，Lele 和 Taper (2002) 从基于成对差异的似然 (2.3) 研究了 \hat{\theta}_{CL} 的行为，在他们的例子中是单向随机效应模型，首先假设随机效应分布的正态性，并且然后模拟非正态分布下的随机效应。他们得出结论，方差分量的组合似然估计量和受限最大似然 (REML) 估计量在模型指定误差的情况下表现相似。 REML 似然是残差边缘分布的似然函数，对于正态理论模型，它与基于成对差异的似然相同，因此在 Lele 和 Taper (2002) 的模型中可能非常接近 (2.3)学习。 Wang 和 Williamson (2005) 在误差指定相关结构的模型下对稀疏聚类二进制数据进行了模拟，他们的结果还表明组合似然法仍然具有很高的效率。
+
+在纵向数据分析中，缺少观测值并不罕见，对此进行建模对于有效推论可能很重要。 Parzen 等人详细考虑了这一点。 (2007)，以及 Yi、Zeng 和 Cook (2009) 的文章，如第 3.4 节所述。事实上，某些版本的组合似然确实对缺失数据机制的规范具有鲁棒性，这是组合似然的另一个非常有吸引力的特征。
+
+Godambe 信息的倒数 G(θ) 通常称为稳健方差估计，因为它是在模型指定误差且组合似然模型根据定义指定误差的假设下计算的。然而，使用 G−1(θ) 作为方差估计并不能保证，例如，组合似然估计在一系列与组合似然一致的模型下具有高效率；这些需要根据其自身的是非曲直进行调查。
+
+Liang 和 Qin (2000) 对许多非标准回归模型使用复合条件似然的专门版本，其中可能需要对解释变量的分布进行建模。他们的模拟解决了对建模这方面误差指定的稳健性，并指出在这种误差指定下，复合最大似然估计量继续具有小偏差，但方差略大
+
+最后，Kent (1982) 称对数似然比统计量 W 是稳健的，如果它的渐近分布是 χ2p，而不是在 (2.5) 之后给出的更复杂的形式，并讨论了一类特殊的指数族模型，通过证明分数方程是无偏信息。 Mardia 等人进一步发展了这一论点。 (2009)。
+
+### 4.4 可识别性
+
+如果没有与用于构造组合似然的分量密度相容的联合分布，则不清楚组合似然法是否会给出有意义的结果。如果组合似然是从条件分布构建的，Hammersley-Clifford 定理指定何时存在与这些条件分布一致的真正联合分布，这在 Besag (1974, 1975) 开发伪似然中使用用于空间数据。 Wang 和 Ip（2008 年）探讨了这个问题，定义了交互的关键概念，并强调了它们在确保条件分布和联合分布的兼容性方面的作用；另见 Arnold、Castillo 和 Sarabia (2001)。
+
+复合边缘似然没有类似的结果，尽管可能与使用 copula 构造联合分布的理论有关。几篇关于使用复合边缘似然的论文使用了 copula 结构（Bhat、Sener 和 Eluru (2010)；Tibaldi 等人 (2004)；Andersen (2004)），但复合边缘似然的许多应用都没有。例如，第 3.2 节中描述的空间极值的组合似然的发展使用成对边缘作为真正联合分布的代理。
+
+然而，我们可以考虑复合的 Kullback-Leibler 散度，
+
+CKL(g, f; θ)= K ∑ k=1 w_kEg \{\log g(y \in \mathcal{A}_k) − \log f (y \in \mathcal{A}_k; θ)\}
+
+由组合似然的每一项的 Kullback-Leibler 散度的线性组合组成。在某些规律性条件下，最大组合似然估计量 \hat{\theta}_{CL} 对于最小化 CKL 的参数值是一致的，关于此伪参数的推断可能对特定应用有用。本着广义估计方程的精神，我们还可以将组合似然估计方程视为对低维边缘分布参数知识的合理规范；参见 Varin (2008)。这对于估计均值函数中的参数尤其如此。
+
+Joe 和 Lee (2009) 顺便指出，除非组合似然构造中的分量似然“足够丰富以识别参数”，否则组合似然估计量将不一致。据推测，如果存在一个完全联合分布，其中分量的参数是完全联合分布的参数（的子向量），这保证了可识别性。然而，似乎可以在较弱的条件下识别组分密度的参数。
+
+在第 3.3.3 节概述的方法中，每个分量边缘密度都有自己的参数 θrs，例如，用于感兴趣的名义参数 θ 的估计器是成对估计器 θrs 的线性组合。这与关节密度的可识别性之间的联系尚不清楚
+
+## 5 计算方面
+
+### 5.1 标准误差
+
+标准误差和置信区间计算需要估计 Godambe 矩阵及其分量。同样，区分 $n$ 大且 $m$ 固定的情况和反之亦然很有用。第一种情况更简单，可以轻松计算出敏感度和变异性矩阵的样本估计值。灵敏度矩阵的样本估计由下式给出
+
+$$
+H(θ)=− \frac{1}{n} \sum^{n}_{i=1} \nabla u( ˆ \hat{\theta}_{CL}; yi)
+$$
+
+其中 $u(θ; yi)=\nabla c\ell(θ; yi)$。可以通过利用第二个 Bartlett 恒等式来避免 Hessian 的计算，该恒等式对于形成组合似然的每个单独似然项仍然有效。这会产生替代估计
+
+$$
+H(θ)= \frac{1}{n} \sum^{n}_{i=1} m ∑ r=1 u( ˆ \hat{\theta}_{CL}; yir)u(ˆ \hat{\theta}_{CL}; yir)T
+$$
+
+### 5.2 组合似然期望最大化算法
+
+### 5.3 低维积分与高维积分
+
+### 5.4 组合困难
+
+## 6 结论
+
+### 6.1 与其他方法的关系
+
+在边缘或条件组合似然的许多应用中，源自 Liang 和 Zeger（1986）<sup class="refplus-num"><a href="#ref-Liang1986">[63]</a></sup> 的广义估计方程的方法是一种自然选择。该方法通过均值模型定义估计方程，并通过适当加权估计方程来适应观测值之间的相关性和非齐次方差。 Liang 和 Zeger (1986) <sup class="refplus-num"><a href="#ref-Liang1986">[63]</a></sup> 表明，只要正确指定均值的估计方程，得到的估计量就是一致的，并建议为此使用工作协方差矩阵。此后提出了许多改进，该方法对于复杂数据的半参数建模非常方便。该方法的一个可能缺点是没有目标函数，这对于比较估计方程的多个根很有用。对于聚类二进制数据，Molenberghs 和 Verbeke（2005 年<sup class="refplus-num"><a href="#ref-Molenberghs2005">[78]</a></sup>，第 9 章）对大小为 $m_i$ 的簇的权重为 $1/(m_i − 1)$ 的成对似然估计方程与两个版本的广义估计方程 GEE1 和 GEE2 进行了详细比较，后者需要对数据的前四个时刻进行建模；他们认为成对似然是两者的折衷，计算复杂度与 GEE1 相似，但效率更接近 GEE2。
+
+组合似然的许多更复杂应用，特别是在纵向或聚类数据中，使用模拟研究提供与某种类型的估计方程（通常是广义估计方程）的比较；参见例如 Geys 等 (2001) <sup class="refplus-num"><a href="#ref-Geys2001">[38]</a></sup>，Hanfelt (2004) <sup class="refplus-num"><a href="#ref-Hanfelt2004">[42]</a></sup>，以及 Zhao 和 Ma (2009) <sup class="refplus-num"><a href="#ref-Zhao2009">[118]</a></sup>。如 Kuk (2007) <sup class="refplus-num"><a href="#ref-Kuk2007">[53]</a></sup> 所述，将组合似然特征与广义估计方程相结合的混合方法似乎很有前途。在另一个方向，Oman 等 (2007) <sup class="refplus-num"><a href="#ref-Oman2007">[83]</a></sup> 使用广义估计方程方法来简化成对似然的计算。
+
+在其最一般的形式中，组合似然包含统计文献中建议的许多类似然函数，包括截尾生存数据的部分似然及其许多扩展，以及计数过程的非参数似然。例如，Wellner 和 Zhang (2000 <sup class="refplus-num"><a href="#ref-Wellner2000">[114]</a></sup>, 2007 <sup class="refplus-num"><a href="#ref-Wellner2007">[115]</a></sup>) 提出使用独立似然对面板计数数据进行非参数和半参数估计，Andersen (2004) <sup class="refplus-num"><a href="#ref-Andersen2004">[1]</a></sup> 在比例风险模型中使用成对似然。似然组合的其他扩展包括 Zidek 和 Hu (1997) <sup class="refplus-num"><a href="#ref-Zidek1997">[122]</a></sup> 的加权似然，以及 Kalbfleisch、Song 和 Fan (2005) <sup class="refplus-num"><a href="#ref-Kalbfleisch2005">[51]</a></sup> 的部分最大化似然划分。
+
+### 6.2 一些挑战
+
+使用组合似然的最一般定义，可能很难推导出超出点估计量一致性的许多特定性质，因为模型的范围太广了（Lindsay、Yi 和 Sun（2011 年）<sup class="refplus-num"><a href="#ref-Lindsay2011">[67]</a></sup>）。在本小节中，我们考虑了一些似乎有希望进一步研究复合边缘似然和复合条件似然的理论和应用的想法。
+
+一些理论问题在`第 4 节`中被提及。一个重要的问题是用于构建组合似然的低维边缘或条件分布与基础联合分布之间的关系。对于条件密度，Hammersley-Clifford 定理（Besag (1974) <sup class="refplus-num"><a href="#ref-Besag1974">[7]</a></sup>）提供了关于存在完整联合分布的一些保证，即使该分布不可计算。低维联合密度的复合没有类似的结果，超出单变量边缘密度，其中独立似然与完全联合分布平凡对应。虽然一些作者指出，从组合似然中进行明智推断需要存在这样一个完整的联合密度，但其他作者则认为低维边缘中的参数无论如何都是可以解释的。 Varin 和 Vidoni（2005）<sup class="refplus-num"><a href="#ref-Varin2005">[106]</a></sup> 从 Kullback-Leibler 散度的角度论证了这一点，而 Faes 等 (2008) <sup class="refplus-num"><a href="#ref-Faes2008">[27]</a></sup> 设计了一种将组件密度中的各个参数与感兴趣的共同参数相关联的方法。使用联结函数构造多元分布的理论 (Joe (1997) <sup class="refplus-num"><a href="#ref-Joe1997">[48]</a></sup>) 可能有助于进一步探索这些想法。
+
+在尚未发表的工作中，在 2009 年华盛顿联合统计会议关于组合似然的会议上，G. Y. Yi 给出了几个说明性的例子，这些例子提出了关于基于组合似然建模的问题，以及关于组合似然与完全似然比较的问题方法。建模示例假定二值数据具有以下成对分布：
+
+$$
+f (y_r,y_s; β) ∝ exp(βy_r + βy_s + βrsy_ry_s) 1 + exp(βy_r + βy_s + βrsy_ry_s) .
+$$
+
+例如，如果二元向量的长度为 3，则成对似然将导致对 β12、β13 和 β23 的不同估计，但假设的边缘模型的强形式限制了完整的联合密度，使其具有 β12 = β13 = β23。类似地，不难构造成对条件密度与任何联合密度不兼容的示例。在成对似然的对称正态示例中出现了一个稍微不同的点，其中 Y 服从协方差矩阵 \Sigma = (1 − ρ)I + ρ11T 的正态分布，其中 I 是身份，1 是 1 的 m 向量。在长度为 m 的向量 Y 的完全联合分布中，\Sigma 仅在 $−1/(m − 1) &lt; ρ &lt; 1$ 时是正定的，而成对组合似然仅要求 $−1/2 &lt; ρ &lt; 1$；因此，预期成对似然不适用于 $ρ&lt;0$，Mardia、Hughes 和 Taylor (2007) 证实了这一点。
+
+最近的几篇论文，包括本期特刊中的一些论文（Okabayashi、Johnson 和 Geyer (2011)）；戴维斯和丘 (2011)；吴等。 (2011)) 按照 Varin 和 Vidoni (2005) 的思路解决组合似然中包含多少项的问题。答案很可能在很大程度上取决于应用程序，但从理论的角度来看，可以通过添加附加项以更一般的方式研究提供或未提供的信息积累。 Lindsay、Yi 和 Sun (2011) 详细讨论了组合似然设计的多个方面，特别强调了组合似然得分函数的组成部分。这个设计问题似乎与空间和时间序列应用程序的上下文特别相关，其中复制是从时间或空间上足够远的观测中获得的。这方面的一个特殊方面是观测子集的加权，已经对它进行了一些详细的研究，特别是对于集群和/或纵向数据。欢迎对复合边缘似然的渐近效率有更一般的理解。 Mardia 等人取得了一些进展。 (2009)，但那里的条件似乎相当强大，并且更容易应用于复合条件似然。
+
+使用复合边缘似然的一个动机是它比完全联合依赖更容易模拟单变量、双变量或三变量依赖。人们经常声称这些模型比全联合模型更稳健，但似乎很难做到这一点。这部分是因为并不总是很清楚，例如，双变量边缘的规范在多大程度上限制了完整的联合分布。 Bruce Lindsay 在个人交流中提出的一个相关问题是，是否可能存在 J = H 的高维模型，以便在该特定模型中实现渐近效率。
+
+我们还模拟了一个设置为 $100 \times 100$ 网格的数据集，随机选择已观测的 $n_z = 9,000$ 个数据点，其他高斯过程实现用作测试数据。基于先验 $\log α \sim \mathcal{N}(\log(30), 0.6^2)$ 和 SGV 似然，我们采用标准差为 $0.5$ 的高斯提议分布，对 $\log α$ 运行了 Metropolis-Hastings 采样，共进行 $1,200$ 次迭代，丢弃前 $200$ 个样本并将剩余部分瘦化 $10$ 倍。然后，我们对 $1,000$ 个预留的测试位置，使用 RF-full 计算了后验预测分布$\hat{f}(\mathbf{y}_{−o} | \mathbf{z}_o)$。`图 7c` 显示了测试位置处 $\mathbf{y}_{−o}$ 的真实模拟值，以及结果后验的 $80\%$ 区间。其中 $79.8\%$ 的区间覆盖了真实值，表明使用通用 Vecchia 获得的后验预测分布得到了很好的校准。
+
+需要进一步研究的渐近理论的另一个方面是增加维度 m 且样本量固定或缓慢增加的情况：这对于遗传学应用尤为重要。似乎没有严格的证据证明复合最大似然估计在 m 和 n 的各种条件下是否一致：Cox 和 Reid (2004) 概述了一些启发式方法。
+
+本期的几篇论文以及其他文献中都提到了一个非常重要的方法论发展，那就是在缺失数据和误测数据的情况下使用组合似然法。这似乎是一个特别重要的应用问题，因为组合似然法在医学应用中经常与纵向数据一起使用，错过就诊几乎是不可避免的，并导致研究中每个受试者可用的系列中存在空白。在某些模型中，缺失机制不需要在组合似然法中建模（He 和 Yi (2011)）。 Molenberghs 等 (2011) 使用估计方程理论中的双重鲁棒性思想在随机缺失假设下调整缺失，Gao 和 Song (2011) 开发了 EM 型算法，但要求缺失完全随机
+
+另一个重要的方法方面是计算，特别是在没有内部复制时 J(θ) 的估计。 5.1 节中提出了几种策略，但在广泛的模型中进行系统比较可能是值得的。
+
+组合似然正在开发中，通常由不同领域的研究人员独立开发，用于广泛的应用领域，远远超出其最初开发的空间或纵向数据：计算机实验、网络分析、种群遗传学和投资组合，仅举几个最近的应用程序。它是简化复杂系统建模的一种自然方式，并且似乎很可能成为完全似然推断的替代方法
+
+## 参考文献
+
+<ul id="refplus"><li id="ref-Andersen2004" data-num="1">[1]  Andersen, E. (2004). Composite likelihood and two-stage estimation in family studies. Biostatistics 5, 15-30.</li><li id="ref-Andrieu2005" data-num="2">[2]  Andrieu, C., Doucet, A. and Tadic, V. (2005). On-line parameter estimation in general statespace models. In 44th Conference on Decision and Control, 332-337.</li><li id="ref-Apanasovich2008" data-num="3">[3]  Apanasovich, T., Ruppert, D., Lupton, J., Popovic, N. and Carroll, R. (2008). Aberrant crypt foci and semiparametric modeling of correlated binary data. Biometrics 64, 490-500.</li><li id="ref-Arnold2001" data-num="4">[4]  Arnold, B., Castillo, E. and Sarabia, J. (2001). Conditionally specified distributions: An introduction. Statist. Sci. 16, 249-274.</li><li id="ref-Barry2008" data-num="5">[5]  Barry, S. and Bowman, A. (2008). Linear mixed models for longitudinal shape data with applications to facial modelling. Biostatistics 9, 555-565.</li><li id="ref-Bellio2005" data-num="6">[6]  Bellio, R. and Varin, C. (2005). A pairwise likelihood approach to generalized linear models with crossed random effects. Stat. Model. 5, 217-227.</li><li id="ref-Besag1974" data-num="7">[7]  Besag, J. (1974). Spatial interaction and the statistical analysis of lattice systems. J. Roy. Statist. Soc. Ser. B 36, 192-236.</li><li id="ref-Besag1975" data-num="8">[8]  Besag, J. (1975). Statistical analysis of non-lattice data. Statistician 24, 179-195.</li><li id="ref-Bhat2010" data-num="9">[9]  Bhat, C. R., Sener, P. N. and Eluru, N. (2010). A flexible spatially dependent discrete choice model: Formulation and application to teenagers’ weekday recreational activity participation. Transportation Research Part B 44, 903-921.</li><li id="ref-Bhat2010" data-num="10">[10]  Bhat, C. R., Varin, C. and Ferdous, N. (2010). A comparison of the maximum simulated likelihood and composite marginal likelihood estimation approaches in the context of the multivariate ordered response model. Advances in Econometrics: Maximum Simulated Likelihood Methods and Applications 26, (Edited by W. H. Greene). Emerald Group Publishing Limited.</li><li id="ref-Caragea2006" data-num="11">[11]  Caragea, P. and Smith, R. L. (2006). Approximate likelihoods for spatial processes. Preprint.</li><li id="ref-Caragea2007" data-num="12">[12]  Caragea, P. and Smith, R. L. (2007). Asymptotic properties of computationally efficient alternative estimators for a class of multivariate normal models. J. Multivariate Anal. 98, 1417-1440.</li><li id="ref-Carey2003" data-num="13">[13]  Carey, V., Zeger, S. and Diggle, P. (2003). Modelling multivariate binary data with alternating logistic regressions. Biometrika 80, 517-526.</li><li id="ref-Castro2004" data-num="14">[14]  Castro, R., Coates, M., Liang, G., Nowak, R. and Yu, B. (2004). Network tomography: recent developments. Statist. Sci. 19, 499-517.</li><li id="ref-Chandler2007" data-num="15">[15]  Chandler, R. E. and Bate, S. (2007). Inference for clustered data using the independence loglikelihood. Biometrika 94, 167-183.</li><li id="ref-Claeskens2008" data-num="16">[16]  Claeskens, G. and Hjort, N. (2008). Model Selection and Model Averaging, Cambridge University Press, Cambridge.</li><li id="ref-Cox1975" data-num="17">[17]  Cox, D. (1975). Partial likelihood. Biometrika 62, 269-276.</li><li id="ref-Cox1972" data-num="18">[18]  Cox, D. R. (1972). The analysis of multivariate binary data. Appl. Statist. 21, 113-120.</li><li id="ref-Cox2004" data-num="19">[19]  Cox, D. and Reid, N. (2004). A note on pseudolikelihood constructed from marginal densities. Biometrika 91, 729-737.</li><li id="ref-Cressie1993" data-num="20">[20]  Cressie, N. (1993). Statistics for Spatial Data, Wiley, New York.</li><li id="ref-Curriero1999" data-num="21">[21]  Curriero, F. and Lele, S. (1999). A composite likelihood approach to semivariogram estimation. J. Agric. Biol. Environ. Stat. 4, 9-28.</li><li id="ref-Davis2011" data-num="22">[22]  Davis, R. A. and Yau, C. Y. (2011). Comments on pairwise likelihood in time series models. Statist. Sinica 21, 255-277.</li><li id="ref-Davison2009" data-num="23">[23]  Davison, A. and Gholamrezaee, M. (2009). Geostatistics of extremes. Technical report, EPFL. Preprint.</li><li id="ref-Dempster1977" data-num="24">[24]  Dempster, A., Laird, N. and Rubin, D. (1977). Maximum likelihood from incomplete data via the EM algorithm. J. Roy. Statist. Soc. Ser. B 39, 1-22.</li><li id="ref-Diggle2007" data-num="25">[25]  Diggle, P. and Ribeiro, P. (2007). Model-based Geostatistics. Springer, New York.</li><li id="ref-Engle2009" data-num="26">[26]  Engle, R. F., Shephard, N. and Sheppard, K. (2009). Fitting and testing vast dimensional time-varying covariance models. Preprint.</li><li id="ref-Faes2008" data-num="27">[27]  Faes, C., Aerts, M., Molenberghs, G., Geys, H., Teuns, G. and Bijnens, L. (2008). A highdimensional joint model for longitudinal outcomes of different nature. Statist. Medicine 27, 4408-4427.</li><li id="ref-Feddag2009" data-num="28">[28]  Feddag, M.-L. and Bacci, S. (2009). Pairwise likelihood for the longitudinal mixed Rasch model. Comput. Statist. Data Anal. 53, 1027-1037.</li><li id="ref-Fieuws2006" data-num="29">[29]  Fieuws, S. and Verbeke, G. (2006). Pairwise fitting of mixed models for the joint modeling of multivariate longitudinal profiles. Biometrics 62, 424-431.</li><li id="ref-Fieuws2006" data-num="30">[30]  Fieuws, S., Verbeke, G., Boen, G. and Delecluse, C. (2006). High dimensional multivariate mixed models for binary questionnaire data. Appl. Statist. 55, 449-460.</li><li id="ref-Fieuws2007" data-num="31">[31]  Fieuws, S., Verbeke, G., Maes, B. and Vanrenterghem, Y. (2007). Predicting renal graft failure using multivariate longitudinal profiles. Biostatistics 9, 419-431.</li><li id="ref-Fieuws2007" data-num="32">[32]  Fieuws, S., Verbeke, G. and Molenberghs, G. (2007). Random-effects models for multivariate repeated measures. Statist. Meth. Medical Res. 16, 387-397.</li><li id="ref-Fiocco2009" data-num="33">[33]  Fiocco, M., Putter, H. and van Houwelingen, J. C. (2009). A new serially correlated gammafrailty process for longitudinal count data. Biostatistics 10, 245-257.</li><li id="ref-Fujii2005" data-num="34">[34]  Fujii, Y. and Yanagimoto, T. (2005). Pairwise conditional score functions: a generalization of the Mantel-Haenszel estimator. J. Statist. Plann. Inference 128, 1-12.</li><li id="ref-Gao2010" data-num="35">[35]  Gao, X. and Song, P. X.-K. (2010). Composite likelihood Bayesian information criteria for model selection in high dimensional data. J. Amer. Statist. Assoc., to appear.</li><li id="ref-Gao2011" data-num="36">[36]  Gao, X. and Song, P. X.-K. (2011). Composite likelihood EM algorithm with applications to multivariate hidden Markov model. Statist. Sinica 21, 165-185.</li><li id="ref-Geys1999" data-num="37">[37]  Geys, H., Molenberghs, G. and Ryan, L. (1999). Pseudolikelihood modeling of multivariate outcomes in developmental toxicology. J. Amer. Statist. Assoc. 94, 734-745.</li><li id="ref-Geys2001" data-num="38">[38]  Geys, H., Regan, M., Catalano, P. and Molenberghs, G. (2001). Two latent variable risk assessment approaches for mixed continuous and discrete outcomes from developmental toxicity data. J. Agric. Biol. Environ. Stat. 6, 340-355.</li><li id="ref-Glasbey2001" data-num="39">[39]  Glasbey, C. (2001). Non-linear autoregressive time series with multivariate Gaussian mixtures as marginal distributions. Appl. Statist. 50, 143-154.</li><li id="ref-Godambe1960" data-num="40">[40]  Godambe, V. (1960). An optimum property of regular maximum likelihood estimation. Ann. Math. Statist. 31, 1208-1211.</li><li id="ref-Guan2006" data-num="41">[41]  Guan, Y. (2006). A composite likelihood approach in fitting spatial point process models. J. Amer. Statist. Assoc. 101, 1502-1512.</li><li id="ref-Hanfelt2004" data-num="42">[42]  Hanfelt, J. (2004). Composite conditional likelihood for sparse clustered data. J. Roy. Statist. Soc. Ser. B 66, 259-273.</li><li id="ref-He2011" data-num="43">[43]  He, W. and Yi, G. Y. (2011). A pairwise likelihood method for correlated binary data with/ without missing observations under generalized partially linear single-index models. Statist. Sinica 21, 207-229.</li><li id="ref-Heagerty1998" data-num="44">[44]  Heagerty, P. and Lele, S. (1998). A composite likelihood approach to binary spatial data. J. Amer. Statist. Assoc. 93, 1099-1111.</li><li id="ref-Henderson2003" data-num="45">[45]  Henderson, R. and Shimakura, S. (2003). A serially correlated gamma frailty model for longitudinal count data. Biometrika 90, 335-366.</li><li id="ref-Hjort1994" data-num="46">[46]  Hjort, N. and Omre, H. (1994). Topics in spatial statistics (with discussion, comments and rejoinder). Scand. J. Statist. 21, 289-357.</li><li id="ref-Hjort2008" data-num="47">[47]  Hjort, N. and Varin, C. (2008). ML, PL, QL in Markov chain models. Scand. J. Statist. 35, 64-82.</li><li id="ref-Joe1997" data-num="48">[48]  Joe, H. (1997) , Multivariate Models and Multivariate Dependence Concepts, Chapman &amp; Hall, London.</li><li id="ref-Joe2009" data-num="49">[49]  Joe, H. and Lee, Y. (2009). On weighting of bivariate margins in pairwise likelihood. J. Multivariate Anal. 100, 670-685.</li><li id="ref-Kalbfleisch1978" data-num="50">[50]  Kalbfleisch, J. (1978). Likelihood methods and nonparametric tests. J. Amer. Statist. Assoc. 73, 167-170.</li><li id="ref-Kalbfleisch2005" data-num="51">[51]  Kalbfleisch, J. D., Song, P. X.-K. and Fan, Y. (2005). Maximization by parts in likelihood inference. J. Amer. Statist. Assoc. 100, 1145-1158.</li><li id="ref-Kent1982" data-num="52">[52]  Kent, J. (1982). Robust properties of likelihood ratio tests. Biometrika 69, 19-27.</li><li id="ref-Kuk2007" data-num="53">[53]  Kuk, A. (2007). A hybrid pairwise likelihood method. Biometrika 94, 939-952.</li><li id="ref-Kuk2000" data-num="54">[54]  Kuk, A. and Nott, D. (2000). A pairwise likelihood approach to analyzing correlated binary data. Statist. Probab. Lett. 47, 329-335.</li><li id="ref-Kuonen1999" data-num="55">[55]  Kuonen, D. (1999). Saddlepoint approximations for distributions of quadratic forms in normal variables. Biometrika 86, 929-935.</li><li id="ref-Larribe2011" data-num="56">[56]  Larribe, F. and Fearnhead, P. (2011). On composite likelihoods in statistical genetics. Statist. Sinica 21, 43-69.</li><li id="ref-LeCessie1994" data-num="57">[57]  LeCessie, S. and van Houwelingen, J. C. (1994). Logistic regression for correlated binary data. Appl. Statist. 43, 95-108.</li><li id="ref-Lele2006" data-num="58">[58]  Lele, S. (2006). Sampling variability and estimates of density dependence: a compositelikelihood approach. Ecology 87, 189-202.</li><li id="ref-Lele2002" data-num="59">[59]  Lele, S. and Taper, M. (2002). A composite likelihood approach to (co)variance components estimation. J. Statist. Plann. Inference 103, 117-135.</li><li id="ref-Liang1987" data-num="60">[60]  Liang, K.-Y. (1987). Extended Mantel-Haenszel estimating procedure for multivariate logistic regression models. Biometrics 43, 289-299.</li><li id="ref-Liang2000" data-num="61">[61]  Liang, K.-Y. and Qin, J. (2000). Regression analysis under non-standard situations: a pairwise pseudolikelihood approach. J. Roy. Statist. Soc. Ser. B 62, 773-786.</li><li id="ref-Liang2003" data-num="62">[62]  Liang, G. and Yu, B. (2003). Maximum pseudo likelihood estimation in network tomography. IEEE Trans. Signal Process. 51, 2043-2053.</li><li id="ref-Liang1986" data-num="63">[63]  Liang, K.-Y. and Zeger, S. (1986). Longitudinal data analysis using generalized linear models. Biometrika 73, 13-22.</li><li id="ref-Lindsay1982" data-num="64">[64]  Lindsay, B. G. (1982). Conditional score functions: some optimality results. Biometrika 69, 503-512.</li><li id="ref-Lindsay1988" data-num="65">[65]  Lindsay, B. (1988). Composite likelihood methods. Contemporary Mathematics 80, 220-239.</li><li id="ref-Lindsay2000" data-num="66">[66]  Lindsay, B. G., Pilla, R. S. and Basak, P. (2000). Moment-based approximations of distributions using mixtures: theory and application. Ann. Inst. Statist. Math. 52, 215-230.</li><li id="ref-Lindsay2011" data-num="67">[67]  Lindsay, B. G., Yi, G. Y. and Sun, J. (2011). Issues and strategies in the selection of composite likelihoods. Statist. Sinica 21, 71-105.</li><li id="ref-Lipsitz1994" data-num="68">[68]  Lipsitz, S., Dear, K. and Zhao, L. (1994). Jackknife estimators of variance for parameter estimates from estimating equations with applications to clustered survival data. Biometrics 50, 842-846.</li><li id="ref-Lumley1999" data-num="69">[69]  Lumley, T. and Heagerty, P. (1999). Weighted empirical adaptive variance estimators for correlated data regression. J. Roy. Statist. Soc. Ser. B 61, 459-477.</li><li id="ref-Mardia2007" data-num="70">[70]  Mardia, K. V., Hughes, G. and Taylor, C. C. (2007). Efficiency of the pseudolikelihood for multivariate normal and von mises distributions. Preprint.</li><li id="ref-Mardia2008" data-num="71">[71]  Mardia, K. V., Hughes, G., Taylor, C. C. and Singh, H. (2008). A multivariate von Mises distribution with applications to bioinformatics. Canadian Journal of Statistics 36, 99109.</li><li id="ref-Mardia2009" data-num="72">[72]  Mardia, K. V., Kent, J. T., Hughes, G. and Taylor, C. C. (2009). Maximum likelihood estimation using composite likelihoods for closed exponential families. Biometrika 96, 975-982.</li><li id="ref-Mateu2007" data-num="73">[73]  Mateu, J., Porcu, E., Christakos, G. and Bevilacqua, M. (2007). Fitting negative spatial covariances to geothermal field temperatures in Nea Kessani (Greece). Environmetrics 18, 759-773.</li><li id="ref-McCullagh1983" data-num="74">[74]  McCullagh, P. (1983). Quasi-likelihood functions. Ann. Statist. 11, 59-67.</li><li id="ref-McFadden2000" data-num="75">[75]  McFadden, D. and Train, K. (2000). Mixed MNL models for discrete responses. J. Appl. Econometrics 15, 447-470.</li><li id="ref-McLachlan2008" data-num="76">[76]  McLachlan, G. and Krishnan, T. (2008). The EM Algorithm and Extensions. Second Edition, Wiley, Hoboken, New Jersey.</li><li id="ref-Molenberghs2011" data-num="77">[77]  Molenberghs, G., Kenward, M. G., Verbeke, G. and Birhanu, T. (2011). Pseudo-likelihood for incomplete data. Statist. Sinica 21, 187-206.</li><li id="ref-Molenberghs2005" data-num="78">[78]  Molenberghs, G. and Verbeke, G. (2005). Models for Discrete Longitudinal Data. Springer, New York.</li><li id="ref-Ng2011" data-num="79">[79]  Ng, C. T., Joe, H., Karlis, D. and Liu, J. (2011). Composite likelihood for time series models with a latent autoregressive process. Statist. Sinica 21, 279-305.</li><li id="ref-Nott1999" data-num="80">[80]  Nott, D. and Ryd ́en, T. (1999). Pairwise likelihood methods for inference in image models. Biometrika 86, 661-676.</li><li id="ref-Okabayashi2011" data-num="81">[81]  Okabayashi, S., Johnson, L. and Geyer, C. J. (2011). Extending pseudo-likelihood for Potts models. Statist. Sinica 21, 331-347.</li><li id="ref-Oliveira2004" data-num="82">[82]  Oliveira, V. D. (2004). A simple model for spatial rainfall fields. Stochastic Environmental Research and Risk Assessment 18, 131-140.</li><li id="ref-Oman2007" data-num="83">[83]  Oman, S., Landsman, V., Carmel, Y. and Kadmon, R. (2007). Analyzing spatially distributed binary data using independent-block estimating equations. Biometrics 63, 892-890.</li><li id="ref-Pace2011" data-num="84">[84]  Pace, L., Salvan, A. and Sartori, N. (2011). Adjusting composite likelihood ratio statistics. Statist. Sinica 21, 129-148.</li><li id="ref-Padoan2010" data-num="85">[85]  Padoan, S., Ribatet, M. and Sisson, S. (2010). Likelihood-based inference for max-stable processes. J. Amer. Statist. Assoc. 105, 263-277.</li><li id="ref-Pakel2011" data-num="86">[86]  Pakel, C., Shephard, N. and Sheppard, K. (2011). Nuisance parameters, composite likelihoods and a panel of GARCH models. Statist. Sinica 21, 307-329.</li><li id="ref-Parzen2006" data-num="87">[87]  Parzen, M., Lipsitz, S., Fitzmaurice, G., Ibrahim, J. and Troxel, A. (2006). Pseudo-likelihood methods for longitudinal binary data with non-ignorable missing responses and covariates. Statist. Medicine 25, 2784-2796.</li><li id="ref-Parzen2007" data-num="88">[88]  Parzen, M., Lipsitz, S., Fitzmaurice, G., Ibrahim, J., Troxel, A. and Molenberghs, G. (2007). Pseudo-likelihood methods for the analysis of longitudinal binary data subject to nonignorable non-monotone missingness. J. Data Sci. 5, 1-21.</li><li id="ref-Pauli2011" data-num="89">[89]  Pauli, F., Racugno, W. and Ventura, L. (2011). Bayesian composite marginal likelihoods. Statist. Sinica 21, 149-164.</li><li id="ref-R2009" data-num="90">[90]  R Development Core Team (2009), R: A Language and Environment for Statistical Computing, R Foundation for Statistical Computing, Vienna, Austria. ISBN 3-900051-07-0. http:// www.R-project.org.</li><li id="ref-Renard2002" data-num="91">[91]  Renard, D., Geys, H., Molenberghs, G., Burzykowski, T. and Buyse, M. (2002). Validation of surrogate endpoints in multiple randomized clinical trials with discrete outcomes. Biometrical J. 8, 921-935.</li><li id="ref-Renard2004" data-num="92">[92]  Renard, D., Molenberghs, G. and Geys, H. (2004). A pairwise likelihood approach to estimation in multilevel probit models. Comput. Statist. Data Anal. 44, 649-667.</li><li id="ref-Ribatet2009" data-num="93">[93]  Ribatet, M. (2009). A User’s Guide to the SpatialExtremes Package. EPFL, Lausanne, Switzerland.</li><li id="ref-Robins1995" data-num="94">[94]  Robins, J. (1995). Analysis of semiparametric regression models for repeated outcomes in the presence of missing data. J. Amer. Statist. Assoc. 90, 106-121.</li><li id="ref-Rotnitzky1990" data-num="95">[95]  Rotnitzky, A. and Jewell, N. (1990). Hypothesis testing of regression parameters in semiparametric generalized linear models for cluster correlated data. Biometrika 77, 485-497.</li><li id="ref-Ryden1994" data-num="96">[96]  Ryden, T. (1994). Consistent and asymptotically normal parameter estimates for hidden Markov models. Ann. Statist. 22, 1884-1895.</li><li id="ref-Satterthwaite1946" data-num="97">[97]  Satterthwaite, F. E. (1946). An approximate distribution of estimates of variance components. Biometrics Bulletin 2, 110-114.</li><li id="ref-Smith2009" data-num="98">[98]  Smith, E. and Stephenson, A. (2009). An extended Gaussian max-stable process model for spatial extremes. J. Statist. Plann. Inference 139, 1266-1275.</li><li id="ref-Smith1990" data-num="99">[99]  Smith, R. (1990). Max-stable processes and spatial extremes. Unpublished.</li><li id="ref-Stein2004" data-num="100">[100]  Stein, M., Chi, Z. and Welty, L. (2004). Approximating likelihoods for large spatial data sets. J. Roy. Statist. Soc. Ser. B 66, 275-296.</li><li id="ref-Tibaldi2004" data-num="101">[101]  Tibaldi, F., Molenberghs, G., Burzykowski, T. and Geys, H. (2004). Pseudo-likelihood estimation for a marginal multivariate survival model. Statist. Medicine 23, 924-963.</li><li id="ref-Troxel2003" data-num="102">[102]  Troxel, A., Lipsitz, S. and Harrington, D. (2003). Marginal models for the analysis of longitudinal measurements with nonignorable non-monotone missing data. Biometrika 85, 661-672.</li><li id="ref-Vandekerkhove2005" data-num="103">[103]  Vandekerkhove, P. (2005). Consistent and asymptotically normal parameter estimates for hidden Markov mixtures of Markov models. Bernoulli 11, 103-129.</li><li id="ref-Varin2008" data-num="104">[104]  Varin, C. (2008). On composite marginal likelihoods. Adv. Statist. Anal. 92, 1-28.</li><li id="ref-Varin2010" data-num="105">[105]  Varin, C. and Czado, C. (2010). A mixed autoregressive probit model for ordinal longitudinal data. Biostatistics 11, 127-138.</li><li id="ref-Varin2005" data-num="106">[106]  Varin, C., Høst, G. and Skare, Ø. (2005). Pairwise likelihood inference in spatial generalized linear mixed models. Comput. Statist. Data Anal. 49, 1173-1191.</li><li id="ref-Varin2005" data-num="107">[107]  Varin, C. and Vidoni, P. (2005). A note on composite likelihood inference and model selection. Biometrika 92, 519-528.</li><li id="ref-Varin2006" data-num="108">[108]  Varin, C. and Vidoni, P. (2006). Pairwise likelihood inference for ordinal categorical time series. Comput. Statist. Data Anal. 51, 2365-2373.</li><li id="ref-Varin2009" data-num="109">[109]  Varin, C. and Vidoni, P. (2009). Pairwise likelihood inference for general state space models. Econometric Rev. 28, 170-185.</li><li id="ref-Vecchia1988" data-num="110">[110]  Vecchia, A. V. (1988). Estimation and model identification for continuous spatial processes. J. Roy. Statist. Soc. Ser. B 50, 297-312.</li><li id="ref-Wang2005" data-num="111">[111]  Wang, M. and Williamson, J. M. (2005). Generalization of the Mantel-Haenszel estimating function for sparse clustered binary data. Biometrics 61, 973-981.</li><li id="ref-Wang2008" data-num="112">[112]  Wang, Y. and Ip, E. (2008). Conditionally specified continuous distributions. Biometrika 95, 735-746.</li><li id="ref-Wedderburn1974" data-num="113">[113]  Wedderburn, R. (1974). Quasi-likelihood functions, generalized linear models, and the GaussNewton method. Biometrika 61, 439-447.</li><li id="ref-Wellner2000" data-num="114">[114]  Wellner, J. A. and Zhang, Y. (2000). Two estimators of the mean of a counting process with panel count data. Ann. Statist. 28, 779-814.</li><li id="ref-Wellner2007" data-num="115">[115]  Wellner, J. A. and Zhang, Y. (2007). Two likelihood-based semiparametric estimation methods for panel count data with covariates. Ann. Statist. 35, 2106-2142.</li><li id="ref-White1994" data-num="116">[116]  White, H. (1994). Estimation, Inference and Specification Analysis. Cambridge University Press, Cambridge.</li><li id="ref-Yi2009" data-num="117">[117]  Yi, G. Y., Zeng, L. and Cook, R. J. (2009). A robust pairwise likelihood method for incomplete longitudinal binary data arising in clusters. Canad. J. Statist., to appear.</li><li id="ref-Zhao2009" data-num="118">[118]  Zhao, H. and Ma, W.-Q. (2009). A pairwise likelihood procedure for analyzing exchangeable binary data with random cluster sizes. Comm. Statist. Theory Methods 38, 594-606.</li><li id="ref-Zhao1990" data-num="119">[119]  Zhao, L. P. and Prenctice, R. L. (1990). Correlated binary regression using a quadratic exponential model. Biometrika 77, 642-648.</li><li id="ref-Zhao2005" data-num="120">[120]  Zhao, Y. and Joe, H. (2005). Composite likelihood estimation in multivariate data analysis. Canad. J. Statist. 33, 335-356.</li><li id="ref-Zi2009" data-num="121">[121]  Zi, J. (2009). On some aspects of composite likelihood. PhD dissertation, University of Toronto.</li><li id="ref-Zidek1997" data-num="122">[122]  Zidek, J. V. and Hu, F. (1997). The asymptotic properties of the maximum-relevance weighted likelihood estimators. Canad. J. Statist. 25, 45-59.</li></ul><p></p>
+</y_{i>
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/977049a8.html">http://xishansnow.github.io/posts/977049a8.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/">贝叶斯统计</a><a class="post-meta__tags" href="/tags/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/">高斯过程</a><a class="post-meta__tags" href="/tags/%E5%9C%B0%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/">地统计数据</a><a class="post-meta__tags" href="/tags/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/">可扩展性</a><a class="post-meta__tags" href="/tags/GeoAI/">GeoAI</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E5%AD%A6/">空间统计学</a><a class="post-meta__tags" href="/tags/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/">点参考数据</a></div><div class="post-share"><div class="social-share" data-image="/img/book_01.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/813881a.html" title="深度集成方法(Deep Ensembles)"><img class="cover" src="/img/coffe_11.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">深度集成方法(Deep Ensembles)</div></div><div class="info-2"><div class="info-item-1">   【摘要】 深度神经网络是强大的黑盒预测器，最近在广泛的任务中取得了令人印象深刻的性能。量化神经网络中的 预测不确定性 是一个具有挑战性但尚未解决的问题。贝叶斯神经网络能够学习权重分布，是目前估计 预测不确定性 的最先进技术；但其需要对训练过程进行重大修改，并且与标准（非贝叶斯）神经网络相比，计算成本很高。在本文中，我们提出了贝叶斯神经网络的替代方案：深度集成。该方案易于实现、易于并行化并产生高质量的 预测不确定性 估计。通过一系列关于分类和回归基准的实验，我们证明它能够产生校准良好的不确定性估计，并且与贝叶斯神经网络一样好甚至更好。最后，我们评估了测试样本（类别已知或未知）的 预测不确定性 ，结果表明我们的方法能够在未知类上表达出更高程度的不确定性，这与y现有方法对未知类别也做出过度自信的预测相比，存在明显改进。 【原文】 Lakshminarayanan, B., Pritzel, A. and Blundell, C. (2017) ‘Simple and Scalable Predictive Uncertainty Estimation using Deep...</div></div></div></a><a class="pagination-related" href="/posts/f59eb57e.html" title="似然函数与基于似然的推断"><img class="cover" src="/img/008.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">似然函数与基于似然的推断</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 描述了似然函数在贝叶斯和非贝叶斯推断中的重要作用。回顾了将基于似然的方法扩展到更复杂问题设置时相关的几个主题，包括几类比较著名的似然扩展：剖面似然、组合似然（伪似然）、准似然、半参数和非参数似然、经验似然等。 【原 文】 Reid, N. (2010) ‘Likelihood inference: Likelihood inference’, Wiley Interdisciplinary Reviews: Computational Statistics, 2(5), pp. 517–525. Available at: https://doi.org/10.1002/wics.110. 1 介绍参数模型的似然（也称似然函数） $\mathcal{L}(\theta;y)$ 正比于模型的概率密度函数 $f(y;\theta)$。在观测数据 $y$ 不变的情况下，似然被视为模型参数的函数。在机器学习应用中（此类应用中，对新实例的预测通常比对模型参数推断更重要），似然的对数负值（即对数似然，log...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/8c41c039.html" title="克里金和高斯过程的关系"><img class="cover" src="/img/book_17.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-30</div><div class="info-item-2">克里金和高斯过程的关系</div></div><div class="info-2"><div class="info-item-1">   克里金法 源于地统计学，在统计学中也称为 高斯过程回归，是一种基于高斯过程的空间插值方法。在适当的先验假设下，克里金法在未采样位置提供最佳线性无偏预测 (BLUP)。该方法广泛应用于空间分析和计算机实验领域。该方法的理论基础由法国数学家 Georges Matheron 于 1960 年根据 Danie G. Krige 的硕士论文开发。 Krige 试图根据几个钻孔的样本来估计黄金最有可能的分布。 在面向二三维空间时，从数学上两者本质上是相同的。 两者之间的主要区别特征见下表：  Table 1.  区分克里金和现代高斯过程的主要特征     特征 高斯过程 克里金    Bayesian vs...</div></div></div></a><a class="pagination-related" href="/posts/ae7bb62d.html" title="空间统计学概论"><img class="cover" src="/img/coffe_07.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-20</div><div class="info-item-2">空间统计学概论</div></div><div class="info-2"><div class="info-item-1">   空间统计学概论1 统计学的两大流派（1）频率学派认为模型的待估计参数是一个未知的常数，而样本是随机的，通过对随机样本的分析，可以计算获得参数的值。  基本思想（对事件建模）  「随机事件本身具有某种客观的随机性」，需要研究一系列工具来刻画「事件」本身 事件A在独立重复试验中发生的频率趋于极限 $p$ ，那么极限 $p$...</div></div></div></a><a class="pagination-related" href="/posts/cc6501c0.html" title="高级模型--高斯过程与核学习"><img class="cover" src="/img/010.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-05</div><div class="info-item-2">高级模型--高斯过程与核学习</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a><a class="pagination-related" href="/posts/97a2ec3c.html" title="现代高斯过程回归速览"><img class="cover" src="/img/book_03.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-03</div><div class="info-item-2">现代高斯过程回归速览</div></div><div class="info-2"><div class="info-item-1">   1 无限模型表达 + 现代计算有没有想过如何创建具有 无限表达能力 的非参数监督学习模型？看看 **高斯过程回归 (GPR)**，这是一种几乎完全根据数据本身学习做出预测的算法（在超参数的帮助下）。将此算法与自动微分等最新的计算进展相结合，可以应用高斯过程回归近乎实时地解决各种受监督的机器学习问题。 在本文中，我们将讨论：  高斯过程回归理论的简要概述/回顾 我们可以使用高斯过程回归解决的问题类型，以及一些例子 高斯过程回归与其他监督学习算法的比较 可以用来实现高斯过程回归的现代编程包和工具  这是我的高斯过程回归系列中的第二篇文章。如需从头开始对高斯过程回归进行严格的介绍，请查看我之前的文章 此处。 2 高斯过程回归的概念在深入研究如何实现和使用高斯过程回归之前，先快速回顾一下这个监督机器学习算法背后的机制和理论。关于以下概念的详细推导/讨论，请查看我之前的文章《高斯过程回归》 的文章。 （i）以 观测到的 训练点为条件，预测测试点的 条件后验分布：     （ii）将测试点目标的 均值 被预测为...</div></div></div></a><a class="pagination-related" href="/posts/3fe8789c.html" title="局部和全局稀疏高斯过程近似"><img class="cover" src="/img/book_18.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-10</div><div class="info-item-2">局部和全局稀疏高斯过程近似</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗高斯过程 (GP) 模型是可以用于回归、分类和其他任务的概率非参数模型。它们在大型数据集上存在计算困难的问题。在过去的十年中，已经开发了许多不同的近似来降低此成本。其中大部分方法可以被称为全局近似，因为它们试图通过一小组支撑点来总结所有训练数据。一种不同的方法是局部回归，其中许多局部专家占据自己的部分空间。在本文中，我们首先研究这些不同方法在哪些情况下会运作良好或失败。然后继续开发一种新的稀疏高斯过程近似，它是全局和局部方法的组合。从理论上讲，我们证明它是 Quinonero-Candela 和 Rasmussen [2005] 提出的稀疏高斯过程近似的自然扩展。我们在一些一维示例和一些大型现实世界数据集上展示了组合近似的好处。  〖原 文〗 Snelson, Edward, and Zoubin Ghahramani. “Local and Global Sparse Gaussian Process Approximations.” In Proceedings of the Eleventh International Conference on...</div></div></div></a><a class="pagination-related" href="/posts/92f7ba1d.html" title="🔥 可扩展高斯过程综述"><img class="cover" src="/img/coffe_02.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-08</div><div class="info-item-2">🔥 可扩展高斯过程综述</div></div><div class="info-2"><div class="info-item-1">   【摘 要】大数据带来的海量信息以及不断发展的计算机硬件鼓励了机器学习社区的成功案例。同时，它对高斯过程回归 (GPR)...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="toc-text">1 简介</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

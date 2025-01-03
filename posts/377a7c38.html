@@ -1,0 +1,348 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>MCDropout 用于多任务学习 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="MC Dropout 用于多任务学习"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/377a7c38.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'MCDropout 用于多任务学习',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/book_18.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">MCDropout 用于多任务学习</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">MCDropout 用于多任务学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-05-02T02:00:00.000Z" title="发表于 2021-05-02 10:00:00">2021-05-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.191Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/BayesNN/">BayesNN</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">贝叶斯神经网络</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">4.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>【摘 要】 理解模型的不确定性（uncertainty）是机器学习的关键。但能够理解不确定性的传统机器学习方法（如高斯过程，<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gaussian_process">Gaussian Processes, GP</a>），很难应用于如图像、视频等高维数据。深度学习（Deep Learning）能够高效处理该类数据，但其难以对不确定性建模。本文将介绍一个重新兴起的领域，称为贝叶斯深度学习 （贝叶斯深度学习），它提供了一个可以建模不确定性的深度学习框架。贝叶斯深度学习可以达到最先进的结果，同时也能理解不确定性。</p>
+<p>【原 文】 见 <a target="_blank" rel="noopener" href="https://alexgkendall.com/computer_vision/bayesian_deep_learning_for_safe_ai/">Deep Learning Is Not Good Enough,We Need Bayesian Deep Learning for Safe AI</a></p>
+<p>【阅后感】 本文作者是 <code>MC Dropout</code> 方法提出团队的成员之一，本文以博客形式发布，浅显易懂，可以作为入门级别的读物。重点掌握：（1）不确定性的来源和分类；（2）不同不确定性的建模思路；（3）在偶然不确定性方面，作者提出了数据依赖和任务依赖两种子类型，并针对任务依赖型数据不确定性进行了建模；（4）具体技术细节参考博文中提供的两篇论文。</p>
+<h2 id="1、-背景"><a href="#1、-背景" class="headerlink" title="1、 背景"></a>1、 背景</h2><p><code>了解一个模型到底不知道什么（或不确定自己能做什么）</code>，有时是机器学习系统的关键能力，因为在某些实际场景中，机器学习系统过于相信自己的能力并非好事（如：医疗领域、自动驾驶领域等）。不幸的是，如今的深度学习算法通常无法理解自身的不确定性。这些模型常被盲目地采用、过于自信，并导致一些严重后果。例如，在最近的两个情景中，这造成了灾难性的后果：</p>
+<ul>
+<li>2015 年 7 月，一个图像分类系统错误将两名非裔美国人认定为大猩猩，引起人们对种族歧视的关注。</li>
+<li>2016 年 5 月，发生了第一起辅助驾驶系统造成的死亡事故。根据制造商博客，“在明亮天空下，自动驾驶仪和司机都没有注意到拖拉机拖车的白色一面，所以没有刹车。”</li>
+</ul>
+<p>相信还有更多案例！</p>
+<p>如果在上述情境中，机器学习系统能够为自己的错误预测给出高度不确定性的指示，也许系统就有可能做出更好的决策，并避免可能的灾难。</p>
+<p>理解不确定性非常重要，但为什么并非每个人都这样做呢？其中一个主要原因在于：传统概率机器学习方法（如高斯过程）限于计算和存储复杂度，很难扩展到高维输入中（如图像和视频）；深度学习虽然能够有效理解高维数据，但又难以模拟不确定性。</p>
+<p>本文将介绍一个重新兴起的领域，被人们称为 <code>贝叶斯深度学习 （Bayesian Deep Learning, BDL）</code>，它提供一个可建模不确定性的深度学习框架。贝叶斯深度学习可以达到最先进的结果，同时也能理解不确定性。本博文将解释不同类型不确定性并展示如何建模。最后会讨论一个近期成果，显示如何使用不确定性为多任务深度学习减负。</p>
+<p>这篇博文的材料主要来自最近的两篇论文：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1703.04977.pdf">What Uncertainties Do We Needin Bayesian Deep Learning for Computer Vision?</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1705.07115.pdf">Multi-Task Learning Using Uncertainty to Weigh Losses for Scene Geometry and Semantics.</a></p>
+</li>
+</ul>
+<p>和往常一样，更多技术细节可以在论文中找到。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/spatialPresent_20210501225253_e0.webp"></p>
+<blockquote>
+<p><strong>图 1 以图像深度估计为例理解不确定性估计的概念</strong>（1）图像深度估计贝叶斯神经网络输入样本；（2）深度估计的输出结果；（3）深度估计的不确定性。</p>
+</blockquote>
+<h2 id="2-不确定性的类型（Types-of-Uncertainty）"><a href="#2-不确定性的类型（Types-of-Uncertainty）" class="headerlink" title="2 不确定性的类型（Types of Uncertainty）"></a>2 不确定性的类型（Types of Uncertainty）</h2><h3 id="2-1-认知不确定性与偶然不确定性"><a href="#2-1-认知不确定性与偶然不确定性" class="headerlink" title="2.1 认知不确定性与偶然不确定性"></a>2.1 认知不确定性与偶然不确定性</h3><p>我想谈的第一个问题是：什么是不确定性？实际上存在不同类型的不确定性，需要了解不同应用需要应对哪种类型。这里将讨论两种最重要的类型：<strong>认知不确定性（也称数据不确定性）</strong> 和 <strong>偶然不确定性（也称数据不确定性）</strong>。</p>
+<ul>
+<li><p><code>认知不确定性（Epistemic Uncertainty）</code>：描述了根据给定训练集所得模型的不确定性，其不确定性主要来自两个方面，一是缺乏足够数据，模型无法访问足够多样本来得到正确知识，往往会输出过于自信的预测结果。二是不知道哪种模型更适合给定的问题。认知不确定性理论上可以通过提供足够多数据并优化模型来消除，也被称为<code>模型不确定性（Model Uncertainty）</code>。贝叶斯方法讨论的重点，主要集中在模型不确定性。认知不确定性在安全至上的应用、训练数据稀疏的小数据集应用上至关重要。</p>
+</li>
+<li><p><code>偶然不确定性（Aleatoric Uncertainty）</code> 指在数据（采集）生成过程中随机出现的统计变化和效应，即主要来自测量噪声或数据固有的模糊性，因此也被称为 <code>数据不确定性（ Data Uncertainty ）</code>。例如，图像的偶然不确定性可以归因于分辨率不足、视线遮挡、缺乏视觉特征、过曝区域等。这种不确定性会通过模型最终传导至预测结果的不确定性，而且无法通过技术手段消除，最好的方法是能够量化出其传播后导致的不确定性。当然，通过提高可观测变量的观测精度，能够减少数据不确定性，但真实的应用场景中，往往不能将期望放在测量手段的提升上。相对的，偶然不确定性在以下应用场景中至关重要：（ 1 ）具有海量数据的场景，此时的认知不确定性大部分都能够被数据解释，往往需要对偶然不确定性做出解释；（ 2 ）实时性应用场景，此时可以通过输入数据的确定性函数对偶然不确定性建模，而不用采用耗时的蒙特卡洛采样方法。</p>
+</li>
+</ul>
+<p>偶然不确定性可进一步细分为两类：</p>
+<ul>
+<li><p><code>异质的不确定性（或数据依赖型不确定性）</code>：此类不确定性依赖于输入数据，且会被传导至模型的预测结果中。</p>
+</li>
+<li><p><code>同质的不确定性（或任务依赖型不确定性</code>）：此类不确定性不依赖于输入数据，而依赖于具体任务。不同任务之间的不确定性存在不同，但对于同一任务中的所有输入数据而言，它是一个常量。任务依赖型不确定性不是模型输出；可用来描述依赖于任务的不确定性。</p>
+</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/statistics_20211020_113111_f7.webp"></p>
+<blockquote>
+<p>图 2 图像语义分割中的偶然不确定性与认知不确定性，偶然不确定性给出了有噪标签的物体边界。第三行给出模型对人行道不熟悉时，图像语义分割失败的案例，其对应的认知不确定性变大。</p>
+</blockquote>
+<h3 id="2-2-可削减的不确定性"><a href="#2-2-可削减的不确定性" class="headerlink" title="2.2 可削减的不确定性"></a>2.2 可削减的不确定性</h3><p>根据不确定性可削减程度，也有人将其分为两类：</p>
+<p>（1）<code>可削减的不确定性</code>： 随着将更多的样本加入训练集中，或者增加模型复杂性、调整架构和超参数等，可以缩小该不确定性。</p>
+<p>（2）<code>不可削减的不确定性</code>。由获取数据或数据生成过程固有的不确定性，即使增加更多样本或增加模型容量，也无法减少。</p>
+<p>根据 <code>第 2 节</code> 的定义可知，可削减不确定性通常跟认知不确定性有关，不可削减的不确定性主要来自偶然不确定性。通过增加信息量，我们可减少认知不确定性，但偶然不确定性永远不会变小，即使我们已经掌握了问题原因。</p>
+<h3 id="2-3-分布不确定性"><a href="#2-3-分布不确定性" class="headerlink" title="2.3 分布不确定性"></a>2.3 分布不确定性</h3><p>近年有一些学者提到了另一种类型的不确定性：<code>分布不确定性</code>，也称为 <code>分布外（Out of Distribution， OOD）</code>。 此类不确定性来源于预测数据与训练数据之间分布的变化，例如，模型训练阶段看到的数据是猫和狗的图像，但预测阶段却输入了一只鸟的图像。总的来说，分布不确定性也是模型缺乏泛化能力而导致的不确定性。</p>
+<p>图 3 显示了用简单线性模型描述的各种同类型不确定性， (a) 是模型参数的不确定性，与解决问题的不同模型集合相关，(b) 靠近决策边界的点表现出了高度的数据不确定性，(c) 未包含在训练集中的数据点导致预测时的高度不确定性。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20220330085350-d0ea.webp"></p>
+<blockquote>
+<p>图 3 用简单线性模型展示多种不确定性来源，黑色为训练数据集，灰色为预测数据集：(a) 认知不确定性，由于数据信息不足，导致多个线性模型都存在可能性；(b) 偶然不确定性，由于训练数据集的辨识能力不足，导致距离分割线距离更近的点存在被错误预测的可能性； (c) 分布不确定性（ OOD ），由于训练数据集没有覆盖 c 区域，使得该区域信息不足，进而导致错误预测。</p>
+</blockquote>
+<br>
+
+<h2 id="3-贝叶斯深度学习（Bayesian-Deep-Learning）"><a href="#3-贝叶斯深度学习（Bayesian-Deep-Learning）" class="headerlink" title="3 贝叶斯深度学习（Bayesian Deep Learning）"></a>3 贝叶斯深度学习（Bayesian Deep Learning）</h2><p>贝叶斯深度学习是介于深度学习和贝叶斯概率论之间的一个交叉领域。它给出了深度学习架构的不确定性评估原则。贝叶斯深度学习可以利用深度学习的层次表示能力来建模复杂任务，同时也能够推断复杂的多峰后验分布。贝叶斯深度学习模型通常通过在模型权重上放置概率分布，或者通过学习从输入到概率输出的直接映射来获得不确定性估计。</p>
+<h3 id="3-1-偶然不确定性的建模"><a href="#3-1-偶然不确定性的建模" class="headerlink" title="3.1 偶然不确定性的建模"></a>3.1 偶然不确定性的建模</h3><p>因为数据依赖型不确定性是输入数据的某个函数，可以学习使用从输入到输出的确定性映射（即前向神经网络）来预测输出中的不确定性。在回归任务中，我们通常使用类似欧几里得 $$L_2$$ 损失的东东来进行训练，即 $$Loss = | y-\hat{y} |_{2}$$ 。要学习数据依赖型不确定性，只需将损失函数替换为：</p>
+<p>$$<br>Loss=\frac{|y-\hat{y}|_{2}}{2\delta ^{2}}+\frac{1}{2}log\delta ^{2}<br>$$</p>
+<p>模型的预测意味着 $$\hat{y}$$ 和方差 $$\delta ^{2}$$ 。正如公式所示，如果模型预测非常错误，那么优化算法将寻求通过增加数据不确定性 $$\delta ^{2}$$ 来削弱残差 $$| y-\hat{y} |_{2}$$ 的影响。而 $$log\delta ^{2}$$  作为一个正则化项，可以防止数据不确定性的无限放大。</p>
+<p>任务依赖型不确定性可以用类似方法建模，但不确定性参数将不再是模型的输出，而是需要通过优化确定的参数。</p>
+<h3 id="3-2-认知不确定性的建模"><a href="#3-2-认知不确定性的建模" class="headerlink" title="3.2 认知不确定性的建模"></a>3.2 认知不确定性的建模</h3><p>认知不确定性很难建模，通常要求对模型结构及其参数分布进行建模，而这在参数规模巨大、模型结构复杂的大规模深度学习中很难实现。一种流行的建模技术是 <a target="_blank" rel="noopener" href="http://proceedings.mlr.press/v48/gal16.pdf">MC Dropout</a>，该方法另辟蹊径，将训练阶段常用的 <code>Dropout</code> 正则化应用到了测试阶段，具体是在测试阶段将 <code>伯努利分布</code> 置于神经网络权重上，以一定比率做随机的 <code>Dropout</code>，进而得到神经网络预测结果的不确定性。</p>
+<p>在实践中，这意味着我们可以像以往一样用 <code>Dropout</code> 来训练一个模型。然后，在测试时从神经网络中利用 <code>Dropout</code> 对神经单元做随机采样，而不是执行模型平均，其输出结果的分布及统计量能够反映模型的认知不确定性。</p>
+<div class="note warning simple"><p>此处作者虽然称其没有执行模型平均，但有学者认为此方法只是用另外一种方式实现了模型平均。另外，作者认为 <code>MC Dropout</code> 重点在于解决认知不确定性。</p>
+</div>
+
+<p>前一节解释了偶然不确定性和认知不确定性的定义和性质。而 <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1703.04977.pdf">我们的论文</a> 给出了令人兴奋的结果：可以证明 <code>MC Dropout</code> 方法给出的结果满足这些定义和性质。</p>
+<p>下面是对两个数据集做的单目深度回归模型的汇总结果：</p>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>训练数据</strong></th>
+<th align="center"><strong>测试数据</strong></th>
+<th align="center"><strong>训练数据</strong></th>
+<th align="center"><strong>测试数据</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">在数据集#1 上训练</td>
+<td align="center">在数据集#1 上测试</td>
+<td align="center">0.485</td>
+<td align="center">2.78</td>
+</tr>
+<tr>
+<td align="center">在 25% 的数据集#1 上训练</td>
+<td align="center">在数据集#1 上测试</td>
+<td align="center">0.506</td>
+<td align="center">7.73</td>
+</tr>
+<tr>
+<td align="center">在数据集#1 上训练</td>
+<td align="center">在数据集#2 上测试</td>
+<td align="center">0.461</td>
+<td align="center">4.87</td>
+</tr>
+<tr>
+<td align="center">在 25% 的数据集#1 上训练</td>
+<td align="center">在数据集#2 上测试</td>
+<td align="center">0.388</td>
+<td align="center">15.0</td>
+</tr>
+</tbody></table>
+<p>结果表明：当训练数据集很小或者测试数据与训练数据差异显著时，认知不确定性急剧增大；而偶然不确定性基本保持相对不变，其原因在于该实验是在相同问题上用同一传感器数据做的测试（即<code>偶然不确定性</code>的主体是<code>数据依赖型不确定性</code>，而非<code>任务依赖型不确定性</code>）。</p>
+<h2 id="4-多任务学习的不确定性（Uncertainty-for-Multi-task-Learning）"><a href="#4-多任务学习的不确定性（Uncertainty-for-Multi-task-Learning）" class="headerlink" title="4 多任务学习的不确定性（Uncertainty for Multi-task Learning）"></a>4 多任务学习的不确定性（Uncertainty for Multi-task Learning）</h2><p><code>多任务学习的目的是通过从一个共享表示中学习多个目标来提高学习效率和预测精度</code>。它在机器学习的许多领域都很流行，从自然语言处理到语音识别再到计算机视觉。多任务学习在长时间运行的计算系统中是至关重要的，比如在机器人中使用的系统。将所有任务合并到一个模型中可以减少计算，并允许这些系统实时运行。</p>
+<p>大多数多任务模型使用损失的加权和来训练不同任务。然而，此类模型的性能很大程度上取决于每个任务损失之间的相对权重。手工调整这些权重非常困难而且代价很高，这造成多任务学习在实践中难以实施。</p>
+<p>在 <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1705.07115.pdf">最近的论文</a> 中，我们建议使用任务依赖型数据不确定性（即同质的不确定性）来衡量多任务学习模型中的损失。由于任务依赖型数据不确定性不随输入数据的变化而变化，使得我们可以得到一个理论上能够同时学习多种任务的损失函数。</p>
+<p>我们重点探讨了在计算机视觉环境下的多任务学习 — <code>场景理解</code>。场景理解算法必须同时理解场景的几何和语义，而这分属不同任务，从而形成了一个多任务学习问题。这里涉及到不同单位和尺度的各种回归和分类任务的联合学习，而我们证明了通过我们的方法可以学习多任务的权重，而且结果优于每一个单独训练的模型。</p>
+<img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/spatialPresent_20210501230510_75.webp">
+
+<blockquote>
+<p>图 4 多任务学习提高了深度感知的平稳性和准确性，因为它可以使用来自其他任务线索中的学习表示（比如语义分割任务），反之亦然。</p>
+</blockquote>
+<h2 id="5-一些颇具挑战性的研究问题"><a href="#5-一些颇具挑战性的研究问题" class="headerlink" title="5 一些颇具挑战性的研究问题"></a>5 一些颇具挑战性的研究问题</h2><p>为什么贝叶斯深度学习能力不能应用到今天的人工智能系统中呢？我认为本应该这样做的，但仍有一些非常棘手的研究问题有待解决。在结束这篇博客之前，我想提一下其中的几个：</p>
+<p>（1）实时认知不确定性技术缺乏。 该问题阻碍了其在实时机器人领域的应用，无论是提高样本效率，还是压根儿不依赖于蒙特卡洛的新方法都非常有研究价值。</p>
+<p>（2）缺少贝叶斯深度学习模型的评测基准。量化模型的提升效果对于快速开发新模型非常重要，看看像 <a target="_blank" rel="noopener" href="http://www.image-net.org/">ImageNet</a> 这样的评测基准给计算机视觉带来了什么？我们也需要一套基准来测量贝叶斯深度学习模型中的不确定性改进。</p>
+<p>（3）需要更好的推断技术来捕获多峰分布。看看这里 <a target="_blank" rel="noopener" href="https://htmlpreview.github.io/?https://github.com/yaringal/HeteroscedasticDropoutUncertainty/blob/master/demos/heteroscedastic_dropout_reg.html">演示 Yarin</a>，它显示了一些 <code>MC Dropout 推断方法</code>建模失败的多峰数据。</p>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/377a7c38.html">http://xishansnow.github.io/posts/377a7c38.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">贝叶斯神经网络</a><a class="post-meta__tags" href="/tags/BayesNN/">BayesNN</a><a class="post-meta__tags" href="/tags/MC-Dropout/">MC Dropout</a><a class="post-meta__tags" href="/tags/%E5%A4%9A%E4%BB%BB%E5%8A%A1%E5%AD%A6%E4%B9%A0/">多任务学习</a></div><div class="post-share"><div class="social-share" data-image="/img/book_18.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/3f899449.html" title="模型平均（Model Averaging）"><img class="cover" src="/img/book_02.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">模型平均（Model Averaging）</div></div><div class="info-2"><div class="info-item-1">   模型比较（Model Comparison）          #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {         let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');         let refel = document.querySelector(refid);         let refnum = refel.dataset.num;         let ref_content = refel.innerText.replace(`[${refnum}]`,'');         tippy(ref, {            ...</div></div></div></a><a class="pagination-related" href="/posts/26147f5a.html" title="现代神经网络的校准"><img class="cover" src="/img/coffe_06.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">现代神经网络的校准</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 “信念校准”（预测器输出的概率性预测结果与真实正确结果之间的可代表性纠正问题）对于许多分类模型非常重要。我们发现，与十年前不同，现代神经网络的校准很差。通过大量实验，我们观察到深度、宽度、权重衰减和批量归一化是影响校准的重要因素。我们评估了各种后处理校准方法在图像和文档分类数据集及现代神经网络架构上的性能。我们的分析和实验不仅提供了对神经网络学习的见解，而且还为实际场景提供了一个简单而直接的方法：在大多数数据集上，温度定标法（一种 Platt 定标法 的单参数变体）在校准预测方面非常有效。 【原 文】 Guo, C., Pleiss, G., Sun, Y., and Weinberger, K. Q. 2017. On Calibration of Modern Neural Networks. Proceedings of the 34th International Conference on Machine Learning, PMLR, 1321–1330. 【阅后感】...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/32c5c644.html" title="🔥  神经网络泛化的贝叶斯概率视角"><img class="cover" src="/img/book_16.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-03</div><div class="info-item-2">🔥  神经网络泛化的贝叶斯概率视角</div></div><div class="info-2"><div class="info-item-1">   【摘 要】在现代深度学习中，估计贝叶斯模型平均值的积分有很多挑战，包括高维的参数空间和复杂的后验形态。但是，将这一挑战切实地视为一个积分问题，而非试图为蒙特卡洛近似获得后验样本，会为未来的进展提供机会。贝叶斯深度学习已经取得了快速的实际进展，现在的方法能够比标准训练有更好的准确性和校准，而且开销最小。 【原 文】Wilson, A.G. and Izmailov, P. (2020) ‘Bayesian Deep Learning and a Probabilistic Perspective of Generalization’, in Advances in Neural Information Processing Systems. Curran Associates, Inc., pp. 4697–4708. Available at: https://proceedings.neurips.cc/paper/2020/hash/322f62469c5e3c7dc3e58f5a4d1ea399-Abstract.html. 〖论文贡献〗  论文表明：...</div></div></div></a><a class="pagination-related" href="/posts/ef4c963d.html" title="有关贝叶斯深度学习误解的回应"><img class="cover" src="/img/008.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-20</div><div class="info-item-2">有关贝叶斯深度学习误解的回应</div></div><div class="info-2"><div class="info-item-1">   【原文序言】 本人对最近 关于贝叶斯深度学习的一些误解 发布了回应 。从那以后，大家一直要求我将其更进一步发展为容易被理解，且能自成一体的参考资料。为此，我专门在此发布此帖，希望对那些正在寻求了解 “贝叶斯推断独特之处” 以及 “贝叶斯推断在深度学习中为何有价值” 的人们有所帮助。此外，最近人们存在一些对 深度集成 和 贝叶斯方法 之间的误解，认为两者之间存在相互竞争的关系，因此，本文还旨在帮助大家厘清 近似贝叶斯推断 和 深度集成 之间的联系。 【论文背景】 2019 年 12 月， OpenAI 的研究人员 Carles Gelada 发布了一篇推文，表示 “贝叶斯神经网络毫无意义”，其主要论据是深度集成方法已经被证明比传统贝叶斯方法更为有效。一石激起千层浪，社区对此言论展开了激烈的讨论，其中纽约大学的 Wilson 教授 对此给予了驳斥，并专门发论文进行了科学地回应。不过话说回来， Carles Gelada 可能真的书读少了，模型选择、模型平均、模型集成不仅仅是贝叶斯领域的重点领域，而且很可能是未来机器真正自动选择 AI 模型的可能解决途径之一。 【原 文】...</div></div></div></a><a class="pagination-related" href="/posts/67c3f1d6.html" title="贝叶斯神经网络快速上手教程"><img class="cover" src="/img/coffe_11.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-14</div><div class="info-item-2">贝叶斯神经网络快速上手教程</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 现代深度学习方法已经成为研究人员和工程师常用的强大工具，可以解决以前似乎不可能解决的问题。然而，深度学习是一种黑箱方法，与其预测相关的不确定性很难量化。而贝叶斯统计学提供了一种形式化方法来理解和量化与深度神经网络预测相关的不确定性。本文为正在使用机器学习（特别是深度学习）的研究人员和科学家，提供了一个相关文献和工具集的概述，以帮助大家设计、实现、训练、使用和评估贝叶斯神经网络。 【原 文】 Laurent Valentin Jospin, Wray Buntine, Farid Boussaid, Hamid Laga, and Mohammed Bennamoun. 2020.Hands-on Bayesian Neural Networks - a Tutorial for Deep Learning Users.ACM Comput. Surv.1, 1 ( July 2020),35 pages. arxiv.org/abs/2007.06823 【阅后感】...</div></div></div></a><a class="pagination-related" href="/posts/3b3cb604.html" title="贝叶斯深度学习研究综述"><img class="cover" src="/img/006.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-01</div><div class="info-item-2">贝叶斯深度学习研究综述</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 一个全面的人工智能系统不仅需要感知环境，还需要推断关系（甚至因果）及其不确定性。过去十年中，深度学习在感知任务中取得了重大进展，例如：用于视觉对象识别和语音识别。但对更高级的推断任务而言，具有贝叶斯性质的概率图模型（Probabilistic Graphical Model， PGM ）则更强大和灵活。近年，贝叶斯深度学习作为统一的概率框架出现，将深度学习和贝叶斯模型紧密结合在一起，用深度学习对文本、图像的感知能力来提高进一步推断的性能，反过来，通过推断过程的反馈来增强文本或图像的感知能力。本文对贝叶斯深度学习进行了较为全面的介绍，综述了贝叶斯深度学习在推荐系统、主题模型、控制等方面的应用，并讨论了贝叶斯深度学习与神经网络的贝叶斯处理等相关课题的联系与区别。 【原 文】 Wang H， Yeung D Y. A survey on Bayesian deep learning[J]. ACM Computing Surveys (CSUR)， 2020， 53(5): 1-37. 【作者博客】 wanghao.in/BDL.html 【阅后感】...</div></div></div></a><a class="pagination-related" href="/posts/b5cb80b8.html" title="贝叶斯神经网络技术浅析"><img class="cover" src="/img/coffe_13.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-20</div><div class="info-item-2">贝叶斯神经网络技术浅析</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗神经网络已经为许多机器学习任务提供了最先进的结果，例如计算机视觉、语音识别和自然语言处理领域的检测、回归和分类任务等。尽管取得了成功，但它们通常是在频率学派框架内实施的，这意味着其无法对预测中的不确定性进行推断。本文介绍了贝叶斯神经网络及一些开创性研究，对不同近似推断方法进行了比较，并提出未来改进的一些方向。 〖原 文〗Goan, E., &amp; Fookes, C. (2020). Bayesian Neural Networks: An Introduction and Survey. https://arxiv.org/abs/2006.12024 〖阅后感〗获得神经网络预测不确定性的方法有很多种（参见《深度神经网络中的不确定性调研报告》），而本文主要介绍其中的贝叶斯神经网络方法。内容涉及浅层神经网络中的贝叶斯方法尝试、深层神经网络中面临的问题即推断方法等。 1 引言长期以来，仿生学一直是技术发展的基础。科学家和工程师反复使用物理世界的知识来模仿自然界对经过数十亿年演变而来的复杂问题的优雅解决方案。生物仿生学在统计学和机器学习中的重要应用是发展了感知机...</div></div></div></a><a class="pagination-related" href="/posts/c2f0cd97.html" title="场景理解任务中的多任务学习与不确定性"><img class="cover" src="/img/book_13.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-06</div><div class="info-item-2">场景理解任务中的多任务学习与不确定性</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 许多景深学习应用受益于具有多个回归和分类目标的多任务学习。在本文中，我们观察到此类系统的性能在很大程度上取决于每个任务损失之间的相对权重。手动调整这些权重是困难且昂贵的，这使多任务学习在实践中令人望而却步。我们提出了一种多任务景深学习的原理性方法，它通过考虑每个任务的同质不确定性来权衡多个损失函数。这使我们能够在分类和回归任务中同时学习具有不同尺度或类别的各种数据。我们的模型从单眼输入图像中学习了逐像素的景深回归、语义分割和实例分割。也许会令人惊讶，我们发现，该模型能够学得多任务的权重，并且其性能胜过了在每个任务上单独训练的模型。 【原 文】 Kendall, A., Gal, Y., and Cipolla, R. 2018. Multi-Task Learning Using Uncertainty to Weigh Losses for Scene Geometry and Semantics. Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81-%E8%83%8C%E6%99%AF"><span class="toc-text">1、 背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%9A%84%E7%B1%BB%E5%9E%8B%EF%BC%88Types-of-Uncertainty%EF%BC%89"><span class="toc-text">2 不确定性的类型（Types of Uncertainty）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E8%AE%A4%E7%9F%A5%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%B8%8E%E5%81%B6%E7%84%B6%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7"><span class="toc-text">2.1 认知不确定性与偶然不确定性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%8F%AF%E5%89%8A%E5%87%8F%E7%9A%84%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7"><span class="toc-text">2.2 可削减的不确定性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%88%86%E5%B8%83%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7"><span class="toc-text">2.3 分布不确定性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%EF%BC%88Bayesian-Deep-Learning%EF%BC%89"><span class="toc-text">3 贝叶斯深度学习（Bayesian Deep Learning）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%81%B6%E7%84%B6%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%9A%84%E5%BB%BA%E6%A8%A1"><span class="toc-text">3.1 偶然不确定性的建模</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E8%AE%A4%E7%9F%A5%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%9A%84%E5%BB%BA%E6%A8%A1"><span class="toc-text">3.2 认知不确定性的建模</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%A4%9A%E4%BB%BB%E5%8A%A1%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%EF%BC%88Uncertainty-for-Multi-task-Learning%EF%BC%89"><span class="toc-text">4 多任务学习的不确定性（Uncertainty for Multi-task Learning）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%B8%80%E4%BA%9B%E9%A2%87%E5%85%B7%E6%8C%91%E6%88%98%E6%80%A7%E7%9A%84%E7%A0%94%E7%A9%B6%E9%97%AE%E9%A2%98"><span class="toc-text">5 一些颇具挑战性的研究问题</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

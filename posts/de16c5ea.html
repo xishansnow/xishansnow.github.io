@@ -1,0 +1,335 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>➁  朴素贝叶斯分类器 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="朴素贝叶斯分类器"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/de16c5ea.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '➁  朴素贝叶斯分类器',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/book_02.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">➁  朴素贝叶斯分类器</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">➁  朴素贝叶斯分类器</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-02T02:00:00.000Z" title="发表于 2021-04-02 10:00:00">2021-04-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.208Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/">预测任务</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/">广义线性模型</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="朴素贝叶斯分类器"><a href="#朴素贝叶斯分类器" class="headerlink" title="朴素贝叶斯分类器"></a>朴素贝叶斯分类器</h1><p>线性判别分析 LDA (Linear Discriminant Analysis) 又称为 Fisher 线性判别，是一种监督学习的降维技术，也就是说它的数据集的每个样本都是有类别输出的，这点与 PCA（无监督学习）不同。LDA 在模式识别领域（比如人脸识别，舰艇识别等图形图像识别领域）中有非常广泛的应用，因此我们有必要了解下它的算法原理。</p>
+<style>p{text-indent:2em;2}</style>
+
+
+<h3 id="1-LDA-的思想"><a href="#1-LDA-的思想" class="headerlink" title="1. LDA 的思想"></a>1. LDA 的思想</h3><p>LDA 的思想是：<strong>最大化类间均值，最小化类内方差</strong>。意思就是将数据投影在低维度上，并且投影后同种类别数据的投影点尽可能的接近，不同类别数据的投影点的中心点尽可能的远。</p>
+<p>我们先看看最简单的情况。假设我们有两类数据 分别为红色和蓝色，如下图所示，这些数据特征是二维的，我们希望将这些数据投影到一维的一条直线，让每一种类别数据的投影点尽可能的接近，而红色和蓝色数据中心之间的距离尽可能的大。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20220916221107-0fcf.webp"></p>
+<p>上图提供了两种投影方式，哪一种能更好的满足我们的标准呢？从直观上可以看出，右图要比左图的投影效果好，因为右图的黑色数据和蓝色数据各个较为集中，且类别之间的距离明显。左图则在边界处数据混杂。以上就是 LDA 的主要思想了，当然在实际应用中，我们的数据是多个类别的，我们的原始数据一般也是超过二维的，投影后的也一般不是直线，而是一个低维的超平面。</p>
+<h3 id="2-瑞利商-与-广义瑞利商"><a href="#2-瑞利商-与-广义瑞利商" class="headerlink" title="2. 瑞利商 与 广义瑞利商"></a>2. 瑞利商 与 广义瑞利商</h3><p>首先来看瑞利商的定义。瑞利商是指这样的函数 $R(A,x)$ :</p>
+<p>$$<br>R(A, x)=\frac{x^{H} A x}{x^{H} x}<br>$$</p>
+<p>其中， $x$ 是非零向量，而 $A$ 为 $n \times n$ 的 <code>Hermitan 矩阵</code>。所谓 Hermitan 矩阵就是 <strong>共轭转置矩阵</strong> 和自己相等的矩阵，即 $A^H=A$ ，例如， $A=\left(\begin{array}{cc}{1} &amp; {2+i} \ {2-i} &amp; {1}\end{array}\right)$ 的共轭转置等于其本身。当 $A$ 为实矩阵时，如果满足 $A^T=A$ ，则 $A$ 为 Hermitan 矩阵。</p>
+<p>瑞利商 $R(A,x)$ 有一个非常重要的性质，即 <strong>它的最大值等于矩阵 $A$ 最大的特征值，而最小值等于矩阵 $A$ 的最小的特征值</strong>，也就是满足</p>
+<p>$$<br>\lambda_{\min } \leq \frac{x^{H} A x}{x^{H} x} \leq \lambda_{\max }<br>$$</p>
+<p>当向量 $x$ 是标准正交基，即满足 $x^{H} x=1$ 时，瑞利商退化为 $R(A, x)=x^{H} A x$ 。</p>
+<p>下面看一下广义瑞利商。广义瑞利商是指这样的函数 $R(A,B,x)$ :</p>
+<p>$$<br>R(A,B, x)=\frac{x^{H} A x}{x^{H} B x}<br>$$</p>
+<p>其中 $x$ 为非零向量，而 $A,B$ 为 $n \times n$ 的 Hermitan 矩阵。 $B$ 为正定矩阵。它的最大值和最小值是什么呢？其实我们只要将其通过标准化就可以转化为瑞利商的格式。</p>
+<p>令 $x=B^{-1 / 2} x^{\prime}$ ，则分母转化为：</p>
+<p>$$<br>x^{H} Bx=x^{\prime H}\left(B^{-1 / 2}\right)^{H} B B^{-1 / 2} x^{\prime}=x^{\prime H} B^{-1 / 2} B B^{-1 / 2}<br>x^{\prime}=x^{\prime H} x^{\prime}<br>$$</p>
+<p>而分子转化为：</p>
+<p>$$<br>x^{H} A x=x^{\prime H} B^{-1 / 2} A B^{-1 / 2} x^{\prime}<br>$$</p>
+<p>此时我们的 $R(A,B,x)$ 转化为  $R(A,B,x’)$ :</p>
+<p>$$<br>R\left(A, B, x^{\prime}\right)=\frac{x^{\prime H} B^{-1 / 2} A B^{-1 / 2} x^{\prime}}{x^{\prime H} x^{\prime}}<br>$$</p>
+<p>利用前面的瑞利商的性质，我们可以很快的知道， $R(A,B,x’)$ 的最大值为矩阵  $B^{-1 / 2} A B^{-1 / 2}$ 的最大特征值，或者说矩阵 $B^{−1}A$ 的最大特征值，而最小值为矩阵 $B^{−1}A$ 的最小特征值。</p>
+<h3 id="3-LDA-的原理及推导过程"><a href="#3-LDA-的原理及推导过程" class="headerlink" title="3. LDA 的原理及推导过程"></a>3. LDA 的原理及推导过程</h3><p>假设样本共有  $K$  类，每一个类的样本的个数分别为 $N_1,N_2,…,N_k$</p>
+<p>$x_1^1,x_1^2,…,x_1^{N_1}$ 对应第 1 类</p>
+<p>$x_2^1,x_2^2,…,x_2^{N_2}$ 对应第 2 类</p>
+<p>$x_k^1,x_k^2,…,x_k^{N_k}$ 对应第  $K$  类，其中每个样本 $x_i^j$ 均为 $n$ 维向量</p>
+<p>设 $\tilde{x}_{i}^{j}$ 为 $x_i^j$ 变化后的样本，则</p>
+<p>$$<br>\tilde{x}_{i}^{j}= &lt;x, u&gt;u=|x||u|cos \theta \cdot u =\left(x^{T} u\right)u<br>$$</p>
+<p>此处设 $u$ 为单位向量，即 $u^Tu=1$ .</p>
+<p>假设第 $K$ 类样本的数据集为 $D_k$ ，变化后的样本的均值向量为： $\tilde{\mathrm{m}}=\frac{\sum_{\tilde{x}\in D_k}\tilde{x}}{N_k}$ ，那么，第 $K$ 类样本的方差定义为 $\frac{S_k}{N_k}$ ，由于：</p>
+<p>$$<br>\begin{aligned}<br>\mathrm{S}<em>{\mathrm{k}} &amp;=\sum</em>{\tilde{x} \in D_{k}}(\tilde{x}-\tilde{\mathrm{m}})^{T}(\tilde{x}-\tilde{\mathrm{m}})\<br>&amp;=\sum_{x \in D_{k}} [\left(x^{T} u\right) u-\left(m^{T} u\right) u]^T [\left(x^{T} u\right) u -\left(m^{T} u\right) u] \<br>&amp;=\sum_{x \in D_{k}} [\left(x^{T} u\right) u^{T}-\left(m^{T} u\right) u^{T}] [\left(x^{T} u\right) u -\left(m^{T} u\right) u] \<br>&amp;=\sum_{x \in D_{k}} \left[ \left(x^{T} u\right)^{2} u^{T} u-2 \left(x^{T} u\right) \left(m^{T} u\right) u^{T} u + \left(m^{T} u\right)^{2} u^{T} u \right] \<br>&amp;=\sum_{x \in D_{k}} \left[\left(x^{T} u\right)^{2}-2\left(x^{T} u\right)\left(m^{T} u\right)+\left(m^{T} u\right)^{2}\right]<br>\end{aligned}<br>$$<br>\quad （x^Tu，m^Tu 为实数，转置仍是本身）<br>因此，第 $K$ 类样本的方差可以改写为：</p>
+<p>$$<br>\begin{aligned}<br>\frac{S_{k}}{N_{k}} &amp;=\frac{\sum_{x \in D_{k}}\left(x^{T} u\right)^{2}}{N_{k}}-2 \frac{\sum_{x \in D_{k}} x^{T}\left(u m^{T} u\right)}{N_{k}}+\frac{\sum_{x\in D_{k}}\left(m^{T} u\right)^{2}}{N_{k}} \<br>&amp;=\frac{\sum_{x\in D_k} u^{T} x x^{T} u}{N_{k}}-2 \frac{\sum_{x\in D_k} x^{T}}{N_{k}} u m^{T} u+\left(m^{T} u\right)^{2}\quad （注：\frac{\sum_{x\in D_{k}}\left(m^{T} u\right)^{2}}{N_{k}}=(m^Tu)^2。因为 m^Tu 与 x 无关）\<br>&amp;=u^{T} \frac{\sum_{x\in D_k} x x^{T}}{N_{k}} u-\left(m^{T} u\right)^{2} \quad （注：\frac{\sum_{x \in D_k}x^T}{N_k}=m^T）\<br>&amp;=u^{T} \frac{\sum_{x\in D_k} x x^{T}}{N_{k}} u-u^{T} m m^{T} u \<br>&amp;=u^{T}\left(\frac{\sum_{x\in D_k} x x^{T}}{N_{k}}-m m^{T}\right) u<br>\end{aligned}<br>$$</p>
+<p>所有类别的样本方差之和：</p>
+<p>$$<br>\begin{aligned}<br>\sum_{k}\frac{S_k}{N_k} &amp;=\sum_{k=1}^{K}u^{T}\left(\frac{\sum_{x \in D_k} x x^{T}}{N_{k}}-m_k m_k^{T}\right) u \<br>&amp;=u^T\sum_{k=1}^{K}(\frac{\sum_{x \in D_k}xx^T}{N_k}-m_km_k^T)u\<br>&amp;=u^TS_wu<br>\end{aligned}<br>$$</p>
+<p>其中， $S_w=\sum_{k=1}^{K}(\frac{\sum_{x \in D_k}xx^T}{N_k}-m_km_k^T)$， $S_w$ 一般被称为类内散度矩阵</p>
+<p>不同类别 $i,j$ 之间的中心距离：</p>
+<p>$$<br>\begin{aligned}<br>S_{i j} &amp;=\left(\tilde{m}<em>{i}-\tilde{m}</em>{j}\right)^{T}\left(\tilde{m}<em>{i}-\tilde{m}</em>{j}\right) \<br>&amp;=[(u^Tm_i)u-(u^Tm_j)u]^T[(m_i^Tu)u-(m_j^Tu)u] \<br>&amp;=[(u^Tm_i)u^T-(u^Tm_j)u^T][u(m_i^Tu)-u(m_j^Tu)] \<br>&amp;=u^T(m_i-m_j)u^Tu(m_i^T-m_j^T)u \<br>&amp;=u^{T}\left(m_{i}-m_{j}\right)\left(m_{i}-m_{j}\right)^{T} u<br>\end{aligned}<br>$$</p>
+<p>所有类别之间的距离之和为：</p>
+<p>$$<br>\begin{aligned}<br>\sum_{i, j \atop i \neq j} s_{i j} &amp;= u^T\sum_{i, j \atop i \neq j}[(m_i-m_j)(m_i-m_j)^T]u \<br>&amp;=u^TS_bu<br>\end{aligned}<br>$$</p>
+<p>其中，$S_b=\sum_{i, j \atop i \neq j}[(m_i-m_j)(m_i-m_j)^T]$ ，$S_b$ 一般被称为类间散度矩阵。</p>
+<p>在已知条件下， $S_w,S_b$ 均可求出。根据 LDA 算法的目标，即 <strong>类间距离尽可能大，类内方差尽可能小</strong>，我们需要求最大化 $u^TS_bu$ ， 最小化 $u^TS_wu$的解。</p>
+<p>令 $J(u)=\frac{u^{T} S_{b} u}{u^{T} S_{w} u}$ ，则目标函数为：</p>
+<p>$$<br>\max J(u)<br>$$</p>
+<p>为了使所求最大，可假设 $u^TS_wu=1$ ，则问题转化为：</p>
+<p>$$<br>\begin{array}{l}<br>{\max u^{T} S_{b} u} \<br>s.t. \quad u^TS_wu=1<br>\end{array}<br>$$</p>
+<p>$$<br>\begin{aligned}<br>L(u, \lambda)&amp;=u^{T} S_{b} u+\lambda\left(1-u^{T} S_{w} u\right) \<br>\frac{\partial L}{\partial u} &amp;= S_bu+S_b^Tu-\lambda S_wu-\lambda S_w^Tu \<br>&amp;=2(S_bu-\lambda S_wu)\quad （因为 S_b，S_w 为对称矩阵）\<br>&amp;=0 \Rightarrow S_{b} u=\lambda S_{w} u<br>\end{aligned}<br>$$</p>
+<blockquote>
+<p>证明 $S_b$ 为对称矩阵：</p>
+<p>$$<br>\begin{aligned}<br>S_b^T &amp;= (\sum_{i, j \atop i \neq j}[(m_i-m_j)(m_i-m_j)^T])^T\<br>&amp;=\sum_{i, j \atop i \neq j}[(m_i-m_j)(m_i-m_j)^T]^T \<br>&amp;=\sum_{i, j \atop i \neq j}[(m_i-m_j)(m_i-m_j)^T] \<br>&amp;=S_b<br>\end{aligned}<br>$$</p>
+<p>所以， $S_b$ 为对称矩阵，同理可证明 $S_w$ 为对称矩阵。</p>
+</blockquote>
+<p>$$<br>\begin{array}{l}<br>S_{w}^{-1}{S_{b} u=\lambda u}<br>\end{array}<br>$$</p>
+<p>计算矩阵 $S_w^{-1}S_b$ 的最大的 $d$ 个特征值和对应的 $d$ 个特征向量 $(w_1,w_2,…,w_d)$ ，可以得到投影矩阵 $W=(w_1,w_2,…,w_d)$ 。</p>
+<blockquote>
+<p>注意：</p>
+<p>(1) 选取特征值时，如果一些特征值明显大于其他的特征值，则取这些取值较大的特征值，因为它们包含更多的数据分布的信息。相反，如果一些特征值接近于 0，我们将这些特征值舍去。</p>
+<p>(2)由于 $W$ 是一个利用了样本类别得到的投影矩阵，因此它能够降维到的维度 $d$ 的最大值为 $K-1$ 。为什么不是 $K$ 呢？因为 $S_b$ 中每个 $m_i-m_j$ 的秩均为 $1$（因为 $m_i$ 为 $1$ 维向量）。</p>
+<p>由 $R(AB)\leq \min(R(A), R(B))$ 可知：$R((m_i-m_j)(m_i-m_j)^T)=1$</p>
+<p>又 $\because$</p>
+<p>$$<br>S_b=\sum_{i, j \atop i \neq j}[(m_i-m_j)(m_i-m_j)^T], \<br>R(A+B)\leq R(A)+R(B)<br>$$</p>
+<p>$\therefore R(S_b)\leq K-1 \Rightarrow R(S_w^{-1}S_b)\leq K-1$</p>
+<p>$\therefore \lambda =0$ 对应的特征向量至少有 $(K-(K-1))=1$ 个，也就是说 $d$ 最大为 $K-1$。</p>
+</blockquote>
+<h3 id="3-LDA-算法流程"><a href="#3-LDA-算法流程" class="headerlink" title="3. LDA 算法流程"></a>3. LDA 算法流程</h3><p>输入：数据集 $D={(x_1,y_1),(x_2,y_2),…,(x_m,y_m)}$ ,其中，任意样本 $x_i$ 为  $n$ 维向量， $y_i\in {C_1,C_2,…,C_k}$ ,降维到的维度为 $d$ 。</p>
+<p>输出：降维后的数据集 $D’$ 。</p>
+<p>1）计算类内散度矩阵 $S_w$</p>
+<p>2）计算类间散度矩阵 $S_b$</p>
+<p>3）计算矩阵 $S_w^{-1}S_b$</p>
+<p>4）计算矩阵 $S_w^{-1}S_b$ 的特征值与特征向量，按从小到大的顺序选取前 $d$ 个特征值和对应的 $d$ 个特征向量 $(w_1,w_2,…,w_d)$ ，得到投影矩阵 $W$ 。</p>
+<p>5）对样本集中的每一个样本特征 $x_i$ ，转化为新的样本 $z_i=W^Tx_i$</p>
+<p>6）得到输出样本集 $D’={(z_1,y_1),(z_2,y_2),…,(z_m,y_m)}$</p>
+<h3 id="4-LDA-与-PCA-对比"><a href="#4-LDA-与-PCA-对比" class="headerlink" title="4. LDA 与 PCA 对比"></a>4. LDA 与 PCA 对比</h3><p>LDA 与 PCA 都可用于降维，因此有很多相同的地方，也有很多不同的地方</p>
+<p><strong>相同点：</strong></p>
+<ul>
+<li>两者均可用于数据降维</li>
+<li>两者在降维时均使用了矩阵特征分解的思想</li>
+<li>两者都假设数据符合高斯分布</li>
+</ul>
+<p><strong>不同点：</strong></p>
+<ul>
+<li>LDA 是有监督的降维方法，而 PCA 是无监督降维方法</li>
+<li>当总共有 $K$ 个类别时，LDA 最多降到 $K-1$ 维，而 PCA 没有这个限制</li>
+<li>LDA 除了用于降维，还可以用于分类</li>
+<li>LCA 选择分类性能最好的投影方向，而 PCA 选择样本点投影具有最大方差的方向。这点可以从下图形象的看出，在某些数据分布下 LDA 比 PCA 降维较优（如下图的左图）。当然，某些数据分布下 PCA 比 LDA 降维较优（如下图的右图）。</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20220916222555-596b.webp"></p>
+<h3 id="5-LDA-算法小结"><a href="#5-LDA-算法小结" class="headerlink" title="5. LDA 算法小结"></a>5. LDA 算法小结</h3><p>LDA 算法既可以用来降维，也可以用来分来，但是目前来说，LDA 主要用于降维，在进行与图像识别相关的数据分析时，LDA 是一个有力的工具。下面总结一下 LDA 算法的优缺点。</p>
+<p><strong>LDA 算法的优点</strong></p>
+<ul>
+<li>在降维过程中可以使用类别的先验知识经验，而像 PCA 这样的无监督学习无法使用先验知识；</li>
+<li>LDA 在样本分类信息依赖均值而不是方差的时候，比 PCA 算法较优。</li>
+</ul>
+<p><strong>LDA 算法的缺点</strong></p>
+<ul>
+<li>LDA 与 PCA 均不适合对非高斯分布样本进行降维</li>
+<li>LDA 降维算法最多降到类别数 $K-1$ 的维度，当降维的维度大于 $K-1$ 时，则不能使用 LDA。当然目前有一些改进的 LDA 算法可以绕过这个问题</li>
+<li>LDA 在样本分类信息依赖方差而非均值的时候，降维效果不好</li>
+<li>LDA 可能过度拟合数据<br>其中是一个函数，我们将调用反向链接函数。有许多反向链接函数可供选择；可能最简单的是恒等函数。这是一个返回与其参数相同的值的函数。第 3 章“线性回归建模”中的所有模型都使用了单位函数，为简单起见，我们只是省略了它。身份功能本身可能不是很有用，但它允许我们以更统一的方式考虑几种不同的模型。</li>
+</ul>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/de16c5ea.html">http://xishansnow.github.io/posts/de16c5ea.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B/">机器学习模型</a><a class="post-meta__tags" href="/tags/%E5%88%86%E7%B1%BB%E4%BB%BB%E5%8A%A1/">分类任务</a><a class="post-meta__tags" href="/tags/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%E5%99%A8/">朴素贝叶斯分类器</a></div><div class="post-share"><div class="social-share" data-image="/img/book_02.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/2391a2ad.html" title="③  逻辑斯谛回归"><img class="cover" src="/img/book_16.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">③  逻辑斯谛回归</div></div><div class="info-2"><div class="info-item-1">   其中是一个函数，我们将调用反向链接函数。有许多反向链接函数可供选择；可能最简单的是恒等函数。这是一个返回与其参数相同的值的函数。第3章“线性回归建模”中的所有模型都使用了单位函数，为简单起见，我们只是省略了它。身份功能本身可能不是很有用，但它允许我们以更统一的方式考虑几种不同的模型。 p{text-indent:2em;2}  线性回归模型在上一章中，我们使用输入变量的线性组合来预测输出变量的平均值。我们假设后者为高斯分布。在许多情况下都可以使用高斯分布，但对于其他许多情况，选择不同的分布可能更明智；当我们用 $t$ 分布替换高斯分布时，我们已经看到了一个这样的例子。在本章中，我们将看到更多使用高斯分布以外分布的明智例子。正如我们将了解到的，存在一个通用的主题或模式，可将线性模型推广到许多问题。在本章中，我们将探讨：  广义线性模型 Logistic回归和逆链接函数 简单Logistic回归 多元Logistic回归 Softmax函数和多项Logistic回归 Poisson回归 零膨胀Poisson回归  4.1...</div></div></div></a><a class="pagination-related" href="/posts/fc91791a.html" title="➀  线性判别分析"><img class="cover" src="/img/coffe_01.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">➀  线性判别分析</div></div><div class="info-2"><div class="info-item-1">   线性判别分析 LDA (Linear Discriminant Analysis) 又称为 Fisher 线性判别，是一种监督学习的降维技术，也就是说它的数据集的每个样本都是有类别输出的，这点与 PCA（无监督学习）不同。LDA 在模式识别领域（比如人脸识别，舰艇识别等图形图像识别领域）中有非常广泛的应用，因此我们有必要了解下它的算法原理。 p{text-indent:2em;2}  1. LDA 的思想LDA 的思想是：最大化类间均值，最小化类内方差。意思就是将数据投影在低维度上，并且投影后同种类别数据的投影点尽可能的接近，不同类别数据的投影点的中心点尽可能的远。 我们先看看最简单的情况。假设我们有两类数据...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/2d66d86e.html" title="🔥  广义线性模型索引帖"><img class="cover" src="/img/coffe_08.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="info-item-2">🔥  广义线性模型索引帖</div></div><div class="info-2"><div class="info-item-1">   待补充           #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {         let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');         let refel = document.querySelector(refid);         let refnum = refel.dataset.num;         let ref_content = refel.innerText.replace(`[${refnum}]`,'');         tippy(ref, {             content:...</div></div></div></a><a class="pagination-related" href="/posts/47ecf4d0.html" title="非独立同分布索引帖"><img class="cover" src="/img/coffe_06.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="info-item-2">非独立同分布索引帖</div></div><div class="info-2"><div class="info-item-1">             #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {         let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');         let refel = document.querySelector(refid);         let refnum = refel.dataset.num;         let ref_content = refel.innerText.replace(`[${refnum}]`,'');         tippy(ref, {             content: ref_content,    ...</div></div></div></a><a class="pagination-related" href="/posts/fc91791a.html" title="➀  线性判别分析"><img class="cover" src="/img/coffe_01.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-01</div><div class="info-item-2">➀  线性判别分析</div></div><div class="info-2"><div class="info-item-1">   线性判别分析 LDA (Linear Discriminant Analysis) 又称为 Fisher 线性判别，是一种监督学习的降维技术，也就是说它的数据集的每个样本都是有类别输出的，这点与 PCA（无监督学习）不同。LDA 在模式识别领域（比如人脸识别，舰艇识别等图形图像识别领域）中有非常广泛的应用，因此我们有必要了解下它的算法原理。 p{text-indent:2em;2}  1. LDA 的思想LDA 的思想是：最大化类间均值，最小化类内方差。意思就是将数据投影在低维度上，并且投影后同种类别数据的投影点尽可能的接近，不同类别数据的投影点的中心点尽可能的远。 我们先看看最简单的情况。假设我们有两类数据...</div></div></div></a><a class="pagination-related" href="/posts/2391a2ad.html" title="③  逻辑斯谛回归"><img class="cover" src="/img/book_16.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-02</div><div class="info-item-2">③  逻辑斯谛回归</div></div><div class="info-2"><div class="info-item-1">   其中是一个函数，我们将调用反向链接函数。有许多反向链接函数可供选择；可能最简单的是恒等函数。这是一个返回与其参数相同的值的函数。第3章“线性回归建模”中的所有模型都使用了单位函数，为简单起见，我们只是省略了它。身份功能本身可能不是很有用，但它允许我们以更统一的方式考虑几种不同的模型。 p{text-indent:2em;2}  线性回归模型在上一章中，我们使用输入变量的线性组合来预测输出变量的平均值。我们假设后者为高斯分布。在许多情况下都可以使用高斯分布，但对于其他许多情况，选择不同的分布可能更明智；当我们用 $t$ 分布替换高斯分布时，我们已经看到了一个这样的例子。在本章中，我们将看到更多使用高斯分布以外分布的明智例子。正如我们将了解到的，存在一个通用的主题或模式，可将线性模型推广到许多问题。在本章中，我们将探讨：  广义线性模型 Logistic回归和逆链接函数 简单Logistic回归 多元Logistic回归 Softmax函数和多项Logistic回归 Poisson回归 零膨胀Poisson回归  4.1...</div></div></div></a><a class="pagination-related" href="/posts/fc685008.html" title="深度学习理论的基本原则_第2章_神经网络"><img class="cover" src="/img/book_14.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-17</div><div class="info-item-2">深度学习理论的基本原则_第2章_神经网络</div></div><div class="info-2"><div class="info-item-1">   第 2 章 神经网络本章将转向深度学习的介绍性概述。 在 第 2.1 节 中，我们介绍了 神经元、激活、偏置、权重 和 层 等神经网络架构的基本组件，并定义了多层感知器（MLP），这是由基本组件迭代组成的一种简单模型。鉴于所有深度网络在概念上都是由许多结构相同的层迭代组成，因此可以将 MLP 视为一种原型网络架构，用于在整本书中说明深度学习的原理。这类神经网络模型足够丰富，可以捕捉深度学习理论的所有基本要素，同时又足够简单，可以保持本书的教学重点。尽管如此，我们还是会简要讨论其他网络架构的有效理论。 在 第 2.2 节 中，我们列出了一些在实践中经常使用的常见激活函数。 在 第 2.3 节 中，我们将讨论如何初始化 MLP。我们在这里进行了一个关键的概念转变，从 将权重和偏差视为随机变量，转向考虑 在神经活动和网络输出上引入的分布。当我们开始为具有一般激活函数的 MLP 开发有效理论时，我们在此处推导的表达式将为 第 4 章  中的分析提供一个自然的起点。 2.1 函数近似人工神经网络...</div></div></div></a><a class="pagination-related" href="/posts/4cfd9731.html" title="贝叶斯模型比较与选择索引帖"><img class="cover" src="/img/book_18.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="info-item-2">贝叶斯模型比较与选择索引帖</div></div><div class="info-2"><div class="info-item-1">   待完善           #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {         let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');         let refel = document.querySelector(refid);         let refnum = refel.dataset.num;         let ref_content = refel.innerText.replace(`[${refnum}]`,'');         tippy(ref, {             content:...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%E5%99%A8"><span class="toc-text">朴素贝叶斯分类器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-LDA-%E7%9A%84%E6%80%9D%E6%83%B3"><span class="toc-text">1. LDA 的思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%91%9E%E5%88%A9%E5%95%86-%E4%B8%8E-%E5%B9%BF%E4%B9%89%E7%91%9E%E5%88%A9%E5%95%86"><span class="toc-text">2. 瑞利商 与 广义瑞利商</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-LDA-%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E6%8E%A8%E5%AF%BC%E8%BF%87%E7%A8%8B"><span class="toc-text">3. LDA 的原理及推导过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-LDA-%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B"><span class="toc-text">3. LDA 算法流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-LDA-%E4%B8%8E-PCA-%E5%AF%B9%E6%AF%94"><span class="toc-text">4. LDA 与 PCA 对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-LDA-%E7%AE%97%E6%B3%95%E5%B0%8F%E7%BB%93"><span class="toc-text">5. LDA 算法小结</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

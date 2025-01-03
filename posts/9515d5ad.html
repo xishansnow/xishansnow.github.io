@@ -1,0 +1,484 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>神经网络高斯过程(NNGP) | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="深度神经网络作为高斯过程"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/9515d5ad.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '神经网络高斯过程(NNGP)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"><script src="/assets/js/DPlayer.min.js"></script></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/book_08.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">神经网络高斯过程(NNGP)</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">神经网络高斯过程(NNGP)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-03-06T08:00:00.000Z" title="发表于 2023-03-06 16:00:00">2023-03-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.188Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/">高斯过程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">8.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>31分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>【摘要】 很久前就已经证明，当网络宽度为无限宽时，具有独立同分布先验的参数的单隐层全连接神经网络等效于一个高斯过程。也就是说，通过计算相应的高斯过程，可以实现对无限宽神经网络回归任务的精确贝叶斯推断，或者反之，可以用趋近于无线宽的神经网络来实现近似的高斯过程。最近，人们已经开发出了多种用于模仿多层随机神经网络的核函数，但并未考虑贝叶斯框架。因此，之前的工作尚未确定上述核函数是否可用作高斯过程的协方差函数，也无法确定是否允许完全地使用深度神经网络来做贝叶斯预测。 <strong>本文推导出了无限宽 “深度” 神经网络和高斯过程之间的精确等价关系</strong>，并进一步开发了一个效率较高的计算管道，来计算高斯过程的协方差函数。我们使用生成的高斯过程对 MNIST 和 CIFAR-10 上的宽深度神经网络执行了贝叶斯推断，实验结果表明， <strong>随着层宽的增加，训练后的神经网络精度趋近于相应的高斯过程，并且训练后神经网络预测的误差与高斯过程的不确定性密切相关</strong>。我们进一步发现， <strong>随着有限宽度训练网络变得更宽和更类似于高斯过程，测试性能会有所提高，因此高斯过程预测通常优于有限宽神经网络的预测</strong>。最后，我们将这些高斯过程的性能与最近随机神经网络中的信号传播理论进行了联系。</p>
+<p>【原 文】 Lee, J. et al. (2017) ‘Deep neural networks as gaussian processes’, arXiv preprint arXiv:1711.00165 [Preprint].</p>
+<p>【代 码】 <a target="_blank" rel="noopener" href="https://github.com/brain-research/nngp">https://github.com/brain-research/nngp</a></p>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>近年来，深度神经网络作为灵活的参数模型出现，可以拟合数据中的复杂模式。作为一种对比方法，高斯过程长期以来一直作为传统的非参数建模工具。 (Neal, 1994a <sup class="refplus-num"><a href="#ref-Neal1994a">[18]</a></sup>) 首次推导出了无限宽单隐层神经网络与高斯过程之间的等价性。 Neal (1994a <sup class="refplus-num"><a href="#ref-Neal1994a">[18]</a></sup>) 进一步指出，类似的对应关系可能适用于更深的神经网络。
+
+现在考虑一个具有独立同分布随机参数的 **深度** 全连接神经网络。该网络的每个标量输出（即最终隐层的仿射变换）将会是若干独立同高斯分布项的和。正如将在下面详细讨论的那样: **在无限宽度极限下，中心极限定理表明神经网络函数是一个抽取自高斯过程（Gaussian Process, GP）的函数样本（注：高斯过程通常被理解为函数的分布，因此其样本为函数）**。在单隐层网络的情况下，此类高斯过程的核形式参见（(Neal,1994a <sup class="refplus-num"><a href="#ref-Neal1994a">[18]</a></sup>)；(Williams,1997 <sup class="refplus-num"><a href="#ref-Williams1997">[26]</a></sup>)）
+
+单隐层神经网络与高斯过程的这种对应关系意味着： **如果将无限宽神经网络这个类别作为假设空间，则权重和偏置等参数上的独立同分布先验（即权重视角）可以用相应函数空间上的高斯过程先验（即函数视角）代替**。正如 (Williams, 1997 <sup class="refplus-num"><a href="#ref-Williams1997">[26]</a></sup>) 所指出的，这种可替换性使神经网络可以对回归任务进行精确的贝叶斯推断（注：贝叶斯推断意味着给出的是一个概率分布，而不是确定的值）。根据高斯过程原理，实现计算需要在训练集和测试集上构建必要的协方差矩阵以及简单的线性代数。
+
+鉴于近年神经网络的回潮，重新审视这方面工作非常有必要。本文描绘了 **宽度和深度神经网络与高斯过程之间的对应关系**，并将其用于神经网络在回归任务上的贝叶斯训练。
+
+### 1.1 相关工作
+
+我们的工作涉及高斯过程、贝叶斯学习、组合核等方面。 
+
+**（1）高斯过程与神经网络的基础研究**
+- 首次确认两者之间的等价关系：Neal （1994a <sup class="refplus-num"><a href="#ref-Neal1994a">[18]</a></sup>;1994b <sup class="refplus-num"><a href="#ref-Neal1994b">[19]</a></sup>） 首次注意到无限宽神经网络和高斯过程之间的对应关系。 
+- 推导出单隐层神经网络的解析高斯过程核：Williams （1997 <sup class="refplus-num"><a href="#ref-Williams1997">[26]</a></sup>） 计算出了具有误差函数或非线性高斯的单隐层神经网络的解析高斯过程核，并注意到使用高斯过程先验进行回归的精确贝叶斯推断方法。 
+- 深度高斯过程核的初步研究：Duvenaud 等 (2014 <sup class="refplus-num"><a href="#ref-Duvenaud2014">[7]</a></sup>) 讨论了几种构建深度高斯过程的方法，并观察了无限多次组合后的核退化形式（`第 3.2 节` 将做介绍），但其并没有推导出高斯过程核的形式。
+- 深度神经网络高斯过程等效核的初步研究：Hazan &amp; Jaakkola （2015 <sup class="refplus-num"><a href="#ref-Hazan2015">[11]</a></sup>） 讨论了无限宽深度神经网络的等效核构建问题，但其讨论只局限在最多两个非线性隐藏层的神经网络。
+
+**（2）组合核方面的研究**
+
+相关工作也出现在组合核的构造中（注：在旧核基础上构造新核是一个研究领域）：
+- 组合核的初步研究：Cho &amp; Saul, 2009 <sup class="refplus-num"><a href="#ref-Cho2009">[3]</a></sup> 推导出校正多项式的非线性组合核，其中包括 `Sign` 和 `ReLU` 非线性，可用于高斯过程；尽管语境不同，但高斯过程研究领域构造核的方式与其是匹配的。
+- 神经网络组合核：Daniely 等（2016 <sup class="refplus-num"><a href="#ref-Daniely2016">[5]</a></sup>） 将组合核构建扩展到神经网络，其底层的有向无环图具有通用形式。他们还证明，采用 **双激活** 形式，“具有相同非线性全连接拓扑的组合核” 在经过无限次组合时会发生退化。
+- 递推组合核：在与组合核不同的领域中，Poole 等（2016<sup class="refplus-num"><a href="#ref-Poole2016">[20]</a></sup>）、Schoenholz 等 (2017 <sup class="refplus-num"><a href="#ref-Schoenholz2017">[25]</a></sup>) 针对全连接网络和有界非线性的特定情况，研究了同样的隐层递推关系。他们区分了超参数空间中具有不同不动点的区域和递推关系中的收敛行为。
+
+上述工作的重点是更好地理解深度网络的表达能力和可训练性。
+
+**（3）与深度神经网络相关的研究**
+- **深度高斯过程（DGP）**：还有一系列工作考虑了各种堆叠高斯过程的方法，例如深度高斯过程 (Lawrence &amp; Moore, 2007 <sup class="refplus-num"><a href="#ref-Lawrence2007">[16]</a></sup>); (Damianou &amp; Lawrence ,2013 <sup class="refplus-num"><a href="#ref-Damianou2013">[4]</a></sup>); (Hensman &amp; Lawrence ,2014 <sup class="refplus-num"><a href="#ref-Hensman2014">[12]</a></sup>); (Duvenaud 等,2014 <sup class="refplus-num"><a href="#ref-Duvenaud2014">[7]</a></sup>); (Bui 等,2016 <sup class="refplus-num"><a href="#ref-Bui2016">[2]</a></sup>)，这可以产生比高斯过程更丰富的概率模型。深度高斯过程与本文工作形成了对比：我们研究的重点是与 _无限宽深度神经网络_ 直接对应的高斯过程。 
+- **深度组合核**：Krauth 等（2016 <sup class="refplus-num"><a href="#ref-Krauth2016">[15]</a></sup>）使用了可扩展的近似实现，来探索了具有深度核（Cho &amp; Saul, 2009 <sup class="refplus-num"><a href="#ref-Cho2009">[3]</a></sup>）的高斯过程性能。但他们没有讨论深度神经网络和具有组合核的高斯过程之间的等价性，而这却正是我们工作的概念性贡献。此外，我们工作中的高斯过程核在两个方面比 Cho&amp; Saul (2009 <sup class="refplus-num"><a href="#ref-Cho2009">[3]</a></sup>) 中概述的组合核更通用：首先我们并不限于校正多项式形式，而是可以处理通用的非线性函数；其次我们考虑了核中的两个额外超参数，它们分别对应于神经网络中的权重和偏差参数方差。
+- **MC Dropout**：Gal &amp; Ghahramani (2016 <sup class="refplus-num"><a href="#ref-Gal2016">[8]</a></sup>) 将深度神经网络中的 Dropout 与深度高斯过程中的近似贝叶斯推断联系起来。
+- **深度核学习（DKL）**：最近的另一系列工作被称为深度核学习（Deep Kernel Learning, DKL）（Wilson 等，2016b <sup class="refplus-num"><a href="#ref-Wilson2016b">[29]</a></sup>；2016a <sup class="refplus-num"><a href="#ref-Wilson2016a">[28]</a></sup>)；Al-Shedivat 等 2017 <sup class="refplus-num"><a href="#ref-Al-Shedivat2017">[1]</a></sup>）。该方法利用具有基核的高斯过程，接收由深度多层神经网络映射生成的非线性（或线性）特征，并能够训练出端到端模型。我们的工作与其不同之处在于：我们的高斯过程对应于一个多层神经网络，而不是仅在最后一层设置高斯过程。此外，我们的高斯过程核具有更少的参数，这些参数对应于等效的神经网络超参数。
+
+### 1.2 主要贡献
+
+【成果一】：我们定义了一种高斯过程的神经网络形式： _高斯过程对应于一个根据核递归和确定性计算定义的深度无限宽神经网络_，以下称为 **神经网络高斯过程（NNGP）**。该模型适用于在全连接前馈神经网络中进行逐点非线性计算。
+
+【成果二】：我们开发了一种高效的计算方法（`第 2.5 节`），能够计算与深度神经网络（具有固定超参数）相对应的高斯过程核（协方差函数）。
+
+【在贝叶斯推断方面的实证比较】：我们重点关注回归任务的精确贝叶斯推断，而将分类视为类标签上的回归任务。我们采用了分类表现良好的最小二乘法（Rifkin 等，2003 年 <sup class="refplus-num"><a href="#ref-Rifkin2003">[24]</a></sup>），这允许我们在经过充分研究的任务（MNIST 和 CIFAR-10 分类）上，对 “高斯过程精确推断作出的预测” 与 “已训练神经网络的预测” 进行充分对比。需要说明的是，其实可以将高斯过程进一步扩展到具有交叉熵损失的 softmax 分类（Williams &amp; Barber (1998); Rasmussen &amp; Williams (2006)），不过在本文中并未覆盖。我们开展了对 MNIST 和 CIFAR-10（`第 3 节`）数据集做贝叶斯预测的实验，并与使用标准梯度方法训练的神经网络进行了比较。实验探索了贝叶斯训练的不同超参数设置，包括网络深度、非线性、训练集大小（最多并包括由数万张图像组成的完整数据集）以及权重和偏差方差。 实验结果表明： 
+- 最佳 NNGP 性能始终与使用基于梯度技术训练的神经网络竞争，并且在超参数中选择的最佳 NNGP 设置通常优于传统训练（`表 1`）。
+- 随着神经网络宽度的增加，基于梯度训练的神经网络性能逐步接近 NNGP 计算的性能，并且高斯过程不确定性与预测误差密切相关。
+- NNGP 的性能取决于核的结构，这可以与最近关于具有随机参数的神经网络中信号传播的工作相关联（Schoenholz 等，2017 <sup class="refplus-num"><a href="#ref-Schoenholz2017">[25]</a></sup>）。
+
+## 2 深度无限宽神经网络与高斯过程的关系 
+
+本节首先定义高斯过程与深度无限宽神经网络之间的对应关系，这在很大程度上取决于中心极限定理的应用。在转向深层案例（`第 2.3 节`）之前，我们先回顾单隐藏层的情况（`第 2.2 节`）。
+
+### 2.1 符号表示
+
+我们重点考虑一个隐藏层数量为 $L$ 、隐藏层宽度为 $N_l$（对于特定层 $l$）、逐点非线性运算为 $\phi$ 的全连接神经网络。令 $x \in  \mathbb{R}^{d_{in}}$ 表示神经网络的输入，$z^L \in  \mathbb{R}^{d_{out}}$ 表示神经网络的输出。
+
+第 $l$ 层的第 $i$ 个激活分量在 **激活后** 和 **激活前**（即在非线性变换之后和在仿射变换之后）的值分别被表示为 $x^l_i$ 和 $z^l_i$，我们分别将其简称为 **激活后（Post-activation）** 和 **激活前（Pre-activation）**。不过输入层比较特殊：我们会去掉阿拉伯数字上标用 $x_i \equiv x^0_i$ 来表示第 $0$ 层的神经网络输入，并且使用希腊字母上标 $x^{\alpha}$ 来表示某个特定的输入 $α$。
+
+&gt; 注： Neal 的原始论文仅探讨了单隐层神经网络，该神经网络由由输入层 $x$、（含非线性激活的全连接）隐藏层 $h$ 和（全连接）输出层 $f$ 组成，输入经过仿射变换和激活后生成激活层 $h$，激活层而后通过仿射变换生成输出层 $f$。
+&gt; ![单隐藏层神经网络](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230306110244-371c.png)
+&gt; **Neal 原文的图 1.1**。一个多层感知器，有四个输入单元、五个隐藏单元和两个输出单元。底部的输入单位固定为特定情况下的值，先计算隐藏单元的值，然后计算输出单元的值。
+&gt;
+&gt; 本文将单隐层结构扩展到了 $L$ 个隐藏层，但为了表述方便，在描述架构时做了一些改动，见下图。每一个层都由 “激活后 + 激活前” 两个子层组成；第 $0$ 个层中的激活后为输入 $x$，激活前为 $z^{(0)}$；以后第 $l$ 个隐藏层将上一个神经网络的激活前 $z^{(l-1)}$ 视为输入，完成一次非线性激活后生成本层的激活后 $x^l = \phi(z^{(l-1)})$，而后通过仿射变换生成本层的激活前 $z^{(l)}=W_l x^{(l)} + b_l$。按照这样的结构，整个神经网络由 $L+1$ 个层构成，而神经网络的输入被视为第 $0$ 个层的激活后，神经网络的最终输出被视为第 $L$ 个层的激活前。
+&gt;
+&gt;![多隐藏层神经网络](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230306112032-7be6.png)
+
+
+第 $l$ 层神经网络的权重矩阵和偏差向量由元素 $W^l_{ij}$ 、 $b^l_i$ 构成，我们假设这些参数相互独立，且服从均值为 $0$ 的高斯分布，其中权重和偏差的方差分别表示为 $\sigma^2_w/N_l$ 和 $\sigma^2_b$（注：根据符号可以看出，层宽可以被视为调节权重方差的一种机制，层宽越大则权重方差越小）。
+
+符号 $\mathcal{GP}(μ, K)$ 表示一个高斯过程，其均值函数和协方差函数分别为 $μ(·)$, $K(·,·)$。
+
+
+<!-- ![单隐藏层神经网络与高斯过程](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230304110124-c3c0.webm) -->
+
+### 2.2 高斯过程和单隐层神经网络回顾
+
+我们简要回顾一下单隐层神经网络和高斯过程之间的对应关系（Neal (1994a <sup class="refplus-num"><a href="#ref-Neal1994a">[18]</a></sup>;1994b <sup class="refplus-num"><a href="#ref-Neal1994b">[19]</a></sup>)；Williams (1997 <sup class="refplus-num"><a href="#ref-Williams1997">[26]</a></sup>)）。网络输出的第 $i$ 个分量 $z^l_i$ 计算为，
+
+$$
+\begin{align*}
+\text{Output Layer:} \quad z^1_i (x) &amp;= b^1_i+ \sum^{N_1}_{j=1} W^1_{ij} x^1_j(x)\\
+\text{Hidden Layer:} \quad x^1_j(x) &amp;= \phi \left( b^0_j+ \sum^{d_{in}}_{k=1} W^{0}_{jk} x_k \right)  \tag{1}
+\end{align*}
+$$
+
+我们强调了对输入 $x$ 的依赖。因为权重和偏差参数被认为是独立同分布的， 对于任意 $j \neq j'$，隐藏层（激活后）的 $x^1_j$, $x^{1}_{j'}$ 相互独立。进一步地，由于输出层（激活前）的 $z^1_i (x)$ 是 $N_1$ 个独立同分布项之和，根据中心极限定理可知，在无限宽 $N_1 \rightarrow \infty$ 的极限下，$z^1_i (x)$ 也将服从高斯分布。类似地，根据多维中心极限定理，任意有限个输入实例对应的神经网络输出 $\{ z^1_i(x^{\alpha=1}), \ldots, z^1_i(x^{\alpha=k}) \}$ 也都将服从联合多元高斯分布，而这正符合高斯分布的定义。
+
+因此我们得出结论：无线宽单隐层神经网络是一个均值为 $μ^1$ 、协方差为 $K^1$ 的高斯过程，即 $z^1_i \sim \mathcal{GP}(μ^1, K^1)$，而均值和协方差本身与 $i$ 无关。
+
+由于参数都服从均值为零的高斯分布，且相互独立，因此神经网络对应的均值函数和协方差（核）分别为：
+
+$$
+\begin{align*}
+\mu^1(x) &amp;= \mathbb{E}[z^1_i (x)] = 0 \\
+K^1(x, x') &amp;≡ \mathbb{E}[z^1_i(x) z^1_i(x')] = \sigma^2_b + \sigma^2_w \mathbb{E}[x^1_i(x) x^1_i (x')] ≡ \sigma^2_b + \sigma^2_w C(x，x') \tag{2}
+\end{align*}
+$$
+
+在这里，我们引入了隐藏层（激活后）的协方差矩阵符号 $C(x, x') = \mathbb{E}[x^1_i(x) x^1_i (x')]$；它可以通过对 `式（1）`中 $W^0$, $b^0$ 的分布进行积分得到。请注意，对于任意 $i \neq j$，$z^1_i$ 和 $z^1_j$ 都服从联合高斯分布且协方差为零，也就是说，即便使用了隐藏层产生的同一特征，两者之间也是相互独立的。
+
+此部分详情参考 Neal 的论文 (1994a <sup class="refplus-num"><a href="#ref-Neal1994a">[18]</a></sup>) 。
+
+### 2.3 高斯过程和多层神经网络
+
+**（1）单层网络核的推导**
+
+上一节的论证可以扩展到更深的层次。为了进一步讨论，我们将隐藏层宽度相继取为（$N_1 \rightarrow \infty$，$N_2 \rightarrow \infty,\ldots$ ），以确保待考虑的每一层的输入都受高斯过程控制。
+
+&gt; 在 `附录 C` 中，我们利用中间层的贝叶斯边缘化方法，提供了另一种与极限顺序无关的推导。而 Matthews 等（2018 <sup class="refplus-num"><a href="#ref-Matthews2018">[6]</a></sup>）的同步研究，则进一步推导出了当所有层同时采用无限宽时，神经网络向高斯过程收敛的速率。
+
+假设 $z^{l-1}_j$ 是一个高斯过程，其对于每个 $j$ 都是独立同分布的（因此其非线性激活 $x^l_j(x)$ 也是独立且同分布的）。在第 $l − 1$ 步之后，第 $l$ 层神经网络的输出为：
+
+$$
+\begin{align*}
+z^l_i(x) &amp;= b^l_i+ \sum^{N_l}_{j=1} W^{l}_{ij} x^l_j(x)\\
+x^l_j (x) &amp;= \phi(z^{l-1}_j (x)) \tag{3}
+\end{align*}
+$$
+
+与 `第 2.2 节` 一样，$z^l_i(x)$ 也是独立同分布的随机项之和，从而使得当 $N_l \rightarrow \infty$ 时，任何有限集合 $\{ z^l_i (x^{\alpha=1}), \ldots, z^l_i (x^{\alpha=k}) \}$ 都服从联合的多元高斯分布，即 $z^l_i \sim \mathcal{GP}(0, K^l)$。其相应的协方差为：
+
+$$
+K^{l}(x, x') ≡ \mathbb{E} [z^l_i (x) z^l_i (x')] = \sigma^2_b + \sigma^2_w \mathbb{E}_{z^{l−1}_i \sim \mathcal{GP}(0,K^{l−1})} [\phi(z^{l-1}_{i} (x)) \phi(z^{l-1}_{i} (x'))] \tag{4}
+$$
+
+`式 4` 中的期望受上一层高斯过程 $z^{l-1}_{i}$ 的控制，这等价于对 $z^{l-1}_{i} (x)$ 和 $z^{l-1}_{i} (x')$ 的联合分布进行积分。该联合分布为零均值的二维高斯，其协方差矩阵由三类不同的元素构成： $K^{l−1}(x, x')$、$K^{l−1}(x, x)$ 和 $K^{l−1}(x', x')$。因此，我们可以将 第 $l$ 层的协方差简写三者的某种函数：
+
+$$
+K^{l}(x, x') = \sigma^2_b + \sigma^2_w F_{\phi} (K^{l−1}(x, x'), K^{l−1}(x, x), K^{l−1}(x', x')) \tag{5}
+$$
+
+上式通过一个确定性函数 $F$ 定义了两个相邻层的核 $K^{l}$ 和 $K^{l−1}$ 之间的递归关系，而该函数的形式仅取决于非线性函数 $\phi$。
+
+
+**（2）多层神经网络输出的核**
+
+`式（5）` 给出了一系列迭代计算，可以通过这些迭代计算，获得神经网络最终输出的高斯过程的协方差 $K^L$。
+
+对于基情况 $K^0$，假设 $W^{0}_{ij} \sim  \mathcal{N}(0, \sigma^2_w/d_{in})$, $b^0_j \sim \mathcal{N}(0,\sigma^2_b)$；我们可以利用与 $K^1$ 和 $K^0$ 相关的递归进行计算，其中
+
+$$
+K^0(x, x') = \mathbb{E} [z^{0}_{j} (x)z^{0}_{j} (x')] = \sigma^2_b + \sigma^2_w (\frac{x·x'}{d_{in}}) \tag{6} 
+$$
+
+事实上，这些递归关系在其他领域中也出现过。它们正是全连接随机神经网络中信号传播平均场理论中推导的关系（Poole 等 (2016 <sup class="refplus-num"><a href="#ref-Poole2016">[20]</a></sup>); Schoenholz 等 (2017 <sup class="refplus-num"><a href="#ref-Schoenholz2017">[25]</a></sup>)），也出现在组合核的相关文献中（Cho &amp; Saul (2009 <sup class="refplus-num"><a href="#ref-Cho2009">[3]</a></sup>)；Daniely 等 (2016 <sup class="refplus-num"><a href="#ref-Daniely2016">[5]</a></sup>)）。对于特定激活函数，可以解析地计算 `式 5`（Cho &amp; Saul (2009 <sup class="refplus-num"><a href="#ref-Cho2009">[3]</a></sup>)；Daniely 等 (2016 <sup class="refplus-num"><a href="#ref-Daniely2016">[5]</a></sup>)）。在 ReLU 非线性的情况下，它会产生众所周知的反余弦核 (Cho &amp; Saul (2009 <sup class="refplus-num"><a href="#ref-Cho2009">[3]</a></sup>))，我们在 `附录 B` 中重现了它的形式。当不存在解析形式时，它可以有效地进行数值计算，如`第 2.5 节` 所述。
+
+
+</p><div id="dplayer0" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"theme":"#FADFA3","video":{"url":"https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230304110124-c3c0.webm"},"danmaku":{"api":"https://api.prprpr.me/dplayer/"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
+
+&gt; **神经网络高斯过程的示意图**。其中绿色神经元代表输入，橙色和红色神经元代表输出，蓝色神经元代表隐藏层。随着层宽趋近于无穷大，整个多隐层神经网络趋近于一个等效的高斯过程。
+
+### 2.4 使用高斯过程先验实现神经网络的贝叶斯训练
+
+在这里，我们先简要回顾一下如何使用高斯过程先验函数进行贝叶斯推断；参见例如(Ras 利用等价高斯过程的预测分布来计算神经网络的预测分布，使神经网络具备不确定性量化能力。
+
+### 2.5 高斯过程核的高效计算方法
+
+根据 `第 2.3 节`，对于一个具有固定超参数的 $L$ 层深度神经网络，为其等效的高斯过程构造协方差矩阵 $\mathbf{K}^{L}$，需要计算 `式（4）` 中所有 “训练点-训练点” 和 “训练点-测试点” 点对的高斯积分，并且每一个层都需要递归计算。对于某些非线性激活函数而言，例如 ReLU，这种积分可以解析实现；但要计算任意非线性核的高斯积分，则需要使用更通用的数值积分方法。
+
+最原始的数值算法是通过对二维高斯分布进行采样，利用样本独立地为每对数据点和每一层计算积分，但这代价太高，成本为 $\mathcal{O}(n_g^2 L(n^2_{train} + n_{train} n_{test}))$，其中 $n_g^2$ 为二维积分中高斯分布的采样密度，$n_{train}$、$n_{test}$ 分别是训练集和测试集的大小。
+
+不过，通过优化运算 pipeline ，并对所有输入做等范数的预处理，我们可以将该成本减少至 $\mathcal{O}(n_g^2 n_v n_c + L(n^2_{train} + n_{train} n_{test}))$，其中 $n_v$ 和 $n_c$ 分别方差和相关性的网格采样密度（如下面所述）。为了实现这一点，我们将 pipline 分为几个步骤：
+
+**（1) 生成网格**
+
+生成激活前、方差和相关性的均匀网格：
+- 激活前： $u = [−u_{max}, \ldots, u_{max}]$ 由在 $−u_{max}$ 和 $u_{max}$ 之间线性间隔的 $n_g$ 个元素组成；
+- 方差： $s = [0, \ldots , s_{max}]$ 有 $n_v$ 个线性间隔的元素，其中 $s_{max} &lt; u^2_{max}$； 
+- 相关性： $c = (−1, \ldots, 1)$ 有 $n_c$ 个线性间隔的元素。
+
+请注意，我们使用固定而非自适应的采样网格，以允许跨数据点和层的并行计算和重用。
+
+**（2）填充查找表矩阵**
+
+为 `式（5）` 中的函数 $F_{\phi}$ 填充一个包含查找表的矩阵 $F$。这涉及在数值上根据边缘方差 $s$ 和相关性 $c$ 计算近似高斯积分。为了保证每个数据点的边缘方差相同，我们在输入层将所有数据点预处理为具有相同范数，因此查找表矩阵中元素的数量只需要 $n_v \times n_c$。这些查找表元素采用下式计算：
+
+$$
+F_{i j}=\frac{\sum_{a b} \phi\left(u_a\right) \phi\left(u_b\right) \exp \left(-\frac{1}{2}\left[\begin{array}{l}
+u_a \\
+u_b
+\end{array}\right]^T\left[\begin{array}{c 图 6：核的角度结构及其随深度的演变。该图同时说明了使用第 2.5 节（蓝色，星号）的方法计算的核与相应解析形式（红色）之间的良好一致性。 $K^l$ 中的深度 $l$ 从 $l = 0, \ldots, 9$（随着 $l$ 增加逐步压平了曲线）， $(σ^2_w, σ^2_b ) = (1.6, 0.1)$。注： 图中两种颜色的曲线基本重合，不宜发觉区别。
+
+最后，请注意完整的 pipeline 是 **确定性的** 和 **可微分的**。深度网络核的形状和性质完全由深度神经网络的超参数决定。由于高斯过程给出了精确的边缘似然估计，因此这种核构造可能允许原理性的超参数选择或非线性设计，例如关于超参数优化对数似然的梯度上升方法。虽然这并不是目前工作的重点，但我们希望在后续工作中讨论这个话题。
+
+该算法的开源实现可从 https://github.com/brain-research/nngp 获得。
+
+
+## 3 实验结果
+
+![](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230306165418-b343..webp)
+
+&gt; 图 1：NNGP 通常优于有限宽度网络，神经网络性能随着宽度的增加更接近 NNGP 性能。图中显示了 MNIST 和 CIFAR-10 数据集上的测试精度和均方误差，对应于给定网络宽度时表现最佳的 NNGP 和 SGD 训练的神经网络。 “NN-best” 表示在所有宽度和试验中表现最好的（在验证集上）神经网络。通常这是宽度最大的神经网络。
+
+![Fig2](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230303121404-34b8.png)
+
+&gt; 图 2：具有可变宽度的 5-隐层全连接神经网络的泛化 gap，分别对应 CIFAR-10 数据集上的 ReLU 和 Tanh 非线性激活。训练使用了随机优化和超参数初始化，并滤除了具有 $100\%$ 分类训练准确率的那部分神经网络，最后共产生 $125$ 个 Tanh 和 $55$ 个 ReLU 网络。无论非线性，最终结果均表明：最好的泛化网络始终是最宽的那个。
+
+![Fig3](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230303121530-9aad.png)
+
+&gt; 图 3：NNGP 的贝叶斯性质允许它为每个测试点赋予预测不确定性。这种预测不确定性与测试点上的经验误差高度相关。$x$ 轴显示测试点的预测 MSE，而 $y$ 轴显示了实现的 MSE。为了比较均方误差，每个标绘点都是 $100$ 个测试点的均值，由预测的 MSE 分箱生成。 NNGP 的超参数为 $depth= 3$、$σ^2_w = 2.0$ 和 $σ^2_b = 0.2$。有关训练集大小的依赖性，请参见 `图 8`。
+
+![Fig08](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230306164437-9a71..webp)
+
+&gt; 图 8：较少训练点的预测不确定性。实现细节与图 3 相同。
+
+&gt; 表 1：NNGP 通常优于有限宽度网络。在 MNIST 和 CIFAR10 数据集上测试准确性。报告的 NNGP 结果对应于验证集上表现最佳的 $depth$、$σ^2_w$ 和 $σ^2_b$ 值。传统的 NN 结果对应于性能最佳的深度、宽度和优化超参数。给定训练集大小的最佳模型是 ( $depth-width-σ^2_w-σ^2_b$ ) 的神经网络和 ($depth–σ^2_w-σ^2_b$ ) 的高斯过程。更多结果见 `表 2`。
+
+![Table1](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230303121707-04f1.png)
+
+
+&gt; 表 2：表 1 的完善。报告的 NNGP 结果对应于验证集上表现最佳的 $depth$、$σ^2_w$ 和 $σ^2_b$ 值。传统的 NN 结果对应于性能最佳的深度、宽度和优化超参数。给定训练集大小的最佳模型是 ( $depth-width-σ^2_w-σ^2_b$ ) 的神经网络和 ($depth–σ^2_w-σ^2_b$ ) 的高斯过程。。
+
+![Table2](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230306164833-f523..webp)
+
+
+![Fig4](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/GP-20211018-20-31-08-d2f4.webp)
+
+&gt; 图 4：表现最好的 NNGP 超参数与深度信号传播预测的结果一致。在 $\sigma^2_w$ 和 $\sigma^2_b$ 值的网格上计算的 NNGP 的测试集精度热图。(a)、(b) 中的右侧是遵循 Schoenholz 等 (2017) 方法的非线性理论相图。我们观察到：沿着临界线（虚线）时 NNGP 性能最好。其他深度的表现见 `图 9`。
+
+![Fig9](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230306171305-69b0..webp)
+
+&gt; 图 9：针对不同深度的 $σ^2_w$ 和 $σ^2_b$ 网格计算的 NNGP 测试集精度热图。行对应于 Tanh 和 ReLU 非线性，列对应于变化的深度。
+
+![Fig10](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230306171607-d832..webp)
+
+&gt; 图 10：性能最佳的 NNGP 分布在临界线附近。显示了具有给定训练集大小的 NNGP 的 25 次最佳性能运行的权重和偏差方差分布
+
+## 4 结论与讨论
+
+通过利用无限宽极限，我们指定了深度神经网络的先验与高斯过程之间的对应关系，其核函数是以组合的、确定的、可微的方式构建的。使用函数上的高斯过程先验，可以使用矩阵计算实现对神经网络回归的精确贝叶斯推断，我们无需基于随机梯度的训练，就能够从深度神经网络中获得预测和不确定性估计。NNGP 的性能与在类似超参数设置下训练的最佳神经网络（在指定类别的全连接模型内）之间具有竞争力。
+
+虽然我们能够对较大的数据集（大小为 $50k$）进行实验，但我们计划研究更大学习任务的可扩展性，可能会利用到可扩展高斯过程的最新进展（Quinonero-<a href="#ref-Quinonero-Candela2005">[Quinonero-Candela2005]</a>）；Hensman 等（2013 <sup class="refplus-num"><a href="#ref-Hensman2013">[13]</a></sup>） ）。
+
+<div class="note info no-icon flat"><p>本文主要论点在于：</p>
+<ul>
+<li>理想的无限宽多隐藏层全连接神经网络，等价于一个高斯过程，因此可以用等价的高斯过程来生成其预测分布；</li>
+<li>该高斯过程的协方差矩阵只与神经网络的深度、非线性函数选择、权重和偏差等参数的方差有关；</li>
+<li>该高斯过程的协方差矩阵可以从第 $0$ 层开始递归计算，作者为此开发了专门的计算方法；</li>
+<li>试验结果表明： NNGP 的预测结果能够作为多隐层全连接神经网络的理想预测分布，而且层宽越宽，结果越逼近。</li>
+<li>高斯过程本身的可扩展性受 $\mathcal{O}(n^3)$ 限制，因此可以进一步结合可扩展的高斯过程方法（如：近似似然、降秩、稀疏化等）。</li>
+</ul>
+</div>
+
+在实验中，我们观察到：经过优化的神经网络性能似乎随着宽度增加而接近高斯过程计算的性能。基于梯度的随机优化是否能够实现近似贝叶斯推断是一个有趣的问题（Mandt 等，2017 <sup class="refplus-num"><a href="#ref-Mandt2017">[17]</a></sup>）。需要进一步调查以确定：在实践中通常采用的 SGD 是否能够近似地实现贝叶斯推断？
+
+此外，NNGP 提供了对不确定性的明确估计。这可能有助于预测深度学习关键应用中的模型失败，或用于主动学习任务，在这些任务中它可用于识别最佳数据点以手动标记。
+
+
+## 参考文献
+
+<ul id="refplus"><li id="ref-Al-Shedivat2017" data-num="1">[1]  Maruan Al-Shedivat, Andrew Gordon Wilson, Yunus Saatchi, Zhiting Hu, and Eric P Xing. Learning scalable deep kernels with recurrent structure. Journal of Machine Learning Research, 18(82): 1–37, 2017.</li><li id="ref-Bui2016" data-num="2">[2]  Thang Bui, Daniel Hern ́ andez-Lobato, Jose Hernandez-Lobato, Yingzhen Li, and Richard Turner. Deep gaussian processes for regression using approximate expectation propagation. In International Conference on Machine Learning, pp. 1472–1481, 2016.</li><li id="ref-Cho2009" data-num="3">[3]  Youngmin Cho,  Lawrence K Saul. Kernel methods for deep learning. In Advances in neural information processing systems, pp. 342–350, 2009.</li><li id="ref-Damianou2013" data-num="4">[4]  Andreas Damianou,  Neil Lawrence. Deep gaussian processes. In Artificial Intelligence and Statistics, pp. 207–215, 2013.</li><li id="ref-Daniely2016" data-num="5">[5]  Amit Daniely, Roy Frostig, and Yoram Singer. Toward deeper understanding of neural networks: The power of initialization and a dual view on expressivity. In Advances In Neural Information Processing Systems, pp. 2253–2261, 2016.</li><li id="ref-Matthews2018" data-num="6">[6]  Alexander G. de G. Matthews, Jiri Hron, Mark Rowland, Richard E. Turner, and Zoubin Ghahramani. Gaussian process behaviour in wide deep neural networks. In International Conference on Learning Representations, 2018.</li><li id="ref-Duvenaud2014" data-num="7">[7]  David Duvenaud, Oren Rippel, Ryan Adams, and Zoubin Ghahramani. Avoiding pathologies in very deep networks. In Artificial Intelligence and Statistics, pp. 202–210, 2014.</li><li id="ref-Gal2016" data-num="8">[8]  Yarin Gal. Uncertainty in deep learning. PhD thesis, PhD thesis, University of Cambridge, 2016a.</li><li id="ref-Gal2016Ghahramani" data-num="9">[9]  Yarin Gal, Zoubin Ghahramani. Dropout as a bayesian approximation: Representing model uncertainty in deep learning. In international conference on machine learning, pp. 1050–1059, 2016.</li><li id="ref-Golovin2017" data-num="10">[10]  Daniel Golovin, Benjamin Solnik, Subhodeep Moitra, Greg Kochanski, John Karro, and D Sculley. Google vizier: A service for black-box optimization. In Proceedings of the 23rd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, pp. 1487–1495. ACM, 2017.</li><li id="ref-Hazan2015" data-num="11">[11]  Tamir Hazan, Tommi Jaakkola. Steps toward deep kernel methods from infinite neural networks. arXiv preprint arXiv:1508.05133, 2015.</li><li id="ref-Hensman2014" data-num="12">[12]  James Hensman, Neil D Lawrence. Nested variational compression in deep gaussian processes. arXiv preprint arXiv:1412.1370, 2014.</li><li id="ref-Hensman2013" data-num="13">[13]  James Hensman, Nicolo Fusi, and Neil D Lawrence. Gaussian processes for big data. arXiv preprint arXiv:1309.6835, 2013.</li><li id="ref-Kingma2014" data-num="14">[14]  Diederik Kingma, Jimmy Ba. Adam: A method for stochastic optimization. arXiv preprint arXiv:1412.6980, 2014.</li><li id="ref-Krauth2016" data-num="15">[15]  Karl Krauth, Edwin V Bonilla, Kurt Cutajar, and Maurizio Filippone. Autogp: Exploring the capabilities and limitations of gaussian process models. arXiv preprint arXiv:1610.05392, 2016.</li><li id="ref-Lawrence2007" data-num="16">[16]  Neil D Lawrence, Andrew J Moore. Hierarchical gaussian process latent variable models. In Proceedings of the 24th international conference on Machine learning, pp. 481–488. ACM, 2007.</li><li id="ref-Mandt2017" data-num="17">[17]  Stephan Mandt, Matthew D Hoffman, and David M Blei. Stochastic gradient descent as approximate bayesian inference. arXiv preprint arXiv:1704.04289, 2017.</li><li id="ref-Neal1994a" data-num="18">[18]  Radford M. Neal. Priors for infinite networks (tech. rep. no. crg-tr-94-1). University of Toronto, 1994a.</li><li id="ref-Neal1994b" data-num="19">[19]  Radford M. Neal. Bayesian Learning for Neural Networks. PhD thesis, University of Toronto, Dept. of Computer Science, 1994b.</li><li id="ref-Poole2016" data-num="20">[20]  Ben Poole, Subhaneil Lahiri, Maithra Raghu, Jascha Sohl-Dickstein, and Surya Ganguli. Exponential expressivity in deep neural networks through transient chaos. In Advances In Neural Information Processing Systems, pp. 3360–3368, 2016.</li><li id="ref-Quinonero-Candela2005" data-num="21">[21]  Joaquin Quinonero-Candela,  Carl Edward Rasmussen. A unifying view of sparse approximate gaussian process regression. Journal of Machine Learning Research, 6(Dec):1939–1959, 2005.</li><li id="ref-Rasmussen2006" data-num="22">[22]  Carl Edward Rasmussen, Christopher KI Williams. Gaussian processes for machine learning, volume 1. MIT press Cambridge, 2006.</li><li id="ref-Rifkin2004" data-num="23">[23]  Ryan Rifkin,  Aldebaro Klautau. In defense of one-vs-all classification. Journal of machine learning research, 5(Jan):101–141, 2004.</li><li id="ref-Rifkin2003" data-num="24">[24]  Ryan Rifkin, Gene Yeo, Tomaso Poggio, et al. Regularized least-squares classification. Nato Science Series Sub Series III Computer and Systems Sciences, 190:131–154, 2003.</li><li id="ref-Schoenholz2017" data-num="25">[25]  Samuel S Schoenholz, Justin Gilmer, Surya Ganguli, and Jascha Sohl-Dickstein. Deep information propagation. ICLR, 2017.</li><li id="ref-Williams1997" data-num="26">[26]  Christopher KI Williams. Computing with infinite networks. In Advances in neural information processing systems, pp. 295–301, 1997.</li><li id="ref-Williams1998" data-num="27">[27]  Christopher KI Williams, David Barber. Bayesian classification with gaussian processes. IEEE Transactions on Pattern Analysis and Machine Intelligence, 20(12):1342–1351, 1998.</li><li id="ref-Wilson2016a" data-num="28">[28]  Andrew G Wilson, Zhiting Hu, Ruslan R Salakhutdinov, and Eric P Xing. Stochastic variational deep kernel learning. In Advances in Neural Information Processing Systems, pp. 2586–2594, 2016a.</li><li id="ref-Wilson2016b" data-num="29">[29]  Andrew Gordon Wilson, Zhiting Hu, Ruslan Salakhutdinov, and Eric P Xing. Deep kernel learning. In Artificial Intelligence and Statistics, pp. 370–378, 2016b.</li></ul><p></p>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/9515d5ad.html">http://xishansnow.github.io/posts/9515d5ad.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/">贝叶斯统计</a><a class="post-meta__tags" href="/tags/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/">高斯过程</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%BA%A6%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/">深度高斯过程</a></div><div class="post-share"><div class="social-share" data-image="/img/book_08.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/c37cc709.html" title="高斯过程随机模拟索引贴"><img class="cover" src="/img/book_13.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">高斯过程随机模拟索引贴</div></div><div class="info-2"><div class="info-item-1">   暂无           #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {         let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');         let refel = document.querySelector(refid);         let refnum = refel.dataset.num;         let ref_content = refel.innerText.replace(`[${refnum}]`,'');         tippy(ref, {             content: ref_content, ...</div></div></div></a><a class="pagination-related" href="/posts/92799764.html" title="🔥 神经正切核：神经网络中的收敛和泛化"><img class="cover" src="/img/coffe_10.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">🔥 神经正切核：神经网络中的收敛和泛化</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 多个研究成果表明：初始阶段的无限宽极限人工神经网络 (ANN) 等效于高斯过程 [16][4][7][13][6] ，这将神经网络与核方法成功地链接在了一起。而本文则证明：神经网络在训练期间的演化，也可以用核方法来描述。具体来说，在神经网络参数的梯度下降期间，将输入向量映射到输出向量的神经网络函数 $f_\theta$ 也相应地遵循代价函数关于 **神经正切核 (NTK)** 的核梯度。神经正切核是描述人工神经网络泛化特性的核心。神经正切核在初始化时是随机的，在训练期间也会发生变化，但在无限宽极限下，它会收敛到显式的极限化核，并且在训练期间保持不变。神经正切核的这些特性使得我们在函数空间（而不是参数空间）中研究人工神经网络训练成为可能。我们认为：神经网络训练的收敛性可能与极限化神经正切核的正定性有关；在数据支持球体并且采用非线性非多项式情况下，我们也证明了极限化神经正切核的正定性。然后我们专注于最小二乘回归任务，表明在无限宽极限下，神经网络函数 $f_\theta$ 在训练过程中遵循...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/cc6501c0.html" title="高级模型--高斯过程与核学习"><img class="cover" src="/img/010.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-05</div><div class="info-item-2">高级模型--高斯过程与核学习</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a><a class="pagination-related" href="/posts/9ad0bba6.html" title="深度高斯过程(DGP)"><img class="cover" src="/img/009.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-01</div><div class="info-item-2">深度高斯过程(DGP)</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 深度高斯过程是一种基于高斯过程映射的深度信念网络。数据被建模为一个多元高斯过程的输出，而该高斯过程的输入由另一个高斯过程控制。单层模型等效于标准高斯过程或高斯过程隐变量模型 (GP-LVM)。我们通过近似变分边缘化在模型中进行推断。这导致用于做模型选择（层数和每层节点数）的边缘似然具备一个严格的下界。深度信念网络通常适用于使用随机梯度下降（SGD）做优化的大型数据集。但即使在数据稀缺的情况下，本文方法的完全贝叶斯处理也允许其应用深层模型。利用本文变分边界做出的模型选择情况表明，即使对仅包含 150 个样本的数字字符数据集进行建模，5 层的网络层次结构也是合理的。 【原 文】 Damianou, A. and Lawrence, N.D. (2013) ‘Deep gaussian processes’, in Artificial intelligence and statistics. PMLR, pp. 207–215. 1 概述使用神经网络架构来实现概率建模，已经成为机器学习的一个深入研究领域。深度学习领域的一些新进展 [Hinton and...</div></div></div></a><a class="pagination-related" href="/posts/56f1e819.html" title="🔥 深度核学习(DKL)"><img class="cover" src="/img/book_13.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-01</div><div class="info-item-2">🔥 深度核学习(DKL)</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 我们引入了可扩展的深度核，它结合了深度学习架构的结构特性和核方法的非参数灵活性。具体来说，我们使用局部核插值、归纳点和结构利用（Kronecker 和 Toeplitz）代数来转换具有深度架构的谱混合基核的输入，以获得可扩展的核表示。这些封闭形式的核可以用作标准核的直接替代品，具有表达能力和可扩展性方面的优势。我们通过高斯过程的边缘似然共同学习这些核的属性。 $n$ 个训练点的推断和学习成本为 $\mathcal{O}(n)$，每个测试点的预测成本为 $\mathcal{O}(1)$。在大量多样的应用程序集合中，包括具有 $200$ 万个样本的数据集，我们展示了具有灵活核学习模型和独立深度架构的可扩展高斯过程的改进性能。 【原 文】 Wilson, A.G. 等 (2015) ‘Deep Kernel Learning’. arXiv. Available at: http://arxiv.org/abs/1511.02222 (Accessed: 31 December 2022). 1 简介MacKay (1998) [15]曾质疑...</div></div></div></a><a class="pagination-related" href="/posts/c0d702a8.html" title="🔥 神经扩散过程(NDP)"><img class="cover" src="/img/book_01.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-21</div><div class="info-item-2">🔥 神经扩散过程(NDP)</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 高斯过程为指定函数的先验分布和后验分布提供了一个优雅的框架。然而，它们计算代价很高，并且受到协方差函数表达能力的限制。我们提出了神经扩散过程 (NDP)，这是一种基于扩散模型的新方法，它学习如何从函数的分布中进行采样。使用一种新颖的注意力块，我们能够将随机过程的性质（例如可交换性）直接整合到神经扩散架构中。经验表明，神经扩散过程能够捕获与高斯过程的真实贝叶斯后验接近的函数型分布。这使各种下游任务成为可能，包括超参数的边缘化和贝叶斯优化。 【原 文】 Dutordoir, V. et al. (2022) ‘Neural Diffusion Processes’. arXiv. Available at: http://arxiv.org/abs/2206.03992 (Accessed: 21 February 2023). 1 简介高斯过程 (GP) 提供了一个强大的框架来定义函数的分布...</div></div></div></a><a class="pagination-related" href="/posts/650d46e1.html" title="🔥 神经过程(NP)"><img class="cover" src="/img/book_06.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-23</div><div class="info-item-2">🔥 神经过程(NP)</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 神经网络 (NN) 是一种参数化函数，可以通过梯度下降进行调优，以高精度逼近有标签数据集。另一方面，高斯过程 (GP) 是一种概率模型，它定义了函数的分布，并利用概率推断规则根据数据进行更新。高斯过程具有概率性、数据效率和灵活性，但也是计算密集型的，因此适用范围受到了限制。在本文中，我们介绍了一类神经网络隐变量模型，我们称之为神经过程 (Neural Processes，NP)，它结合了两种方法的优点。与高斯过程一样，神经过程用于定义函数的分布，能够快速适应新观测，并且在预测时能够同步估计其不确定性。与神经网络一样，神经过程在训练和评估期间的计算效率很高，但同时能够学习根据数据调整先验。我们展示了神经过程在一系列学习任务中的表现，包括回归和优化，并与文献中的相关模型进行了比较和对比。 【原 文】 Garnelo, Marta, Jonathan Schwarz, Dan Rosenbaum, Fabio Viola, Danilo J. Rezende, S. M. Ali Eslami, and Yee Whye Teh. “Neural...</div></div></div></a><a class="pagination-related" href="/posts/c49f015e.html" title="🔥 神经过程作为函数的分布"><img class="cover" src="/img/book_10.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-23</div><div class="info-item-2">🔥 神经过程作为函数的分布</div></div><div class="info-2"><div class="info-item-1">   【原 文】 Kaspar Martins, 2018, Neural Processes as distributions over functions, https://kasparmartens.rbind.io/post/np/ 在 ICML2018 中，提出了一些关于神经过程的有趣工作。见论文《条件神经过程》 和同一作者在研讨会上提出的 《神经过程》...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="toc-text">1 概述</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

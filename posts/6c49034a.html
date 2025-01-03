@@ -1,0 +1,472 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>预测模型概览 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="预测模型概览"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/6c49034a.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '预测模型概览',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/book_18.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">预测模型概览</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">预测模型概览</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-09-28T04:00:00.000Z" title="发表于 2022-09-28 12:00:00">2022-09-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.208Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/">预测任务</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E6%A6%82%E8%A7%88/">概览</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">12.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>46分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>基于该评分规则的最小化负对数损失 （ $\text{NLL}$ ）方法，应该会产生良好校准的输出类概率。但在实践中，对数损失往往会过分强调概率分布的尾部。</p>
+
+<div class="markmap-container" style="height:700px">
+  <svg data="{&quot;t&quot;:&quot;root&quot;,&quot;d&quot;:0,&quot;v&quot;:&quot;&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:2,&quot;p&quot;:{&quot;lines&quot;:[0,1]},&quot;v&quot;:&quot;预测问题&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[1,2]},&quot;v&quot;:&quot;回归问题&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[2,3]},&quot;v&quot;:&quot;分类问题&quot;}]},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:2,&quot;p&quot;:{&quot;lines&quot;:[3,4]},&quot;v&quot;:&quot;模型设计&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[4,5]},&quot;v&quot;:&quot;参数模型（广义线性模型、神经网络...)&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[5,6]},&quot;v&quot;:&quot;非参数模型（KNN、核方法、决策树、随机过程、集成方法... ）&quot;}]},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:2,&quot;p&quot;:{&quot;lines&quot;:[6,7]},&quot;v&quot;:&quot;模型推断&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[7,8]},&quot;v&quot;:&quot;贝叶斯方法（MCMC、变分推断...）&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[8,9]},&quot;v&quot;:&quot;非贝叶斯方法（MLE、MAP、EM...）&quot;}]},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:2,&quot;p&quot;:{&quot;lines&quot;:[9,10]},&quot;v&quot;:&quot;模型评估&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[10,12]},&quot;v&quot;:&quot;预测准确性评估（评分规则法）<br>\n（ 2 ）除预测的正确性指标外，我们还关心预测结果中信念的准确性。遗憾的是，随着神经网络技术发展，预测正确性似乎得到了很大提高，但预测分布的信念可信度却大大降低了（参见<a href=\&quot;https://proceedings.mlr.press/v70/guo17a.html\&quot;>Guo et al. 2017</a>)。而解决该问题的主要方法是下一节介绍的模型校准。&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[12,13]},&quot;v&quot;:&quot;预测可持续性评估（序列联合预测）&quot;}]},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:2,&quot;p&quot;:{&quot;lines&quot;:[13,14]},&quot;v&quot;:&quot;共形预测&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[14,15]},&quot;v&quot;:&quot;共形回归&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[15,16]},&quot;v&quot;:&quot;共形分类&quot;}]},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:2,&quot;p&quot;:{&quot;lines&quot;:[16,17]},&quot;v&quot;:&quot;小样本问题&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[17,18]},&quot;v&quot;:&quot;数据增强&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[18,19]},&quot;v&quot;:&quot;迁移学习&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[19,20]},&quot;v&quot;:&quot;半监督学习&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[20,21]},&quot;v&quot;:&quot;主动学习&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[21,22]},&quot;v&quot;:&quot;元学习&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[22,23]},&quot;v&quot;:&quot;弱监督学习&quot;}]}],&quot;p&quot;:{}}" />
+</div>
+
+
+<h2 id="一、问题提出"><a href="#一、问题提出" class="headerlink" title="一、问题提出"></a>一、问题提出</h2><p>绝大多数机器学习都比较关注解决一个单纯的问题：从标记训练集 $\mathcal{D} = {(\boldsymbol{x}_n, \boldsymbol{y}_n), n = 1:N}$ 中学习得到某个函数 $f$，使其能够从未来的新输入 $\boldsymbol{x}$ 中预测输出 $\boldsymbol{y}$。 其中，$\boldsymbol{x}_n \in \mathcal{X} \subseteq \mathbb{R}^D$, $\boldsymbol{y}_n \in \mathcal{Y} \subseteq \mathbb{R}^C$ 。</p>
+<p>我们可以使用形式为 $p(\boldsymbol{y}|f(\boldsymbol{x}))$ 的条件概率模型，对给定输入时正确输出的不确定性建模。</p>
+<ul>
+<li>当 $\mathcal{Y}$ 是一组离散标签时，此类模型（在 ML 文献中）被称为判别模型或分类模型，因为它让我们能够判别（区分）$\boldsymbol{y}$ 的不同可能值。</li>
+<li>如果输出是实值时，即 $\mathcal{Y} = \mathbb{R}$，则被称为回归模型。</li>
+</ul>
+<p>本文中将使用更通用的术语 『预测模型』 来指代上述两类模型。</p>
+<div class="note info no-icon flat"><p>🔔  在统计文献中，术语 “回归模型” 也可以泛指上述两类模型，即便 $\mathcal{Y}$ 是离散集。</p>
+</div>
+
+<h2 id="二、与生成模型的关系"><a href="#二、与生成模型的关系" class="headerlink" title="二、与生成模型的关系"></a>二、与生成模型的关系</h2><p>『预测模型』可以被认为是条件生成模型的一种特例（ 见 <a href="18bc35f9.html">生成模型</a> ），因为从形式上看，两者貌似都在寻求解决 『**输入 $\boldsymbol{x}$，输出 $\boldsymbol{y}$**』 的问题。但两者又存在着显著区别：</p>
+<ul>
+<li>在预测模型中，输出通常维度较低，并且通常会有一个想要预测的最佳答案。</li>
+<li>在生成模型中，输出通常是高维的（例如图像或句子），并且对于任何输入都可能存在许多正确输出。</li>
+</ul>
+<h2 id="三、主要模型类型"><a href="#三、主要模型类型" class="headerlink" title="三、主要模型类型"></a>三、主要模型类型</h2><p>有许多不同类型的预测模型，但最大的分类区别在于参数模型和非参数模型。</p>
+<ul>
+<li><strong>参数模型</strong>：具有 _固定数量的参数_，参数数量与训练集大小无关。参数模型通常不太灵活，但用于预测的速度更快。大多数参数模型的形式为 $p(\boldsymbol{y} \mid \boldsymbol{x}) = p(\boldsymbol{y} \mid f (\boldsymbol{x}; \boldsymbol{\theta}))$，其中 $f$ 是用于对输出分布（需要作出适当假设，如：<code>高斯分布</code>）的某些参数（ 如高斯分布的 <code>均值</code>）做预测的函数。存在很多可以使用的此类函数：<ul>
+<li><strong>（广义）线性模型</strong>：当该函数 $f$ 是参数 $\boldsymbol{\theta}$ 的线性函数时，即 $f(\boldsymbol{x};\boldsymbol{\theta})=\boldsymbol{\theta}^T \phi(\boldsymbol{x})$ ， 这一大类模型被称为广义线性模型；</li>
+<li><strong>非线性模型（神经网络）</strong>：当该函数 $f$ 是参数 $\boldsymbol{\theta}$ 的非线性可微分函数时， 例如：$f(\boldsymbol{x};\boldsymbol{\theta})=\boldsymbol{\theta}_2^T \phi(\boldsymbol{x};\boldsymbol{\theta}_1)$，其中 $\phi(\boldsymbol{x};\boldsymbol{\theta})$ 是某种可学习的函数，这一大类模型通常将被表示为神经网络模型。</li>
+</ul>
+</li>
+<li><strong>非参数模型</strong>：此类模型的 _参数数量不固定_，会随着训练集的大小而增长。非参数模型通常更灵活，但用于预测的速度可能较慢。非参数模型通常将输入 $\boldsymbol{x}$ 与部分或全部存储的训练实例 ${\boldsymbol{x}_n, n = 1:N}$ 进行比较，比较往往采用某种形式的相似性度量 $s_n = \mathcal{K}(\boldsymbol{x}, \boldsymbol{x}<em>n) \ge 0$，然后使用训练标签的一些加权组合来预测输出，例如 $\hat{\boldsymbol{y}} = \sum\limits^{N}</em>{n=1} s_n \boldsymbol{y}_n$ 。典型如： <a href="e48bfe00.html">高斯过程</a>、<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/25994179">K 最近邻</a>、决策树、随机森林等。</li>
+</ul>
+<p>下图为常见的一些预测模型：</p>
+
+<div class="markmap-container" style="height:700px">
+  <svg data="{&quot;t&quot;:&quot;root&quot;,&quot;d&quot;:0,&quot;v&quot;:&quot;&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:2,&quot;p&quot;:{&quot;lines&quot;:[0,1]},&quot;v&quot;:&quot;参数模型&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[1,2]},&quot;v&quot;:&quot;广义线性模型&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[2,3]},&quot;v&quot;:&quot;线性回归&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[3,4]},&quot;v&quot;:&quot;逻辑斯谛回归&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[4,5]},&quot;v&quot;:&quot;多项回归&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[5,6]},&quot;v&quot;:&quot;...&quot;}]},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[6,7]},&quot;v&quot;:&quot;非线性模型&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[7,8]},&quot;v&quot;:&quot;各类神经网络&quot;}]}]},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:2,&quot;p&quot;:{&quot;lines&quot;:[8,9]},&quot;v&quot;:&quot;非参数模型&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[9,10]},&quot;v&quot;:&quot;实例模型&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[10,11]},&quot;v&quot;:&quot;KNN&quot;}]},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[11,12]},&quot;v&quot;:&quot;核方法&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[12,13]},&quot;v&quot;:&quot;支持向量机&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[13,14]},&quot;v&quot;:&quot;高斯过程&quot;}]},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[14,15]},&quot;v&quot;:&quot;树与森林&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[15,16]},&quot;v&quot;:&quot;回归树&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[16,17]},&quot;v&quot;:&quot;分类树&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[17,18]},&quot;v&quot;:&quot;随机森林&quot;}]},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[18,19]},&quot;v&quot;:&quot;集成方法&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[19,20]},&quot;v&quot;:&quot;提升法&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[20,21]},&quot;v&quot;:&quot;装袋法&quot;}]},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:4,&quot;p&quot;:{&quot;lines&quot;:[21,22]},&quot;v&quot;:&quot;随机过程&quot;,&quot;c&quot;:[{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[22,23]},&quot;v&quot;:&quot;高斯过程&quot;},{&quot;t&quot;:&quot;list_item&quot;,&quot;d&quot;:6,&quot;p&quot;:{&quot;lines&quot;:[23,24]},&quot;v&quot;:&quot;狄利克雷过程&quot;}]}]}],&quot;p&quot;:{}}" />
+</div>
+
+
+<h2 id="四、模型推断"><a href="#四、模型推断" class="headerlink" title="四、模型推断"></a>四、模型推断</h2><p>统计推断的目的是根据样本，获得模型参数或隐变量的点估计、区间估计或者概率分布估计。对于预测任务而言，其统计推断大致可以分为两类：</p>
+<h3 id="4-1-频率派方法"><a href="#4-1-频率派方法" class="headerlink" title="4.1 频率派方法"></a>4.1 频率派方法</h3><p>频率派方法仅做出参数的点估计，通常通过增加正则化项解决过拟合问题。比较常见的方法有：</p>
+<p><strong>（ 1 ）『最大似然估计法（ MLE ）』</strong></p>
+<p>最大似然估计是一种基础并且跟随直觉的方法，其基本原理是估计使数据的似然最大化的模型参数 $\hat{\boldsymbol{\theta}}$ ：</p>
+<p>$$<br>\hat{\boldsymbol{\theta}}=\underset{\boldsymbol{\theta} \in \Theta}{\operatorname{argmax}} , p(\mathcal{D} \mid \boldsymbol{\theta}) \equiv \underset{\boldsymbol{\theta}\in \Theta}{\operatorname{argmax}} \log p(\mathcal{D} \mid \boldsymbol{\theta})<br>$$</p>
+<p>对于预测任务而言，最大似然估计等价于寻求下式中的最优解：</p>
+<p>$$<br>\hat{\boldsymbol{\theta}}=\underset{\boldsymbol{\theta} \in \Theta}{\operatorname{argmax}} , p(\boldsymbol{y} \mid \boldsymbol{x,\theta}) \equiv \underset{\boldsymbol{\theta}\in \Theta}{\operatorname{argmax}} \log p(\boldsymbol{y} \mid \boldsymbol{x,\theta})<br>$$</p>
+<p>对于独立同分布假设和复对数似然（一种概率论中的常用技巧），上式可改写为：</p>
+<p>$$<br>\hat{\boldsymbol{\theta}}=\underset{\boldsymbol{\theta}\in \Theta}{\operatorname{argmin}} \frac{1}{N}\sum\limits^{N}_{n=1}\left[ -\log p(\boldsymbol{y}_n \mid \boldsymbol{x}_n,\boldsymbol{\theta}) \right]<br>$$</p>
+<p>上式中的负对数似然项可以泛化为对数损失，即 $\ell(\boldsymbol{\theta}) = - \log p(\boldsymbol{y}_n \mid \boldsymbol{x}<em>n,\boldsymbol{\theta}))$，并令 $r(\boldsymbol{\theta})= \frac{1}{N}\sum\limits^{N}</em>{n=1} \ell_n(\boldsymbol{\theta})$，则最大似然法可以量化为：</p>
+<p>$$<br>\hat{\boldsymbol{\theta}}=\underset{\boldsymbol{\theta}\in \Theta}{\operatorname{argmin}},  r(\boldsymbol{\theta})<br>$$</p>
+<p>此处的 $r(\boldsymbol{\theta})$ 就是我们常听说的『经验风险（ Empirical Risk ）』，因此上式也被称为『经验风险最小化』。</p>
+<p>实践中表明，单纯采用经验风险最小化，容易导致过拟合现象，因此通常在其基础上增加一个正则化项（或称为惩罚项）：</p>
+<p>$$<br>\hat{\boldsymbol{\theta}}=\underset{\boldsymbol{\theta}\in \Theta}{\operatorname{argmin}},  r(\boldsymbol{\theta}) + \lambda C(\boldsymbol{\theta})<br>$$</p>
+<p>$\lambda \geq 0$ 控制了正则化的程度，而 $C(\boldsymbol{\theta})$ 是某种模型复杂度的测度。</p>
+<p><strong>（ 2 ）『最大后验估计（ MAP ）』</strong></p>
+<p>最大后验估计部分采用了贝叶斯原理，为了避免过拟合现象，可以先对参数作出先验假设，然后估计使贝叶斯后验最大化的模型参数，其形式如下：</p>
+<p>$$<br> \hat{\boldsymbol{\theta}}=\underset{\boldsymbol{\theta} \in \Theta}{\operatorname{argmax}} \log p(\mathcal{D} \mid \boldsymbol{\theta})+\log \pi_0(\boldsymbol{\theta})<br>$$</p>
+<p>如果令最大似然方法中的 $\lambda = 1$，并令其模型复杂性测度等于最大后验估计中的先验分布  $C(\boldsymbol{\theta}) = -\log \pi_0(\boldsymbol{\theta})$ ，则可以看出带正则化项的最大似然估计等价于某种特殊形式的最大后验估计。</p>
+<h3 id="4-2-贝叶斯方法"><a href="#4-2-贝叶斯方法" class="headerlink" title="4.2 贝叶斯方法"></a>4.2 贝叶斯方法</h3><p>贝叶斯方法与频率派方法最大的不同在于，贝叶斯方法会给出参数的概率分布估计 $q(\boldsymbol{\theta})$，而不仅仅是其点估计，并且贝叶斯方法可以灵活的通过先验假设解决过拟合问题。其容易被诟病的地方在于，后验分布同时受模型和先验假设影响，而先验假设来自于人为设计，这使得贝叶斯方法总体上存在了主观性。但贝叶斯派学者们并不这样人为，因为从贝叶斯角度来看，频率派方法只是贝叶斯方法中的一个特例。</p>
+<p>与频率派方法简单地使用经验风险最小化方法求最优解不同，贝叶斯方法需要得到最终的分布形态，这对于哪怕最简单的模型而言，也是挺困难的一件事情。我们可以把贝叶斯推断看作是用数据（似然）对某个假想分布（先验）做重新塑型的操作：对于每一个可能的参数值（先验中的一个样本），根据数据都可以计算得到一个似然值，用似然值对假想分布进行调整使其更符合实际数据。显而易见，这是一个复杂度非常高的计算，其输入是一个分布而输出是另外一个分布（这一点与频率派方法截然不同），我们要为分布中每一个可能值都做上述计算显然是不可取的。因此，出现了各种近似计算的方法。其中比较常见的是两种：</p>
+<p><strong>（ 1 ） 蒙特卡洛方法</strong></p>
+<p>根据上述分析，我们不可能为所有可能的参数值都计算后验概率，那有什么方法能够减少这种计算量呢？一种直观方法是对可能的值域做离散化，每个网格内只计算一个值，但网格大小和后验精度显然都会受到影响。此外，根据蒙特卡洛积分方法，网格法无法满足很多后续以计算期望为主的任务，因为蒙特卡洛方法要求概率大的地方采样密度也要更大，网格法显然无法做到这一点。更好的做法是<a href="43925297.html">『马尔可夫链蒙特卡洛方法（ MCMC ）』</a>，该方法利用马尔可夫链存在平稳分布、可收敛等特性，可以实现从任意初始点通过马尔可夫状态转移到达平稳状态的能力，在到达平稳状态后，所有转移得到的样本点都是符合平稳分布的样本点。也就是说，MCMC 方法可以在一段时间的预热后达到平稳状态，在此之后的每一次状态转移都会产生一个符合目标分布的样本点。</p>
+<p>MCMC 方法的优势在于，其样本点都是来自目标分布的样本点，因此常作为统计推断任务的黄金标准。其缺点计算复杂度仍然比较高，特别是当模型参数的维度较高、样本点数量较大的场景中，面临非常大的挑战。此外 MCMC 方法需要从后验分布中抽取和存储足够多的样本，其空间复杂度也较高。鉴于上述原因，在深度神经网络中很少使用 MCMC 方法，这也是一个可以深入研究的领域。</p>
+<p><strong>（ 2 ） 变分推断方法</strong></p>
+<p><a href="ca998fff.html">『变分推断概览』</a> ）采用了另外一种解决问题的思路：将注意力限制在有限分布族上来简化问题，即在某个可参数化的有限分布族（如平均场）中，寻求后验分布的最优近似分布。变分推断将 “多维复杂分布的真实值求解问题” 简化为 “对其近似分布的参数最优化求解问题”，尽管损失了一定的精度，但计算效率的优势比较明显，尤其是在样本量较大时，可以直接使用随机梯度下降等优化方法，因此在神经网络的统计推断任务中比较常见。</p>
+<p>从数学上来看，变分推断的目标是通过最小化 <code>近似分布</code> 和 <code>目标分布</code> 之间的的 $\mathbb{KL}$ 散度（注： $\mathbb{KL}$ 散度衡量两种概率分布之间的差异程度，但不具备可逆性，即 $D_{\mathbb{KL}}(q | p) \neq D_{\mathbb{KL}}(p | q)$ ）。</p>
+<p>$$<br>\hat{q} = \underset{q \in \mathcal{Q}(\Theta)} {\operatorname{argmin}} \mathbb{E}<em>{q(\boldsymbol{\theta})} \left[-\log p(\mathcal{D} \mid \boldsymbol{\theta})\right] + D</em>{\mathbb{KL}}(q || \pi_0) \tag{12}<br>$$</p>
+<p>同样我们也可以将负对数似然损失做泛化，替换为一个更广义的风险损失 $r(\boldsymbol{\theta})$，将 $D_{\mathbb{KL}}(q || \pi_0)$ 的 $\mathbb{KL}$ 散度项替换为更为广义的散度项 $D(q || \pi_0)$ ，并赋予权重 $\lambda$，就可以得到<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1904.02063">『广义贝叶斯推断』</a>：</p>
+<p>$$<br>\hat{q} = \underset{q \in \mathcal{Q}(\Theta)} {\operatorname{argmin}} \mathbb{E}_{q(\boldsymbol{\theta})} \left[ r(\boldsymbol{\theta}) \right]+ D(q || \pi_0) \tag{13}<br>$$</p>
+<p>变分推断方法中最简单的一个例子是对高斯混合模型进行推断时采用的 『EM 算法』，而在神经网络中的一个复杂例子是『变分自编码器』。</p>
+<h3 id="5-2-模型校准"><a href="#5-2-模型校准" class="headerlink" title="5.2 模型校准"></a>5.2 模型校准</h3><p>什么样的预测模型是更好的模型呢？下面以分类任务为例，探讨这个问题，其中很多原则可以推广至回归问题。</p>
+<h3 id="5-1-评分规则"><a href="#5-1-评分规则" class="headerlink" title="5.1 评分规则"></a>5.1 评分规则</h3><p>测量一个预测模型性能（主要值正确率）的常见方法是使用某种恰当的评分规则，如分类任务中常用的负对数似然、回归任务中常用的平方误差（ MSE ）等。</p>
+<p>令 $S\left(p_{\boldsymbol{\theta}},(y, \boldsymbol{x})\right)$ 为预测性分布 $p_{\boldsymbol{\theta}}(y \mid \boldsymbol{x})$ 在给定事件 $y \mid \boldsymbol{x} \sim p^*(y \mid \boldsymbol{x})$ 时的分值，其中 $p^*$ 代表真实的条件分布。</p>
+<div class="note info no-icon flat"><p>🔔 注意：<br>（1）预测性分布是指根据统计推断得到的模型参数（点估计或概率分布），计算得出的预测输出的概率分布。模型和数据的不确定性会导致预测输出的不确定性。<br>（2）对于非贝叶斯模型，统计推断的结果通常是模型参数的点估计，此时需要多个样本点对 $S$ 进行统计意义上的评分。<br>（3）对于贝叶斯模型，由于其推断结果是模型参数的概率分布，因此计算 $S$ 需要对模型参数 $\boldsymbol{\theta}$ 做边缘化而不是条件化，也就是说，需要将点估计 $p_{\boldsymbol{\theta}}(y \mid \boldsymbol{x} )$ 替换为积分 $p(y \mid \boldsymbol{x})=\int p_{\boldsymbol{\theta}}(y \mid \boldsymbol{x}) p(\boldsymbol{\theta} \mid \mathcal{ D}) d \boldsymbol{\theta}$。</p>
+</div>
+
+<p>评分的期望被定义为所有样本上的积分：</p>
+<p>$$<br>S\left(p_{\boldsymbol{\theta}}, p^<em>\right)=\int p^</em>(\boldsymbol{x}) p^*(y \mid \boldsymbol{x}) S\left(p_{\boldsymbol{\theta}},(y, \boldsymbol{x})\right) d y d \boldsymbol{x} \tag{14}<br>$$</p>
+<p>显而易见，恰当的评分规则应当符合 $S\left(p_{\boldsymbol{\theta}}, p^<em>\right) \leq S\left(p^</em>, p^<em>\right)$，其中当模型的预测分布与真实数据分布一致时（即 $p_{\boldsymbol{\theta}}(y \mid \boldsymbol{x})=p^</em>(y \mid \boldsymbol{x})$ ）等号成立。</p>
+<p>也就是说，最大化 $S\left(p_{\boldsymbol{\theta}},p^*\right)$ 这样一个恰当的评分规则，将迫使模型匹配真实的数据分布。</p>
+<p>根据上述分析，负对数似然显然是一个恰当评分规则，因为评分规则 $S\left(p_{\boldsymbol{\theta}},(y, \boldsymbol{x})\right)=\log p_{\boldsymbol{\theta}}(y \mid \boldsymbol {x})$。这遵循『吉布斯不等式』：</p>
+<p>$$<br>S\left(p_{\boldsymbol{\theta}}, p^<em>\right)=\mathbb{E}_{p^</em>(\boldsymbol{x}) p^*(y \mid \boldsymbol{x})}\left[\log p_{\boldsymbol{\theta}}(y \mid \boldsymbol{x})\right] \leq \mathbb{E}_{p^*(\boldsymbol{x}) p^*(y \mid \boldsymbol{x})}\left[\log p^*(y \mid \boldsymbol{x})\right] \tag{15}</p>
+<p>$$</p>
+<p><strong>（ 1 ） 校准的测量</strong></p>
+<p>对于分类任务而言，一种常见的替代方法是使用 『Brier 评分』，其定义如下：</p>
+<p>$$<br>S\left(p_{\boldsymbol{\theta}},(y, \boldsymbol{x})\right) \triangleq \frac{1}{C} \sum_{c=1}^C\left(p_{\boldsymbol{\theta}}(y=c \mid \boldsymbol{x})-\mathbb{I}(y=c)\right)^2 \tag{16}<br>$$</p>
+<p>这是预测概率分布 $p=p(1: C \mid x)$ （预测值）与独热标签分布 $\boldsymbol{y}$ （真实值）相比的平方误差。该 Brier 评分规则基于平方误差，因此其分数对极其罕见或极其常见的类别不太敏感。同样的，Brier 分数也是一个恰当的评分规则。</p>
+<div class="note info no-icon flat"><p>🔔  说明：<br>（ 1 ）此处重点介绍了分类任务，相关原则对回归问题也成立。<br>一个预测概率与经验频率相匹配的模型被称为经过校准的。例如，如果一个分类器预测 $p(y=c \mid \boldsymbol{x})=0.9$，那么我们预计这将在 $90 %$ 的时间里是真实标签。当输出结果存在太大不确定性时，一个经过良好校准的模型将有助于避免做出错误决策。</p>
+</div>
+
+<p>考虑到概率分布为连续值，因此为了能够评估校准，我们可以将预测概率分布划分为一组有限的桶（或区间），然后通过计数来评估经验频率和预测概率之间的差异。</p>
+<figcaption>图 1 ： 应用于 CIFAR-100 数据集的 ResNet CNN 图像分类器 [He+16b] 的可靠性图。 $\text{ECE}$ 是校准误差的期望，用于测量红色间隙的大小。方法从左到右：原始预测输出概率；温度缩放校准后；直方图分箱校准后；等渗回归校准后。来自[Guo+17]的图 4。</figcaption>
+
+<p>我们可以使用 <strong>校准误差的期望（ ECE ）</strong> 来衡量校准：</p>
+<p>在多分类的情况下，$\text{ECE}$ 只查看 MAP 预测的误差（即最高的标签），因此，我们可以使用 <strong>边缘校准误差（或静态校准误差）</strong> 扩展该度量以观察所有的类：</p>
+<p>更准确地说，假设我们有 $B$ 个桶，令 $\mathcal{B}_b$ 为样本预测信念落在区间 $I_b=\left(\frac{b-1}{B}, \frac{b}{B}\right]$ 中的索引集合。在此为了方便，我们使用了一致的桶宽度，但也可以根据桶中样本的数量来定义桶边界，以便每个桶中的样本数量相等。</p>
+<p>令 $f(\boldsymbol{x})_c=p(y=c \mid \boldsymbol{x}), \hat{y}<em>n= \operatorname{argmax}</em>{c \in {1, \ldots, C} } f\left(\boldsymbol{x}_n\right)_c$ ，和 $\hat{p}_n=\max _{c \in{1, \ldots, C}} f\left(\boldsymbol{x}_n\right)_c$。 桶 $b$ 内的准确度定义为：</p>
+<p>$$<br>\operatorname{acc}\left(\mathcal{B}_b\right)=\frac{1}{\left|\mathcal{B}<em>b\right|} \sum</em>{n \in \mathcal{B}_b} \mathbb{I}\left(\hat{y}_n=y_n\right) \tag{17}</p>
+<p>$$</p>
+<p>则该桶中的平均信念可以定义为：</p>
+<p>$$<br>\operatorname{conf}\left(\mathcal{B}_b\right)=\frac{1}{\left|\mathcal{B}<em>b\right|} \sum</em>{n \in \mathcal{B}_b} \hat{p}_n \tag{18}</p>
+<p>$$</p>
+<p>如果我们将准确性（Accuracy）与平均信念（Confidence）绘制在同一张图上，会得到一个可靠性图，如下图所示。 准确性和置信度之间的差距显示在红色条中。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20220929120841-92ac.webp" alt="可靠性图的案例"></p>
+<p><strong>（ 2 ） 改善校准</strong></p>
+<br>
+
+<p>原则上，训练分类器以优化适当的评分规则（例如 NLL）应该会自动生成校准良好的分类器。但在实践中，不平衡的数据集可能导致校准不佳的预测结果，因此必须改善模型的校准情况。常见的模型校准方法有<code>普式定标法</code>、<code>直方图法</code>、<code>调温法</code>、<code>标签平滑法</code>、<code>贝叶斯方法</code>等，详情参见<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1706.04599">Guo+17</a>，本站有其译文<a href="26147f5a.html">《现代神经网络的校准》</a>。在 <a href="75635dee.html">『贝叶斯深度学习快速上手教程』</a> 的第 9 节中也有部分阐述。</p>
+<p>$$<br>\operatorname{ECE}(f)=\sum_{b=1}^B \frac{\left|\mathcal{B}_b\right|}{B}\left|\operatorname{acc}\left(\mathcal{B}_b\right)-\operatorname{conf}\left(\mathcal{B}_b\right)\right| \tag{19}<br>$$</p>
+<p>评分规则侧重于提升模型的准确性，校准侧重于评估和改善单次预测的概率分布性质 $p(\boldsymbol{y} | \boldsymbol{x})$ ，但这些评估手段主要针对单次预测，在『在线学习』、『顺序决策』等连续预测场景中可能并不适用，或者说不足以区分模型的好坏。</p>
+<p>$$<br>\begin{align*}<br>\mathrm{MCE} &amp;=\sum_{c=1}^C w_c \mathbb{E}\left[\left(p\left(Y=c \mid f(\boldsymbol{x})<em>c\right)-f(\boldsymbol{x})<em>c\right)^2\right] \tag{20}\<br>&amp;=\sum</em>{c=1}^C w_c \sum</em>{b=1}^B \frac{\left|\mathcal{B}<em>{b, c}\right|}{B}\left(\operatorname{acc}\left(\mathcal{B}</em>{b, c}\right)-\operatorname{conf}\left(\mathcal{B}_{b, c}\right)\right)^2 \tag{21}<br>\end{align*}<br>$$</p>
+<p>其中 $\mathcal{B}_{b,c}$ 是 $c$ 类的第 $b$ 个桶，$w_c \in [0, 1]$ 表示 $c$ 类的重要性（如果所有类都同等重要，可以设置 $w_c = 1/C$）。 有实验表明，某些具有良好 $\text{ECE}$ 的方法可能具有较差的 $\text{MCE}$。</p>
+<ul>
+<li>然后，将定义好的共形评分规则应用到含 $n$ 个样本的（未参与训练的）校准数据集上，获得分数集合 $\mathcal{S}={ s_i = s(\boldsymbol{x}_i,y_i), i = 1:n}$。此时，用户需要指定一个超参数：信念阈值 $\alpha$ ，例如 $0.1$，我们针对该信念阈值计算其在 $\mathcal{S}$ 上的 $1-\alpha$ 分位数 $\hat{q}$。实践中，考虑到 $\mathcal{S}$ 是一个有限集合，我们一般会用 $\frac{\lceil(n+1)(1-\alpha)\rceil}{n}$ 代替 $1-\alpha$ 。</li>
+</ul>
+<p>上述流程中使用校准集的方式被称为分割共形预测，也就是预留单独的校准数据集。如果我们没有足够数据来支撑这种分割方法，可以使用完全共形预测 [VGS05]，此时需要使用类似于留一法的过程对模型进行 $n$ 次拟合。</p>
+<h3 id="5-3-连续预测的评估"><a href="#5-3-连续预测的评估" class="headerlink" title="5.3 连续预测的评估"></a>5.3 连续预测的评估</h3><p>其中的概率是相对于真实分布 $P^*\left(\boldsymbol{x}<em>{n+1}, y</em>{n+1}\right)$ 而言的。我们说预测集的覆盖水平为 $1-\alpha$。这适用于 $n \geq 1$ 和 $\alpha \in[0,1]$ 的任何值。唯一的假设是值 $\left(\boldsymbol{x}_i, y_i\right)$ 是可交换的，因此校准分数 $s_i$ 也可交换。</p>
+<div class="note info no-icon flat"><p>例如，考虑两个观察一系列抛硬币的学习代理。令 $t$ 时刻的结果为 $Y_t \sim \text{Ber}(\theta)$ ，其中 $\theta$ 是未知参数。代理 $1$ 相信 $\theta = 2/3$，而代理 $2$ 相信 $\theta = 0$ 或 $\theta = 1$，但不确定是哪一个，因此将这些事件的概率设为 $1/3$ 和 $2/3$。至此，尽管两个模型不同，但都对下一个预测给出了相同的结果：即对于代理 $i = 1、2$，都有 $p(Y^i_1 = 0) = 1/3$ 。但这两个模型对 $τ$ 序列的预测结果却会产生截然不同的预测结果：</p>
+<ul>
+<li>对于 **代理 $1$**：认为每次抛硬币都是随机伯努利事件，概率是由不可约的噪声或偶然不确定性导致，因此有预测：</li>
+</ul>
+<p>$$<br>p\left(Y_1^1=0, \ldots, Y_\tau^1=0\right)=\frac{1}{3^\tau} \tag{22}</p>
+<p>$$</p>
+<ul>
+<li>对于 **代理 $2$**：认为该序列要么全是正面，要么全是反面，概率是由人们对真实参数的认知不确定性导致，因此有预测：</li>
+</ul>
+<p>$$<br>p\left(Y_1^2=y_1, \ldots, Y_\tau^2=y_\tau\right)= \begin{cases}1 / 3 &amp; \text { if } y_1=\cdots=y_\tau=0 \ 2 / 3 &amp; \text { if } y_1=\cdots=y_\tau=1 \ 0 &amp; \text { otherwise }\end{cases}\tag{23}<br>$$</p>
+<p>上述两个学习代理之间的信念差异将显著影响其决策行为。例如，在赌场中，代理人 $1$ 认为反复下注正面的风险很小，但对于代理人 $2$ 来说，会认为这是一个非常不明智的选择。</p>
+</div>
+
+<p>基于上述讨论，我们可以看到：<strong>在评估预测模型时，评估未来序列的联合预测分布有时非常有意义</strong>。</p>
+<p>有学者建议，给定过去包含 $T$ 个数据点的样本 $\mathcal{D}<em>T=\left{\left(X_t, Y</em>{t}\right) : t=0,1, \ldots, T-1\right}$，以及一组长度为 $\tau$ 的序列输入 $\boldsymbol{x}=X_{T: T+\tau-1}$，可以评估其对应的 $\tau$ 个输出 $\boldsymbol{y}=Y_{T+1: T+\tau}$ 的后验联合预测分布。</p>
+<p>根据贝叶斯定理，该预测分布应当是：</p>
+<p>$$<br>P_T^B=p\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right) \tag{24}<br>$$</p>
+<p>上式在实践中通常无法计算。因此可以考虑使用一个被称为『信念状态（Confidence State）』的分布来对其做近似：</p>
+<p>$$<br>Q_T=p\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right) \tag{25}<br>$$</p>
+<p>根据信息论，测量上面两个分布之间差别的天然指标是 $\mathbb{KL}$ 散度。由于两个分布都依赖于输入 $\boldsymbol{x}$ 和数据 $\mathcal{D}<em>T=\left(X</em>{0: T-1}, Y_{1: T}\right)$，因此我们实际上是在这些依赖条件的值上求 $\mathbb{KL}$ 的均值。我们假设这些值是从真实数据生成分布中抽取的，即有：</p>
+<p>$$<br>P(X, Y, \mathcal{E})=P(X \mid \mathcal{E}) P(Y \mid X, \mathcal{E}) P(\mathcal{E}) \tag{26}<br>$$</p>
+<p>其中 $\mathcal{E}$ 是真实但未知的环境。进而，我们可以定义用于序列预测评估的测度指标：</p>
+<p>$$<br>d_{B, Q}^{K L}=\mathbb{E}_{P\left(\boldsymbol{x}, \mathcal{D}<em>T\right)}\left[D</em>{\mathbb{K L}}\left(P^B\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right) | Q\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right)\right)\right] \tag{27}<br>$$</p>
+<p>其中：</p>
+<p>$$<br>P\left(\boldsymbol{x}, \mathcal{D}<em>T, \mathcal{E}\right)=P(\mathcal{E}) \underbrace{\left[\prod</em>{t=0}^{T-1} P\left(X_t \mid \mathcal{E}\right) P\left(Y_{t+1} \mid X_t, \mathcal{E}\right)\right]}<em>{P\left(\mathcal{D}<em>T \mid \mathcal{E}\right)} \underbrace{\left[\prod</em>{t=T}^{T+\tau-1} P\left(x_t \mid \mathcal{E}\right)\right]}</em>{P(\boldsymbol{x} \mid \mathcal{E})} \tag{28}<br>$$</p>
+<p>并且 $P\left(\boldsymbol{x}, \mathcal{D}_T\right)$ 是上式在环境 $\mathcal{E}$ 上的边缘化。</p>
+<p>不幸的是，通常很难计算精确的贝叶斯后验 $P_T^B$，也就是说我们无法计算 $d_{B, Q}^{K L}$。但是有科学家已经证明：</p>
+<p>$$<br>d_{B, Q}^{K L}=d_{\mathcal{E}, Q}^{K L}-\mathbb{I}\left(\mathcal{E} ; \boldsymbol{y} \mid \mathcal{D}_T, \boldsymbol{x}\right) \tag{29}<br>$$</p>
+<p>其中第二项是相对于学习代理的常数，而第一项则由下式给出：</p>
+<p>$$<br>\begin{align*}<br>d_{\mathcal{E}, Q}^{K L} &amp;=\mathbb{E}_{P\left(\boldsymbol{x}, \mathcal{D}<em>T, \mathcal{E}\right)}\left[D</em>{\mathbb{KL}}\left(P(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{E}) | Q\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}<em>T\right)\right)\right]   \tag{30} \<br>&amp;=\mathbb{E}</em>{P(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{E}) P\left(\boldsymbol{x}, \mathcal{D}_T, \mathcal{E}\right)}\left[\log \frac{P(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{E})}{Q\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right)}\right] \tag{31}<br>\end{align*}<br>$$</p>
+<p>因此，如果根据 $d_{\mathcal{E}, Q}^{K L}$ 对学习代理进行评估排序，它将给出和 $d_{B, Q}^{K L}$ 一致的排名结果。</p>
+<p>要在实践中计算 $d_{\mathcal{E}, Q}^{K L}$，可以使用蒙特卡洛方法：</p>
+<p>我们采样获得 $J$ 个环境，其中 $\mathcal{E}^j \sim P (\mathcal{E})$，并且从每个环境 $\mathcal{E}^j$ 中采样得到一个训练集 $\mathcal{D}_T^j \sim P\left(\mathcal{D}<em>T \mid \mathcal {E}^j\right)$；然后从每个环境中采样 $N$ 个长度为 $\tau$ 的数据向量： $\left(\boldsymbol{x}<em>n^j, \boldsymbol{y}<em>n^j\right) \sim P \left(X</em>{T: T+\tau-1}, Y</em>{T+1: T+\tau} \mid \mathcal{E}^j\right)$ 。然后利用上述采样样本，计算散度 $d</em>{\mathcal{E}, Q}^{K L}$ 的估计值：</p>
+<p>$$<br>\hat{d},<em>{\mathcal{E}, Q}^{K L}=\frac{1}{J N} \sum</em>{j=1}^J \sum_{n=1}^N\left[\log P\left(\boldsymbol{y}_n^j \mid \boldsymbol{x}_n^j, \mathcal{E}^j\right)-\log Q\left(\boldsymbol{y}_n^j \mid \boldsymbol{x}_n^j, \mathcal{D}_T^j\right)\right] \tag{32}<br>$$</p>
+<p>其中</p>
+<p>$$<br>\begin{align*}<br>p_{j n} &amp;=P\left(\boldsymbol{y}<em>n^j \mid \boldsymbol{x}<em>n^j, \mathcal{E}^j\right)=\prod</em>{t=T}^{T+\tau-1} P\left(Y</em>{n, t+1}^j \mid X_{n, t}^j, \mathcal{E}^j\right) \tag{33}\<br>q_{j n} &amp;=Q\left(\boldsymbol{y}_n^j \mid \boldsymbol{x}_n^j, \mathcal{D}<em>T^j\right)=\int Q\left(\boldsymbol{y}<em>n^j \mid \boldsymbol{x}<em>n^j, \boldsymbol{\theta}\right) Q\left(\boldsymbol{\theta} \mid \mathcal{D}<em>T^j\right) d \boldsymbol{\theta} \tag{34}\<br>&amp; \approx \frac{1}{M} \sum</em>{m=1}^M \prod</em>{t=T}^{T+\tau-1} Q\left(Y</em>{n, t+1}^j \mid X</em>{n, t}^j, \boldsymbol{\theta}_m^j\right)\tag{35}<br>\end{align*}<br>$$</p>
+<p>其中 $\boldsymbol{\theta}_m^j \sim Q\left(\boldsymbol{\theta} \mid \mathcal{D}_T^j\right)$ 是代理在环境中的后验样本。</p>
+<p>以上推导假设 $P(Y \mid X)$ 已知（ 这是我们使用合成数据生成器时常见的情况，例如 [Osb 2021] 中的“神经测试平台”）。如果我们有 $J$ 个经验分布 $P^j(X, Y)$ ，则可以用交叉熵替换 $\mathbb{KL}$ 散度，其区别仅在于一个加性常数：</p>
+<p>$$<br>\begin{align*}<br>d_{\mathcal{E}, Q}^{K L} &amp;=\mathbb{E}<em>{P\left(\boldsymbol{x}, \mathcal{D}<em>T, \mathcal{E}\right)}\left[D</em>{\mathbb{K} L}\left(P(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{E}) | Q\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}<em>T\right)\right)\right] \tag{36}\<br>&amp;=\underbrace{\mathbb{E}</em>{P(\boldsymbol{x}, \boldsymbol{y}, \mathcal{E})}[\log P(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{E})]}</em>{\text {const }}-\underbrace{\mathbb{E}_{P\left(\boldsymbol{x}, \boldsymbol{y}, \mathcal{D}<em>T \mid \mathcal{E}\right) P(\mathcal{E})}\left[\log Q\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}<em>T\right)\right]}</em>{d</em>{\mathcal{E}, \mathcal{Q}}^C}\tag{37}<br>\end{align*}<br>$$</p>
+<p>其中后一项是学习代理相对于环境样本的经验负对数似然（ $\text{NLL}$ ）。因此，如果根据负对数似然  $\text{NLL}$  或交叉熵 $d_{\mathcal{E}, Q}^{CE}$ 对学习代理进行排名，我们将得到与通过  $d^{K L}<em>{\mathcal{E}, Q}$ 排名一致的结果，并进一步实现与 $d</em>{B, Q}^{K L}$ 排名相同。</p>
+<p>在实践中，我们可以将交叉熵近似如下：</p>
+<p>$$<br>\hat{d}<em>{\mathcal{E}, Q}^{C E}=-\frac{1}{J N} \sum</em>{j=1}^J \sum_{n=1}^N \log Q\left(\boldsymbol{y}_n^j \mid \boldsymbol{x}_n^j, \mathcal{D}_T^j\right) \tag{38}<br>$$</p>
+<p>其中 $\mathcal{D}_T^j \sim P^j$ 和 $\left(\boldsymbol{x}_n^j, \boldsymbol{y}_n^j\right) \sim P^j$。</p>
+<p>除了估计 $\mathbb{KL}$ 或 $\text{NLL}$ 外，还可以通过在下游任务中使用联合预测准确性来评估模型。 [Osb $+21]$ 表明良好的预测准确性（对于 $\tau&gt;1$ ）与赌博机问题的良好性能相关。 [WSG21] 表明良好的预测准确度（对于 $\tau&gt;1$ ）在转导式主动学习任务中具有良好的性能。</p>
+<div class="note info no-icon flat"><p>我们现在基于[Lu+21a]证明方程（29）。首先请注意</p>
+<p>$$<br>\begin{align*}<br>d_{\mathcal{E}, Q}^{K L} &amp;=\mathbb{E}_{P\left(\boldsymbol{x}, \mathcal{D}_T, \mathcal{E}\right) P(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{E})}\left[\log \frac{P(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{E})}{Q\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right)}\right] \tag{39} \<br>&amp;=\mathbb{E}\left[\log \frac{P\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right)}{Q\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right)}\right]+\mathbb{E}\left[\log \frac{P(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{E})}{P\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right)}\right] \tag{40}<br>\end{align*}<br>$$</p>
+<p>对于方程 (40) 中的第一项，我们有</p>
+<p>$$<br>\begin{align*}<br>\mathbb{E}\left[\log \frac{P\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right)}{Q\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right)}\right] &amp;=\sum P\left(\boldsymbol{x}, \boldsymbol{y}, \mathcal{D}_T\right) \log \frac{P\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right)}{Q\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right)} \tag{41}\<br>&amp;=\sum P\left(\boldsymbol{x}, \mathcal{D}_T\right) \sum P\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right) \log \frac{P\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right)}{Q\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}<em>T\right)} \tag{42}\<br>&amp;=\mathbb{E}</em>{P\left(\boldsymbol{x}, \mathcal{D}<em>T\right)}\left[D</em>{\mathbb{K}}\left(P\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}_T\right) | Q\left(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{D}<em>T\right)\right)\right]=d</em>{B, Q}^{K L} \tag{43}<br>\end{align*}<br>$$</p>
+<p>现在证明方程（40）中的第二项简化为互信息。我们利用以下事实</p>
+<p>$$<br>P(\boldsymbol{y} \mid \boldsymbol{x}, \mathcal{E})=P\left(\boldsymbol{y} \mid \mathcal{D}_T, \boldsymbol{x}, \mathcal{E}\right)=\frac{P\left(\mathcal{E}, \boldsymbol{y} \mid \mathcal{D}_T, \boldsymbol{x}\right)}{P\left(\mathcal{E} \mid \mathcal{D}_T, \boldsymbol{x}\right)}<br>$$</p>
+</div>
+
+
+
+
+
+<h2 id="六、共形预测"><a href="#六、共形预测" class="headerlink" title="六、共形预测"></a>六、共形预测</h2><p>在本节中，我们将简要讨论共形预测。</p>
+<h3 id="6-1-基本框架"><a href="#6-1-基本框架" class="headerlink" title="6.1 基本框架"></a>6.1 基本框架</h3><p>共形预测是在任何预测方法 $p(y|\boldsymbol{x})$ 基础上构造具有覆盖概率保证的预测区间（或预测集合）的一种方法。共形预测相较于其所使用的基础预测方法而言，预测输出的覆盖更全面且信念更精确。该方法的优点是简单而有效，并且可以被视为一种无分布情况下的不确定性量化方法，这相较于很多与模型假设和分布假设绑定的不确定量化方法而言，显然适用性更广。</p>
+<div class="note info no-icon flat"><p>🔔  提醒</p>
+<p>Murphy 的本部分内容主要基于 Anastasios N. 和 Stephen 的 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2107.07511">优秀的教程</a>，本站也曾转译过该文，见 <a href="4e18f5b8.html">《共形预测初学者教程》</a>。不过 Murphy 的语言更凝炼一些，也更容易理解。</p>
+</div>
+
+<p>在共形预测中：</p>
+<ul>
+<li>首先，我们会从一些启发式的不确定性概念开始（ 例如，分类模型中通常会有 softmax 得分、回归问题可能会计算估计误差等），定义一个共形评分规则 $s(\boldsymbol{x},y) \in \mathbb{R}$，用于衡量输出 $y$ 与输入 $\boldsymbol{x}$ 之间的 “符合” 程度。共形得分越大，代表该结果越不可能（因此也可以将其视为不合格分数）。<br>要知道这为何成立，可以对分数进行排序得到 $s_1&lt;\cdots s_n$，所以 $\hat{q}=s_i$，其中 $i=\frac{\lceil(n+1)(1-\alpha）\rceil}{n}$（为简单起见假设分值不同）。分数 $s_{n+1}$ 同样可能落在校准点 $s_1、\ldots、s_n$ 之间的任何位置，因为这些点之间是可交换的。因此</li>
+<li>最后，对于给定新输入 $\boldsymbol{x}_{n+1}$，我们为其计算预测集合：</li>
+</ul>
+<p>$$<br>\mathcal{T}(\boldsymbol{x}<em>{n+1}) = {y : s(\boldsymbol{x}</em>{n+1},y) \geq 1- \hat{q}} \tag{49}<br>$$</p>
+<div class="note info no-icon flat"><p>🔔  备注</p>
+<p>无论具体过程如何，此类参数化都会在地球系统模型中引入自由参数，必须凭经验为其找到合适的值。先进地球系统模型的大小通常会限制系统校准（拟合）方法的使用（例如基于贝叶斯推断的一些方法），因此模型通常是手动调整的。校准质量以及模型整体精度，最多只能根据过去 170 年相对稀疏的观测数据进行评估，同时也无法评估模型预测未来气候条件的能力 <sup class="refplus-num"><a href="#ref-8">[undefined]</a></sup>。尽管有必要，但参数化可能会导致偏差或结构模型错误。离散空间网格的示例表明，地球系统模型的空间分辨率越高，潜在误差越小。同样，预计模型对地球系统的表示将变得更加准确，能明确求解的过程也越多。</p>
+</div>
+
+<p>值得注意的是，可以得到以下泛化的结果：</p>
+<p>$$<br>1-\alpha \leq P^*\left(y^{n+1} \in \mathcal{T}\left(\boldsymbol{x}_{n+1}\right)\right) \leq 1-\alpha+\frac{1}{n+1} \tag{50}<br>$$</p>
+<p>由于大部分空间变化与地球相对于太阳的旋转特性有关，我们在这里将自己限制在旋转不变的协方差模型上，这样可以减少计算负担。但是，我们将允许区域偏离预期中的旋转对称。该模型通过假设气候可以通过非平稳期望和协方差参数 $μ(\mathbf{u})$、$\kappa(\mathbf{u})$ 和 $τ(\mathbf{u})$ 对 $\mathbf{u} \in  \mathbb{S}^2$ 进行参数化，并假设每年的天气如下由 (12) 定义的模型，给定气候。使用 <code>图 4</code> 中的三角剖分和分段线性基函数，<code>附录 A.3</code> 给出的高斯马尔可夫随机场表示将被使用，其中 $\mathbf{x}_t$ 表示时间 $t$ 的离散场。为了避免由于月度值之间的时间依赖性而导致的复杂化，我们将测量值汇总为年均值，并且仅对每个位置的年平均温度进行建模。完整的分析需要考虑当地测点的相关影响。在这里，我们只包括海拔的影响。将完全集成的测点均质化程序纳入模型将远远超出本文的变程，因此我们使用 “调整后的” GHCN 数据集，其中包括一些异常值质量控制和相关测点校准。</p>
+<p>大多数组合似然推断的研究都集中在点估计和复合最大似然估计的渐近方差估计上。这直接来自估计方程的理论，至少在样本量增加时向量的维数固定的情况下是这样。在普通似然理论中，基于对数似然比统计的推论通常是首选，但其组合似然类比的渐近分布很难处理。有前途的替代方案包括第 2.3 节中提到的 Satterthwaite (1946) 类型修正和 Pace、Salvan 和 Sartori (2011) 开发的调整。正如 Pauli、Racugno 和 Ventura (2011) 中所讨论的那样，组合似然的校准也是近似贝叶斯推断的关键要素。</p>
+<p>$$<br>P^*\left(s_{n+1} \leq s_k\right)=\frac{k}{n+1} \tag{51}<br>$$</p>
+<p>对于任何 $k \in{1, \ldots, n+1}$。事件 $\left{y_{n+1} \in \mathcal{T}\left(\boldsymbol{x}<em>{n+1}\right)\right}$ 等价于 $\left{ s</em>{n+1} \leq \hat{q}\right}$。因此</p>
+<p>$$<br>P^<em>\left(y_{n+1} \in \mathcal{T}\left(\boldsymbol{x}_{n+1}\right)\right)=P^</em>\left(s_{n+1} \leq \hat{q}\right)=\frac{\lceil(n+1)(1-\alpha)\rceil}{n+1} \geq 1-\alpha \tag{52}<br>$$</p>
+<p>有关上界的证明见 [Lei+18]。</p>
+<p>尽管该结果看起来像是 “免费的午餐”，但需要注意的是，我们总是可以通过将预测集定义为所有可能的标签来实现所需的覆盖水平。在这种情况下，预测集将独立于输入，但它会在 $1-\alpha$ 的时间里覆盖真实标签。</p>
+<p>为了排除一些退化的情况，我们寻求在满足覆盖要求同时，预测集尽可能小（尽管对于更难的例子我们允许预测集更大）。实现这一目标有赖于定义合适的共形评分规则。下面我们给出一些示例，说明如何为不同类型的问题计算共形分数 $s(\boldsymbol{x}, y)$。</p>
+<h3 id="6-2-分类问题的共形预测"><a href="#6-2-分类问题的共形预测" class="headerlink" title="6.2 分类问题的共形预测"></a>6.2 分类问题的共形预测</h3><p>将共形预测应用于多类分类的最简单方法是使用 $s(\boldsymbol{x}, y) = 1 - f (\boldsymbol{x})_y$ ，从分配给标签的 softmax 得分中得出共形得分，因此较大值被认为比较小值更不可能。我们按照上述方法计算阈值 $\hat{q}$ ，然后将预测集定义为 $\mathcal{T} (\boldsymbol{x}) = {y : f (\boldsymbol{x})_y \geq 1 - \hat{q} }$，它与公式 (49) 匹配。也就是说，我们采用高于指定阈值的所有类标签的集合，如图 4 所示。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221007122915-0979.webp" alt="分类问题的共形预测"></p>
+<figcaption>图 4：Imagenet 上的预测集示例。我们展示了狐鼠类的三个越来越难的样本，以及由共形预测生成的预测集。来自 [AB21] 的图 1。</figcaption>
+
+<p>尽管上述方法生成的预测集具有最小的平均大小（证明见 [SLW19] ），但对于简单样本来说，该集合大小往往过大，而对于困难样本来说又会太小。</p>
+<p>根据[RSC20]，现在提出了一种改进的方法，称为『自适应预测集（Adaptive Prediction Sets）』，它解决了预测集大小不合理的问题。其想法很简单：</p>
+<p>对所有 softmax 分数 $f (\boldsymbol{x})<em>c, c = 1 : C$ 进行排序，得到排列 $\pi</em>{1:C}$，然后我们将 $s(\boldsymbol{x}, y)$ 定义为 softmax 分数的累积和，直到到达标签 $y:s(\boldsymbol{x}, y) = \sum^k_{c=1} f(\boldsymbol{x})_{\pi_j}$ ，其中 $k = \pi_y$。我们现在像以前一样计算 $\hat{q}$ ，并将预测集 $\mathcal{T} (\boldsymbol{x})$ 定义为所有标签的集合，按概率递减的顺序排序，直到覆盖概率质量的 $\hat{q}$ 。参见图 5a 中的说明。这使用了模型输出的所有 softmax 分数，而不仅仅是最高分数，使其性能得到提高。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221007121539-e8ed.webp" alt="图 5 分类问题的共形预测"></p>
+<figcaption>图 5：(a) 自适应预测集示意图。来自 [AB21] 的图 5。(b) 共形分位数回归的展示。来自 [AB21] 的图 6。(c) pinball 损失函数的展示。</figcaption>
+
+<h3 id="6-3-回归问题的共形预测"><a href="#6-3-回归问题的共形预测" class="headerlink" title="6.3 回归问题的共形预测"></a>6.3 回归问题的共形预测</h3><p>在本节中，我们考虑共形回归问题。由于现在 $y \in \mathbb{R}$，计算方程（49）中的预测集是代价较高的，所以我们将转而求取一个由下限和上限指定的预测区间。</p>
+<h3 id="6-3-1-分位数回归"><a href="#6-3-1-分位数回归" class="headerlink" title="6.3.1 分位数回归"></a>6.3.1 分位数回归</h3><p>在本节中，我们使用『分位数回归』来计算下限和上限。</p>
+<p>我们首先拟合一个形式为 $t_\gamma(\boldsymbol{x})$ 的函数，它用于预测概率密度 $P(Y \mid \boldsymbol{x})$ 的 $\gamma$ 分位数。例如，如果设置 $\gamma=0.5$，我们将得到中位数。如果使用 $\gamma=0.05$ 和 $\gamma=0.95$，我们就可以使用 $\left[t_{0.05}(\boldsymbol{x}), t_{0.95}( \boldsymbol{x})\right]$得到一个近似 $90 %$ 的预测区间，如图 5b 中的灰线所示。</p>
+<p>拟合分位数回归模型，我们只需将平方损失替换为『分位数损失』即可，也被称为 pillball 损失，定义为：</p>
+<p>$$<br>\ell_\gamma(y, \hat{t})=(y-\hat{t}) \gamma \mathbb{I}(y&gt;\hat{t})+(\hat{t}-y)(1-\gamma) \mathbb{I}(y&lt;\hat{t})<br>$$</p>
+<p>其中 $y$ 是真实输出，$\hat{t}$ 是在分位数 $\gamma$ 处的预测值。参见图 5c 中的展示。</p>
+<p>回归分位数只是近似 $90 %$ 区间，源于模型可能与真实分布不匹配。但我们可以使用共形预测来解决这个问题。特别是，让我们将共形得分定义为：</p>
+<p>$$<br>s(\boldsymbol{x}, y)=\max \left(\hat{t}<em>{\alpha / 2}(\boldsymbol{x})-y, y-\hat{t}</em>{\alpha / 2}(\boldsymbol{x})\right)<br>$$</p>
+<p>换句话说，$s(\boldsymbol{x}, y)$ 是对 $y$ 值超出预测区间距离的正度量，或者 $y$ 在预测区间内距离的负度量。然后像以前一样计算 $\hat{q}$，并将共形预测区间定义为：</p>
+<p>$$<br>\mathcal{T}(\boldsymbol{x})=\left[\hat{t}<em>{\alpha / 2}(\boldsymbol{x})-\hat{q}, \hat{t}</em>{\alpha / 2}(\boldsymbol{x})+\hat{q}\right]<br>$$</p>
+<p>如果 $\hat{q}$ 为正（基础方法过于自信），这会使分位数回归的区间更宽，如果 $\hat{q}$ 为负（基础方法不够自信），则分位数回归的区间更窄。请参见图 5b 中的展示。这种方法被称为『共形分位数回归』或简写为 CQR [RPC19]。</p>
+<h3 id="6-3-2-预测方差"><a href="#6-3-2-预测方差" class="headerlink" title="6.3.2 预测方差"></a>6.3.2 预测方差</h3><p>定义不确定性分数 $u(\boldsymbol{x})$ 的方法有很多，其中比较典型的是『预测标准差』，我们可以从标准差推导出预测区间：</p>
+<p>$$<br>\mathcal{T}(\boldsymbol{x})=[f(\boldsymbol{x})-u(\boldsymbol{x}) \hat{q}, f(\boldsymbol{x})+u(\boldsymbol{x}) \hat{q}]<br>$$</p>
+<p>这里的 $\hat{q}$ 是从以下共形分数的分位数推导出来的：</p>
+<p>$$<br>s(\boldsymbol{x}, y)=\frac{|y-f(\boldsymbol{x})|}{u(\boldsymbol{x})}<br>$$</p>
+<p>这种方法产生的区间往往比 CQR 计算的区间更宽，因为它在预测值 $f(\boldsymbol{x})$ 之上和之下扩展了相等的量。此外，不确定性度量 $u(\boldsymbol{x})$ 可能无法与 $\alpha$ 保持正确的比例缩放。尽管如此，该事后处理方法比较简单，可以应用于很多回归方法，而无需重新训练它们。</p>
+<h2 id="七、-小样本问题"><a href="#七、-小样本问题" class="headerlink" title="七、 小样本问题"></a>七、 小样本问题</h2><p>许多 ML 模型，尤其是神经网络，通常具有比我们标记的训练示例更多的参数。例如，一个 50 层的 ResNet CNN 有 2300 万个参数。变压器模型可以更大。当然这些参数是高度相关的，所以它们不是独立的“自由度”。然而，如此大的模型训练起来很慢，更重要的是，它们很容易过拟合。当您没有大型标记训练集时，这尤其是一个问题。在本章中，我们讨论了一些解决这个问题的方法，超出了我们在第 2 节讨论的通用正则化技术，如提前停止、权重衰减和 dropout 等。</p>
+<h3 id="7-1-数据增强"><a href="#7-1-数据增强" class="headerlink" title="7.1 数据增强"></a>7.1 数据增强</h3><p>假设我们只有一个小的标记数据集。在某些情况下，我们可能能够创建输入向量的人工修改版本，这些版本捕获我们期望在测试时看到的各种变化，同时保持原始标签不变，这称为数据增强。</p>
+<h3 id="7-2-迁移学习"><a href="#7-2-迁移学习" class="headerlink" title="7.2 迁移学习"></a>7.2 迁移学习</h3><p>许多数据贫乏的任务与其他数据丰富的任务有一些高级别的结构相似性。例如，考虑对濒危鸟类进行细粒度视觉分类的任务。鉴于濒临灭绝的鸟类根据定义是罕见的，这些鸟类的大量不同标记图像不太可能存在。然而，鸟类在物种间具有许多结构相似性——例如，大多数鸟类都有翅膀、羽毛、喙、爪等。因此，我们可能期望首先在非濒危鸟类物种的大型数据集上训练模型，然后继续训练它在濒危物种的小数据集上比单独在小数据集上训练可以产生更好的性能。这称为迁移学习，因为我们通过一组共享的参数将信息从一个数据集传输到另一个数据集。更准确地说，我们首先执行预训练阶段，在此阶段我们在大型源数据集 Dp 上训练具有参数 θ 的模型；这可能被标记或未标记。然后，我们对感兴趣的小标记目标数据集 Dq 执行第二个微调阶段。 我们将在下面更详细地讨论这两个阶段，但要了解更多信息, 参见例如 [Tan+18; Zhu+19] 最近的综述。</p>
+<h3 id="7-3-半监督学习"><a href="#7-3-半监督学习" class="headerlink" title="7.3 半监督学习"></a>7.3 半监督学习</h3><p>机器学习最近的许多成功应用都在监督学习环境中，其中有大量标记示例数据集可用于训练模型。然而，在许多实际应用中，获取这些标记数据的成本很高。考虑自动语音识别的案例：现代数据集包含数千小时的录音 [Pan+15;阿德+20]。注释录音中所说的单词的过程比实时慢很多倍，可能会导致一个漫长（且成本高昂）的注释过程。更糟糕的是，在某些应用程序中，数据必须由专家（例如医疗应用程序中的医生）标记，这会进一步增加成本。</p>
+<p>半监督学习可以通过利用未标记数据来减轻对标记数据的需求。半监督学习的总体目标是让模型从未标记的数据中学习数据分布的高级结构，并且只依赖标记的数据来学习给定任务的细粒度细节。在标准监督学习中，我们假设我们可以从数据和标签 x, y ∼ p(x, y) 的联合分布中获取样本，而半监督学习假设我们还可以从 x 的边缘分布中获取样本，即 x ∼ p(x)。此外，通常假设我们有更多这些未标记的样本，因为它们通常更便宜。继续自动语音识别的例子，简单地记录人们的谈话（这将产生未标记的数据）通常比转录记录的语音便宜得多。半监督学习非常适合收集大量未标记数据并且从业者希望避免对所有数据进行标记的场景。</p>
+<h3 id="7-4-主动学习"><a href="#7-4-主动学习" class="headerlink" title="7.4 主动学习"></a>7.4 主动学习</h3><p>在主动学习中，目标是通过查询尽可能少的 (x, y) 点来识别真正的预测映射 y = f (x)。有三个主要变体。在查询合成中，算法可以选择任何输入 x，并可以要求其相应的输出 y = f (x)。在基于池的主动学习中，有大量但固定的未标记数据点集，算法会为这些点中的一个或多个请求标签。最后，在基于流的主动学习中，传入的数据不断到达，算法必须选择是否要为当前输入请求标签。</p>
+<p>存在各种密切相关的问题。在贝叶斯优化（第 8.8.3 节）中，目标是在尽可能少的查询中估计全局最优 x∗ = argminx f (x) 的位置；通常我们将代理（响应面）模型拟合到中间（x，y）查询，以决定接下来要问哪个问题。在实验设计中，目标是使用精心挑选的数据样本 D = {x1, . . . , xN }，即我们希望使用尽可能少的数据来估计 p(θ|D)。 （这可以被认为是一种无监督或广义的主动学习形式。）</p>
+<p>有关更多详细信息，请参阅例如 [Set12] 进行评论。</p>
+<h3 id="7-5-元学习"><a href="#7-5-元学习" class="headerlink" title="7.5 元学习"></a>7.5 元学习</h3><p>元学习领域，也称为学习学习[TP97]，涉及学习多个相关功能（通常称为“任务”）。例如，假设我们有一组 J 相关数据集，{Dj : j = 1 : J}，其中 Dj = {(xjn, yj n) : n = 1 : Nj}, xjn ∼ p(x) 和 yj n = f j(xjn)。 （例如，p(x) 可以是图像的分布，f 1 可以是将图像映射到狗品种的函数，f 2 可以是将图像映射到汽车类型的函数，等等。）我们可以应用这个内部算法来生成一个标记集 Dmeta = {(Dj, f j) : j = 1 : J }，我们可以用它来学习一个外部或“元”算法或函数 ^ M ，它将数据集映射到一个预测函数， ^ fj = ^ M (Dj) (c.f., [Min99])。相比之下，传统的监督学习学习一个将单个示例映射到标签的函数 ^ f ^ yn = ^ f (xn)。</p>
+<p>元学习还有许多其他方法（例如，请参阅 [Van18] 进行调查）。在秒。 19.5.1，我们讨论了一种流行的方法，称为 MAML。元学习也有许多应用，例如小样本学习（见第 19.6 节）。</p>
+<h3 id="7-6-弱监督学习"><a href="#7-6-弱监督学习" class="headerlink" title="7.6 弱监督学习"></a>7.6 弱监督学习</h3><p>弱监督学习一词是指我们没有与训练集中的每个特征向量相关联的确切标签的场景。</p>
+<p>一种情况是当我们为每种情况分配多个标签而不是单个标签时。实际上，用“软”版本人为地替换精确标签通常很有用，其中我们将 delta 函数替换为一个分布，例如，将其质量的 90% 放在观察到的标签上，并将剩余的质量均匀分布在其他选择。这称为标签平滑，是一种有用的正则化形式（参见例如 [MKH19]）。</p>
+<p>另一种情况是，当我们有一组实例时，xn = {xn,1, . . . , xn,B}，但我们只有整个包的标签 yn，而不是包的成员 ynb。我们经常假设如果包中的任何成员为正，则整个包被标记为正，因此 yn = ∨bB=1ynb，但我们不知道哪个成员“导致”了正结果。但是，如果所有成员都是负数，则整个包都是负数。这被称为多实例学习 [DLLP97]。 （有关 COVID-19 风险评分学习背景下的最新示例，请参阅 [MKS21]。）根据我们对每个袋子中标签之间的相关性所做的假设，可以使用各种算法来解决 MIL 问题，以及我们期望看到的积极成员的比例（参见例如 [KF05]）。</p>
+<p>另一种场景称为远程监督 [Min+09]，通常用于训练信息提取系统。这个想法是我们有一些事实，例如“Married(B,M)”，我们知道这是真的（因为它存储在数据库中）。我们使用它来标记每个句子（在我们未标记的训练语料库中），其中实体 B 和 M 被称为“已婚”关系的正例。例如，“B 和 M 邀请 100 人参加他们的婚礼”这句话将被标记为正面。但是这种启发式可能包括误报，例如“B和M出去吃饭”也将被标记为肯定。因此，生成的标签将是嘈杂的。我们在 Sec 中讨论了一些处理标签噪声的方法。 10.4.</p>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/6c49034a.html">http://xishansnow.github.io/posts/6c49034a.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B/">机器学习模型</a><a class="post-meta__tags" href="/tags/%E6%A6%82%E8%A7%88/">概览</a><a class="post-meta__tags" href="/tags/%E9%A2%84%E6%B5%8B%E6%A8%A1%E5%9E%8B/">预测模型</a></div><div class="post-share"><div class="social-share" data-image="/img/book_18.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/cfb3eb53.html" title="狄利克雷过程混合模型"><img class="cover" src="/img/007.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">狄利克雷过程混合模型</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 在很多模型假设中，存在各种形式的隐变量和隐结构，其目的是使高维数据能够得到足够地解释，以发现或挖掘隐藏在可观测数据深层的知识或信息。我们可以将此类模型暂时称为 发现模型 或者 广义隐变量模型。本文是此类模型的一个总揽，大部分内容摘自 Murphy 的《机器学习：高级主题》的第 27 章。 在本部分中，我们专注于能够为 问题提出发现模型假设我们能够观测到的数据 $\boldsymbol{x}$ 是由某些底层的潜在因素 $\boldsymbol{z}$ （ 通常是低维的 ）导致，并且通常 $\boldsymbol{z}$ 代表了世界的某种 “真实” 状态。至关重要的是，这些潜在因素通常被认为对模型的最终用户有意义 （ 也就是说，评估此类模型需要领域专业知识，具有可解释性 ）。 我们的目的是通过对可观测数据 $\boldsymbol{x}$ 的处理，得到潜在因素 $\boldsymbol{z}$ 的底层作用机理， 进而能够给可观测数据的生成作出一个合理的解释。 这种反向建模方法广泛用于科学和工程中，其中 $\boldsymbol{z}$...</div></div></div></a><a class="pagination-related" href="/posts/18bc35f9.html" title="生成模型概览"><img class="cover" src="/img/007.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">生成模型概览</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗生成模型（Generative Model）是概率统计和机器学习中的一类重要模型，泛指一系列用于随机生成可观测数据的模型。生成模型应用十分广泛，可以用于对不同类型的数据建模，如图像、文本、声音等。如果假设上述某类型的数据对象都服从一个未知分布，则生成模型通常希望通过一些观测样本来学习（估计）该分布，并能够利用该分布随机地生成未观测过的新样本。生成模型有很多种，本文是此类模型的一个简单概览，其中大部分内容来自 Murphy 的《Machine Learning: Advanced Topics》第 20 章。 〖参考〗 J. M. Tomczak, Deep Generative Modeling. ch.1 &#x2F; Murphy, 《Machine Learning: Advanced Topics》ch. 20 &#x2F; Deep Generative Modelling: A Comparative Review of VAEs, GANs, Normalizing Flows, Energy-Based and Autoregressive...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/a9e01619.html" title="🔥  预测任务索引帖"><img class="cover" src="/img/coffe_07.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="info-item-2">🔥  预测任务索引帖</div></div><div class="info-2"><div class="info-item-1">   待完善           #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {         let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');         let refel = document.querySelector(refid);         let refnum = refel.dataset.num;         let ref_content = refel.innerText.replace(`[${refnum}]`,'');         tippy(ref, {             content:...</div></div></div></a><a class="pagination-related" href="/posts/2d66d86e.html" title="🔥  广义线性模型索引帖"><img class="cover" src="/img/coffe_08.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="info-item-2">🔥  广义线性模型索引帖</div></div><div class="info-2"><div class="info-item-1">   待补充           #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {         let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');         let refel = document.querySelector(refid);         let refnum = refel.dataset.num;         let ref_content = refel.innerText.replace(`[${refnum}]`,'');         tippy(ref, {             content:...</div></div></div></a><a class="pagination-related" href="/posts/47ecf4d0.html" title="非独立同分布索引帖"><img class="cover" src="/img/coffe_06.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="info-item-2">非独立同分布索引帖</div></div><div class="info-2"><div class="info-item-1">             #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {         let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');         let refel = document.querySelector(refid);         let refnum = refel.dataset.num;         let ref_content = refel.innerText.replace(`[${refnum}]`,'');         tippy(ref, {             content: ref_content,    ...</div></div></div></a><a class="pagination-related" href="/posts/2a33c1c2.html" title="生成任务索引帖"><img class="cover" src="/img/book_20.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="info-item-2">生成任务索引帖</div></div><div class="info-2"><div class="info-item-1">   待完善           #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {         let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');         let refel = document.querySelector(refid);         let refnum = refel.dataset.num;         let ref_content = refel.innerText.replace(`[${refnum}]`,'');         tippy(ref, {             content:...</div></div></div></a><a class="pagination-related" href="/posts/18bc35f9.html" title="生成模型概览"><img class="cover" src="/img/007.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-28</div><div class="info-item-2">生成模型概览</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗生成模型（Generative Model）是概率统计和机器学习中的一类重要模型，泛指一系列用于随机生成可观测数据的模型。生成模型应用十分广泛，可以用于对不同类型的数据建模，如图像、文本、声音等。如果假设上述某类型的数据对象都服从一个未知分布，则生成模型通常希望通过一些观测样本来学习（估计）该分布，并能够利用该分布随机地生成未观测过的新样本。生成模型有很多种，本文是此类模型的一个简单概览，其中大部分内容来自 Murphy 的《Machine Learning: Advanced Topics》第 20 章。 〖参考〗 J. M. Tomczak, Deep Generative Modeling. ch.1 &#x2F; Murphy, 《Machine Learning: Advanced Topics》ch. 20 &#x2F; Deep Generative Modelling: A Comparative Review of VAEs, GANs, Normalizing Flows, Energy-Based and Autoregressive...</div></div></div></a><a class="pagination-related" href="/posts/d7679ce0.html" title="发现任务索引帖"><img class="cover" src="/img/book_01.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="info-item-2">发现任务索引帖</div></div><div class="info-2"><div class="info-item-1">   待完善           #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {         let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');         let refel = document.querySelector(refid);         let refnum = refel.dataset.num;         let ref_content = refel.innerText.replace(`[${refnum}]`,'');         tippy(ref, {             content:...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%97%AE%E9%A2%98%E6%8F%90%E5%87%BA"><span class="toc-text">一、问题提出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%B8%8E%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-text">二、与生成模型的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%B8%BB%E8%A6%81%E6%A8%A1%E5%9E%8B%E7%B1%BB%E5%9E%8B"><span class="toc-text">三、主要模型类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD"><span class="toc-text">四、模型推断</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E9%A2%91%E7%8E%87%E6%B4%BE%E6%96%B9%E6%B3%95"><span class="toc-text">4.1 频率派方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95"><span class="toc-text">4.2 贝叶斯方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E6%A8%A1%E5%9E%8B%E6%A0%A1%E5%87%86"><span class="toc-text">5.2 模型校准</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E8%AF%84%E5%88%86%E8%A7%84%E5%88%99"><span class="toc-text">5.1 评分规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E8%BF%9E%E7%BB%AD%E9%A2%84%E6%B5%8B%E7%9A%84%E8%AF%84%E4%BC%B0"><span class="toc-text">5.3 连续预测的评估</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%85%B1%E5%BD%A2%E9%A2%84%E6%B5%8B"><span class="toc-text">六、共形预测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6"><span class="toc-text">6.1 基本框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98%E7%9A%84%E5%85%B1%E5%BD%A2%E9%A2%84%E6%B5%8B"><span class="toc-text">6.2 分类问题的共形预测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98%E7%9A%84%E5%85%B1%E5%BD%A2%E9%A2%84%E6%B5%8B"><span class="toc-text">6.3 回归问题的共形预测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-1-%E5%88%86%E4%BD%8D%E6%95%B0%E5%9B%9E%E5%BD%92"><span class="toc-text">6.3.1 分位数回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-2-%E9%A2%84%E6%B5%8B%E6%96%B9%E5%B7%AE"><span class="toc-text">6.3.2 预测方差</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81-%E5%B0%8F%E6%A0%B7%E6%9C%AC%E9%97%AE%E9%A2%98"><span class="toc-text">七、 小样本问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA"><span class="toc-text">7.1 数据增强</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0"><span class="toc-text">7.2 迁移学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-%E5%8D%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">7.3 半监督学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-4-%E4%B8%BB%E5%8A%A8%E5%AD%A6%E4%B9%A0"><span class="toc-text">7.4 主动学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-%E5%85%83%E5%AD%A6%E4%B9%A0"><span class="toc-text">7.5 元学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-6-%E5%BC%B1%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="toc-text">7.6 弱监督学习</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div><script src="/js/markmap.js"></script></body></html>

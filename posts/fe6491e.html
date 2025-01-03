@@ -1,0 +1,791 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Vecchia 近似似然法的通用框架 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Vecchia 近似似然法的通用框架"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/fe6491e.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Vecchia 近似似然法的通用框架',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/coffe_12.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">Vecchia 近似似然法的通用框架</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Vecchia 近似似然法的通用框架</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-30T02:50:00.000Z" title="发表于 2023-01-30 10:50:00">2023-01-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.204Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/">GeoAI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/">大数据专题</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/">点参考数据</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">17.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>69分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>【摘要】 高斯过程通常用作函数、时间序列和空间场的模型，但它们对大型数据集在计算上不可行。着眼于高斯过程加上加性噪声项的数据建模典型设置，本文提出了 Vecchia (1988) 方法的泛化作为高斯过程近似的框架。我们展示的通用 Vecchia 方法包含了现有许多流行的高斯过程近似特例，并且允许在统一框架内比较不同方法。通过有向无环图模型，我们确定了推断所需矩阵的稀疏性，从而对计算特性有了新的认识。基于这些结果，我们提出了一种新的稀疏通用 Vecchia 近似，它确保了大型空间数据集的计算可行性，但可以产生比原始 Vecchia 方法近似精度更好的结果。文中提供了几个理论结果并进行了数值比较。</p>
+<p>【原文】 Katzfuss, M. and Guinness, J. (2021) ‘A general framework for Vecchia approximations of Gaussian processes’, Statistical Science, 36(1). Available at: <a target="_blank" rel="noopener" href="https://doi.org/10.1214/19-STS755">https://doi.org/10.1214/19-STS755</a>.</p>
+<h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h2><p><strong>（1）高斯过程的可扩展性问题</strong></p>
+<p>高斯过程 (GP) 已成为函数、时间序列和空间场的模型或先验分布的流行选择（例如，Banerjee 等，2004 年 <sup class="refplus-num"><a href="#ref-Banerjee2004">[1]</a></sup>；Rasmussen 和 Williams，2006 年 <sup class="refplus-num"><a href="#ref-Rasmussen2006">[36]</a></sup>；Cressie 和 Wikle，2011 年 <sup class="refplus-num"><a href="#ref-Cressie2011">[5]</a></sup>）。高斯过程的基本特征是有限数量观测的联合分布为多元高斯分布。然而，使用多元高斯分布进行计算会导致观测数量二次方的内存占用和三次方的时间复杂度，因此当观测数量达到数万或更大时，高斯过程推断难以实施，这限制了高斯过程在大型数据集中的应用。
+
+**（2）已有解决途径**
+
+为了实现计算可行性，统计和机器学习文献中提出了许多方法。这些包括：
+- **似然条件分解法**：[Vecchia 的似然条件分解, 1988](8d107aee.html) <sup class="refplus-num"><a href="#ref-Vecchia1988">[51]</a></sup>；[Stein 等的受限似然条件分解法, 2004](8d107a33.html) <sup class="refplus-num"><a href="#ref-Stein2004">[47]</a></sup>；
+- **组合似然法**：[Varin 等的组合似然法，2011](977049a8.html) <sup class="refplus-num"><a href="#ref-Varin2011">[50]</a></sup>；Eidsvik 等的块组合似然法，2014 <sup class="refplus-num"><a href="#ref-Eidsvik2014">[10]</a></sup>。
+- **协方差矩阵稀疏化方法**：[Furrer 等的锥化方法，2006 年](4a9a38ba.html) <sup class="refplus-num"><a href="#ref-Furrer2006">[14]</a></sup>；Kaufman 等，2008 年 <sup class="refplus-num"><a href="#ref-Kaufman2008">[30]</a></sup>；Du 等，2009 年 <sup class="refplus-num"><a href="#ref-Du2009">[9]</a></sup>；
+- **精度矩阵稀疏化方法**：Rue 和 Held，2005 年 <sup class="refplus-num"><a href="#ref-Rue2005">[38]</a></sup>；[Lindgren 等的高斯马尔可夫随机场方法, 2011](5d008fa3.html) <sup class="refplus-num"><a href="#ref-Lindgren2011">[32]</a></sup>；Nychka 等的格子克里金法，2015 年 <sup class="refplus-num"><a href="#ref-Nychka2015">[34]</a></sup>；
+- **低秩矩阵方法**：例如，Higdon 的过程卷积法，1998 年 <sup class="refplus-num"><a href="#ref-Higdon1998">[22]</a></sup>；Wikle 和 Cressie，1999 年的降维法 <sup class="refplus-num"><a href="#ref-Wikle1999">[52]</a></sup>；Quinonero-Candela 和 Rasmussen，2005 年 <sup class="refplus-num"><a href="#ref-Quinonero-Candela2005">[35]</a></sup>；[Banerjee 等的预测过程法，2008 年](1d2ae98a.html) <sup class="refplus-num"><a href="#ref-Banerjee2008">[2]</a></sup>；[Cressie 和 Johannesson 的固定秩法，2008 年](75ca3fa4.html) <sup class="refplus-num"><a href="#ref-Cressie2008">[4]</a></sup>；Katzfuss 和 Cressie，2011 年 <sup class="refplus-num"><a href="#ref-Katzfuss2011">[27]</a></sup>。
+
+此外，本文 `第 3 节` 中还描述了一些其他方法。
+
+[Heaton 等 (2019)](8b25b04.html)  一文回顾和比较上述的多种方法 <sup class="refplus-num"><a href="#ref-Heaton2019">[21]</a></sup>，并对 **元克里金法**（Guhaniyogi 和 Banerjee，2018 年 <sup class="refplus-num"><a href="#ref-Guhaniyogi2018">[19]</a></sup>）、 **局部高斯过程近似**（Gramacy 和 Apley，2015 年 <sup class="refplus-num"><a href="#ref-Gramacy2015">[17]</a></sup>）、 **gapfill** （Gerber 等，2018 年 <sup class="refplus-num"><a href="#ref-Gerber2018">[16]</a></sup>）、 **最近邻高斯过程**（Datta 等，2016a <sup class="refplus-num"><a href="#ref-Datta2016a">[6]</a></sup> ）等以算法为主体的方法进行了分析，内容更为全面。
+
+**（3）本文方法**
+
+本文扩展和研究了 Vecchia 的方法 (Vecchia, 1988) <sup class="refplus-num"><a href="#ref-Vecchia1988">[51]</a></sup>，这是最早提出的高斯过程近似方法之一，其产生的精度矩阵具有稀疏的 Cholesky 分解。
+
+Vecchia 的原文基于已观测数据的某种排序，采用 *单变量条件分布的乘积* 来近似代替精确的高维联合分布，其中每个单变量条件分布仅以排序序列中之前的一小部分观测作为条件。这种近似方法会产生 *较低的计算和内存负担*，与精确模型之间的 KL 散度分析结果已经证明了其 *准确性*（Guinness，2018 <sup class="refplus-num"><a href="#ref-Guinness2018">[20]</a></sup>）。此外，该方法中的每一个单变量条件分布都可以独立计算，因此 *适用于并行计算*。
+
+与原始 Vecchia 近似不同，我们在本文中为高斯过程空间数据的建模增加了噪声分量（或块金分量）。事实上，Datta 等 (2016a)  <sup class="refplus-num"><a href="#ref-Datta2016a">[6]</a></sup> 曾提议将 Vecchia 近似方法应用于隐变量高斯过程而不是直接应用于含噪声的可观测变量，不过 Finley 等 (2017) <sup class="refplus-num"><a href="#ref-Finley2017">[12]</a></sup> 则指出，该方法 “需要过长的运行时间”。相比 Datta 的方法相比，本文提出了 Vecchia 近似的一个通用版本，它既允许对隐变量条件化，也允许对观测数据条件化。
+
+本文表明，通用 Vecchia 框架可以涵盖目前流行的几种高斯过程近似方法，并允许在统一框架内比较不同方法。我们给出了在有噪声情况下高效计算似然的公式。此外，描述了如何用有向无环图 (DAG) 模型表示通用 Vecchia 框架内的近似值，并且利用两者之间的连接阐释了推断算法中的矩阵稀疏性现象。最终产生了关于计算性质的一些新见解，如解释了 Finley 等 (2017) 指出的隐变量高斯过程 Vecchia 方法的计算挑战 <sup class="refplus-num"><a href="#ref-Finley2017">[12]</a></sup>。 基于上述结果，我们还提出了通用 Vecchia 框架的一个特殊实例，并将其称为 **稀疏通用 Vecchia 方法 (Sparse General Vecchia, SGV)**。该方法在其矩阵表示中提供了有保证的稀疏度水平，但与 Vecchia 的原始方法相比，能够使近似的精度得到显著提高。除了理论结果外，我们还进行了数值研究，探索了通用 Vecchia 框架内的不同选项设置，并比较了新提出的 SGV 方法与现有近似方法。
+
+这篇文章的结构安排如下：
+- 在`第 2 节`中，我们回顾了 Vecchia 近似，介绍了我们的通用 Vecchia 框架，以及与 DAG 之间的连接。
+- 在`第 3 节`中，我们将几个现有高斯过程近似方法描述为通用 Vecchia 框架的特例。
+- 在`第 4 节`中，我们考虑了框架内的推断，包括引入必要的矩阵并研究其稀疏性，并推导了计算复杂度。
+- 在`第 5 节`中，我们描述了新提出的 SGV 近似方法并将其与两种现有方法进行对比。
+- 在`第 6 节`中，包含了有关排序和条件的其他见解。
+- 在`第 7 节`中，提供了数值分析结果及其比较。
+- 在`第 8 节`中，总结并提供了使用 Vecchia 近似方法的指导性意见。
+- `附录 A–F` 包含更多详细信息和证明。
+
+本文提出的方法和算法在 R 包 GPvecchia 中实现，网址为 https://github.com/katzfuss-group/GPvecchia 。
+
+## 2 通用 Vecchia 方法
+
+### 2.1 模型设置 
+
+设 $\{y(\mathbf{s}) : \mathbf{s} \in \mathcal{D} \}$ 或 $y(·)$ 是连续域 $\mathcal{D}$ 上的空间过程（ $\mathcal{D} \subset  \mathbb{R}^d$， $d \in  \mathbb{N}^+$ ）。我们假设 $y(·) \sim  \mathcal{GP}(0, K)$ 是一个均值为零的高斯过程（ Gaussian Process, GP ），其协方差函数为 $K :\mathcal{D} \times \mathcal{D} \rightarrow  \mathbb{R}$ 。
+
+*协方差函数（ $K$ ）*：除了假设 $K$ 是参数为 $\boldsymbol{\theta}$ 的正定函数之外，我们对 $K$ 没有任何其他约束。通常，$K$ 为一个连续的协方差函数，不包含 *块金组分*，不过我们将在下一段落中考虑它。
+
+*均值函数*：在实际应用中，$y(·)$ 的均值不会为零，但估计和减去均值通常不是太严重的计算问题，因此为简单起见，我们忽略了均值。
+
+*位置向量及其索引*：设 $\mathcal{S}$ 是位置向量的向量，即 $\mathcal{S} = (\mathcal{S}_1, \ldots, \mathcal{S}_\ell)$，其中每一个 $\mathcal{S}_i$ 都是 $\mathcal{D}$ 中 $r_i$ 个位置构成的子位置向量（向量和索引的符号表示方法见 `附录 A` ）。
+
+*隐高斯过程向量*：令 $\mathbf{y}_i = y(\mathcal{S}_i)$ 为位置子向量 $\mathcal{S}_i$ 对应的高斯过程子向量，并令所有子向量一起形成总的高斯过程向量 $\mathbf{y} := (\mathbf{y}_1, \ldots, \mathbf{y}_\ell)$。
+
+*观测向量*：我们观测到的是 $\mathbf{z}_i = \mathbf{y}_i + \boldsymbol{\varepsilon}_i$，其中噪声项（或块金项） $\boldsymbol{\varepsilon}_i$ 独立，且服从 $\mathcal{N}_{r_i}(\mathbf{0}, \tau^2 \mathbf{I})$。这种含噪声观测的假设，在空间统计、高斯过程回归和函数型数据分析中经常被使用，并已被建议用于计算机实验建模（Gramacy 和 Lee，2012 年 <sup class="refplus-num"><a href="#ref-Gramacy2012">[18]</a></sup>）。在本文工作中，我们假设已经观测到的向量 $\mathbf{z}_o$ 是 $\mathbf{z} = (\mathbf{z}_1, \ldots , \mathbf{z}_\ell)$ 的一个子集，其中索引向量 $o \subset  (1, \ldots , \ell)$。
+
+目前，让我们暂时假设协方差参数 $\boldsymbol{\theta}$ 和噪声参数 $\tau^2$ 是已知的固定值；关于其推断问题将在 `第 4.2 节` 中讨论。
+
+</p><div class="note info no-icon flat"><p>注： <code>附录 A</code> 中给出了向量化符号的表示方法。</p>
+</div>
+
+### 2.2 Vecchia 方法的回顾
+
+定义 $h_o(i) := o \cap (1, \ldots , i − 1)$ 为 $i$ 的已观测 “历史” 【注：这里的 $h_o(i)$ 有三层含义：一是针对可观测变量；二是在排序序列中处于 $i$ 之前；三是其值为索引向量】，显然有 $h_o(1) = \emptyset$。基于此定义，我们将已观测向量 $\mathbf{z}_o$ 的联合密度记为：
+
+$$
+f(\mathbf{z}_o) = \prod_{i \in o} f(\mathbf{z}_i \mid \mathbf{z}_{h_o(i)}) \tag{1}
+$$
+
+计算或使用 `式(1)` 中的密度需要 $\mathcal{O}(n^2_z)$ 内存和 $\mathcal{O}(n^3_z)$ 计算成本，因此对于大的 $n_z$ 不可行（ $n_z$ 是 $\mathbf{z}_o$ 中单次观测的数量，或理解为实数向量 $\mathbf{z}_o$ 的长度）。
+
+在最早的 Vecchia 方法文献中 (Vecchia, 1988) <sup class="refplus-num"><a href="#ref-Vecchia1988">[51]</a></sup>， 采用 $h_o(i)$ 的子向量 $g(i)$ 来替换 $h_o(i)$，其中 $g(i)$ 由距离第 $i$ 个观测向量最近的那些观测的索引组成。我们将 $g(i)$ 称为第 $i$ 个 **条件索引向量**，将 $\mathbf{z}_{g(i)}$ 称为 $\mathbf{z}_i$ 的 **条件向量**。这形成了 `式(1)` 中精确联合密度的 Vecchia 近似：
+
+$$
+\widehat{f}(\mathbf{z}_o) = \prod_{i \in o} f (\mathbf{z}_i|\mathbf{z}_{g(i)}) \tag{2}
+$$
+
+Vecchia (1988) <sup class="refplus-num"><a href="#ref-Vecchia1988">[51]</a></sup> 当时仅考虑了 $\mathbf{z}_i$ 为单一变量的情况（即 $\mathbf{z}_i = z_i$），而 [Stein 等 (2004)](8d107a33.html) 将 $\mathbf{z}_i$ 推广至向量，并表明最大化 `式(2)` 对应于求解一组无偏估计方程，据此提出了一种 `残差最大似然法 (REML)` 来估计协方差参数 $\boldsymbol{\theta}$ <sup class="refplus-num"><a href="#ref-Stein2004">[47]</a></sup>。Cressie 和 Davidson (1998) <sup class="refplus-num"><a href="#ref-Cressie1998">[3]</a></sup> 也曾表明 `式(2)` 隐含了一个具有稀疏精度矩阵的马尔可夫随机场模型 。
+
+### 2.3 通用 Vecchia 框架
+
+上一节的标准 Vecchia 方法仅应用于观测向量 $\mathbf{z}_o$。在本文中，我们新提出了一种通用 Vecchia 方法，它将 Vecchia 近似应用于由观测向量 $\mathbf{z}_o$ 和隐变量向量 $\mathbf{y}$ 组成的一个组合向量 $\mathbf{x} = \mathbf{y} \cup \mathbf{z}_o$：
+
+$$
+\widehat{f} (\mathbf{x}) = \prod^{b}_{i=1} f (\mathbf{x}_i|\mathbf{x}_{g(i)}) \tag{3}
+$$
+
+其中 $b$ 是 $\mathbf{x}$ 中子向量的数量，$g(i) \subset  h(i) = (1, \ldots , i − 1)$。$\mathbf{y}$ 和 $\mathbf{z}_o$ 的元素在 $\mathbf{x}$ 中交织在一起。
+
+具体来说，采用 `附录 A` 中的符号表示法，则当 $i &lt; j$ 时，$\mathbf{x}$ 中的排序被定义为 $\#(\mathbf{y}_i, \mathbf{x}) &lt; \#(\mathbf{y}_j, \mathbf{x})$，并且 $\#(\mathbf{z}_i, \mathbf{x}) = \#(\mathbf{y}_i, \mathbf{x}) + 1$。换句话说，$\mathbf{y}_i$ 向量保持它们在 $\mathbf{x}$ 中的相对排序，并且当 $i \in o$ 时 $\mathbf{z}_i$ 直接插入到 $\mathbf{y}_i$ 后面。
+
+由此，`式（3）` 中的通用 Vecchia 近似可以被分解为：
+
+$$
+\widehat{f} (\mathbf{x}) = \left(\prod^{\ell}_{i=1} f (\mathbf{y}_i | \mathbf{y}_{q_y(i)}, \mathbf{z}_{q_z(i)} ) \right) \left( \prod_{i \in o} f (\mathbf{z}_i | \mathbf{y}_i) \right) \tag{4}
+$$
+
+**对于 $\mathbf{y}_i$ 的条件向量**：如果索引 $j \in  q_y(i)$ 则表示 $\mathbf{y}_i$ 以 $\mathbf{y}_j$ 为条件，如果索引 $j \in  q_z(i)$ 则表示 $\mathbf{y}_i$ 以 $\mathbf{z}_j$ 为条件。以 $\mathbf{y}_j$ 为条件而不是以 $\mathbf{z}_j$ 为条件可能更准确，但计算成本更高（我们将在`第 5 节`探讨这种权衡）。出于类似原因，将 $\mathbf{y}_j$ 和 $\mathbf{z}_j$ 同时作为 $\mathbf{y}_i$ 的条件没有任何好处，所以总是取 $q_y(i) \cap q_z(i) = \emptyset$。我们称 $q(i) = (q_y(i), q_z(i))$ 为条件索引向量。注意，当 $j \notin o$ 时，强制假设 $j \in  q_z(i)$ 等价于从 $q(i)$ 中移除索引 $j$。
+
+**对于 $\mathbf{z}_i$ 的条件向量**：我们总是选择 $\mathbf{y}_i$ 作为 $\mathbf{z}_i$ 的条件向量，因为 $\mathbf{z}_i$ 被定义为条件独立于给定 $\mathbf{y}_i$ 时的其他所有向量。
+
+通常，我们感兴趣的是计算 $f(\mathbf{z}_o)$ 的近似值，这涉及对 `式(3)` 和 `式(4)` 中的近似联合密度关于隐变量 $\mathbf{y}$ 作积分：
+
+$$
+\widehat{f}(\mathbf{z}_o) = \int \widehat{f}(\mathbf{x}) d \mathbf{y}  \tag{5}
+$$
+
+如果条件向量等于历史向量（即对于所有 $i$，有 $g(i) = h(i)$ ），则 `式(5)` 将恢复 `式(1)` 的精确分布 $f(\mathbf{z}_o)$。从这个意义上讲，随着条件向量变大，通用 Vecchia 近似会收敛到真值。但较大的条件向量会抵消了计算优势，因此 Vecchia 方法总是对小的条件向量更感兴趣。
+
+总体而言，$f(\mathbf{x})$ 的通用 Vecchia 近似 $\widehat{f}(\mathbf{x})$ 以及隐含的 $f(\mathbf{z}_o)$ 的近似 $\widehat{f}(\mathbf{z}_o)$ 都由以下因素决定：
+
+**C1： 位置向量 $\mathcal{S}$**。其中位置的数量为 $n_y$，$\mathcal{S}$ 通常是已观测位置的超集，本文的默认选择是将 $\mathcal{S}$ 设置为等于已观测位置。
+
+**C2： 位置向量 $\mathcal{S}$ 的划分方案**。将 $\mathcal{S}$ 划分为 $\ell$ 个位置子向量（ $\ell \leq n_y$）。 
+
+**C3： 位置向量的排序方式**。即 $\mathcal{S} = (\mathcal{S}_1, \ldots , S_\ell)$。 
+
+**C4： 条件索引向量 $q(i)$**。对于每个 $i$，$\mathbf{y}_i$ 的条件索引向量 $q(i) \subset  (1, \ldots , i − 1)$。 
+
+**C5： 条件索引向量 $q(i)$ 的隐/显划分方案**。 对于每个 $i$，将 $q(i)$ 划分为 $q_y(i)$ 和 $q_z(i)$；以便对于每个 $j \in  q(i)$，$\mathbf{y}_i$ 能够确定应该以 $\mathbf{y}_j$ 还是 $\mathbf{z}_j$ 为条件。
+
+本文的主要焦点是 **C5** 的条件索引向量划分方案，它将在`第 5 节`中进行了讨论。在`第 6 节`中，我们提供了对 **C2-C4** 的一些见解，在`第 7 节`中，我们从数值上探讨了 **C3-C5**。
+
+### 2.4 与有向无环图的联系
+
+Vecchia 方法和有向无环图（ DAG）之间存在很强的联系（Datta 等，2016a <sup class="refplus-num"><a href="#ref-Datta2016a">[6]</a></sup>）。`附录 B` 中提供了 DAG 的简要回顾。
+
+`式(3)` 中的 Vecchia 近似公式中隐含的条件独立结构，可以用 DAG 很好地表示。如果将 $\mathbf{x}_1, \ldots , \mathbf{x}_b$ 视为 DAG 中的顶点，当且仅当 $j \in  g(i)$ 时，存在 $\mathbf{x}_j$ 到 $\mathbf{x}_i$ 之间的路径，并被表示为 $\mathbf{x}_j \rightarrow  \mathbf{x}_i$，则很容易看出，$\mathbf{x}_{g(i)}$ 是由 $\mathbf{x}_i$ 的所有父节点的集合形成的向量。
+
+请注意，Vecchia 近似只允许以排序序列中之前的变量为条件，所以当 $i &gt; j$ 时，总有 $\mathbf{x}_i \not \to  \mathbf{x}_j$，即不存在 $\mathbf{x}_i$ 到 $\mathbf{x}_j$ 的路径。DAG 的部分实例如 `图 1` 所示。在 `第 4.4 节`中，我们将利用 Vecchia 方法和 DAG 之间的这种联系来研究推断所需的矩阵稀疏性问题。
+
+## 3 现有方法作为特例
+
+许多现有的高斯过程近似方法都符合 `第 2.3 节` 提出的通用框架，可以被视为该框架的特例，并对应于 **C1-C5** 中的某些特定选择。我们在本节举一些例子，`图 1` 对部分例子进行了说明。
+
+### 3.1 标准 Vecchia 和扩展
+
+Vecchia 的原始近似方法 (Vecchia, 1988) 采用单件向量 $\mathbf{z}_i = z_i$ ( 即 $r_i = 1$ )，并按空间坐标对位置进行排序。所有单件向量都仅条件依赖于已观测数据，而不是隐高斯过程变量。也就是说，在通用框架中，$q_z(i) = q(i)$，$q_y(i) = \emptyset$，$o = (1, \ldots , \ell)$。使用 `式（5）`，这产生如下近似：
+
+$$
+\widehat{f}(z) = \int  \prod^{\ell}_{i=1} f (\mathbf{z}_i | \mathbf{y}_i) f (\mathbf{y}_i | \mathbf{z}_{q(i)}) d \mathbf{y} = \prod^{\ell}_{i=1} \int f(\mathbf{z}_i | \mathbf{y}_i, \mathbf{z}_{q(i)}) f(\mathbf{y}_i | \mathbf{z}_{q(i)}) d \mathbf{y}_i = \prod^{\ell}_{i=1} f(\mathbf{z}_i | \mathbf{z}_{q(i)})
+$$
+
+其中 $f (\mathbf{z}_i | \mathbf{y}_i) = f (\mathbf{z}_i | \mathbf{y}_i, \mathbf{z}_{q(i)})$，因为 $\mathbf{z}_i$ 在给定 $\mathbf{y}_i$ 的条件下，独立于 $\mathbf{z}_{q(i)}$。 
+
+Stein 等 (2004) <sup class="refplus-num"><a href="#ref-Stein2004">[47]</a></sup> 建议在条件向量中包含一些近距离和远距离的观测，并对观测数据进行分组（即 $r_i &gt; 1$ ）以获得计算优势。 
+
+Guinness (2018) <sup class="refplus-num"><a href="#ref-Guinness2018">[20]</a></sup> 考虑了自适应的分组方案，发现坐标排序以外的排序方案可以提高近似精度。 
+
+Vecchia 和 Stein 等关注的是似然的近似高效计算问题（主要用于参数推断任务），而 Guinness (2018) 则通过对条件向量的模拟（采样）实现了空间预测任务。
+
+Sun 和 Stein (2016) <sup class="refplus-num"><a href="#ref-Sun2016">[48]</a></sup> 以及 Huang 和 Sun (2018) <sup class="refplus-num"><a href="#ref-Huang2018">[23]</a></sup> 提出了进一步的扩展。 
+
+Zhang (2012) 提供了一些渐近性方面的讨论 <sup class="refplus-num"><a href="#ref-Zhang2012">[54]</a></sup>。
+
+### 3.2 最近邻高斯过程（NNGP）
+
+最近邻高斯过程 NNGP (Datta, 2016a,b,c) <sup class="refplus-num"><a href="#ref-Datta2016a">[6]</a></sup><sup class="refplus-num"><a href="#ref-Datta2016b">[7]</a></sup><sup class="refplus-num"><a href="#ref-Datta2016c">[8]</a></sup> 考虑了显式数据模型（例如此处假设的加性高斯噪声），并且仅隐高斯过程变量为条件，即 $q_y(i) = q(i)$ 、$q_z(i) =\emptyset$。
+
+通过设置 $r_i = 1$, $\mathcal{S} = (\mathcal{S}_1, \ldots , S_{\ell_y + \ell_z} )$, $o = (\ell_y + 1, \ldots , \ell_y + \ell_z)$，该方法定义了一个高斯过程, 并对所有 $i$ 强制 $q(i) \subset  (1, \ldots , \ell_y)$ 。这意味着已观测位置处的变量只能以 “结（knot）集合” $(\mathcal{S}_1, \ldots , \mathcal{S}_{\ell_y})$ 中的变量为条件。
+
+### 3.3 独立块
+
+当每个 $i$ 的条件索引向量为空（ 即 $q(i) = \emptyset$ ）时，各块之间相互独立，有：
+
+$$
+\widehat{f}(z) = \int  \prod^{\ell}_{i=1} f (\mathbf{z}_i | \mathbf{y}_i) f(\mathbf{y}_i) d \mathbf{y} = \prod^{\ell}_{i=1}  \int f(\mathbf{z}_i | \mathbf{y}_i) f(\mathbf{y}_i) d \mathbf{y} =  \prod^{\ell}_{i=1} f(\mathbf{z}_i)
+$$
+
+该方法视 $\ell$ 个子向量 $\mathbf{z}_1, \ldots , \mathbf{z}_\ell$ 之间相互独立，并假设 $o = (1, \ldots , \ell)$。Stein (2014) <sup class="refplus-num"><a href="#ref-Stein2014">[46]</a></sup> 表明，当每个子向量（或块）对应于空间中的一个连续子区域时，这种近似作为似然的替代物可能非常有竞争力。该方法计算成本非常低，因为乘积中的每个项都会产生很小的计算成本并且可以并行化。
+
+由于存在特殊的独立性假设，此方法的一个缺点在于难以表征预测中的联合不确定性。
+
+### 3.4 m 阶隐自回归过程
+
+$m$ 阶隐自回归过程也被称为状态空间模型，在时间序列设置中很常见。它们仅以某种排序中最新的 $m$ 组隐变量为条件，即 $q(i) = q_y(i) = (i − m, \ldots , i − 1)$。此类模型的推断通常使用卡尔曼滤波器和平滑器进行（Kalman，1960 年<sup class="refplus-num"><a href="#ref-Kalman1960">[25]</a></sup>；Rauch 等，1965 年 <sup class="refplus-num"><a href="#ref-Rauch1965">[37]</a></sup>）。
+
+### 3.5 改进的预测过程（MPP）
+
+改进的预测过程（MPP）将 $\mathcal{S}_1$ 定义为 “结（knot）位置” 构成的向量 (Finley 等, 2009) <sup class="refplus-num"><a href="#ref-Finley2009">[13]</a></sup> ，典型情况下 $1 \notin  o$，并且对于所有 $i &gt; 1$，有 $r_i = 1$ 且 $q(i) = q_y(i) = 1$。这意味着所有变量都以相同的 $\mathbf{y}_1$ 做为条件向量，并假定为条件独立。
+
+### 3.6 全尺度近似（FSA）
+
+与 MPP 一样，全尺度近似（Snelson 和 Ghahramani，2007 年 <sup class="refplus-num"><a href="#ref-Snelson2007">[44]</a></sup>；Sang 等，2011 年 <sup class="refplus-num"><a href="#ref-Sang2011">[42]</a></sup>）指定一个公共条件向量 $\mathbf{y}_1$，对所有的 $i &gt; 1$，令 $q(i) = q_y(i) = 1$。与 MPP 方法的不同之处在于，FSA 允许 $r_i &gt; 1$ ，并按照 `第 3.3 节` 中的独立块方式，依据空间区域将所有剩余变量分组。
+
+对于通用 Vecchia 而言，当 $i &gt; 1$ 时，如果 $q(i) = q_y(i) = 1$，则有 $\widehat{f}(\mathbf{y}) = f(\mathbf{y}_1) \prod^{\ell}_{i=2} f(\mathbf{y}_i | \mathbf{y}_1)$；因此，对于 $i &gt; 1$，有 $\widehat{f}(\mathbf{y}_1) = f(\mathbf{y}_1)$, $\widehat{f}(\mathbf{y}_i) = \int f(\mathbf{y}_1) f(\mathbf{y}_i | \mathbf{y}_1) d \mathbf{y}_1 = f (\mathbf{y}_i)$ （即边缘分布是精确的），并且 $\widehat{f}(\mathbf{y}_i , \mathbf{y}_j) = \int  f(\mathbf{y}_1) f(\mathbf{y}_i | \mathbf{y}_1) f(\mathbf{y}_j | \mathbf{y}_1) d \mathbf{y}_1$。
+
+因此，对于 FSA 来说，$\widehat{var}(\mathbf{y}_i) = \text{var}(\mathbf{y}_i)$，并且对于 $i \neq j &gt; 1$，我们有
+
+$$
+\begin{align*}
+\widehat{\text{cov}}(\mathbf{y}_i, \mathbf{y}_j) &amp;= \int  \int  \int  \mathbf{y}_i \mathbf{y}^{\prime}_j f(\mathbf{y}_1) f(\mathbf{y}_i | \mathbf{y}_1) f(\mathbf{y}_j | \mathbf{y}_1) d \mathbf{y}_i d \mathbf{y}_j d \mathbf{y}_1\\
+&amp;= \int  (\int  \mathbf{y}_i f(\mathbf{y}_i | \mathbf{y}_1) d \mathbf{y}_i) (\int  \mathbf{y}^{\prime}_j f(\mathbf{y}_j | \mathbf{y}_1)) d \mathbf{y}_j) f(\mathbf{y}_1) d \mathbf{y}_1\\
+&amp;=  \text{cov} ( E(\mathbf{y}_i | \mathbf{y}_1), E(\mathbf{y}_j | \mathbf{y}_1))
+\end{align*}
+$$
+
+其中 $E(\mathbf{y}_i|\mathbf{y}_1)$ 是当 “结（knot）” 为 $\mathcal{S}_1$ 时，在 $\mathcal{S}_i$ 处估值的的预测过程。
+
+最近提出的平滑 FSA (Zhang 等, 2018) <sup class="refplus-num"><a href="#ref-Zhang2018">[53]</a></sup>，也可以看作是通用 Vecchia 的特例，其条件向量中除了 “结向量” $\mathbf{y}_1$ 外，增加了一些附近的块。
+
+### 3.7 多分辨率近似（MRA）
+
+多分辨率近似 (Katzfuss, 2017) 是 FSA 的迭代扩展，其中域 $\mathcal{D}$ 被迭代地划分为 $J$ 个子区域，我们在每个生成的子区域中选择 $r_i$ 个变量，因此有 $\mathcal{S}_i \subset \mathcal{D}_i$。
+
+例如，如果 $J = 4$，令 $\mathcal{D}_1 =\mathcal{D}$，则 $\{\mathcal{D}_2, \ldots ,\mathcal{D}_5\}$ 为 $\mathcal{D}_1$ 的一个划分, $\{\mathcal{D}_6, \ldots ,\mathcal{D}_9\}$ 为 $\mathcal{D}_2$ 的一个划分, $\{\mathcal{D}_{10}, \ldots ,\mathcal{D}_{13}\}$ 为 $\mathcal{D}_3$ 的一个划分，依此类推。
+
+在通用框架中，该方法实质上令 $q(i) = \{j :\mathcal{D}_i \subset \mathcal{D}_j\}$ 且 $q_y(i) = q(i)$，因此，条件向量由区域中相关位置处的隐变量层次地构成。
+
+上述 FSA 和 MPP 都可被视为多分辨率近似的特例。这三种方法都允许在未观测的位置处存在隐变量，例如 $\mathcal{S}$ 不同于已观测位置的集合，在通用框架中，这可以通过令 $o \subset  (1, \ldots , \ell)$ 来处理。
+
+### 3.8 相关方法：组合似然（CL）
+
+组合似然是一种流行的快速高斯过程推断方法。Varin 等 (2011) <sup class="refplus-num"><a href="#ref-Varin2011">[50]</a></sup> 将组合似然方法分类为边缘组合似然法或条件组合似然法。
+
+边缘组合似然的一种常见方法是成对块，它将似然近似为 $\widehat{f}(z) = \prod f(\mathbf{z}_i, \mathbf{z}_j)$，其中乘积通常在邻接块构成的所有对 $(i, j)$ 上进行（例如，Eidsvik 等, 2014 <sup class="refplus-num"><a href="#ref-Eidsvik2014">[10]</a></sup>)。
+
+条件组合似然采用类似 `式(2)` 的近似形式，只是考虑了更一般的条件索引向量 $g(i) \subset  (1, \ldots , i − 1, i + 1, \ldots , \ell)$。
+
+与 Vecchia 方法相比，基于组合似然的推断通常无法预期结果会随着成对的数量增加（或条件变量的数量增加）而变得更为准确，并且通常无法保证 $\widehat{f}(\mathbf{z})$ 是一个有效的联合密度，这导致基于组合似然的贝叶斯推断十分困难（例如，Shaby，2014 <sup class="refplus-num"><a href="#ref-Shaby2014">[43]</a></sup>）。虽然 `第 3.1 节` 回顾的标准 Vecchia 方法及其扩展可以被视为条件组合似然的特例，但 `式(3)` 中的通用 Vecchia 框架并不是组合似然方法，因为它不是单独在 $\mathbf{z}$ 上定义的，而是在 $\mathbf{x}$ 上定义的，因此通常不能写成 `式（2）`的形式。
+
+可以在 `附录 D` 中找到 Vecchia 和组合似然方法进行参数估计的比较模拟研究。
+
+## 4 推断与计算
+
+在本节中，我们将描述通用 Vecchia 近似的矩阵表示，以便加速推断任务。此外，我们将考察所涉及矩阵的稀疏性，并推导出相应的计算复杂度。
+
+### 4.1 通用 Vecchia 的矩阵表示
+
+对于 $\mathbf{x}$ 的任意两个子向量 $\mathbf{x}_i$ 和 $\mathbf{x}_j$，我们记 $C(\mathbf{x}_i, \mathbf{x}_j) = E(\mathbf{x}_i \mathbf{x}^{\prime}_j)$ 为 $\mathbf{x}_i$ 和 $\mathbf{x}_j$ 之间的互协方差。对于 $i \neq j$，有 $C(\mathbf{y}_i, \mathbf{y}_j) = C(\mathbf{z}_i, \mathbf{y}_j) = K(\mathcal{S}_i, \mathcal{S}_j)$； $C(\mathbf{z}_i, \mathbf{z}_j) = K(\mathcal{S}_i, \mathcal{S}_j)$； $C(\mathbf{z}_i, \mathbf{z}_i) = K(\mathcal{S}_i, \mathcal{S}_i) + \tau^2 \mathbf{I}_{r_i}$。
+
+基于高斯假设，我们可以将 `式(3)` 中的通用 Vecchia 近似公式改写为：
+
+$$
+\widehat{f}(\mathbf{x}) = \prod^{b}_{i=1} f(\mathbf{x}_i | \mathbf{x}_{g(i)}) = \prod^{b}_{i=1} \mathcal{N}(\mathbf{x}_i ; \mathbf{B}_i \mathbf{x}_{g(i)}, \mathbf{D}_i) \tag{6}
+$$
+
+其中 $\mathbf{B}_i = C(\mathbf{x}_i, \mathbf{x}_{g(i)}) C(\mathbf{x}_{g(i)}, \mathbf{x}_{g(i)})^{−1}$，且 $\mathbf{D}_i = C(\mathbf{x}_i, \mathbf{x}_i) − \mathbf{B}_i C(\mathbf{x}_{g(i)}, \mathbf{x}_i)$。我们将 $\mathbf{B}_i$ 视为一个块矩阵，所以符号 $(\mathbf{B}_i)_{\#(j,g(i))}$ 表示：当 $j \in  g(i)$ 时向量 $\mathbf{x}_j$ 对应的块 $\mathbf{B}_i$。
+
+对于任何对称的正定矩阵 $\mathbf{A}$，令 $\text{chol}(\mathbf{A})$ 表示 $\mathbf{A}$ 的下三角 Cholesky 分解，并令 $\mathbf{P}$ 为一个置换矩阵，$\mathbf{PA}$ 以逆序记录矩阵 $\mathbf{A}$ 的行。我们进而称 $\text{rchol}(\mathbf{A}) := \mathbf{P}(\text{chol}( \mathbf{PAP})) \mathbf{P}$ 为 $\mathbf{A}$ 的 `逆序 Cholesky 分解`（从表达式来看，$\text{rchol}$ 表示对行-列均逆序后的 $\mathbf{A}$ 的下三角 Cholesky 因子进行再一次的行-列逆序 ）。在此基础上，下述命题是多元高斯分布的自然结果：
+
+<div class="note info no-icon flat"><p>**【命题 1 】 <code>式 (6)</code> 中的密度也是一个多元高斯，即 $\widehat{f}(\mathbf{x}) = \mathcal{N}_n(\mathbf{x} ；\mathbf{0},\widehat{\mathbf{C}})$**。</p>
+</div>
+
+其中协方差矩阵 $\widehat{\mathbf{C}} = (\mathbf{UU^{\prime}})^{−1}$，$\mathbf{U}$ 是一个 $b \times b$ 分块的稀疏上三角矩阵，其第 $(j, i)$ 个块为：
+
+$$
+\mathbf{U}_{ji} = 
+\begin{cases}
+  &amp; \mathbf{D}^{-1/2}_{i},  &amp;i=j  \\
+  &amp; - (\mathbf{B}_i)^{\prime}_{\#(j,g(i))} \mathbf{D}^{-1/2}_{i}, &amp;j \in g(i) \\
+  &amp; \mathbf{0}, &amp;\text{otherwise}
+\end{cases} \tag{7}
+$$
+
+并且 $\mathbf{D}_i^{-1}=\mathbf{D}_i^{-1 / 2} (\mathbf{D}_i^{-1 / 2})^{\prime}$。可以看出，$\mathbf{U}$ 是 $\widehat{\mathbf{C}}^{-1}$ 的 `逆序 Cholesky 分解`，即 $\mathbf{U}=\operatorname{rchol}(\widehat{\mathbf{C}}^{-1})$ 。
+
+所有证明都可以在 `附录 F` 中找到。
+
+### 4.2 近似似然的计算
+
+如 `式(5)` 所示，对通用 Vecchia 近似 $\widehat{f}(\mathbf{x})$ 关于隐变量 $\mathbf{y}$ 做积分得到的 $\widehat{f}(\mathbf{z}_o)$，表示已观测向量 $\mathbf{z}_o$ 的分布，我们称之为 `通用 Vecchia 似然`。如果 $n_y$ 较大，则关于 $n_y$ 维向量 $\mathbf{y}$ 做数值积分具有非常大的挑战性（参见 Finley 等，2017 <sup class="refplus-num"><a href="#ref-Finley2017">[12]</a></sup>）。因此，我们在这里给出了密度积分的解析形式：
+
+<div class="note info no-icon flat"><p>【命题 2 】 通用 Vecchia 似然可以计算为：</p>
+<p>$$<br>−2 \log \widehat{f}(\mathbf{z}<em>o) =\sum</em>{i=1}^{b} \log | \mathbf{D}<em>i| + 2 \sum</em>{i=1}^{\ell } \log | \mathbf{V}_{ii}| + \tilde{\mathbf{z}}^{\prime} \tilde{\mathbf{z}} − (\mathbf{V^{−1}U_Y \tilde{z}})^{\prime}( \mathbf{V^{−1}U_Y\tilde{z}}) + n_z \log(2π) \tag{8}<br>$$</p>
+</div>
+
+式中 
+
+$$
+\begin{align*}
+&amp;\mathbf{V} := \text{rchol}(\mathbf{W})  \text{ 且 } \mathbf{W} := \mathbf{U}_Y \mathbf{U}^{\prime}_Y\\
+&amp;\tilde{\mathbf{z}} := \mathbf{U}^{\prime}_Z \mathbf{z}_o\\
+&amp;\mathbf{U}_Y := \mathbf{U}_{\#(\mathbf{y,x}) \bullet}\\ 
+&amp;\mathbf{U}_Z := \mathbf{U}_{\#(\mathbf{z}_o,\mathbf{x}) \bullet }
+\end{align*}
+$$
+
+即 $\mathbf{U}_Y$ 和 $\mathbf{U}_Z$ 分别由矩阵 $\mathbf{U}$ 中对应于 $\mathbf{y}$ 和 $\mathbf{z}_o$ 的行组成。
+
+
+请注意，类似于【命题 1 】 中 $\mathbf{U} = \text{rchol}(\widehat{\mathbf{C}}^{−1})$，【命题 2 】将 $\mathbf{V}$ 计算为 $\mathbf{W}$ 的逆序 Cholesky 分解，即 $\mathbf{V} = \text{rchol}(\mathbf{W})$。这允许我们在下面的【命题 3 】中推导出 $\mathbf{V}$ 的稀疏结构，确保通用 Vecchia 方法的某些配置具有低计算复杂度。 这也意味着，我们可以针对参数 $\boldsymbol{\theta}$ 和 $\tau^2$ 的任意给定值，快速计算似然 $\widehat{f}(\mathbf{z}_o)$（ 即在 $\mathbf{y}$ 上积分 ），从而使得大规模数据集也能进行基于似然的参数推断。
+
+### 4.3 参数的推断
+
+我们的框架允许对参数进行频率派推断和贝叶斯推断：
+- **频率派方法**：可以采用最大似然法，通过寻找使 $\widehat{f}(\mathbf{z}_o)$ 最大化的参数值来进行频率推断。`附录 D` 详细介绍了一个模拟，就空间变程参数的推断问题，比较了 SGV 方法、精确似然方法和两种组合似然法。结果表明 SGV 给出了与精确最大似然估计方法非常相似的结果。
+- **贝叶斯方法**：`附录 E` 展示了如何使用 SGV 似然进行贝叶斯推断。该示例同时考虑了数值积分后验和 Metropolis-Hastings 算法，并最终得到 $y(·)$ 在未观测位置的后验预测分布。
+
+无论采用何种推断范式，我们的模型都可以被视为高斯过程模型的近似，或者本身就可以被视为一个有效的概率模型（见 `式（6）`）。从后者来看，我们的所有推断都是精确的。当条件向量的数量趋近于 $m = n−1$ 时，Vecchia 近似本身引起的误差将接近消失；当 $m$ 取较小值时，我们对其误差进行了数值检验，详情参见 `第 7 节`。
+
+### 4.4 预测
+
+我们可以计算无误差高斯过程向量的后验分布（由 $\mathbf{y \mid z} \sim  \mathcal{N}(\boldsymbol{μ}, \mathbf{W}^{−1})$ 给出），其中 $\boldsymbol{μ} := − \mathbf{W}^{-1} \mathbf{U}_y \tilde{\mathbf{z}}$。不过，这需要考虑一些复杂的问题，例如 “如何保证对该分布摘要数据的快速计算？”、 “在已观测位置和未观测位置的预测中，哪种排序和条件策略可以很好地工作？”。
+
+我们建议读者参考 Katzfuss 等 (2018) <sup class="refplus-num"><a href="#ref-Katzfuss2018">[29]</a></sup> 中将通用 Vecchia 框架扩展到高斯过程预测的详细信息。
+
+### 4.5 稀疏性分析
+
+在下面的命题中，我们使用 Vecchia 方法和 DAG 之间的联系（参见 `第 2.4 节` 和 `附录 B`）来分析 `式（7）` 中矩阵 $\mathbf{U}$、$\mathbf{W}$ 和 $\mathbf{V}$ 的稀疏性，这些都是推断过程必须使用的计算。
+
+<div class="note info no-icon flat"><p>【命题 3 】</p>
+<p><strong>$\mathbf{U}$ 的稀疏性</strong>： 如果 $i \neq j$ 且不存在 $\mathbf{x}_j$ 到 $\mathbf{x}_i$ 的路径（ 即 $\mathbf{x}_j \not \to \mathbf{x}<em>i$ ），则 $\mathbf{U}</em>{ji} = 0$。 </p>
+<p><strong>$\mathbf{W}$ 的稀疏性</strong>：如果 $i \neq j$ 且 $\mathbf{x}_j$ 到 $\mathbf{x}_i$ 之间双向都不存在路径（ 即 $\mathbf{y}_j \not \to \mathbf{y}_i$ 且 $\mathbf{y}_i \not \to \mathbf{y}<em>j$ ）, 则 $\mathbf{W}</em>{ji} = 0$；并且不存在任何 $k &gt; \max(i, j)$，使得 $\mathbf{x}_i$ 到 $\mathbf{x}_k$、$\mathbf{x}_j$ 到 $\mathbf{x}_k$ 之间都存在路径 （即 $\mathbf{y}_i \rightarrow  \mathbf{y}_k$ 且 $\mathbf{y}_j \rightarrow  \mathbf{y}_k$ ）。 </p>
+<p><strong>$\mathbf{V}$ 的稀疏性</strong>：如果 $j &gt; i$，则 $\mathbf{V}_{ji} = 0$；如果 $j &lt; i$，对于任意 $k &gt; i$ （$\mathbf{y}_k$ 至少有一个被观测到的子孙），在子图 ${\mathbf{y}_i, \mathbf{y}_j} \cup  {\mathbf{y}_k}$ 上，不存在 $\mathbf{y}_i$ 和 $\mathbf{y}_j$ 之间的路径（ 即 $\mathbf{y}_j \not \to \mathbf{y}_i$ 且 $\mathbf{y}_i \not \to \mathbf{y}<em>j$ ），则 $\mathbf{V}</em>{ji} = 0$。</p>
+</div>
+
+也就是说：
+- $\mathbf{U}$ 和 $\mathbf{V}$ 是上三角矩阵，其稀疏性取决于 Vecchia 的具体指定。
+- 当 $j &lt; i$ 时，$\mathbf{W}$ 的第 $(j, i)$ 个块不仅在 $j \in  q_y(i)$ 时非零，而且当 $\mathbf{y}_i$ 和 $\mathbf{y}_j$ 同时出现在条件向量中时（即对于某些 $k$, $i, j \in  q_y(k)$ ）也非零。请注意，此稀疏结构对应于所谓道德图中的相邻顶点（例如，Lauritzen，1996 <sup class="refplus-num"><a href="#ref-Lauritzen1996">[31]</a></sup>，第 2.1.1 节）。
+- 矩阵 $\mathbf{V}$ 通常至少与 $\mathbf{W}$ 一样稠密（假设所有或大部分 $\mathbf{y}_k$ 都有可观测的子孙），因为它在与 $\mathbf{W}$ 相同的非零顶点基础上，额外增加了由更复杂路径引入的非零顶点。
+
+`图 1` 显示了一些 DAG 实例及其对应的稀疏 $\mathbf{U}$ 和 $\mathbf{V}$。
+
+
+![Fig01](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230130224742-f998.webp)
+
+&gt; 图 1：通用 Vecchia 方法（见`第 3 节`）的玩具数据集示例，其中 $\ell = 7$ 和 $o = (1,\ldots , 7)$。第一列：DAG（参见第 2.4 节）。第二列：$\mathbf{U}$ 的稀疏性（对应于灰色 $\mathbf{z}_i$ 的元素）。第三列：$\mathbf{V}$ 的稀疏性（第 4.4 节）。计算复杂度取决于 $\mathbf{U}$ 和 $\mathbf{V}$ 的每列中非对角线非零值的数量（第 4.5 节）。对于除隐变量 Vecchia 之外的所有方法，这些数字最多为 $m = 2$。对于隐变量 Vecchia，突出显示了两个非零生成路径和由此产生的非零值（请参阅第 5 节）。
+
+
+### 4.6 计算复杂度分析
+
+回想一下，$\mathbf{x}$ 由 $\mathbf{y} = (\mathbf{y}_1, \ldots , \mathbf{y}_\ell)$ 和 $\mathbf{z}_o$ 组成，其中 $\mathbf{z} = (\mathbf{z}_1, \ldots , \mathbf{z}_\ell)$，$\mathbf{y}_i$ 和 $\mathbf{z}_i$ 的长度均为 $r_i$。令 $n$ 为 $\mathbf{x}$ 中单一变量的总数。为了简化稀疏性和计算复杂度的计算，假设 $o = (1, \ldots , \ell)$，所有 $r_i$ 都具有相同的阶数 $r$（因此 $n \approx br = 2\ell r$ ），并且假设所有条件向量均由至多 $m$ 个（大小为 $r$ 的）子集组成，即 $|g(i)| \leq m$。 
+
+**$\mathbf{U}$ 的计算复杂度**：由 `式（7）` 不难看出，$\mathbf{U}$ 有 $\mathcal{O}(b \cdot（mr^2))=\mathcal{O}(nmr)$ 个非零元素，计算时间为 $\mathcal{O}(b \cdot (m^3r^3))=\mathcal{O}(nm^3r^2)$。请注意，此时间复杂度公式中，$r$ 的幂次低于 $m$ 的幂次，乘积 $mr$ 构成条件向量的总长度。
+
+**$\mathbf{W}$ 的计算复杂度**：为了计算 `式 (8)` 中的似然，我们还需要计算 $\mathbf{W = U_Y U^{\prime}_Y}$ 并找到其逆序 Cholesky 分解 $\mathbf{V} = \text{rchol}(\mathbf{W})$。每个条件向量的大小为 $|g(i)| \leq m$，因此最多包含 $m(m − 1)/2$ 对元素。根据【命题 3 】，$\mathbf{W}$ 至多有 $\mathcal{O}(\ell m^2)$ 个非零块。鉴于每个块的大小为 $r \times r$ 并且 $\ell = \mathcal{O}(n/r)$，因此 $\mathbf{W}$ 最多有 $\mathcal{O}(nrm^2)$ 个非零元素。
+
+**$\mathbf{V}$ 的计算复杂度**：根据矩阵分解相关只是，获得下三角 Cholesky 分解的时间复杂度的数量级，约为该分解中每列非零元素数量的平方和（例如，Toledo，2007 <sup class="refplus-num"><a href="#ref-Toledo2007">[49]</a></sup>，Thm. 2.2）。可以很容易验证，此结论同样适用于逆序 Cholesky 分解 $\mathbf{V}$。因此，对于任意指定的 Vecchia 近似，推断的时间复杂度原则上可以根据相应的 DAG 使用【命题 3 】来确定。我们将在下一节中给出示例。
+
+## 5 稀疏通用 Vecchia 近似
+
+我们现在固定`第 2.3 节`中的选项 **C1–C4**，重点研究选项 **C5**；也就是说，假定分组、排序和条件索引向量 $q(1), \ldots , q(\ell)$ 均固定。我们考虑在隐变量条件与可观测变量条件 (**C5**) 方面存在区别的三种方法： **标准 Vecchia**（`第 3.1 节`）和 **隐变量 Vecchia**（在`第 3.2 节`的 NNGP 中使用），以及一种新颖的 **稀疏通用 Vecchia (SGV)** 方法:
+
+- **标准 Vecchia** （ $\widehat{f_s}$ ）：$q(i) = q_z(i)$，仅以已观测向量 $\mathbf{z}_j$ 为条件。
+
+- **隐变量 Vecchia** （ $\widehat{f_l}$ ）：$q(i) = q_y(i)$，仅以隐向量 $\mathbf{y}_j$ 为条件。 
+
+- **稀疏通用 Vecchia**（ $\widehat{f_g}$ ）：对于每个 $i$，将 $q(i)$ 划分为 $q_y(i)$ 和 $q_z(i)$，使得如果 $j \in  q_y(k)$，则 $j$ 和 $k$ （ $j &lt;  k$ ） 只能都在 $q_y(i)$ 中。
+
+根据 Lauritzen (1996 <sup class="refplus-num"><a href="#ref-Lauritzen1996">[31]</a></sup>, Sect. 2.1.1)，SGV 能够确保相应 DAG 形成完美图。对于相同的条件索引向量，可能存在不同版本的 SGV（事实上，标准 Vecchia 是 SGV 的一个特例）。
+
+在整篇文章中，我们考虑以下尝试最大化 SGV 中的隐变量条件索引向量长度的划分策略：
+- 首先，在 $q(i)$ 中找出隐变量条件索引向量与 $q(i)$ 重叠最多的索引 $k_i$，即 $k_i = \arg \max_{j\in q(i)} |q_y(j) \cap q(i)|$。如果存在多个结果，则选择 $\mathcal{S}_i$ 和 $\mathcal{S}_{k_i}$ 之间空间距离最短的那个 $k_i$。
+- 然后，设置 $q_y(i) = (k_i) \cup  (q_y(k_i) \cap q(i))$；此时 $q(i)$ 中的其余索引对应于可观测条件索引向量：$q_z(i) = q(i) \setminus q_y(i)$。
+
+这三种方法在 `图 1` 中 $\ell = 7$ 的玩具示例中进行了说明。对于所有三种方法，我们具有相同的 $q(1), \ldots , q(\ell)$，其中 $q(2) = (1), q(3) = (1, 2), q(4) = (1, 3), q(5) = (2, 4), \ldots$。与隐变量 Vecchia 一样，SGV 使用 $q_y(2) = (1), q_y(3) = (1, 2),q_y(4) = (1, 3)$，由于例如 $1 \in  q_y(3)$，所以 $q_y(4)$ 可以同时包含 $1$ 和 $3$。但，$2 \notin  q_y(4)$，所以 SGV 不允许 $2 \in  q_y(5)$ 和 $4 \in q_y(5)$ 同时出现，因此设置 $q_y(5) = (4)$ 和 $q_z(5) = (2)$。
+
+我们现在可以对上述三种 $f(\mathbf{x})$ 近似的准确性进行排序。
+
+<div class="note info no-icon flat"><p>【命题 4 】 Kullback-Leibler (KL) 散度的以下排序成立：</p>
+<p>$$<br>\mathbb{KL}\left(f(\mathbf{x}) | \widehat{f_l}(\mathbf{x})\right) \leq \mathbb{KL} \left(f(\mathbf{x}) | \widehat{f_g}(\mathbf{x}) \right) \leq  \mathbb{KL} \left( f(\mathbf{x}) | \widehat{f_s}(\mathbf{x}) \right)<br>$$</p>
+</div>
+
+因此，隐变量 Vecchia 的 $\mathbf{x}$ 联合分布的近似精度优于 SGV，而 SGV 优于标准 Vecchia。但是请注意，这并不能保证观测值 $\mathbf{z}_o$ 隐含的分布的 KL 散度遵循相同的排序。例如，【命题 4 】 说 $E^f (\log \widehat{f}_g(\mathbf{x})) \geq E^f (\log \widehat{f}_s(\mathbf{x}))$，但这并不能保证 $E^f(\log \int \widehat{f}_g(\mathbf{x}) d \mathbf{y}) \geq E^f(\log \int \widehat{f}_s(\mathbf{x}) d \mathbf{y})$。这方面的例子可以在 `图 3d` 中找到。
+
+另一个重要因素是不同方法的计算复杂性。
+
+**（1）标准 Vecchia 的计算复杂度**
+
+标准 Vecchia 仅以观测量为条件，因此对于任何 $i，j$ 都有 $\mathbf{y}_j \not \to \mathbf{y}_i$，根据【命题 3 】，这会产生对角线 $\mathbf{W}$ 和 $\mathbf{V}$，因此标准 Vecchia 的整体时间复杂度为 $\mathcal{O}(nm^3r^2)$。
+
+**（2）隐变量 Vecchia 的计算复杂度**
+
+Finley 等 (2017)<sup class="refplus-num"><a href="#ref-Finley2017">[12]</a></sup> 观察到最近邻高斯过程（ NNGP，使用了隐变量 Vecchia 方法 ）中的矩阵不如标准 Vecchia 方法中稀疏。我们可以使用【命题 3 】 进一步研究此现象。在 `图 1` 的玩具示例中，隐变量 Vecchia 使用 $q_y(5) = (2, 4)$，它创建了导致 $\mathbf{V}_{2,4} \neq \mathbf{0}$ 的路径 $(\mathbf{y}_2, \mathbf{y}_5, \mathbf{y}_4)$。设置 $q_y(6) = (3, 5)$ 会创建导致 $\mathbf{V}_{3,5} \neq \mathbf{0}$ 的路径 $(\mathbf{y}_3, \mathbf{y}_6, \mathbf{y}_7, \mathbf{y}_5)$。这在第 $4$ 列和第 $5$ 列中产生了 $3 &gt; m = 2$ 个非零的非对角元素。我们在以下命题中提供了对隐变量 Vecchia 计算成本的更多见解：
+
+<div class="note info no-icon flat"><p>【命题 5 】 考虑 $r_i = 1$、$o = (1, \ldots , \ell)$、$m \leq  n^{1/d}_z$ 的隐变量 Vecchia 方法，以及 $d$ 维超立方体中等距网格上的位置坐标排序和最邻居条件。然后，$\mathbf{V} = \text{rchol}(\mathbf{W})$ 的每一列有 $\mathcal{O}(n^{1−1/d}m^{1/d})$ 个非零元素，需要 $\mathcal{O}(n^{2−1/d}m^{1/d})$ 的内存。计算 $\mathbf{V} = \text{rchol}(\mathbf{W})$ 的最终时间复杂度为 $\mathcal{O}(n^{3−2/d}m^{2/d})$。</p>
+</div>
+
+因此，获得 $\mathbf{V}$ 的时间复杂度在 $d = 1$ 维时为 $\mathcal{O}(nm^2)$，对于 $d = 2$ 为 $\mathcal{O}(n^2m)$，并且随着 $d$ 的增加接近原始高斯过程的 $n$ 的三次方复杂度。对于不规则的观测位置，如果这些位置可以被认为是从域上的独立均匀分布中提取的，我们期望大致相似的缩放比例。另请注意，对 Cholesky 分解使用重新排序算法（与简单的逆排序相反）可能会导致不同的复杂性，尽管我们的数值结果表明这实际上可能会增加计算复杂性（参见`图 5b`）。
+
+
+**（3）稀疏通用 Vecchia 的计算复杂度**
+
+与隐变量 Vecchia 相比，SGV 保证了稀疏性。在玩具示例中，SGV 设置 $q_y(5) = (4)$ 和 $q_z(5) = (2)$ 因为 $2 \notin  q_y(4)$，并且 $q_y(6) = (5)$ 和 $q_z(6) = (3)$ 因为 $3 \notin q_y(5)$，导致 $\mathbf{V}_{2,4} = \mathbf{V}_{3,5} = \mathbf{0}$（与隐变量 Vecchia 相反）。更一般地说，SGV 保留了标准 Vecchia 的线性缩放，在任何空间维度和网格或不规则间隔的位置有：
+
+<div class="note info no-icon flat"><p>【命题 6 】 对于 SGV，$\mathbf{V}$ 中每一列最多有 $mr$ 个非对角线元素，因此计算 $\mathbf{V} = \text{rchol}(\mathbf{W})$ 的时间复杂度仅为 $\mathcal{O}(nm^2r^2)$。因此，SGV 具有与标准 Vecchia 相同的总体计算复杂度。</p>
+</div>
+
+总之，SGV 提供了比标准 Vecchia 更高的近似精度（【命题 4 】），同时保留了 $n$ 的线性计算复杂性（【命题 6 】）。隐变量 Vecchia 可以提高近似精度，但会严重增加计算复杂度（【命题 5 】），这对于大 $n$ 是不可行的。这些结果的数值解释可以在 `第 7 节` 中找到。
+
+## 6 排序和条件
+
+我们现在提供对 `第 2.3 节` 中选项 **C2–C4** 的一些见解。为简单起见，除非另有说明外，后文假设 $r_i = 1$。
+
+### 6.1 排序（C3）
+
+在一维空间中，对 $\mathcal{S}$ 中的位置 “从左到右” 排序是自然的。但在二维或多维空间中，位置应该如何排序并不明确。常见的排序方法有两种：
+- **坐标排序**：对于 Vecchia 方法，默认和最流行的排序方法是沿着某一个空间坐标轴进行排序。Datta 等 (2016a) <sup class="refplus-num"><a href="#ref-Datta2016a">[6]</a></sup> 观察到排序对 Vecchia 近似质量的影响似乎可以忽略不计，
+- **最大最小距离排序**：Guinness (2018) <sup class="refplus-num"><a href="#ref-Guinness2018">[20]</a></sup> 表明，情况可能并非总是如此，因此提出了多种排序方案，其中包括近似最大最小距离 (maxmin) 排序。最大最小距离排序通过最大化到最近邻位置的距离来选择排序中的每个位置。 Guinness (2018) 表明，最大最小距离排序可以在没有任何块金或噪音的情况下，对坐标排序进行实质性改进。我们将在`第 7 节`中检查其中块金非零的情况。
+
+请注意，MRA（`第 3.7 节`）隐含了一种类似于最大最小距离的排序方案，该方法从空间上的粗网格开始，随后变得越来越密集。
+
+### 6.2 条件向量长度的选择（C4）
+
+作为 **C4** 的一部分，对于给定排序必须选择条件向量的长度 $m$。
+
+对于一维空间域，可以利用 Matern 协方差近似高斯过程的方法得到一些启发。例如，如果平滑度为 $ν = 0.5$，则我们有一个 $1$ 阶马尔可夫过程，因此可以通过 “从左到右” 排序来获得 $m = 1$ 的隐变量条件精确近似。 
+
+Stein (2011) <sup class="refplus-num"><a href="#ref-Stein2011">[45]</a></sup> 推测，对于平滑度 $ν$，近似筛选适用于任何 $m &gt; ν$。这个猜想在 `第 7 节` 中进行了数值研究，特别是在 `图 2a` 中。请注意，具有最近邻条件的一维坐标排序相当于 $AR(m)$ 模型，相应的隐变量或 SGV 推断等价于卡尔曼滤波器和平滑器（参见 Eubank 和 Wang，2002 <sup class="refplus-num"><a href="#ref-Eubank2002">[11]</a></sup>）。对于非常平滑的过程（即 $ν$ 非常大），近似筛选所需的 $m$ 会变大，计算可能无法负担，此时采用其他替代的排序和条件策略可能更有利（参见下面的`第 6.3 节`）。
+
+对于二维或更多维度，$m$ 不仅取决于协方差函数的平滑度，还取决于排序方法、观测位置（规则或不规则）和其他因素。此时，我们建议从相对较小的 $m$ 开始，然后根据先前获得的参数估计使用热启动逐渐增加 $m$，直到估计收敛到所需的阈值，或直到可用的计算资源已经耗尽。
+
+### 6.3 条件向量
+
+对于给定的排序和条件向量长度 $m$，最常见的条件策略是以 $m$ 个最近邻或位置为条件（即最近邻条件）。不过部分研究者也已经提出了一些更精细的条件策略（例如，Stein 等，2004 年 <sup class="refplus-num"><a href="#ref-Stein2004">[47]</a></sup>；Gramacy 和 Apley，2015 年 <sup class="refplus-num"><a href="#ref-Gramacy2015">[17]</a></sup> ）。 
+
+在排序的起始位置放置一个空间上的粗网格并始终以该网格为条件向量，在某些情况下也是有利的。
+
+`附录 C` 中描述了这种被成为 *同条件集 (SCS) * 方法的性质。
+
+## 7 数值化分析和研究
+
+我们用数值方法检验了前几节中提出的命题和主张。我们探索了 `第 2.3 节` 中的 **C3–C5**，并通过比较 `第 5 节` 中的三种方法来强调 **C5**。
+
+在本节中，令 $r_i = 1$ 、$o = (1, \ldots , \ell)$，且每个隐变量有相应的可观测变量。观测位置为单位间隔或单位正方形上的等距网格。假设真实高斯过程具有 Matern 协方差，其平滑度为 $ν$、有效变程为 $λ$（即相关性降至 $0.05$ 的距离）、方差为 $\sigma^2$。我们添加了方差为 $\tau^2$ 的噪声，并令 $\sigma^2 + \tau^2 = 1$，因此信号比为 $\sigma^2/(\sigma^2 + \tau^2) = \sigma^2$。例如，$1/2$ 和 $2/3$ 的信号比分别对应 $1$ 和 $2$ 的信噪比 (SNR)。我们考虑了坐标排序和 Guinness (2018) <sup class="refplus-num"><a href="#ref-Guinness2018">[20]</a></sup> 的近似最大最小距离排序。除非另有说明，否则对于给定排序使用最近邻 (NN) 条件。比较指标为近似分布 $\widehat{f}(\mathbf{z})$ 和真实分布 $f(\mathbf{z})$ 之间的 Kullback-Leibler (KL) 散度。
+
+### 7.1 一维情况
+
+首先，我们假设一个一维空间域，$\mathcal{D} = [0, 1]$，并只考虑 “从左到右” 的自然坐标排序。`第 5 节` 中的三种方法基本上对应于隐变量或非隐变量的 $m$ 阶自回归过程 $AR(m)$。从 `图 2` 中 $n_z = 100$ 和 $λ = 0.9$ 的结果中，我们可以看到隐变量 Vecchia 和等效的 SGV 比标准 Vecchia 表现得更好。`图 2a` 还在数值上证实了 `第 6.2 节` 中的猜想，即如果 $m &gt; ν$，则对于隐变量 Vecchia 来说（近似）筛选成立。
+
+![Fig02](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230131121640-4a49.webp)
+
+&gt; 图 2：在具有坐标排序和最近邻条件的单位区间上，对具有 Matern 协方差的高斯过程实现的多种 Vecchia 近似对应的 KL 散度。 SGV 相当于此设置中的隐变量 Vecchia。
+
+### 7.2 二维情况
+
+**（1）不同近似方法的比较**
+
+其余结果针对二维域，$\mathcal{D} = [0, 1]^2$。探索【命题 4 】，`图 3` 显示了对应于不同 $\sigma^2$、$ν$ 和 $m$ 值时的 KL 散度，所有这些值都满足 $n_z = 6,400$ 和 $λ = 0.9$。正如我们所见，三种方法的 KL 散度大致遵循 `第 5 节` 中的顺序，隐变量 Vecchia 表现优于 SGV，SGV 表现优于标准 Vecchia；图中也显示出，当 $SNR=\infty$ 时，这些方法等效。筛选效应在二维上不太明显。另请注意，最大最小距离排序通常较坐标排序有较大改进（标准 Vecchia 例外，在该方法中两种排序产生了相似的结果）。
+
+![Fig03](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230131121801-3b9e.webp)
+
+&gt; 图 3：单位正方形上平滑度为 $ν$ 的 Matern 协方差对应的 KL 散度（对数尺度）。 (a – c)：固定 $m = 5$，变化信号比，符号节点（从左到右）分别对应于信噪比 $0.5$、$1$、$2$、$5$、$10$、$20$、$\infty$。 (d – f)：固定信噪比为 $1$，变化 $m$。
+
+**（2）不同条件策略的比较**
+
+我们还考虑了非常平滑的协方差，这在地统计学中不太常见，但在机器学习中非常流行。我们探索了对最大最小距离排序中相同的前 $m$ 个变量的条件向量，这些变量分布在整个域中。`图 4` 表明这可以大大改进 SGV 的最近邻排序。
+
+![Fig04](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230131121920-3885.webp)
+
+&gt; 图 4：平滑协方差的 KL 散度（对数尺度），最近邻 (NN) 条件策略与前 $m$ 变量的条件策略的对比； $n_z = 400$，$m = 16$，采用最大最小距离排序，变程参数 $λ ≈ 2$。对于前 $m$ 变量的条件策略，SGV 近似和 隐变量 Vecchia 近似等价。
+
+**（3）三种方法的计算复杂度比较**
+
+`图 5` 探讨了三种方法的计算可行性，它检查了矩阵 $\mathbf{V}$ 的稀疏性。可以看到：
+- SGV 将 $\mathbf{V}$ 中每列的非零元素数保持在 $m$ 或低于 $m$，正如【命题 6 】 所预期的那样，结果在线性缩放中作为 $n$ 的函数。
+- 对于隐变量 Vecchia，$\mathbf{V} = \text{rchol}(\mathbf{W})$ 相当密集，获得 $\mathbf{V}$ 的计算复杂度大致为 $\mathcal{O}(n^2)$，正如【命题 5 】 所预期的那样。$\mathbf{W}$ 的最大最小距离排序并没有提高坐标排序的复杂度。
+- `图 5c` 显示了在具有 3.4 GHz 和 16GB RAM 的 4 核机器（Intel Core i7-3770）上使用 R 包 spam（Furrer 和 Sain，2010 <sup class="refplus-num"><a href="#ref-Furrer2010">[15]</a></sup>）中的 `chol` 函数从 $\mathbf{W}$ 获取 $\mathbf{V}$ 的实际计算时间。尽管 `chol` 函数针对默认的最大最小距离排序进行了更多的优化，但在 $n_z$ 约为 $100,000$ 时，具有最大最小距离排序的隐变量 Vecchia 大约比具有逆序的 SGV 慢两个数量级。
+- Katzfuss 等 (2018) <sup class="refplus-num"><a href="#ref-Katzfuss2018">[29]</a></sup> 的进一步时间研究表明，对于标准 Vecchia 和 SGV，计算 $\mathbf{V}$ 的时间相对于 $\mathbf{U}$ 可以忽略不计；因此，对于给定的 $n$ 和 $m$，标准 Vecchia 和 SGV 需要几乎相同的计算时间。相反，当 $n$ 很大时，隐变量 Vecchia 则慢几个数量级。
+
+![Fig05](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230131122332-3e32.webp)
+
+&gt; 图 5：在 $m = 8$ 时，获得 $\mathbf{V}$ 所需的稀疏性、复杂性和实际计算时间，因此 $t_m = (2m/π)^{1/2} ≈ 2.25$（参见【命题 5】的证明）。 NNZC：$\mathbf{V}$ 中每列非零非对角线元素的数量；最大最小距离排序及逆序：分别用于 Cholesky 算法的多最小距离排序和逆序。
+
+**（4）与其他方法的计算复杂度比较**
+
+`图 6` 显示了面临大 “n” 问题时，SGV、标准 Vecchia、MRA（`第 3.7 节`）和独立块（`第 3.3 节`）四种具有线性扩展性能的近似方法之间的计算复杂度比较，均使用最大最小距离排序。我们令 $\mathcal{D} = [0, 1]^2$，$σ = τ = 1$，$λ = 0.9$。
+
+在 `图 6c` 中，我们在精细的 $280 \times 280$ 网格上模拟数据，然后从大小为 $100 \times 100$ 的粗略子集或子网格开始，考虑越来越大的数据子集。该实验探索了内填充渐近方法的准确性。
+
+计算大 $n_z$ 的确切 KL 散度不可行，因此我们通过从 $m = 40$ 的 SGV 的对数似然中减去每种方法的对数似然来进行近似，并在 $10$ 个模拟数据集上进行了平均。虽然独立块和 MRA（见`附录 C`）的时间复杂度仅为 Vecchia 方法的 $\mathcal{O}(m^{2/3})$，但 SGV 优于所有其他方法，即使在调整复杂度差异时也是如此。
+
+![Fig06](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230131122804-33ba.webp)
+
+&gt; 图 6：SGV 和标准 Vecchia 与 MRA 和独立块的比较
+
+
+## 8 结论和指南
+
+基于将 Vecchia 近似应用于由隐高斯过程实现及其相应的含噪声观测组成的向量，我们提出了一类稀疏高斯过程近似。文献中提出的几个最常用的高斯过程近似是本文所提类型的特例。我们提供了一个用于快速计算似然的公式，并且使用 Vecchia 方法和有向无环图之间的联系研究了稀疏性和计算复杂性。我们提出了一种新颖的稀疏通用 Vecchia 方法 (SGV)，它可以显著提高标准 Vecchia 的近似精度，同时保持其线性计算复杂度。相比之下，我们证明了隐变量 Vecchia（用于最近邻高斯过程 NNGP）可以在二维空间中以二次方缩放数据大小。
+
+现在给出一些在实践中使用通用 Vecchia 方法的指南：
+- 通常，我们建议在存在块金或噪声时使用 SGV 近似，如果噪声项为零或几乎为零，则使用标准 Vecchia。
+- 在一维空间中，从左到右的排序和最近邻条件是最自然的，SGV 等价于隐变量 Vecchia。可以根据协方差函数的平滑度（即原点的可微性）来选择条件向量的大小 $m$。
+- 在二维空间中，我们推荐最大最小距离排序。虽然很难先验地确定一个合适的 $m$，但一个有用的方法是对较小的 $m$ 进行推断，然后逐渐增加 $m$，直到推断收敛或计算资源耗尽。最近邻条件适用于低平滑度，而当有块金较大时，基于前 $m$ 个隐变量的条件更适用于高平滑度。这种前 $m$ 条件及其扩展（例如 MRA）具有超越近似精度的优势，例如降低计算复杂性、所有变量的精确边缘分布以及后验协方差矩阵的稀疏 Cholesky 分解。虽然我们的方法原则上适用于两个以上的维度，但在这种情况下对其性质进行彻底调查是有必要的，并将在未来的工作中进行。
+
+本文提出的方法和算法在 R 包 GPvecchia 中实现，网址为 https://github.com/katzfuss-group/GPvecchia。 Katzfuss 等 (2018) 将通用 Vecchia 框架扩展到已观测和未观测位置的高斯过程预测。他们还提供了有关计算问题和时序的更多详细信息，以及对大型卫星数据集的应用。
+
+## 附录
+
+### A 向量符号
+
+**矩阵**：用粗体大写字母（如 $\mathbf{C}$、$\mathbf{K}$ ）表示矩阵。
+
+**向量**：我们将向量定义为包含相同类型元素的 **有序列表（ Ordered list）**，并支持并集和交集运算。
+- 索引向量：使用非粗体小写字母（如 $o$、$p$、$q$）表示整数型的索引向量；
+- 属性向量：用粗体小写字母（如 $\mathbf{x}$、$\mathbf{y}$、$\mathbf{z}$）表示实数向量，或者向量的向量。使用向量的向量可能会对一些传统定义带来麻烦，但可以大大简化论文的主要论述结果。
+- 位置向量：适用手写体字母（如 $\mathcal{S}$ ）表示位置向量，或者位置向量的向量。
+
+举例，$\mathbf{y} = (\mathbf{y}_1, \mathbf{y}_2, \mathbf{y}_3, \mathbf{y}_4, \mathbf{y}_5)$ 表示向量的向量，而$\mathbf{y} = (y_1, y_2, y_3, y_4, y_5)$ 表示实数向量。
+
+**子向量**：通过索引向量完成，并使用下标表示法。
+
+举例，如果 $o = (4, 1, 2)$ 是一个索引向量，则子向量为 $y_o = (\mathbf{y}_4, \mathbf{y}_1, \mathbf{y}_2)$，遵循索引向量的顺序。
+
+**向量的并运算**：向量的并集还是向量，当两个向量类型相同并且定义并集的顺序时定义。例如，如果 z = (z1, z2)，则 yo \cup  z = (y4, y1, z1, y2, z2) 是 yo 和 z 的并集的完整定义。
+
+**向量的交运算**：交集 y ∩ z 由两个向量的公共元素组成，并且在定义交集的顺序时完全定义。
+
+**索引函数**：当情况需要更抽象时，并集或交集元素的排序可以通过一个索引函数 $\#$ 来定义，该函数输入一个元素和一个向量，然后返回元素在向量中占用的索引。继续上面的例子，$\#(\mathbf{y}_4, \mathbf{y}) = 4$，而 $\#(\mathbf{y}_4, \mathbf{y}_o \cup  \mathbf{z}) = 1$。索引函数是支持向量化的，意味着 $\#(\mathbf{z}, \mathbf{y} \cup  \mathbf{z}) = (3, 5)$，此函数返回向量 $\mathbf{z}$ 在向量 $\mathbf{y} \cup  \mathbf{z}$ 中所占用索引的向量。从 $(\mathbf{y} \cup  \mathbf{z})_{\#(\mathbf{z}, \mathbf{y} \cup \mathbf{z})} = \mathbf{z}$ 的意义上来说，索引函数可以充当并运算的逆运算。
+
+**其他说明**：
+- 实数向量：元素为实数的向量被视为普通列向量，适用向量加法和乘法规则。 
+- 矩阵：被视为使用双下标的二维向量，文中所有矩阵都被视为块矩阵（块的定义基于上下文）。
+- 函数：函数的向量化是关于位置向量的。例如，如果位置向量 $\mathcal{S} = (\mathcal{S}_1, \ldots , \mathcal{S}_{\ell})$，则 $\mathbf{A} = K(\mathcal{S}, \mathcal{S})$ 是由 $\ell \times \ell$ 个块构成的分块矩阵，块 $\mathbf{A}_{ij} = K(\mathcal{S}_i, \mathcal{S}_j)$。
+- 全索引向量：我们用符号 $\bullet$ 来表示所有索引构成的向量，所以 $A_{i \bullet} = K(\mathcal{S}_i, \mathcal{S})$。
+
+### B 有向无环图 (DAG) 回顾
+
+(略)
+
+### C 同条件集 (SCS)
+
+在同条件集方法中，每个 $\mathbf{y}_i$ 都有相同的条件向量 $\mathbf{y}_1$，大小为 $r_1$；也就是说，对于所有 $i &gt; 1$，$q(i) = (1)$。这是 `第 3.5-3.6 节` 中 MPP 和 FSA 采用的策略，其中当 $i &gt; 1$ 时，分别有 $r_i = 1$ 和 $r_i = r$。例如，可以选择最大最小距离排序中的前 $r_1$ 个变量，这会导致 $\mathcal{D}$ 上的一个粗网格。
+
+同条件集方法有几个优点。
+- 首先，对于同条件集来说，隐变量 Vecchia 自动遵守 SGV 规则；或换句话说，可以保证隐方法的稀疏性。
+- 其次，如`第 6.2 节`所述，如果平滑度和变程足够大，则筛选效果不会成立。 同条件集是预测过程的一种扩展，在这种 “平滑” 情况下往往效果很好，因为它等效于 $y(·)$ 的 Karhunen-Loe 展开的首项的 Nystrom 近似（Sang 和 Huang , 2012 <sup class="refplus-num"><a href="#ref-Sang2012">[41]</a></sup>)。
+- 第三，可以实现较低的计算复杂度，因为对于所有 $i = 2, \ldots, l$， `式 (6)` 中的 $C(\mathbf{x}_{g(i)}, \mathbf{x}_{g(i)}) = C(\mathbf{y}_1, \mathbf{y}_1)$  都是相同的矩阵，其 Cholesky 分解只需计算一次。假设 $r_1 = rm$，Cholesky 分解的成本是 $\mathcal{O}((rm)^3)$，每个 $\mathbf{B}_i$ 和 $\mathbf{D}_i$ 可以在 $\mathcal{O}(r^3_i m^2)$ 时间内计算，如果对于所有 $i &gt; 1$ 有 $r_i = r$， 则会导致同条件集的整体时间复杂度为 $\mathcal{O}(nm^2r^2)$ （即相对于一般情况减少了因子 $m$）。
+- 第四，$\mathbf{x}_i$ 的边缘分布（以及方差）是精确的（见`第 3.6 节`）。
+- 第五，$\mathbf{V}^{−1}$ 具有与 $\mathbf{V}$ 相同的稀疏结构，可以快速计算大量预测位置的联合后验预测分布，并扩展到海量时空数据的卡尔曼滤波器类型推断（Jurek 和 Katzfuss , 2018 <sup class="refplus-num"><a href="#ref-Jurek2018">[24]</a></sup>)。
+
+上述所有优势也适用于 MRA，它可以被视为多种分辨率的迭代式同条件集方法（Katzfuss，2017 年<sup class="refplus-num"><a href="#ref-Katzfuss2017">[26]</a></sup>；Katzfuss 和 Gong，2019 年 <sup class="refplus-num"><a href="#ref-Katzfuss2019">[28]</a></sup>；Jurek 和 Katzfuss，2018 年 <sup class="refplus-num"><a href="#ref-Jurek2018">[24]</a></sup>）。然而，同条件集和 MRA 可能需要 $r_1 = \mathcal{O}(\sqrt{n_z})$ 才能在二维空间中进行精确近似，这导致时间复杂度为 $\mathcal{O}(n^{3/2}_z)$（Minden 等，2016 <sup class="refplus-num"><a href="#ref-Minden2016">[33]</a></sup>）。
+
+### D 与组合似然的比较结果
+
+使用模拟数据，我们比较了 SGV 方法的最大似然估计 (MLE) 与两种组合似然方法（`全条件似然` 和 `成对块似然`）。数据是从具有指数协方差的`第 2.1 节`中的高斯过程模型模拟的，$C(\mathbf{s}_1, \mathbf{s}_2) = \sigma^2 \exp(− \| \mathbf{s}_1 − \mathbf{s}_2 \|/α)$，其中过程和噪声方差已知，$\sigma^2 = 2$ 和 $τ^2 = 1$，任务是估计未知的变程参数 $α$。
+
+我们的第一个模拟研究考虑了 *全条件似然（FCL）*，定义为 $\tilde{f}(\mathbf{z}) = \prod^{n}_{i=1} f(z_i|\mathbf{z}_{−i})$。由于全条件似然的计算成本很高，我们考虑了一个尺寸为 $30 × 30$、间距为 $1$ 的较小网格。我们模拟了 $300$ 个真实变程 $α = 10$ 的数据集，对于每个数据集 $i$，我们使用每一种方法（即精确似然、全条件似然 和 SGV）和三种 $m$ 的配置（ $m = 10,15,20$ ）计算了 MLE $\tilde{\alpha}_{ij}，j = 1,\ldots, 5$。`表 1a` 包含了结果摘要。基于平方误差的正态近似，我们纳入了 MSE 的 $95\%$ 置信区间。我们还计算了 MSE 差的置信区间，$(\widehat{α}_{ij} − α)^2 − (\widehat{α}_{iJ} − α)^2$，其中 $J$ 对应于 $m = 20$ 的 SGV。全条件似然与 SGV 相比没有竞争力。
+
+![Table01](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230131125048-304c.webp)
+
+&gt; 表 1：根据模拟数据估计变程参数，包括 MSE 相对于最后一行方法的差异的 95% 置信区间 (CI)
+
+我们的第二个模拟研究考虑了 *成对块似然（PBL）*，定义为 $\prod_{i \sim j} f(\mathbf{z}_i, \mathbf{z}_j)$，其中每个 $\mathbf{z}_i$ 对应于空间域中的一个连续矩形，$i \sim j$ 表示块 $i$ 和 $j$ 是空间邻居。我们使用了尺寸为 $100 × 100$ 的更大网格和更大变程的参数 $α = 30$。我们再次模拟了 $300$ 个数据集，并使用成对块似然（PBL）和 SGV 的多个设置计算了变程参数 $α$ 的 MLE。结果在 `表1b` 中给出。请注意，即使是 $m = 20$ 的 SGV 也比具有 $100$ 个大小为 $100$ 的块的成对块似然方法表现更好。
+
+### E 贝叶斯推断说明
+
+本节展示了如何使用通用 Vecchia 近似进行贝叶斯推断。我们在与 `附录 D` 相同的设置下使用 $m = 30$ 的 SGV。
+
+首先，我们在 $30 \times 30$ 网格的设置中模拟了一个数据集。在先验 $\log α \sim \mathcal{N}(\log(10), 0.6^2)$ 基础上，我们在精细网格上计算了 SGV 似然隐含的精确后验 $f(α | \mathbf{z}_o)$ 和近似后验 $\hat{f}(α|\mathbf{z}_o)$（见 `图 7a` )。基于这种对后验的离散近似，`图 7b` 显示了网格中心的未观测点 $s_∗ = (15.5, 15.5)$ 处的后验预测分布 $f(y(\mathbf{s}_∗)|\mathbf{z}_o)$，以及使用 Katzfuss 等 (2018) 称为 RF-full 的通用 Vecchia 预测方法得到的近似分布 $\hat{f}(y(\mathbf{s}_0)| \mathbf{z}_o)$ 。Vecchia 后验分布几乎与精确分布相同。
+
+我们还模拟了一个设置为 $100 \times 100$ 网格的数据集，随机选择已观测的 $n_z = 9,000$ 个数据点，其他高斯过程实现用作测试数据。基于先验 $\log α \sim \mathcal{N}(\log(30), 0.6^2)$ 和 SGV 似然，我们采用标准差为 $0.5$ 的高斯提议分布，对 $\log α$ 运行了 Metropolis-Hastings 采样，共进行 $1,200$ 次迭代，丢弃前 $200$ 个样本并将剩余部分瘦化 $10$ 倍。然后，我们对 $1,000$ 个预留的测试位置，使用 RF-full 计算了后验预测分布$\hat{f}(\mathbf{y}_{−o} | \mathbf{z}_o)$。`图 7c` 显示了测试位置处 $\mathbf{y}_{−o}$ 的真实模拟值，以及结果后验的 $80\%$ 区间。其中 $79.8\%$ 的区间覆盖了真实值，表明使用通用 Vecchia 获得的后验预测分布得到了很好的校准。
+
+![Fig07](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230202173711-9e59.webp)
+
+&gt; 图 7：基于一般 Vecchia 的贝叶斯推理结果。 PPI：后验预测区间。
+
+
+### F 证明
+
+（暂略）
+
+## 参考文献
+
+<ul id="refplus"><li id="ref-Banerjee2004" data-num="1">[1]  Banerjee, S., Carlin, B. P., and Gelfand, A. E. (2004). Hierarchical Modeling and Analysis for Spatial Data. Chapman &amp; Hall.</li><li id="ref-Banerjee2008" data-num="2">[2]  Banerjee, S., Gelfand, A. E., Finley, A. O., and Sang, H. (2008). Gaussian predictive process models for large spatial data sets. Journal of the Royal Statistical Society, Series B, 70(4):825–848.</li><li id="ref-Cressie1998" data-num="3">[3]  Cressie, N. and Davidson, J. L. (1998). Image analysis with partially ordered Markov models. Computational Statistics &amp; Data Analysis, 29(1):1–26.</li><li id="ref-Cressie2008" data-num="4">[4]  Cressie, N. and Johannesson, G. (2008). Fixed rank kriging for very large spatial data sets. Journal of the Royal Statistical Society, Series B, 70(1):209–226.</li><li id="ref-Cressie2011" data-num="5">[5]  Cressie, N. and Wikle, C. K. (2011). Statistics for Spatio-Temporal Data. Wiley, Hoboken, NJ.</li><li id="ref-Datta2016a" data-num="6">[6]  Datta, A., Banerjee, S., Finley, A. O., and Gelfand, A. E. (2016a). Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets. Journal of the American Statistical Association, 111(514):800–812.</li><li id="ref-Datta2016b" data-num="7">[7]  Datta, A., Banerjee, S., Finley, A. O., and Gelfand, A. E. (2016b). On nearest-neighbor Gaussian process models for massive spatial data. Wiley Interdisciplinary Reviews: Computational Statistics, 8(5):162–171.</li><li id="ref-Datta2016c" data-num="8">[8]  Datta, A., Banerjee, S., Finley, A. O., Hamm, N. A. S., and Schaap, M. (2016c). Non-separable dynamic nearest-neighbor Gaussian process models for large spatio-temporal data with an application to particulate matter analysis. Annals of Applied Statistics, 10(3):1286–1316.</li><li id="ref-Du2009" data-num="9">[9]  Du, J., Zhang, H., and Mandrekar, V. S. (2009). Fixed-domain asymptotic properties of tapered maximum likelihood estimators. The Annals of Statistics, 37:3330–3361.</li><li id="ref-Eidsvik2014" data-num="10">[10]  Eidsvik, J., Shaby, B. A., Reich, B. J., Wheeler, M., and Niemi, J. (2014). Estimation and prediction in spatial models with block composite likelihoods using parallel computing. Journal of Computational and Graphical Statistics, 23(2):295–315.</li><li id="ref-Eubank2002" data-num="11">[11]  Eubank, R. L. and Wang, S. J. (2002). The equivalence between the Cholesky decomposition and the Kalman filter. The American Statistician, 56(1):39–43.</li><li id="ref-Finley2017" data-num="12">[12]  Finley, A. O., Datta, A., Cook, B. C., Morton, D. C., Andersen, H. E., and Banerjee, S. (2017). Applying nearest neighbor Gaussian processes to massive spatial data sets: Forest canopy height prediction across Tanana Valley Alaska. arXiv:1702.00434.</li><li id="ref-Finley2009" data-num="13">[13]  Finley, A. O., Sang, H., Banerjee, S., and Gelfand, A. E. (2009). Improving the performance of predictive process modeling for large datasets. Computational Statistics &amp; Data Analysis, 53(8):2873–2884.</li><li id="ref-Furrer2006" data-num="14">[14]  Furrer, R., Genton, M. G., and Nychka, D. (2006). Covariance tapering for interpolation of large spatial datasets. Journal of Computational and Graphical Statistics, 15(3):502–523.</li><li id="ref-Furrer2010" data-num="15">[15]  Furrer, R. and Sain, S. R. (2010). spam: A sparse matrix R package with emphasis on MCMC methods for Gaussian Markov random fields. Journal of Statistical Software, 36(10):1–25.</li><li id="ref-Gerber2018" data-num="16">[16]  Gerber, F., Furrer, R., Schaepman-Strub, G., de Jong, R., and Schaepman, M. E. (2018). Predicting missing values in spatio-temporal satellite data. IEEE Transactions on Geoscience and Remote Sensing, 56:28412853.</li><li id="ref-Gramacy2015" data-num="17">[17]  Gramacy, R. B. and Apley, D. W. (2015). Local Gaussian process approximation for large computer experiments. Journal of Computational and Graphical Statistics, 24(2):561–578.</li><li id="ref-Gramacy2012" data-num="18">[18]  Gramacy, R. B. and Lee, H. K. (2012). Cases for the nugget in modeling computer experiments. Statistics and Computing, 22(3):713–722.</li><li id="ref-Guhaniyogi2018" data-num="19">[19]  Guhaniyogi, R. and Banerjee, S. (2018). Meta-kriging: Scalable bayesian modeling and inference for massive spatial datasets. Technometrics, 60(4):430–444.</li><li id="ref-Guinness2018" data-num="20">[20]  Guinness, J. (2018). Permutation methods for sharpening Gaussian process approximations. Technometrics, 60(4):415–429.</li><li id="ref-Heaton2019" data-num="21">[21]  Heaton, M. J., Datta, A., Finley, A. O., Furrer, R., Guinness, J., Guhaniyogi, R., Gerber, F., Gramacy, R. B., Hammerling, D., Katzfuss, M., Lindgren, F., Nychka, D. W., Sun, F., and Zammit-Mangion, A. (2019). A case study competition among methods for analyzing large spatial data. Journal of Agricultural, Biological, and Environmental Statistics, accepted.</li><li id="ref-Higdon1998" data-num="22">[22]  Higdon, D. (1998). A process-convolution approach to modelling temperatures in the North Atlantic Ocean. Environmental and Ecological Statistics, 5(2):173–190.</li><li id="ref-Huang2018" data-num="23">[23]  Huang, H. and Sun, Y. (2018). Hierarchical low rank approximation of likelihoods for large spatial datasets. Journal of Computational and Graphical Statistics, 27(1):110–118.</li><li id="ref-Jurek2018" data-num="24">[24]  Jurek, M. and Katzfuss, M. (2018). Multi-resolution filters for massive spatio-temporal data. arXiv:1810.04200.</li><li id="ref-Kalman1960" data-num="25">[25]  Kalman, R. (1960). A new approach to linear filtering and prediction problems. Journal of Basic Engineering, 82(1):35–45.</li><li id="ref-Katzfuss2017" data-num="26">[26]  Katzfuss, M. (2017). A multi-resolution approximation for massive spatial datasets. Journal of the American Statistical Association, 112(517):201–214.</li><li id="ref-Katzfuss2011" data-num="27">[27]  Katzfuss, M. and Cressie, N. (2011). Spatio-temporal smoothing and EM estimation for massive remotesensing data sets. Journal of Time Series Analysis, 32(4):430–446.</li><li id="ref-Katzfuss2019" data-num="28">[28]  Katzfuss, M. and Gong, W. (2019). A class of multi-resolution approximations for large spatial datasets. Statistica Sinica, accepted.</li><li id="ref-Katzfuss2018" data-num="29">[29]  Katzfuss, M., Guinness, J., Gong, W., and Zilber, D. (2018). Vecchia approximations of Gaussian-process predictions. arXiv:1805.03309.</li><li id="ref-Kaufman2008" data-num="30">[30]  Kaufman, C. G., Schervish, M. J., and Nychka, D. W. (2008). Covariance tapering for likelihood-based estimation in large spatial data sets. Journal of the American Statistical Association, 103(484):15451555.</li><li id="ref-Lauritzen1996" data-num="31">[31]  Lauritzen, S. L. (1996). Graphical Models. Clarendon Press.</li><li id="ref-Lindgren2011" data-num="32">[32]  Lindgren, F., Rue, H., and Lindstr ̈om, J. (2011). An explicit link between Gaussian fields and Gaussian Markov random fields: the stochastic partial differential equation approach. Journal of the Royal Statistical Society: Series B, 73(4):423–498.</li><li id="ref-Minden2016" data-num="33">[33]  Minden, V., Damle, A., Ho, K. L., and Ying, L. (2016). Fast spatial Gaussian process maximum likelihood estimation via skeletonization factorizations. arXiv preprint arXiv:1603.08057.</li><li id="ref-Nychka2015" data-num="34">[34]  Nychka, D. W., Bandyopadhyay, S., Hammerling, D., Lindgren, F., and Sain, S. R. (2015). A multi-resolution Gaussian process model for the analysis of large spatial data sets. Journal of Computational and Graphical Statistics, 24(2):579–599.</li><li id="ref-Quinonero-Candela2005" data-num="35">[35]  Quinonero-Candela, J. and Rasmussen, C. E. (2005). A unifying view of sparse approximate Gaussian process regression. Journal of Machine Learning Research, 6:1939–1959.</li><li id="ref-Rasmussen2006" data-num="36">[36]  Rasmussen, C. E. and Williams, C. K. I. (2006). Gaussian Processes for Machine Learning. MIT Press.</li><li id="ref-Rauch1965" data-num="37">[37]  Rauch, H., Rauch, H., Tung, F., and Striebel, C. (1965). Maximum likelihood estimates of linear dynamic systems. AIAA Journal, 3(8):1445–1450.</li><li id="ref-Rue2005" data-num="38">[38]  Rue, H. and Held, L. (2005). Gaussian Markov Random Fields: Theory and Applications. CRC press.</li><li id="ref-Rue2010" data-num="39">[39]  Rue, H. and Held, L. (2010). Discrete spatial variation. In Handbook of Spatial Statistics, chapter 12, pages 171–200. CRC Press.</li><li id="ref-Rutimann2009" data-num="40">[40]  Rutimann, P. and B ̈ uhlmann, P. (2009). High dimensional sparse covariance estimation via directed acyclic graphs. Electronic Journal of Statistics, 3:1133–1160.</li><li id="ref-Sang2012" data-num="41">[41]  Sang, H. and Huang, J. Z. (2012). A full scale approximation of covariance functions. Journal of the Royal Statistical Society, Series B, 74(1):111–132.</li><li id="ref-Sang2011" data-num="42">[42]  Sang, H., Jun, M., and Huang, J. Z. (2011). Covariance approximation for large multivariate spatial datasets with an application to multiple climate model errors. Annals of Applied Statistics, 5(4):2519–2548.</li><li id="ref-Shaby2014" data-num="43">[43]  Shaby, B. A. (2014). The open-faced sandwich adjustment for MCMC using estimating functions. Journal of Computational and Graphical Statistics, 23(3):853–876.</li><li id="ref-Snelson2007" data-num="44">[44]  Snelson, E. and Ghahramani, Z. (2007). Local and global sparse Gaussian process approximations. In Artificial Intelligence and Statistics 11 (AISTATS).</li><li id="ref-Stein2011" data-num="45">[45]  Stein, M. L. (2011). When does the screening effect hold? The Annals of Statistics, 39(6):2795–2819.</li><li id="ref-Stein2014" data-num="46">[46]  Stein, M. L. (2014). Limitations on low rank approximations for covariance matrices of spatial data. Spatial Statistics, 8:1–19.</li><li id="ref-Stein2004" data-num="47">[47]  Stein, M. L., Chi, Z., and Welty, L. (2004). Approximating likelihoods for large spatial data sets. Journal of the Royal Statistical Society: Series B, 66(2):275–296.</li><li id="ref-Sun2016" data-num="48">[48]  Sun, Y. and Stein, M. L. (2016). Statistically and computationally efficient estimating equations for large spatial datasets. Journal of Computational and Graphical Statistics, 25(1):187–208.</li><li id="ref-Toledo2007" data-num="49">[49]  Toledo, S. (2007). Lecture Notes on Combinatorial Preconditioners, Chapter 3. http://www.tau.ac.il/ ̃stoledo/Support/chapter-direct.pdf.</li><li id="ref-Varin2011" data-num="50">[50]  Varin, C., Reid, N., and Firth, D. (2011). An overview of composite likelihood methods. Statistica Sinica, pages 5–42.</li><li id="ref-Vecchia1988" data-num="51">[51]  Vecchia, A. (1988). Estimation and model identification for continuous spatial processes. Journal of the Royal Statistical Society, Series B, 50(2):297–312.</li><li id="ref-Wikle1999" data-num="52">[52]  Wikle, C. K. and Cressie, N. (1999). A dimension-reduced approach to space-time Kalman filtering. Biometrika, 86(4):815–829.</li><li id="ref-Zhang2018" data-num="53">[53]  Zhang, B., Sang, H., and Huang, J. Z. (2018). Smoothed full-scale approximation of Gaussian process models for computation of large spatial datasets. Statistica Sinica, accepted.</li><li id="ref-Zhang2012" data-num="54">[54]  Zhang, H. (2012). Asymptotics and computation for spatial statistics. In Advances and Challenges in Space-time Modelling of Natural Events, pages 239–252. Springer.</li></ul><p></p>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/fe6491e.html">http://xishansnow.github.io/posts/fe6491e.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/">点参考数据</a><a class="post-meta__tags" href="/tags/%E7%BB%BC%E8%BF%B0/">综述</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E8%A1%A8%E9%9D%A2/">空间表面</a><a class="post-meta__tags" href="/tags/%E9%AB%98%E6%96%AF%E5%9C%BA/">高斯场</a></div><div class="post-share"><div class="social-share" data-image="/img/coffe_12.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/d5aa7c88.html" title="高斯过程预测的 Vecchia 近似"><img class="cover" src="/img/book_19.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">高斯过程预测的 Vecchia 近似</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 高斯过程 (GP) 是用于地理空间分析、非参数回归和机器学习的高度灵活的函数估计器，但它们在计算上对大型数据集不可行。 高斯过程的 Vecchia 近似已被用于快速估算参数推断的似然。本文研究了在已观测和未观测位置处进行空间预测时的 Vecchia 近似，包括在大型位置集上获得联合预测分布。我们考虑了用于高斯过程预测的通用 Vecchia 框架，其中包含一些新的和已有的特例。我们从理论和数值上研究了这些方法的准确性和计算特性，并且证明了新方法表现出在空间位置总数上的线性计算复杂性。我们表明，框架内的某些选择会对不确定性量化和计算成本产生强烈影响，从而就哪些方法最适合各种设置提出具体建议。我们还将方法应用于叶绿素荧光卫星数据集，表明新方法比现有方法更快或更准确，并削减了预测结果图中不符合实际的伪影。 〖原 文〗 Katzfuss, M. et al. (2020) ‘Vecchia approximations of Gaussian-process predictions’, Journal of Agricultural, Biological and...</div></div></div></a><a class="pagination-related" href="/posts/8d107aee.html" title="Vecchia 近似似然法"><img class="cover" src="/img/coffe_04.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Vecchia 近似似然法</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 介绍了连续域空间过程的参数估计（指均值函数的参数估计）和模型识别（指残差对应的空间过程模型识别）程序。在本文中，空间过程被假定为具有残差的线性模型，且残差服从二阶平稳高斯随机场，同时假定数据由任意采样位置处空间过程的含噪声观测值组成。本文采用了具有椭圆等值线的二维有理密度函数对空间协方差函数进行建模，文中提出的迭代式估计方法可以减轻非格元数据中常规最大似然估计的许多计算困难。 〖原 文〗 Vecchia, A.V. (1988) ‘Estimation and Model Identification for Continuous Spatial Processes’, Journal of the Royal Statistical Society: Series B (Methodological), 50(2), pp. 297–312. Available at: https://doi.org/10.1111/j.2517-6161.1988.tb01729.x. 1 引言1.1 背景令 ${Z(x, y)}$ 为一个连续域空间过程，其中 $(x,...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/5d008fa3.html" title="SPDE: 高斯场和高斯马尔可夫随机场之间的明确联系"><img class="cover" src="/img/book_09.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-08</div><div class="info-item-2">SPDE: 高斯场和高斯马尔可夫随机场之间的明确联系</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 连续索引的高斯场 (GF) 是空间统计建模和地统计学中最重要的组成部分，通过协方差函数的定义给出了场性质的直观解释。在计算方面，高斯场受到大 $n$ 问题限制，因为密集矩阵的分解计算成本是维度的三次方（$\mathcal{O}(n^3)$）。尽管当前计算能力处于历史最高水平，但这一事实似乎仍然是许多应用中的瓶颈。与高斯场同样中要的，还有一类离散索引的高斯马尔可夫随机场 (GMRF)，其马尔可夫性质导致精度矩阵的稀疏性，从而使我们可以使用稀疏矩阵的数值算法。对于 $\mathbb{R}^2$ 中的场， GMRF 仅使用了一般算法所需时间的平方根（$\mathcal{O}(\sqrt{n^3})$）。 GMRF 由其完整条件分布分布定义，但在这种参数化形势下，其边缘分布性质并不明确。在本文中，我们展示了：对于 Matérn 类型的某些高斯场，（线性）随机偏微分方程的近似随机弱解，可以为 $\mathbb{R}^d$ 上的任何三角形剖分提供在高斯场和 GMRF 之间的显式链接，进而可以将该高斯场表示为基函数的形式。其好处是：我们既能使用高斯场进行建模，又能够利用...</div></div></div></a><a class="pagination-related" href="/posts/75ca3fa4.html" title="固定秩克里金法"><img class="cover" src="/img/book_04.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-08</div><div class="info-item-2">固定秩克里金法</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 非常大的空间数据集的空间统计具有挑战性。数据集的大小 $n$ 会导致计算最优空间预测变量（例如克里金法）出现问题，因为其计算成本为 $n$ 的三次方。此外，大型数据集通常是在大型空间域上定义，因此感兴趣的空间过程通常在该域上表现出非平稳行为。 通过使用一组固定数量的基函数，可以定义一个灵活的非平稳协方差函数族，这产生了我们称为 “固定秩克里金法” 的空间预测方法。具体来说，固定秩克里金法就是此类非平稳协方差函数支撑下的克里金法。当 $n$ 非常大时，它依赖于计算简化，以获得隐空间过程的空间最佳线性无偏预测器及其均方预测误差。基于最小化加权 Frobenius 范数的方法产生协方差函数参数的最佳估计量，然后将其代入固定秩克里金方程。新方法适用于在整个地球上观测到的非常大的臭氧数据集，其中 $n$ 约为数十万。 【原 文】 Cressie, N. and Johannesson, G. (2008) ‘Fixed rank kriging for very large spatial data sets: Fixed Rank Kriging’, Journal...</div></div></div></a><a class="pagination-related" href="/posts/8d107a33.html" title="近似受限似然方法"><img class="cover" src="/img/book_20.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-09</div><div class="info-item-2">近似受限似然方法</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 由于计算负担，似然法通常难以用于大型、位置不规则的空间数据集。即使对于高斯模型，精确计算 $n$ 个观测值的似然也需要  $\mathcal{O}(n^3)$  运算。任何联合密度都可以写成基于某些观测顺序的条件密度之积，因此一种减少计算的方法是在计算上述条件密度时，仅以部分的 “过去” 观测为条件。本文重点探讨了此类方法如何应用于受限似然的近似，特别展示了如何利用 估计方程方法 判断近似的有效性。此外，过前的工作通常建议以当前观测的历史最近邻观测为条件，但我们通过理论、数值和实例表明，以一些远距离的观测为条件，通常也可以带来相当大的好处。 〖原 文〗 Stein, M.L., Chi, Z. and Welty, L.J. (2004) ‘Approximating likelihoods for large spatial data sets’, Journal of the Royal Statistical Society: Series B (Statistical Methodology), 66(2), pp. 275–296....</div></div></div></a><a class="pagination-related" href="/posts/8d107aee.html" title="Vecchia 近似似然法"><img class="cover" src="/img/coffe_04.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-14</div><div class="info-item-2">Vecchia 近似似然法</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 介绍了连续域空间过程的参数估计（指均值函数的参数估计）和模型识别（指残差对应的空间过程模型识别）程序。在本文中，空间过程被假定为具有残差的线性模型，且残差服从二阶平稳高斯随机场，同时假定数据由任意采样位置处空间过程的含噪声观测值组成。本文采用了具有椭圆等值线的二维有理密度函数对空间协方差函数进行建模，文中提出的迭代式估计方法可以减轻非格元数据中常规最大似然估计的许多计算困难。 〖原 文〗 Vecchia, A.V. (1988) ‘Estimation and Model Identification for Continuous Spatial Processes’, Journal of the Royal Statistical Society: Series B (Methodological), 50(2), pp. 297–312. Available at: https://doi.org/10.1111/j.2517-6161.1988.tb01729.x. 1 引言1.1 背景令 ${Z(x, y)}$ 为一个连续域空间过程，其中 $(x,...</div></div></div></a><a class="pagination-related" href="/posts/d5aa7c88.html" title="高斯过程预测的 Vecchia 近似"><img class="cover" src="/img/book_19.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-01</div><div class="info-item-2">高斯过程预测的 Vecchia 近似</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 高斯过程 (GP) 是用于地理空间分析、非参数回归和机器学习的高度灵活的函数估计器，但它们在计算上对大型数据集不可行。 高斯过程的 Vecchia 近似已被用于快速估算参数推断的似然。本文研究了在已观测和未观测位置处进行空间预测时的 Vecchia 近似，包括在大型位置集上获得联合预测分布。我们考虑了用于高斯过程预测的通用 Vecchia 框架，其中包含一些新的和已有的特例。我们从理论和数值上研究了这些方法的准确性和计算特性，并且证明了新方法表现出在空间位置总数上的线性计算复杂性。我们表明，框架内的某些选择会对不确定性量化和计算成本产生强烈影响，从而就哪些方法最适合各种设置提出具体建议。我们还将方法应用于叶绿素荧光卫星数据集，表明新方法比现有方法更快或更准确，并削减了预测结果图中不符合实际的伪影。 〖原 文〗 Katzfuss, M. et al. (2020) ‘Vecchia approximations of Gaussian-process predictions’, Journal of Agricultural, Biological and...</div></div></div></a><a class="pagination-related" href="/posts/a616d9f3.html" title="高斯场和非高斯场的随机偏微分方程方法：10 年回顾"><img class="cover" src="/img/coffe_13.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-07</div><div class="info-item-2">高斯场和非高斯场的随机偏微分方程方法：10 年回顾</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 高斯过程和随机场有着悠久的历史，包含了表示空间和时空相关结构的很多方法，例如：协方差函数、谱表示、再生核希尔伯特空间、基于图的模型等。本文介绍了随机偏微分方程方法（SPDE）如何通过 Hilbert 空间投影，将 Matern 协方差模型与其中几种方法建立起联系，并且每种联系在不同情况下都非常有用。除了主要思想的概述之外，本文还讨论了一些重要的扩展、理论、应用和其他新发展。这些方法包括：马尔可夫模型、非马尔可夫模型、非高斯随机场、非平稳场、任意流形上的时空场等，以及实际计算需要考虑的因素。 【原 文】 Lindgren, F., Bolin, D. and Rue, H. (2022) ‘The SPDE approach for Gaussian and non-Gaussian fields: 10 years and still running’, Spatial Statistics, 50, p. 100599. Available at: https://doi.org/10.1016/j.spasta.2022.100599. 1...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="toc-text">1 简介</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

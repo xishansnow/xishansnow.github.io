@@ -1,0 +1,1069 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>🔥 可扩展高斯过程综述 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="大数据时代的可扩展高斯过程综述"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/92f7ba1d.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '🔥 可扩展高斯过程综述',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/coffe_02.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">🔥 可扩展高斯过程综述</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">🔥 可扩展高斯过程综述</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-03-08T02:00:00.000Z" title="发表于 2023-03-08 10:00:00">2023-03-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.184Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/">高斯过程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/">可扩展性</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">29.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>128分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>【摘 要】大数据带来的海量信息以及不断发展的计算机硬件鼓励了机器学习社区的成功案例。同时，它对高斯过程回归 (GPR) 提出了挑战，高斯过程回归是一种众所周知的非参数且可解释的贝叶斯模型，其具有数据规模的三次方复杂性。为了在保持理想预测质量同时，能够提高扩展性，业界已经提出了各种可扩展高斯过程。然而，它们还没有得到全面的回顾和分析，以得到学术界和工业界的充分理解。由于数据量的爆炸式增长，在高斯过程社区中对可扩展高斯过程进行回顾是及时且必要的。为此，本文致力于回顾涉及两个主要类别的最先进的可扩展高斯过程：一是提炼完整数据的全局近似，二是划分数据以进行子空间学习的局部近似。对于全局近似，我们主要关注稀疏近似，包括改进先验但执行精确推断的先验近似、保留精确先验但执行近似推断的后验近似、利用核（协方差）矩阵中特定结构的结构化稀疏近似。对于局部近似，我们突出了专家混合和专家乘积，这些专家方法对多个局部专家进行模型平均以提高预测。为了提供完整回顾，本文还介绍近年在提高可扩展高斯过程的扩展性和功能方面取得的进展。最后，回顾和讨论了可扩展高斯过程在各种场景中的扩展和开放问题，以激发未来研究的新想法。</p>
+<p>【原 文】H. Liu, Y. -S. Ong, X. Shen and J. Cai, “When Gaussian Process Meets Big Data: A Review of Scalable GPs,” in IEEE Transactions on Neural Networks and Learning Systems, vol. 31, no. 11, pp. 4405-4423, Nov. 2020, doi: 10.1109/TNNLS.2019.2957109.</p>
+<p>【参 考】</p>
+<ul>
+<li><a href="8b25b04.html">大型空间数据分析方法案例及评测</a></li>
+</ul>
+<h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1 介绍"></a>1 介绍</h2><p>在大数据时代，海量信息提出了有效和高效的分析、解释和预测需求，以探索未来的好处。由于大数据，机器学习社区讲述了许多成功案例 <sup class="refplus-num"><a href="#ref-1">[1]</a></sup><sup class="refplus-num"><a href="#ref-2">[2]</a></sup><sup class="refplus-num"><a href="#ref-3">[3]</a></sup><sup class="refplus-num"><a href="#ref-4">[4]</a></sup>，同时也留下了挑战。高斯过程回归 (GPR) <sup class="refplus-num"><a href="#ref-5">[5]</a></sup> 是一种可用于各种场景（如主动学习 <sup class="refplus-num"><a href="#ref-8">[8]</a></sup>、多任务学习 <sup class="refplus-num"><a href="#ref-9">[9]</a></sup><sup class="refplus-num"><a href="#ref-10">[10]</a></sup>、流形学习 <sup class="refplus-num"><a href="#ref-11">[11]</a></sup> 和优化 <sup class="refplus-num"><a href="#ref-12">[12]</a></sup>）的非参数统计模型，其在地统计学中也被称为克里金法 <sup class="refplus-num"><a href="#ref-6">[6]</a></sup>，在计算机实验中也被称为 `代理（surrogates）` 或 `仿真器（emulators）` <sup class="refplus-num"><a href="#ref-7">[7]</a></sup>。 
+
+高斯过程社区中的大数据主要指 5V 挑战之一 <sup class="refplus-num"><a href="#ref-13">[13]</a></sup>：数据量。因为需要存储、处理和分析大量的数据点，导致当前高斯过程范式的计算复杂度很高。值得注意的是，本文主要关注用于大规模回归的可扩展高斯过程，而不是所有形式的高斯过程或其他机器学习模型。
+
+给定 $n$ 个训练点 $\boldsymbol{X} = \{\boldsymbol {x}_{i} \in R^{d}\}_{i=1}^{n}$ 及其观测值 $\boldsymbol {y} = \{y_{i} = y(\boldsymbol {x}_{i}) \in R\}_{i=1}^{n}$，高斯过程试图在由均值 $m(.)$ 和核 $k(.,.)$ 定义的函数空间 $\mathcal {GP}(m(\boldsymbol {x}), k(\boldsymbol {x}, \boldsymbol {x}'))$ 中，推断隐函数 $f： R^{d} \mapsto R$。标准高斯过程最突出的弱点是其协方差矩阵 $\boldsymbol {K}_{nn} = k(\boldsymbol {X}, \boldsymbol {X}) \in R^{n \times n}$ 引起的三次方时间复杂度 $\mathcal {O}(n^{3})$。这限制了高斯过程的可扩展性，使其无法承受大规模数据集。
+
+因此，可扩展高斯过程致力于提高完全高斯过程的扩展性，同时保持对大数据的良好预测质量。`图 1` 中总结的大量文献综述将可扩展高斯过程分为两大类：
+
+第一类：**全局近似（Global Approximations）**: 通过全局蒸馏来逼近协方差矩阵 $\boldsymbol {K}_{nn}$。蒸馏可以通过以下方式实现：
+
+- `数据子集方法`<sup class="refplus-num"><a href="#ref-14">[14]</a></sup>：具有 $m$ ( $m \ll n$ ) 个点的训练数据子集，生成更小的协方差矩阵 $\boldsymbol {K}_{mm}$ ;
+
+- `稀疏核方法` <sup class="refplus-num"><a href="#ref-15">[15]</a></sup>：移除 $\boldsymbol {K}_{nn}$ 中不相关的条目，生成有很多零条目的稀疏协方差矩阵 $\tilde {\boldsymbol {K}}_{nn}$；
+
+- `降秩方法` <sup class="refplus-num"><a href="#ref-1">[1]</a></sup><sup class="refplus-num"><a href="#ref-16">[16]</a></sup><sup class="refplus-num"><a href="#ref-17">[17]</a></sup><sup class="refplus-num"><a href="#ref-18">[18]</a></sup>：也称稀疏近似方法，在 $m$ 个和 $n$ 个训练点之间测量低秩表示，生成 Nyström 近似 $\boldsymbol {K}_{nn } \approx \boldsymbol {K}_{nm} \boldsymbol {K}^{-1}_{mm} \boldsymbol {K}_{mn}$ 。
+
+第二类：**局部近似（Local Approximations）**: 它遵循分而治之 (D&amp;C) 的思想来关注训练数据的局部子集。局部近似每次只需要处理具有 $m_0$ ( $m_0 \ll n$ ) 个数据点的局部专家 <sup class="refplus-num"><a href="#ref-19">[19]</a></sup><sup class="refplus-num"><a href="#ref-20">[20]</a></sup>。此外，为了产生具有有效不确定性的平滑预测，业界已经通过专家混合或专家乘积实现了平均化建模 <sup class="refplus-num"><a href="#ref-21">[21]</a></sup><sup class="refplus-num"><a href="#ref-22">[22]</a></sup><sup class="refplus-num"><a href="#ref-23">[23]</a></sup><sup class="refplus-num"><a href="#ref-24">[24]</a></sup><sup class="refplus-num"><a href="#ref-25">[25]</a></sup><sup class="refplus-num"><a href="#ref-26">[26]</a></sup><sup class="refplus-num"><a href="#ref-27">[27]</a></sup><sup class="refplus-num"><a href="#ref-28">[28]</a></sup>。
+
+![Fig. 1](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/5962385/9244673/8951257/liu1abc-2957109-large.gif)
+
+&gt; **图 1：** 所调查文献中: (a) 可扩展高斯过程的类别百分比;b) 全局近似方法的百分比； c) 局部近似方法的百分比。
+
+如 `图 2` 所示，在扩展性方面：
+- 大多数使用 $m$ 个的全局近似和使用 $m_{0}=m$ 个数据点的局部近似，具有相同的训练复杂度 $\mathcal {O}(nm^{2})$，并且可以通过并行/分布式计算进一步加速 <sup class="refplus-num"><a href="#ref-20">[20]</a></sup><sup class="refplus-num"><a href="#ref-29">[29]</a></sup><sup class="refplus-num"><a href="#ref-30">[30]</a></sup><sup class="refplus-num"><a href="#ref-31">[31]</a></sup><sup class="refplus-num"><a href="#ref-32">[32]</a></sup><sup class="refplus-num"><a href="#ref-33">[33]</a></sup>。
+- 当将组织成 Kronecker 结构时，稀疏近似可以进一步将复杂度降低到 $\mathcal{O}(n)$ <sup class="refplus-num"><a href="#ref-18">[18]</a></sup><sup class="refplus-num"><a href="#ref-34">[34]</a></sup>。
+- 通过重新组织变分下界，随机优化可得到复杂度为 $\mathcal {O}(m^{3})$ 的稀疏近似 <sup class="refplus-num"><a href="#ref-1">[1]</a></sup><sup class="refplus-num"><a href="#ref-35">[35]</a></sup><sup class="refplus-num"><a href="#ref-36">[36]</a></sup>，进而实现百万甚至亿级数据点的回归<sup class="refplus-num"><a href="#ref-36">[36]</a></sup><sup class="refplus-num"><a href="#ref-37">[37]</a></sup>。
+
+![Fig. 2](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/5962385/9244673/8951257/liu2-2957109-large.gif)
+
+&gt; **图 2：** 可扩展高斯过程在扩展性和模型能力方面的比较，其中 $0 &lt; \alpha &lt; 1$ 和 $m$ 是稀疏近似的归纳大小以及 SoD 和局部近似的子集大小。
+
+值得注意的是，我们欢迎具有高可扩展性的高斯过程同时，需要有利的预测（即良好的模型能力)。例如，尽管数据子集方法显示出惊人的 $\mathcal {O}(m^{3})$ 复杂性优势，但我们无法预期其会随着 $n$ 的增加而表现得更好。在模型能力方面：
+- **全局近似**：能够捕获全局模式（长期空间相关性），但由于全局的归纳集有限，往往会过滤掉很多局部模式。
+- **局部近似**：有利于捕获局部模式（一些非平稳特征），使局部近似在比较复杂的任务中能够胜过全局近似（参见 <sup class="refplus-num"><a href="#ref-38">[38]</a></sup> 中的太阳示例）。但局部近似的缺点是忽略了全局模式，存在不连续预测和过拟合的风险。
+- **混合方法**：已经有研究者尝试通过 `跨域策略` <sup class="refplus-num"><a href="#ref-39">[39]</a></sup>、`层次结构` <sup class="refplus-num"><a href="#ref-40">[40]</a></sup> 、`全局和局部混合` 或 `神经网络 (NN)` <sup class="refplus-num"><a href="#ref-34">[34]</a></sup><sup class="refplus-num"><a href="#ref-41">[41]</a></sup><sup class="refplus-num"><a href="#ref-42">[42]</a></sup> 等方法，并展示出了先进的性能 <sup class="refplus-num"><a href="#ref-34">[34]</a></sup><sup class="refplus-num"><a href="#ref-43">[43]</a></sup>。
+
+据我们所知，以前的文献中还没有对可扩展高斯过程进行详细的综述。因此，在高斯过程社区进行这样的回顾是及时和重要的。
+
+为此，我们考虑了如 `图 3` 所示的提纲概览，以对最先进的可扩展高斯过程进行分类、回顾和分析。具体来说：
+- 在第二节中快速回顾了标准高斯过程回归
+- 在第三节和第四节中全面回顾了可扩展高斯过程的两个主要类别，即全局和局部近似。
+- 第五节回顾了可扩展高斯过程在扩展性和功能方面的改进。
+- 第六节讨论了可扩展高斯过程在不同场景中的扩展，以突出潜在的研究路线。
+- 第七节提供了结论性意见。
+
+
+![Fig. 3](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/5962385/9244673/8951257/liu3-2957109-large.gif)
+
+&gt; **图 3：** 可扩展高斯过程的框架概述。
+
+
+## 2 重温高斯过程回归
+
+**（1）高斯过程的函数空间视角**
+
+非参数高斯过程回归在隐函数上放置一个高斯过程先验 $f(\boldsymbol {x}) \sim \mathcal {GP}(m(\boldsymbol {x}), k(\boldsymbol {x}, \boldsymbol {x }'))$ <sup class="refplus-num"><a href="#ref-5">[5]</a></sup>。均值函数 $m(\boldsymbol {x})$ 通常取为零。核函数 $k(\boldsymbol {x}, \boldsymbol {x}')$ 控制平滑度，通常使用带自相关性判决 (ARD) 的平方指数 (SE) 函数： 
+
+$$
+\begin{equation*}
+ k_{\mathrm {SE}}(\boldsymbol {x}, \boldsymbol {x}') = \sigma ^{2}_{f} \exp (- \frac{1}{2} (\boldsymbol {x} - \boldsymbol {x}')^{\top} \boldsymbol {\Delta }^{-1} (\boldsymbol {x} - \boldsymbol {x}')) \tag{1}
+\end{equation*}
+$$
+
+其中 $\boldsymbol {\Delta } = \mathrm{diag}[l_{1}^{2}, \ldots, l_{d}^{2}]$ 包含 $d$ 个维度的长度尺度，$\sigma^{2}_{f}$ 是信号的方差。如果读者对其他常规核（如 Matérn 核）感兴趣，请参考 <sup class="refplus-num"><a href="#ref-5">[5]</a></sup>。
+
+给定训练数据 $\mathcal {D} = \{\boldsymbol {X}, \boldsymbol {y} \}$，其中 $y(\boldsymbol {x}_{i}) = f(\boldsymbol {x} _{i}) + \epsilon$，$\epsilon \sim \mathcal {N}(0, \sigma^{2}_{\epsilon})$ 为独立同分布噪声。高斯过程的模型证据（边缘似然）可以通过对函数 $f$ 的边缘化实现： 
+
+$$
+p(\boldsymbol{y} | \boldsymbol {\theta }) = \int p(\boldsymbol {y}|\boldsymbol {f}) p(\boldsymbol {f}) d\boldsymbol {f} = \mathcal {N}(\boldsymbol {y}|\boldsymbol { 0}, \boldsymbol {K}_{nn}^{\epsilon })
+$$
+
+其中 $\boldsymbol {K}_{nn}^{\epsilon } = \boldsymbol {K}_{nn} + \sigma ^ {2}_{\epsilon } \boldsymbol {I}_{n}$，$\boldsymbol {\theta }$ 表示超参数。
+
+**学习**：根据最大似然原理，高斯过程模型的超参数可以通过最大化上述边缘似然获得。套用具体的高斯分布函数形式并取对数形式，有最常使用的对数边缘似然：
+
+$$
+\begin{equation*}
+ \log p(\boldsymbol {y}) = - \frac {n}{2} \log 2\pi - \frac {1}{2} \log \big |\boldsymbol {K}_{nn}^{\epsilon }\big | - \frac {1}{2} \boldsymbol {y}^{\top} \big (\boldsymbol {K}_{nn}^{\epsilon }\big)^{-1} \boldsymbol {y} \tag{2}
+\end{equation*}
+$$
+
+为了清楚起见，我们省略了分布条件中的超参数 $\boldsymbol{\theta}$，但超参数在其中蕴含的意义最为深刻。通过数据确定协方差函数的形式和超参数的最优解，是实现高斯过程预测的前提。
+
+**预测**：在协方差函数和超参数已经确定的情况下，任意新的测试点 $\boldsymbol{x}_{*}$ 处的预测分布为：
+
+$$
+p(f_{*}|\mathcal {D}, \boldsymbol {x}_{*}) = \mathcal {N}(f_{*}|\mu (\boldsymbol {x}_ {*}), \sigma ^{2}_{*}(\boldsymbol {x}_{*}))
+$$
+
+其均值和方差分别为：
+$$
+\begin{align*}
+\mu (\boldsymbol {x}_{*})=&amp;\boldsymbol {k}_{*n} \big (\boldsymbol {K}_{nn}^{\epsilon }\big)^{-1} \boldsymbol {y} \tag{3a}\\
+\sigma ^{2}(\boldsymbol {x}_{*})=&amp;k_{**} - \boldsymbol {k}_{*n} \big (\boldsymbol {K}_{nn}^{\epsilon }\big)^{-1} \boldsymbol {k}_{n*}\tag{3b}
+\end{align*}
+$$
+其中 $\boldsymbol {k}_{*n} = k(\boldsymbol {x}_{*}, \boldsymbol {X})$ 和 $k_{**} = k(\boldsymbol {x}_{* }, \boldsymbol {x}_{*})$ 。
+
+上式是对理想高斯过程的预测分布，对于 $y_{*}$ 来说，通常还会考虑噪声，因此有：
+
+$$
+p(y_{*}|\mathcal{D}, \boldsymbol{x}_{*}) = \mathcal{N}(y_{*}|\mu (\boldsymbol {x}_{*}), \sigma ^{2}_{*}(\boldsymbol{x}_{*})+\sigma ^{2}_{\epsilon })
+$$
+
+**（2）高斯过程的权重空间视角**
+
+从权重空间的角度来看，可以将高斯过程解释为贝叶斯线性模型的一种扩展：
+
+$$
+\begin{equation*}
+ f(\boldsymbol {x}) = \boldsymbol {\phi }(\boldsymbol {x})^{\top} \boldsymbol {w}, \quad y(\boldsymbol {x}) = f(\boldsymbol {x}) + \epsilon \tag{4}
+\end{equation*}
+$$
+
+其中权重参数采用高斯先验：$p(\boldsymbol {w}) = \mathcal {N}(\boldsymbol {w}|\boldsymbol {0}, \boldsymbol {\Sigma })$， 而 $\boldsymbol {\phi }(\boldsymbol {x}) = [\phi _{1}(\boldsymbol {x}), \ldots, \phi _{v}(\boldsymbol {x})]^{\textsf { T}}$ 为特征映射函数，将 $d$ 维的原始输入 $\boldsymbol{x}$ 映射到一个 $v$ 维的特征空间中（注：特征映射函数的选择具有较深的内涵，其中最常见的是 RBF、Matern 等基函数，但不应将特征映射函数和基函数等价，因为采用一个神经网络来做映射函数在当下更为常见）。
+
+根据贝叶斯线性模型，可以推导出权重视角下的核（协方差）为 $k(\boldsymbol {x}, \boldsymbol {x}') = \boldsymbol {\phi }(\boldsymbol {x})^{\top} \boldsymbol {\Sigma } \boldsymbol {\phi }(\boldsymbol {x}')$ ，可见与函数视角之间等价。
+
+特别是，`式（1）` 的平方指数核可以从无限个高斯基函数 $\{\phi _{c}(\boldsymbol {x}) \}_{c=1}^{v},v \to \infty$ 中恢复出来。
+
+**（3）高斯过程回归的计算瓶颈**
+
+**学习中的计算瓶颈**：`式（2）` 中边缘似然的主要计算瓶颈是求解线性系统 $(\boldsymbol {K}_{nn}^{\epsilon })^{-1} \boldsymbol {y}$ 和行列式 $|\boldsymbol {K}_{nn}^{\epsilon }|$ 。传统上，我们会使用复杂度为 $\mathcal {O}(n^{3})$ 的 Cholesky 分解 $\boldsymbol {K}_{nn}^{\epsilon } = \boldsymbol {L} \boldsymbol {L}^{\top}$ 实施计算，进而有 $(\boldsymbol{K}_{nn}^{\epsilon })^{-1} \boldsymbol{y} = \boldsymbol {L}^{\textsf{T}} \setminus (\boldsymbol {L} \setminus \boldsymbol {y})$ 和 $\log |\boldsymbol{K}_{nn}^{\epsilon}| = 2 \sum _{i=1}^{n} \log \boldsymbol{L}_{ii}$ 。
+
+**预测中的计算瓶颈**：对于 `式（3）` 中的预测，每个测试点的均值计算复杂度为 $\mathcal{O}(n)$ 、方差计算复杂度为 $\mathcal {O}(n^{2})$。
+
+显然，高斯过程的可扩展性会受到大 $n$ 问题的影响。近年来，可扩展的高斯过程已被广泛提出和研究，以提高大数据的扩展性。在下文中，我们将可扩展高斯过程分为全局近似和局部近似，并对其进行综合分析以展示方法论特征。
+
+## 3 全局近似 
+
+全局近似的主要思路是实现原始协方差矩阵 $\boldsymbol {K}_{nn}$ 的稀疏性，减小协方差矩阵的规模，主要有三类方法：1）数据子集方法：只使用训练数据的子集； 2）稀疏核方法：删除 $\boldsymbol{K}_{nn}$ 中具有低相关性的元素； 3）稀疏近似方法：用完整协方差矩阵的低秩表示实现推断。
+
+### 3.1 数据子集方法
+
+数据子集（Subset of Data， SoD）使用训练数据 $\mathcal {D}$ 的子集 $\mathcal {D}_{\mathrm {sod}}$ 来近似完整高斯过程，是一种最简单的策略。SoD 在仅包含 $m$ ($m \ll n$ ) 个数据点的 $\boldsymbol {K}_{mm}$ 上运行，因此可以采用 $\mathcal {O}(m^{3})$ 的较低时间复杂度进行标准高斯过程推断。最近的一项理论工作 <sup class="refplus-num"><a href="#ref-45">[45]</a></sup> 通过基于图的框架分析了 SoD 的预测和泛化误差边界，结果表明，与下面介绍的其他近似方法相比，当 $n$ 足够大时，SoD 的 `速度-精度权衡` 更好。尽管 SoD 对于冗余数据情况产生了合理的预测均值，但由于子集的限制，它很难产生过度自信的预测方差（方差的误差过大）。
+
+数据子集方法的重点是子集 $\mathcal {D}_{\mathrm {sod}}$ 的选择。可以：
+
+- **二次采样**：从 $\mathcal {D}$ 中随机选择 $m$ 个点
+- **空间划分**：使用聚类技术（例如 $k$-均值 和 KD 树 <sup class="refplus-num"><a href="#ref-46">[46]</a></sup>）将数据划分为 $m$ 个子集，并选择它们的质心作为子集点
+- **学习准则**：采用主动学习准则（例如微分熵 <sup class="refplus-num"><a href="#ref-47">[47]</a></sup>、信息增益 <sup class="refplus-num"><a href="#ref-48">[48]</a></sup> 和匹配追踪 <sup class="refplus-num"><a href="#ref-49">[49]</a></sup>）以更高的计算成本来查询数据点
+
+### 3.2 稀疏核方法 
+
+稀疏核 <sup class="refplus-num"><a href="#ref-50">[50]</a></sup> 通过特别设计的紧支核（Compactly Supported Kernel）直接实现 $\boldsymbol {K}_{nn}$ 的稀疏表示 $\tilde {\boldsymbol {K}}_{nn}$。该方法通常会设定一个阈值，当 $|\boldsymbol{x}_{i} - \boldsymbol {x}_{j}|$ 超过该阈值时，强制 $k(\boldsymbol {x}_{i}, \boldsymbol {x}_{j}) = 0$。由于只有 $\tilde {\boldsymbol {K}}_{nn}$ 中的非零元素才参与计算，所以使用紧支撑核的高斯过程的计算复杂度缩小为 $\mathcal {O}(\alpha n^{3})$，其中 $0 &lt; \alpha &lt; 1$。
+
+构建有效稀疏核的主要挑战是如何构建半正定 (PSD) 矩阵 $\tilde{\boldsymbol {K}}_{nn}$ ，即对于任意 $\boldsymbol {v} \in R^{n}$，有 $\boldsymbol {v}^{\top} \tilde{\boldsymbol{K}}_{nn} \boldsymbol {v} \ge 0$  <sup class="refplus-num"><a href="#ref-15">[15]</a></sup><sup class="refplus-num"><a href="#ref-50">[50]</a></sup><sup class="refplus-num"><a href="#ref-51">[51]</a></sup><sup class="refplus-num"><a href="#ref-52">[52]</a></sup>。此外，由于截断效应，使用紧支核的高斯过程有可能捕获到局部的模式。
+
+### 3.3 稀疏近似方法
+
+
+**（1）特征分解与降秩**
+
+通常，特征分解有助于选择前 $m$ 个特征值来逼近满秩的协方差矩阵： $\boldsymbol {K}_{nn} \approx \boldsymbol {U}_{nm} \boldsymbol {\Lambda }_{ mm} \boldsymbol {U}_{nm}^{\top}$ 。
+
+高斯过程模型中计算复杂度最大的两个运算是协方差矩阵的求逆和求行列式。通过降秩，满秩协方差矩阵的逆可以通过 Sherman–Morrison–Woodbury 公式计算：
+$$
+\begin{equation*}
+ \big (\boldsymbol {K}_{nn}^{\epsilon }\big)^{-1} \approx \sigma ^{-2}_{\epsilon } \boldsymbol {I}_{n} + \sigma ^{-2}_{\epsilon } \boldsymbol {U}_{nm} \big (\sigma ^{2}_{\epsilon } \boldsymbol {\Lambda }_{mm}^{-1} + \boldsymbol {U}_{nm}^{\top} \boldsymbol {U}_{nm}\big)^{-1} \boldsymbol {U}_{nm}^{\top}\end{equation*}
+$$
+ 
+而行列式可以通过 Sylvester 行列式定理计算：
+
+$$
+\begin{equation*}
+ \big |\boldsymbol {K}_{nn}^{\epsilon }\big | \approx |\boldsymbol {\Lambda }_{mm}| \big |\sigma ^{2}_{\epsilon } \boldsymbol {\Lambda }_{mm}^{-1} + \boldsymbol {U}_{nm}^{\top} \boldsymbol {U}_{nm}\big |\end{equation*}
+$$
+
+此时的计算复杂度为 $\mathcal {O}(nm^{2})$，优于满秩协方差矩阵的 $\mathcal {O}(n^{3})$。也就是说特征分解后的协方差矩阵求逆和求行列式的计算效率都能提高。
+
+**（2）Nyström 近似**
+
+依据这个思路，如果我们能够使用 $m$ 个数据点来近似 $\boldsymbol {K}_{nn}$ 的特征函数，就可以进一步利用 Nyström 近似实现类似的高效计算：
+
+$$
+\begin{equation*}
+ \boldsymbol {K}_{nn} \approx \boldsymbol {Q}_{nn} = \boldsymbol {K}_{nm} \boldsymbol {K}_{mm}^{-1} \boldsymbol {K}_{nm}^{\top}\end{equation*}
+$$
+
+此方法可以极大地改善大规模核学习 <sup class="refplus-num"><a href="#ref-53">[53]</a></sup> 并启用朴素 Nyström 高斯过程<sup class="refplus-num"><a href="#ref-54">[54]</a></sup>。但是，此方法并非生成概率模型，也无法保证协方差矩阵的半正定性，可能会产生负的预测方差 <sup class="refplus-num"><a href="#ref-55">[55]</a></sup>。
+
+**（3）稀疏高斯过程**
+
+受 Nyström 近似的启发，稀疏高斯过程方法构建了一个生成概率模型，该模型通过 $m$ 个归纳点（也称为支撑点、活动集或伪点）实现稀疏性，以最优地汇总整个训练数据的依赖关系。其基本原理是：
+
+引入了一组归纳点对 $(\boldsymbol {X}_{m}, \boldsymbol {f}_{m})$，其中引导变量 $\boldsymbol {f}_{m}$ 近似于 $\boldsymbol {f}$，遵循相同的高斯过程先验 $p(\boldsymbol {f}_{m}) = \mathcal {N}(\boldsymbol {0}, \boldsymbol {K}_{mm})$ 。最重要的是，需要保证 $\boldsymbol {f}_{m}$ 是 $\boldsymbol {f}$ 的充分统计量，也就是说，对于任何变量 $\boldsymbol {z}$ ，能保持 $p(\boldsymbol { z} | \boldsymbol {f}, \boldsymbol {f}_{m}) = p(\boldsymbol {z} | \boldsymbol {f}_{m})$。
+
+如果满足上述条件，理论上我们可以通过边缘化 $\boldsymbol {f}_{m}$ ，恢复原始的高斯过程 $p(\boldsymbol {f}, f_{*})$： $p(\boldsymbol {f}, f_{*}) = \int p(\boldsymbol {f}, f_{*} | \boldsymbol {f}_{m}) p(\boldsymbol {f}_{m}) d\boldsymbol {f}_{m}$。 
+
+稀疏高斯过程主要有三个类型：
+- **先验近似（Prior Approximations）**： 用低秩高斯过程 $p(\boldsymbol{f_m},f_*)$ 近似满秩的先验高斯过程 $p(\boldsymbol{f},f_*)$ ，但后验高斯过程 $p(\boldsymbol{f},f_* | \boldsymbol{y})$ 的推断采用精确方式。
+- **后验近似（Posterior Approximations）**：先验高斯过程 $p(\boldsymbol{f},f_*)$ 仍然采用满秩，但后验高斯过程 $p(\boldsymbol{f},f_* | \boldsymbol{y})$ 通过变分推断实现。
+- **结构化稀疏近似（Structured Sparse Approximations）**：对特殊结构的协方差矩阵（如空间上各轴均匀分布的点），充分利用矩阵向量的快速乘法和迭代实现似然的高效计算。
+ 
+#### 3.3.1 先验高斯过程的稀疏近似
+
+先验近似方法 <sup class="refplus-num"><a href="#ref-16">[16]</a></sup> 使用了条件独立假设 $\boldsymbol {f} \bot f_{*}|\boldsymbol {f}_{m}$，对联合先验（这是三次方复杂度的源头）做了修改：
+
+$$
+\begin{equation*}
+p(\boldsymbol {f}, f_{*}) = \int p(\boldsymbol {f}| \boldsymbol {f}_{m}) p(f_{*}|\boldsymbol {f}_{m}) p(\boldsymbol {f}_{m}) d\boldsymbol {f}_{m}  \tag{5}
+\end{equation*}
+$$
+ 
+给定 Nyström 符号 $\boldsymbol {Q}_{ab} = \boldsymbol {K}_{am} \boldsymbol {K}_{mm}^{-1} \boldsymbol {K }_{mb}$
+$$
+\begin{align*}
+p(\boldsymbol {f} | \boldsymbol {f}_{m})=&amp;\mathcal {N} \big (\boldsymbol {f}| \boldsymbol {K}_{nm} \boldsymbol {K}_{mm}^{-1} \boldsymbol {f}_{m}, \boldsymbol {K}_{nn} - \boldsymbol {Q}_{nn}\big) \tag{6a}\\ 
+p(f_{*} | \boldsymbol {f}_{m})=&amp;\mathcal {N} \big (f_{*}| \boldsymbol {k}_{*m} \boldsymbol {K}_{mm}^{-1} \boldsymbol {f}_{m}, k_{**} - Q_{**}\big) \tag{6b}
+\end{align*}
+$$
+
+其中 $\boldsymbol {f}_{m}$ 被称为引导变量，因为 $\boldsymbol {f}$ 和 $f_{*}$ 之间的依赖关系是由 $\boldsymbol {f}_{m}$ 归纳的。为了获得计算增益，我们将训练和测试条件修改为
+$$
+\begin{align*} 
+q(\boldsymbol {f} | \boldsymbol {f}_{m})=&amp;\mathcal {N} \big (\boldsymbol {f}|\boldsymbol {K}_{nm} \boldsymbol {K}_{mm}^{-1} \boldsymbol {f}_{m}, \tilde {\boldsymbol {Q}}_{nn}\big) \tag{7a}\\ 
+q(f_{*} | \boldsymbol {f}_{m})=&amp;\mathcal {N} \big (f_{*}|\boldsymbol {k}_{*m} \boldsymbol {K}_{mm}^{-1} \boldsymbol {f}_{m}, \tilde {Q}_{**}\big)\tag{7b}
+\end{align*}
+$$
+
+然后，$\log p(\boldsymbol {y})$ 被 $\log q(\boldsymbol {y})$ 近似为
+
+$$
+\begin{align*}&amp;\hspace {-2pc} \log q(\boldsymbol {y}) = - \frac {n}{2} \log 2\pi - \frac {1}{2} \log \big |\tilde {\boldsymbol {Q}}_{nn} + \boldsymbol {Q}_{nn} + \sigma ^{2}_{\epsilon } \boldsymbol {I}_{n}\big | \\&amp;\qquad \qquad \qquad -\, \frac {1}{2} \boldsymbol {y}^{\top} \big (\tilde {\boldsymbol {Q}}_{nn} + \boldsymbol {Q}_{nn} + \sigma ^{2}_{\epsilon } \boldsymbol {I}_{n}\big)^{-1} \boldsymbol {y} \tag{8}
+\end{align*}
+$$
+
+研究已经发现，选择特定的 $\tilde {\boldsymbol {Q}}_{nn}$ ，能够使 $|\tilde {\boldsymbol {Q}}_{nn} + \boldsymbol {Q}_{nn} + \sigma ^{2}_{\epsilon } \boldsymbol {I}_{n}|$ 和 $(\tilde {\boldsymbol {Q}}_{nn} + \boldsymbol {Q}_{nn} + \sigma ^{2}_{\epsilon } \boldsymbol {I}_{n})^{-1}$ 的计算复杂度大幅降低至 $\mathcal {O}(nm^{2})$。下面列出已有的一些方法：
+
+
+**（1）回归子集方法（the subset of regressors，SOR）**
+
+一种比较特殊的方法是回归子集（也被称为确定性归纳条件）<sup class="refplus-num"><a href="#ref-56">[56]</a></sup>。该方法采用协方差为零的确定性训练和测试条件 $\tilde {\boldsymbol {Q}}_{nn} = \boldsymbol { 0}$ 和 $\tilde {Q}_{**} = 0$ ，即：
+
+$$
+\begin{align*} 
+q_{\mathrm {SoR}}(\boldsymbol {f} | \boldsymbol {f}_{m})=&amp;\mathcal {N} (\boldsymbol {f}|\boldsymbol {K}_{nm} \boldsymbol {K}_{mm}^{-1} \boldsymbol {f}_{m}, \boldsymbol {0})\tag{9a}\\ 
+q_{\mathrm {SoR}}(f_{*} | \boldsymbol {f}_{m})=&amp;\mathcal {N} (f_{*}|\boldsymbol {k}_{*m} \boldsymbol {K}_{mm}^{-1} \boldsymbol {f}_{m}, 0).\tag{9b}
+\end{align*}
+$$
+
+这相当于将 Nyström 近似同时应用于训练和测试数据，从而产生一个协方差矩阵的秩为 $m$ 的退化高斯过程，其核函数为：
+$$
+\begin{equation*}
+k_{\mathrm {SoR}}(\boldsymbol {x}_{i}, \boldsymbol {x}_{j}) = k(\boldsymbol {x}_{i}, \boldsymbol {X}_{m}) \boldsymbol {K}_{mm}^{-1} k(\boldsymbol {X}_{m}, \boldsymbol {x}_{j})
+\end{equation*}
+$$
+**（2）相关向量机方法 (the relevance vector machine，RVM)**
+
+我们也可以从权重空间的角度解释回归子集。 众所周知，在由稠密基函数 $\{\phi_{c}(\boldsymbol {x})\}_{c=1}^{v}$ 定义的特征空间中，使用输入 $\boldsymbol{x}$ 的无限基函数展开作为核的高斯过程，等价于 `式（4）` 中权重无限大的贝叶斯线性模型。因此，相关向量机方法 <sup class="refplus-num"><a href="#ref-57">[57]</a></sup> 使用了 $m$ 个基函数 $\boldsymbol {\phi }_{m}(\boldsymbol {x}) = [\phi _{1}(\boldsymbol {x }), \ldots, \phi _{m}(\boldsymbol {x})]^{\top}$ 来做近似。
+
+$$
+\begin{equation*}
+ p(\boldsymbol {f}|\boldsymbol {w}) = \mathcal {N}\big (\boldsymbol {f}| \boldsymbol {\Phi }_{nm} \boldsymbol {w}, \boldsymbol {K}_{nn} - \boldsymbol {\Phi }_{nm} \boldsymbol {\Sigma }_{mm} \boldsymbol {\Phi }_{nm}^{\top}\big) \tag{10}
+\end{equation*}
+$$
+
+其中 $\boldsymbol {\Phi }_{nm} = [\boldsymbol {\phi }_{m}(\boldsymbol {x}_{1}), \ldots, \boldsymbol {\phi }_{m}( \boldsymbol {x}_{n})]^{\top}$ 和 $p(\boldsymbol {w}) = \mathcal {N}(\boldsymbol {w}|\boldsymbol {0}, \boldsymbol{\Sigma }_{mm})$ 。因此，从函数空间的角度来看，相关向量机（RVM）是具有如下核函数的高斯过程
+
+$$
+k_{\mathrm {RVM}}(\boldsymbol {x}_{i}, \boldsymbol {x}_{j}) = \boldsymbol {\phi }^{\top}(\boldsymbol {x}_{i}) \boldsymbol {\Sigma }_{mm} \boldsymbol {\phi }(\boldsymbol {x}_{j})
+$$
+
+当 $\boldsymbol {\Sigma }_{mm} = \boldsymbol {I}_{m}$ 并且 $\boldsymbol {\phi }_{m}(\boldsymbol {x}) = \boldsymbol {L}^{\top} k^{\top}(x,\boldsymbol {X}_{m})$ 时，上式恢复为 $k_{SoR}$ <sup class="refplus-num"><a href="#ref-36">[36]</a></sup>，其中 $\boldsymbol {L} \boldsymbol {L}^{\top} = \boldsymbol {K}^{-1}_{mm}$ 。
+
+不过，如 `图 4` 所示， 回归子集（SoR）近似和相关向量机（RVM）类型的模型 <sup class="refplus-num"><a href="#ref-57">[57]</a></sup><sup class="refplus-num"><a href="#ref-58">[58]</a></sup><sup class="refplus-num"><a href="#ref-59">[59]</a></sup> 对训练和测试数据施加了过于严格的假设，以至于在离开训练数据时会产生过度自信的预测方差。为了扭转 SoR 的不确定性表现，相关向量机（RVM）通过增加 $\boldsymbol {x}_{*}$ 处的基函数来进行修复，但计算成本较高 <sup class="refplus-num"><a href="#ref-60">[60]</a></sup>。这种通过将 $f_{*}$ 包含到 $\boldsymbol {f}_{m}$ 中的增强也在 <sup class="refplus-num"><a href="#ref-16">[16]</a></sup> 中进行了研究。
+
+![Fig. 4](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/5962385/9244673/8951257/liu4-2957109-large.gif)
+
+&gt; **Fig. 4.** 具有 $y(x) = \mathrm {sinc}(x) + \epsilon$ 的一维玩具示例的稀疏近似说明，其中 $\epsilon \sim \mathcal {N}(0, 0.04)$ 。 `+` 符号代表120个训练点。顶部圆圈代表的初始位置，而底部三角形代表的优化位置。绿色虚线代表完整高斯过程的预测平均值，绿色曲线代表完整高斯过程预测的 95% 置信区间。红色曲线代表稀疏近似的预测均值。阴影区域代表稀疏近似预测的 95% 置信区间。对于SKI，它没有优化的位置。发现在三个先验近似中：1）SoR在离开训练数据时存在过度自信的预测方差； 2) FITC 捕获方差的异方差性； 3）它们都不能保证收敛到完整的高斯过程，由重叠的表示。不同的是，由于后验逼近，VFE 及其随机变体 SVGP 可以很好地逼近完整高斯过程。最后，虽然通过结构化归纳集大大降低了时间复杂度，但 SKI 可能会产生不连续的预测。
+
+
+**（3）稀疏谱高斯过程方法(the sparse spectrum GP，SSGP)**
+
+稀疏谱高斯过程 <sup class="refplus-num"><a href="#ref-61">[61]</a></sup> 及其变体 <sup class="refplus-num"><a href="#ref-62">[62]</a></sup><sup class="refplus-num"><a href="#ref-63">[63]</a></sup><sup class="refplus-num"><a href="#ref-64">[64]</a></sup> 从谱表示（傅里叶特征）重建贝叶斯线性模型，优雅地解决了上述问题，并得到如下平稳核：
+
+$$
+\begin{equation*}
+ k_{SSGP}(\boldsymbol {x}_{i}, \boldsymbol {x}_{j}) = \frac {\sigma ^{2}_{0}}{m} \boldsymbol {\phi }_{m}^{\top}(\boldsymbol {x}_{i}) \boldsymbol {\phi }_{m}(\boldsymbol {x}_{j}) = \frac {\sigma ^{2}_{0}}{m} \sum _{r=1}^{m} \cos \big (2\pi \boldsymbol {s}_{r}^{\top} (\boldsymbol {x}_{i} - \boldsymbol {x}_{j}) \big)
+ \end{equation*}
+$$
+
+其中 $\boldsymbol {s}_{r} \in R^{d}$ 表示谱频率。
+
+**（4）确定性训练条件方法（the deterministic training conditional，DTC）**
+
+另一种方法是对 $\tilde {\boldsymbol {Q}}_{nn}$ 和 $\tilde {Q}_{**}$ 施加更多信息性假设。例如，确定性训练条件方法 <sup class="refplus-num"><a href="#ref-65">[65]</a></sup><sup class="refplus-num"><a href="#ref-66">[66]</a></sup> 设置了如下训练条件：
+$$
+
+\begin{equation*}
+ q_{\mathrm {DTC}}(\boldsymbol {f} | \boldsymbol {f}_{m}) = \mathcal {N} \big (\boldsymbol {f}|\boldsymbol {K}_{nm} \boldsymbol {K}_{mm}^{-1} \boldsymbol {f}_{m}, \boldsymbol {0}\big) \tag{11}
+\end{equation*}
+$$
+
+不过，该方法保留了精确测试条件。因此，其预测均值与 SoR 相同，但预测方差始终大于 SoR，并且在远离时会增长到先验（见 `图 4`）。值得注意的是：由于 `式（11）` 中的条件不一致，确定性训练条件并非精确的高斯过程。此外，由于存在限制性的先验假设 $\tilde {\boldsymbol {Q}}_{nn} = \boldsymbol {0}$， **确定性训练条件方法和回归子集通常都表现不佳**。
+
+**（5）完全独立训练条件方法（the fully independent training conditional， FITC）**
+
+完全独立的训练条件 (FITC) <sup class="refplus-num"><a href="#ref-67">[67]</a></sup> 取消了 $\{f_{i}\}_{i=1}^{n}$ 之间的依赖，在给定 $\boldsymbol {V}_{nn} = \boldsymbol {K}_{nn} - \boldsymbol {Q}_{nn}$ 时，训练条件为：
+
+$$
+\begin{equation*}
+q_{\mathrm {FITC}}(\boldsymbol {f} | \boldsymbol {f}_{m} ) = \prod _{i=1}^{n} p(f_{i} | \boldsymbol {f}_{m}) = \mathcal {N} \big (\boldsymbol {f}|\boldsymbol {K}_{nm} \boldsymbol {K}_{mm}^{-1} \boldsymbol {f}_{m}, \mathrm {diag}[\boldsymbol {V}_{nn}]\big) \tag{12}
+\end{equation*}
+$$
+
+并且保留精确测试条件。
+
+研究表明，`式（12）`的方差与 $p(\boldsymbol {f} | \boldsymbol {f}_{m})$ 的方差相同，因为相关性 $\tilde {\boldsymbol {Q }}_{nn} = \mathrm {diag}[\boldsymbol {V}_{nn}]$ 。因此，与丢弃 `式（9）` 和 `式（11）` 中不确定性的 SoR 和 DTC 相比，FITC 部分保留了不确定性，从而得到一个更接近先验 $p(\boldsymbol {f}, f_ {*})$ 的近似。此外，完全独立假设可以扩展到 $q(f_{*} | \boldsymbol {f}_{m})$，并推导出完全独立条件 (FIC) 模型 <sup class="refplus-num"><a href="#ref-16">[16]</a></sup> ，它代表一个具有如下核的非退化高斯过程：
+
+$$
+\begin{equation*}
+ k_{\mathrm {FIC}}(\boldsymbol {x}_{i}, \boldsymbol {x}_{j}) = k_{\mathrm {SoR}}(\boldsymbol {x}_{i}, \boldsymbol {x}_{j}) + \delta _{ij} [k(\boldsymbol {x}_{i}, \boldsymbol {x}_{j}) - k_{\mathrm {SoR}}(\boldsymbol {x}_{i}, \boldsymbol {x}_{j})]\end{equation*}
+$$
+
+其中 $\delta _{ij}$ 是 Kronecker delta。请注意 $k_{\mathrm {FIC}}$ 具有恒定的先验方差但是非平稳的。或者，可以通过最小化 Kullback–Leibler (KL) 散度 $\mathrm {KL} \left({p(\boldsymbol {f}, \boldsymbol {f}_{m} ) || q(\boldsymbol {f}_{m}) \prod _{i=1}^{n} q(f_{i}|\boldsymbol {f}_{m})}\right)$ 推导得出 `式（12）` [ 68]，该散度量化了精确联合先验和近似联合先验之间的相似性。
+
+
+**（6）部分独立训练条件（the partially independent training conditional， PITC）**
+
+为了改进 FITC，部分独立训练条件 (PITC) <sup class="refplus-num"><a href="#ref-16">[16]</a></sup> 具有训练条件
+
+$$
+\begin{equation*}
+q_{\mathrm {PITC}}(\boldsymbol {f} | \boldsymbol {f}_{m}) := \prod _{i=1}^{M} p(\boldsymbol {f}_{i} | \boldsymbol {f}_{m}) = \mathcal {N} \big (\boldsymbol {f}|\boldsymbol {K}_{nm} \boldsymbol {K}_{mm}^{-1} \boldsymbol {f}_{m}, \mathrm {blkdiag}[\boldsymbol {V}_{nn}]\big). \tag{13}
+\end{equation*}
+$$
+
+这相当于将训练数据 $\mathcal {D}$ 划分为 $M$ 个独立子集（块） $\{ \mathcal {D}_{i} \}_{i=1}^{M}$ ，并且在每一个子集中考虑 $\boldsymbol {f}_{i}$ 的联合分布。但有人认为虽然更接近 $p(\boldsymbol {f} | \boldsymbol {f}_{m})$ ，但块 $q_{\mathrm {PITC}}(\boldsymbol {f} | \boldsymbol {f}_{m})$ 与 FITC <sup class="refplus-num"><a href="#ref-41">[41]</a></sup> 相比几乎没有改进。该问题可以通过 `第 5.2 节` 中讨论的 `扩展部分独立条件 (PIC)` <sup class="refplus-num"><a href="#ref-41">[41]</a></sup> 来解决。
+
+特别地，FITC 在 $\boldsymbol {x}_{*}$ 处产生预测均值 $\mu (\boldsymbol {x}_{*}) = \boldsymbol {k}_{*m} \boldsymbol {\Psi } \boldsymbol {K}_{mn} \boldsymbol {\Lambda }^{-1} \boldsymbol {y}$ 和预测方差 $\sigma ^{2}(\boldsymbol {x}_{*}) = k_{**} - Q_{**} + \boldsymbol {k}_{*m} \boldsymbol {\Psi } \boldsymbol {k}_{m*}$ ，其中 $\boldsymbol {\Psi }^{ -1} = \boldsymbol {K}_{mm} + \boldsymbol {K}_{mn} \boldsymbol {\Xi }^{-1} \boldsymbol {K}_{nm}$ 和 $\boldsymbol {\Xi } = \mathrm {diag}[\boldsymbol {V}_{nn}] + \sigma ^{2}_{\epsilon } \boldsymbol {I}_{n}$ 。发现对角线相关 $\mathrm {diag}[\boldsymbol {V}_{nn}]$ 表示给定 $\boldsymbol {f}_{m}$ 的 $\boldsymbol {f}$ 的后验方差。因此，这些变化的方差（恰好在 $\boldsymbol {X}_{m}$ 处为零）使 FITC 能够捕获噪声异方差性（参见图 4），但代价是产生无效估计（几乎为零）噪声方差 $\sigma ^{2}_{\epsilon }$ 并牺牲预测均值的准确性 <sup class="refplus-num"><a href="#ref-69">[69]</a></sup>。
+
+最后，FITC 的异方差性导致了另一个发现，即这种近似试图以低计算成本实现理想的预测精度，而不是随着 $m$ 的增加忠实地恢复标准高斯过程。实际上，当 $\boldsymbol {X}_{m} = \boldsymbol {X}$ 时，先验近似恢复了完整的高斯过程。然而，这种配置在最大化 $\log q(\boldsymbol {y})$ 时并不是全局最优的，这使其很麻烦。此外，通过优化 `式（8）` 来学习，可能会产生较差的预测<sup class="refplus-num"><a href="#ref-17">[17]</a></sup>。这些问题将通过以下的后验近似来解决。
+
+#### 3.3.2 后验高斯过程的变分近似推断
+
+**（1）变分推断方法**
+
+与先验近似不同，后验近似 <sup class="refplus-num"><a href="#ref-1">[1]</a></sup><sup class="refplus-num"><a href="#ref-17">[17]</a></sup> 保留精确的先验但执行近似推断。最著名的方法是 Titsias <sup class="refplus-num"><a href="#ref-17">[17]</a></sup> 通过变分推断 (VI) <sup class="refplus-num"><a href="#ref-70">[70]</a></sup> 提出的 `变分自由能 (VFE)`。 
+
+该方法并不修改先验 $p(\boldsymbol {f}, f_{*})$ ，而是直接通过引入变分分布 $q(\boldsymbol {f}, \boldsymbol {f}_{m} | \boldsymbol {y})$ 来近似后验 $p(\boldsymbol {f}, \boldsymbol {f}_{m} | \boldsymbol {y} )$，学习该变分分布是统计模型的中心任务。我们有 KL 散度
+
+$$
+\begin{equation*}
+\mathrm {KL}(q(\boldsymbol {f}, \boldsymbol {f}_{m} | \boldsymbol {y}) || p(\boldsymbol {f}, \boldsymbol {f}_{m} | \boldsymbol {y})) = \log p(\boldsymbol {y}) \!-\! \left \langle{ \log \frac {p(\boldsymbol {y}, \boldsymbol {f}, \boldsymbol {f}_{m})}{q(\boldsymbol {f}, \boldsymbol {f}_{m} | \boldsymbol {y})} }\right \rangle _{q(\boldsymbol {f}, \boldsymbol {f}_{m} | \boldsymbol {y})} \!\!\!\!= \!\log p(\boldsymbol {y}) \!-\! F_{q} \tag{14}
+\end{equation*}
+$$
+ 
+其中 $\langle. \rangle _{q(.)}$ 表示对分布 $q(.)$ 的期望。
+
+最小化严格定义的 $\mathrm {KL}(q || p ) \ge 0$ 等同于最大化 $F_{q}$ ，因为 $\log p(\boldsymbol {y})$ 对于 $q(\boldsymbol {f}, \boldsymbol {f}_{m} | \boldsymbol {y})$ 来说是常数。
+
+$F_{q}$ 也被称为 `证据下限 (ELBO)` 或 `变分自由能（VFE）`，它允许我们联合优化变分参数和超参数。研究表明，关于超参数最大化 $F_{q}$ 可以直接改进变分下界 $F_{q}$ ，而关于变分参数最大化 $F_{q}$ 则可以隐式地改善对后验 $p (\boldsymbol {f}, \boldsymbol {f}_{m} | \boldsymbol {y})$ 和证据 $p(\boldsymbol {y})$ 的近似匹配。
+
+为了推导出更紧致的界限，变分方法通过导数取零的方式，努力找到最优的变分分布 $q^{*}(\boldsymbol {f}_{m} | \boldsymbol {y})$，以消除 $F_{q}$ 对 $q(\boldsymbol {f}_{m} | \boldsymbol {y})$ 的依赖，从而导致了 “折叠” 的界
+
+$$
+\begin{equation*}
+ F_{\mathrm {VFE}} = \log q_{\mathrm {DTC}} (\boldsymbol {y}) - \frac {1}{2 \sigma ^{2}_{\epsilon }} \mathrm {tr} [\boldsymbol {V}_{nn}] \ge F_{q}. \tag{15}
+\end{equation*}
+$$
+ 
+注意，$F_{\mathrm {VFE}}$ 与 $\log q_{\mathrm {DTC}}$ 的区别虽然仅在于表达式中的迹，但这大大提高了推断质量。
+
+为了最大化 $F_{\mathrm {VFE}}$ ，我们应该减少迹 $\mathrm {tr} [\boldsymbol {V}_{nn}] \ge 0$ ，它表征了给定 $\boldsymbol {f}_{m}$ 时，预测隐变量 $\boldsymbol {f}$  的总方差。特别地，$\mathrm {tr} [\boldsymbol {V}_{nn}] = 0$ 表示 $\boldsymbol {f}_{m} = \boldsymbol {f}$ ，此时我们恢复了完整高斯过程。因此，迹项是寻求良好归纳集并防止过拟合的正则项，并且随着 $m$ 的增加，始终会改进 $F_{q}$（参见 <sup class="refplus-num"><a href="#ref-69">[69]</a></sup> 和 <sup class="refplus-num"><a href="#ref-71">[71]</a></sup> 中的理论分析）。最后一个性质意味着，如果有足够的资源，VFE 将恢复完整高斯过程（见`图 4`）。相比之下，如果没有这个迹项，DTC 通常会面临过拟合风险 <sup class="refplus-num"><a href="#ref-72">[72]</a></sup>。
+
+**（2）改进的变分推断**
+
+关于 VFE 的改进，通过对和超参数进行有效的基于 QR 分解的优化，它扩展到连续和离散输入 <sup class="refplus-num"><a href="#ref-73">[73]</a></sup>。在增强特征空间<sup class="refplus-num"><a href="#ref-74">[74]</a></sup>中也改进了的估计，这类似于域间策略<sup class="refplus-num"><a href="#ref-39">[39]</a></sup>。作者认为，在欧几里德空间中测量的的相似性与核测量的相似性不一致。因此，他们在潜在特征空间中的 $\boldsymbol {X}$ 上分配了一个混合先验，并导出了一个正则化边界，用于在核空间中选择好的。此外，Matthews 等人 <sup class="refplus-num"><a href="#ref-71">[71]</a></sup> 和 Matthews <sup class="refplus-num"><a href="#ref-74">[74]</a></sup> 弥合了变分框架与随机过程之间更一般的 KL 散度之间的差距。使用这种新的解释，Bui 等人 <sup class="refplus-num"><a href="#ref-76">[76]</a></sup> 近似了一般的无限联合先验 $p(\boldsymbol {f}_{m}, f_{\ne \boldsymbol {f}_{m}}, \boldsymbol {y}) = p(\boldsymbol {f}_{m}, f_{\ne \boldsymbol {f}_{m}} | \boldsymbol {y}) p(\boldsymbol {y})$ ，其中包括两个感兴趣的推断对象：后验分布和模型证据。因此，最小化它们的 KL 散度鼓励对后验和证据的直接近似。因此，FITC 和 VFE 被共同解释为
+
+
+$$
+\begin{equation*}
+ \log q_{\mathrm {PEP}}(\boldsymbol {y}) \!=\! \log q(\boldsymbol {y}) \!- \!\frac {1 \!-\! \alpha }{2 \alpha } \mathrm {tr} \left [{ \log \left ({\boldsymbol {I}_{n} \!+\! \frac {\alpha }{\sigma ^{2}_{\epsilon }} \boldsymbol {V}_{nn} }\right) }\right] \tag{16}
+\end{equation*}
+$$
+
+其中 $\log q(\boldsymbol {y})$ 采用 `式（8）` 的形式，其中 $\tilde {\boldsymbol {Q}}_{nn} = \alpha \mathrm {diag}[\boldsymbol {V }_{nn}]$ 。通过改变 $\alpha \in (0,1]$ ，我们在 $\alpha = 1$ 时恢复 FITC，在 $\alpha \to 0$ 时恢复 VFE。此外，使用适度的 $\alpha$ 的混合近似，例如， $\alpha = 0.5$ ，通常会产生更好的预测。
+
+
+**（3）随机变分高斯过程**
+
+为了进一步提高 VFE 的可扩展性，Hensman 等人 <sup class="refplus-num"><a href="#ref-1">[1]</a></sup> 保留了在 $F_{q}$ 中的变分分布 $q(\boldsymbol {f}_{m}|\boldsymbol {y}) = \mathcal {N}(\boldsymbol {f }_{m}| \boldsymbol {m}, \boldsymbol {S})$ 以获得松弛边界
+
+$$
+\begin{equation*}
+ F_{q} \!=\! \langle \log p(\boldsymbol {y}|\boldsymbol {f}) \rangle _{p(\boldsymbol {f}|\boldsymbol {f}_{m}) q(\boldsymbol {f}_{m} | \boldsymbol {y})}\! -\! \mathrm {KL}(q(\boldsymbol {f}_{m}|\boldsymbol {y}) || p(\boldsymbol {f}_{m})). \tag{17}
+\end{equation*}
+$$
+
+由于独立同分布，$F_{q}$ 右侧的第一项是 $n$ 项的总和。观察噪声，即 $p(\boldsymbol {y} | \boldsymbol {f}) = \prod _{i=1}^{n} p(y_{i} | f_{i})$ 。因此，鼓励大规模学习的随机梯度下降 (SGD) <sup class="refplus-num"><a href="#ref-77">[77]</a></sup> 可用于使用小批量 $\{\boldsymbol{X}_{b}, \boldsymbol {y}_{b} \}$ 获得 $F_{q}$ 的无偏估计
+ 
+$$
+\begin{align*}
+&amp;\hspace {-2pc}F_{q} \approx \frac {n}{|\boldsymbol {y}_{b}|} \sum _{y_{i} \in \boldsymbol {y}_{b}} \int q(\boldsymbol {f}_{m}|\boldsymbol {y}) p(f_{i}|\boldsymbol {f}_{m}) \log p(y_{i}| f_{i}) df_{i} d\boldsymbol {f}_{m} \\
+&amp;\qquad \qquad \qquad \qquad \quad \,\,\,\, -\, \mathrm {KL}(q(\boldsymbol {f}_{m}|\boldsymbol {y}) || p(\boldsymbol {f}_{m})) \tag{18}
+\end{align*}
+$$
+
+由于在欧几里德空间中优化变分参数 $\boldsymbol {m}$ 和 $\boldsymbol {S}$ 的难度，可以使用自然梯度的随机 VI (SVI) <sup class="refplus-num"><a href="#ref-78">[78]</a></sup>，在 $|\boldsymbol {y}_{b}|=1$ 时导致 $\mathcal {O}(m^{3})$ 的显著复杂性，更有趣的是，在线或随时学习方式。
+
+因此，随机变分高斯过程(SVGP) 的一个重要特性是它在每次迭代中随时使用一小部分训练数据训练稀疏高斯过程<sup class="refplus-num"><a href="#ref-35">[35]</a></sup>。尽管显示出高扩展性和理想的近似值，SVGP 也有一些缺点：1) 边界 $F_{q}$ 不如 $F_{\mathrm {VFE}}$ 紧，因为 $q(\boldsymbol {f}_{m }|\boldsymbol {y})$ 没有被优化消除； 2) 它使用大量变分参数对 $q(\boldsymbol {f}_{m}|\boldsymbol {y})$ 进行优化，因此需要很多时间来完成一个训练周期； 3）SVI 的引入带来了仔细调整 SGD 参数的经验要求。
+
+**（4）可分解的变分界**
+
+受 Hensman 思想的启发，Peng 等人 <sup class="refplus-num"><a href="#ref-36">[36]</a></sup> 通过采用 `式（10）` 中的权重空间增加推导出了高斯过程的类似因式分解变分界。权重空间视图允许使用灵活的基函数来合并各种低阶结构，并提供复合非凸边界，从而能够使用基于异步近端梯度的算法 <sup class="refplus-num"><a href="#ref-80">[80]</a></sup> 进行加速。通过在分布式机器学习平台 PARAMETERSERVER <sup class="refplus-num"><a href="#ref-81">[81]</a></sup> 中部署变分模型，作者首先将高斯过程扩展到数十亿个数据点。
+
+Cheng 和 Boots <sup class="refplus-num"><a href="#ref-82">[82]</a></sup> 也从权重空间的角度推导出了一个随机变分框架，不同之处在于 $p(\boldsymbol {f} | \boldsymbol {w})$ 的均值和方差分别使用解耦的基函数集 $\boldsymbol {\phi }_{a}$ 和 $\boldsymbol {\phi }_{b}$ ，导致更灵活的推断。
+
+**（5）其他变分推断方法**
+
+最近一项有趣的工作 <sup class="refplus-num"><a href="#ref-35">[35]</a></sup> 提出了一种类似于 Hensman 变分框架的新颖统一的随时变分框架，用于拟合现有的稀疏高斯过程，例如 SoR、DTC、FIT(C) 和 PIT(C)，这样它们就可以通过有效的 SGD 进行训练，从而实现对所选稀疏模型的预测分布的渐近收敛。其关键是进行反向变分推断，其中 “反向” 意味着我们可以找到先验 $p(\boldsymbol {f}_{m}) = \mathcal {N}(\boldsymbol {f}_{m}| \boldsymbol {}\nu, \boldsymbol {\Lambda })$（不是传统的高斯过程先验）使得变分分布 $q^{*}(\boldsymbol {f}_{m} | \boldsymbol {y}) = p(\boldsymbol {f}_{m} | \boldsymbol {y})$ 对于 FI(T)C 和 PI(T)C 是 ELBO 的最大值。最后，通过引入 Kronecker 结构和 $q(\boldsymbol {f}_{m}|\boldsymbol { y}))$  <sup class="refplus-num"><a href="#ref-83">[83]</a></sup><sup class="refplus-num"><a href="#ref-84">[84]</a></sup>。
+
+此外，Titsias 和 Hensman 的模型通过使用以下方法得到了进一步改进：1) 超参数的贝叶斯处理 <sup class="refplus-num"><a href="#ref-85">[85]</a></sup><sup class="refplus-num"><a href="#ref-86">[86]</a></sup><sup class="refplus-num"><a href="#ref-87">[87]</a></sup> 而不是传统的点估计，当超参数的数量较少时，传统点估计有过拟合风险；2) 非高斯似然<sup class="refplus-num"><a href="#ref-86">[86]</a></sup><sup class="refplus-num"><a href="#ref-88">[88]</a></sup><sup class="refplus-num"><a href="#ref-89">[89]</a></sup>。
+
+#### 3.3.3 特殊结构的稀疏近似计算
+
+对于一些特性结构的协方差矩阵，可以利用矩阵-向量的快速乘法 (MVM) <sup class="refplus-num"><a href="#ref-90">[90]</a></sup> 直接加速 $(\boldsymbol {K}_{nn}^{\epsilon })^{-1} \boldsymbol {y}$  的计算 <sup class="refplus-num"><a href="#ref-91">[91]</a></sup>，该方法使用共轭梯度 (CG) 迭代和矩阵-向量运算求解线性系统，迭代次数为 $s$ ($s \ll n$ )，因此其时间复杂度为 $\mathcal {O}(s n^{2})$ 。
+
+<sup class="refplus-num"><a href="#ref-14">[14]</a></sup> 认为，原始 矩阵向量快速乘法存在一些未解决的问题，例如迭代次数 $s$ 的确定、加速的物理含义、对协方差矩阵结构有约束等。作为改进，预处理共轭梯度方法 (PCG) <sup class="refplus-num"><a href="#ref-92">[92]</a></sup> 使用预处理矩阵（例如通过 Nystrom 近似构造）来改善协方差矩阵条件，并加速了共轭梯度的收敛。
+
+**（1）具有特殊结构协方差的情况**
+
+更有趣的是，当协方差矩阵 $\boldsymbol {K}_{nn}$ 本身具有某种代数结构时，矩阵-向量快速乘法提供了巨大的可扩展性。例如：
+
+- Kronecker 方法 <sup class="refplus-num"><a href="#ref-93">[93]</a></sup><sup class="refplus-num"><a href="#ref-94">[94]</a></sup> 利用多元网格输入 $\boldsymbol {x} \in \Omega _{1} \times \cdots \times \Omega _{d}$ 和张量乘积核形式为 $k(\boldsymbol {x}_{i}, \boldsymbol {x}_{j}) = \prod _{t=1}^{d} k(\boldsymbol {x}_{i} ^{t}, \boldsymbol {x}_{j}^{t})$。 然后，协方差矩阵分解为 Kronecker 积 $\boldsymbol {K}_{nn} = \boldsymbol {K}_{1} \otimes \cdots \otimes \boldsymbol {K}_{d}$ ，这简化了特征分解，大大降低了 $\mathcal {O}(d\overline {n} ^{d+1})$ ，其中对于 $d &gt; 1$ 有 $\overline {n} = \sqrt [d]{n}$。
+
+- Toeplitz 方法 <sup class="refplus-num"><a href="#ref-95">[95]</a></sup>  对 Kronecker 方法进行了补充，利用由规则间隔的一维点构建的协方差矩阵，导致时间复杂度 $\mathcal {O}(d \overline {n}^{d} \log \overline {n })$。 
+
+Kronecker 和 Toeplitz 方法的严格约束条件是需要网格形式的输入，因此无法应用于通用的任意数据点。
+
+**（2）缺乏特殊结构协方差的情况**
+
+为了在保留有效的 Kronecker 结构的同时处理任意数据，结构化核插值 (SKI) <sup class="refplus-num"><a href="#ref-18">[18]</a></sup> 对施加了网格约束。因此，矩阵 $\boldsymbol {K}_{mm}$ 允许 $d &gt; 1$ 的 Kronecker 结构和 $d=1$ 的 Toeplitz 结构，而互协方差矩阵 $\boldsymbol {K}_{nm }$ 是近似的，例如通过使用相邻网格的局部线性插值作为
+
+$$
+\begin{equation*}
+ k (\boldsymbol {x}_{i}, \boldsymbol {u}_{j}) \approx w_{i} k(\boldsymbol {u}_{a}, \boldsymbol {u}_{j}) + (1-w_{i}) k(\boldsymbol {u}_{b}, \boldsymbol {u}_{j}) \tag{19}
+\end{equation*}
+$$
+
+其中 $\boldsymbol {u}_{a}$ 和 $\boldsymbol {u}_{b}$ 是最紧密绑定的两个 $\boldsymbol {x}_{i}$ 和 $w_{i}$是插值权重。将近似式（19）重新插入 $\boldsymbol {Q}_{nn}$ ，我们有
+ 
+$$
+\begin{equation*}
+\boldsymbol {Q}_{nn} \approx \boldsymbol {W}_{nm} \boldsymbol {K}_{mm}^{-1} \boldsymbol {W}_{nm}^{\top} \tag{20}
+\end{equation*}
+$$
+
+其中权重矩阵 $\boldsymbol {W}$ 非常稀疏，因为它每行只有两个非零整数用于局部线性插值，导致令人印象深刻的时间复杂度 $\mathcal {O}(n + d \overline {m} ^{d+1})$ 和 $\overline {m} = \sqrt [d]{m}$ 求解 $(\boldsymbol {K}_{nn}^{\epsilon })^{-1} \boldsymbol{y}$ 。此外，稀疏 $\boldsymbol {W}$ 在预计算后产生具有恒定时间复杂度 $\mathcal {O}(1)$ 的预测均值和具有复杂度 $\mathcal {O}(m)$ 的预测方差。此外，Pleiss 等人 <sup class="refplus-num"><a href="#ref-97">[97]</a></sup> 使用 Lanczos 近似推导了一个恒定时间预测方差，它允许 MVM 的 $s$ 次迭代进行计算。
+
+原始的 SKI 有两个主要缺点:
+
+- 首先，网格的数量 $m$ 随维度 $d$ 呈指数增长，这使得 $d &gt; 5$ 不切实际。为了解决这个问题，可以使用降维或流形学习将映射到一个 $p$ \-dimensional ($p \ll d$ ) 潜在空间 <sup class="refplus-num"><a href="#ref-98">[98]</a></sup>，或者更有趣的是，可以使用层次结构NN 提取潜在的低维特征空间 <sup class="refplus-num"><a href="#ref-34">[34]</a></sup><sup class="refplus-num"><a href="#ref-99">[99]</a></sup>。此外，人们不断努力 <sup class="refplus-num"><a href="#ref-84">[84]</a></sup><sup class="refplus-num"><a href="#ref-100">[100]</a></sup><sup class="refplus-num"><a href="#ref-101">[101]</a></sup> 通过利用 $\boldsymbol {K}_{ nm}$ 或将张量序列分解和 Kronecker 乘积施加到 Hensman 变分框架中 $q(\boldsymbol {f}_{m}|\boldsymbol {y})$ 的均值和方差。 $d$ 的线性复杂度允许使用大量，例如 $m = 10^{d}$ 。
+- 其次，由于局部权重插值，SKI 可能会产生不连续的预测，并且由于限制性 SoR 框架而在离开训练数据时会提供过于自信的预测方差（见图 4）。为了平滑预测，Evans 和 Nair <sup class="refplus-num"><a href="#ref-100">[100]</a></sup> 利用 $\boldsymbol {K}_{nm}$ 的行分区 Khatri–Rao 结构，而不是使用局部权重插值。为了具有合理的不确定性，已考虑类似于 FITC 的对角线相关性 <sup class="refplus-num"><a href="#ref-100">[100]</a></sup><sup class="refplus-num"><a href="#ref-102">[102]</a></sup>。
+
+最后，请注意，使用许多有望提高模型能力。但由于网格约束，结构化稀疏近似使用固定的，通过降维来处理高维任务，并将绝大多数放置在域边界上，增加 $d$，这反过来可能退化模型的能力。
+
+#### 3.3.4 归纳点的选择问题
+
+到目前为止，我们已经回顾了当前最先进的稀疏近似方法。在它们的实现中，归纳点的数量和位置都至关重要。
+
+- **归纳点的数量**：理论分析 <sup class="refplus-num"><a href="#ref-103">[103]</a></sup> 表明，对于正态分布输入和平方指数核的回归，当 $m$ 比 $n$ 增长得更慢时，变分近似和后验之间的 KL 散度可以任意小。
+
+- **归纳点的位置**，我们可以使用聚类技术从 $\mathcal {D}$ 中选择一组有限的空间填充，或者使用一些查询准则 <sup class="refplus-num"><a href="#ref-49">[49]</a></sup><sup class="refplus-num"><a href="#ref-56">[56]</a></sup><sup class="refplus-num"><a href="#ref-66">[66]</a></sup><sup class="refplus-num"><a href="#ref-104">[104]</a></sup><sup class="refplus-num"><a href="#ref-105">[105]</a></sup> 依次选择信息。更灵活的做法是，将其作为与其他超参数 <sup class="refplus-num"><a href="#ref-67">[67]</a></sup> 一起优化的参数（这将额外引入 $m \times d$ 个参数），并将推断转化为高维优化任务。
+
+随着归纳点数量 $m$ 的增加，从数据集中简单选择子集的 SOD 方法与此处的优化方法之间的差距会逐步消失。有趣的是，最近的一项工作 <sup class="refplus-num"><a href="#ref-106">[106]</a></sup> 首次尝试在贝叶斯框架中，通过在 $\boldsymbol {X}_{m}$ 上设置先验来同时确定归纳点的数量和位置。
+
+## 4 局部近似
+
+受分而治之的启发，局部近似使用局部专家来提高高斯过程的扩展性。相比于全局近似，局部化能够捕获非平稳特征。在下文中，我们全面回顾了直接使用纯局部专家进行预测的 `朴素局部专家`，以及继承朴素局部专家优势但通过模型提升预测的 `专家混合（MoEs）`方法 和 `专家乘积（PoEs）`方法。
+
+### 4.1 朴素局部专家
+
+众所周知，一对彼此远离的点是低相关的，因此，利用 $\mathcal {D}$ 的数据子集训练局部专家，有望以较低时间复杂度产生较为合理的预测（注：似乎也是一种数据子集方法，但不同区域使用不同子集）。特别是，简单的朴素局部专家方法 (NLE) <sup class="refplus-num"><a href="#ref-107">[107]</a></sup><sup class="refplus-num"><a href="#ref-108">[108]</a></sup> 让局部专家 $\mathcal {M}_{i}$ 完全负责由 $\boldsymbol{X}_{i}$ 定义的子区域 $\Omega_{i}$。在数学上，对于测试点 $\boldsymbol {x}_{*} \in \Omega _{i}$， 我们的预测为 $p(y_{*}|\mathcal {D}, \boldsymbol {x}_{*}) \approx p_{i}(y_{*}|\mathcal {D}_{i}, \boldsymbol {x}_{*})$ 。
+
+根据 $\mathcal {D}$ 的划分，我们可以将 NLE 分为两大类： 
+-  **归纳式 NLE**：首先划分输入空间，然后分区域训练所有专家；预测时为 $\boldsymbol { x}_{*}$ 选择合适的专家。 
+-  **直推式 NLE**：训练在预测时发生，也就是说，在测试点 $\boldsymbol {x}_{*}$ 处预测时，先选择附近邻域的数据子集 $\mathcal {D}_{*}$，然后根据该子集训练相应的专家 $\mathcal {M}_{*}$，最后将专家用于预测。
+
+</p><div class="note info no-icon flat"><p><strong>概念解析：</strong></p>
+<p>Inductive learning（先学后用）：翻译成中文可以叫做 “归纳式学习”，顾名思义，就是从已有数据中归纳出模式来，然后将该模式用于新数据和新任务。我们常用的机器学习模式，就是这样的：根据已有数据，学习分类器，然后应用于新的数据或任务。</p>
+<p>Transductive learning（即学即用）：翻译成中文可以叫做 “直推式学习”，指将当前学习的知识（注意：不是已经归纳出的知识）直接推广到指定数据上，相当于在给定测试数据的情况下，结合已有训练数据进行训练，看能不能推广到测试数据上。</p>
+</div>
+
+归纳式 NLE 使用聚类技术对 $\mathcal {D}$ 进行静态划分，例如 Voronoi 镶嵌 <sup class="refplus-num"><a href="#ref-107">[107]</a></sup> 和树 <sup class="refplus-num"><a href="#ref-109">[109]</a></sup><sup class="refplus-num"><a href="#ref-110">[110]</a></sup>，并训练独立的局部高斯过程专家，从而得到 $\mathcal {O }(nm_{0}^{2})$ ，其中 $m_{0} = n/M$ 是每个专家的训练规模。分区和专家通常是单独学习的，也可以与贝叶斯处理联合学习<sup class="refplus-num"><a href="#ref-111">[111]</a></sup>。
+
+直推式 NLE （例如最近邻方法 NeNe <sup class="refplus-num"><a href="#ref-112">[112]</a></sup> ） 采用动态分区来选择 $\boldsymbol{x}_{*}$ 周围的 $m_{0}$ 个邻居点，然后归纳出有效的随机过程 <sup class="refplus-num"><a href="#ref-108">[108]</a></sup><sup class="refplus-num"><a href="#ref-113">[113]</a></sup>，其计算复杂度依赖于测试级大小 $n_{t}$，为 $\mathcal {O}(n_{t} m_{0}^{3})$。直推式 NLE 的一个关键问题是选择围绕 $\boldsymbol {x}_{*}$ 的邻域集 $\mathcal {D}_{*}$ 。最简单的方法是根据某种几何接近度准则进行选择，但如果不考虑空间相关性，此类方法并不是最优的<sup class="refplus-num"><a href="#ref-114">[114]</a></sup>。因此，一些基于高斯过程的主动学习方法被用来渐次地更新邻域集合 <sup class="refplus-num"><a href="#ref-20">[20]</a></sup><sup class="refplus-num"><a href="#ref-32">[32]</a></sup><sup class="refplus-num"><a href="#ref-115">[115]</a></sup><sup class="refplus-num"><a href="#ref-116">[116]</a></sup>。
+
+NLE 方法能够捕获局部结构上的非平稳特征，但在子区域的边界上会产生不连续的预测，并且会错过长程的空间相关性，泛化能力较差，如 `图 5` 所示。为了解决不连续性问题， **打补丁高斯过程方法（the patched GP）** <sup class="refplus-num"><a href="#ref-117">[117]</a></sup><sup class="refplus-num"><a href="#ref-118">[118]</a></sup> 施加了一些连续性条件，使得两个相邻的局部高斯过程被打上补丁，以使两者在边界上共享几乎相同的预测。然而，打过补丁的高斯过程存在不一致甚至负预测方差的问题，并且仅适用于低维 <sup class="refplus-num"><a href="#ref-106">[106]</a></sup><sup class="refplus-num"><a href="#ref-118">[118]</a></sup>。
+
+更通用的策略是模型平均，即平滑多个专家的预测结果，如下面即将介绍的专家混合方法和专家乘积方法。为了解决泛化问题，可以在专家之间共享某些超参数，例如 <sup class="refplus-num"><a href="#ref-26">[26]</a></sup>；或将局部近似与全局近似相结合，这将在 `第 5-2 节` 中进行回顾。
+
+![Fig. 5](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/5962385/9244673/8951257/liu5-2957109-large.gif)
+
+&gt; **Fig. 5：** 在玩具示例中使用六位专家的局部近似说明。请注意，对于专家混合方法，我们没有共同学习专家和门函数。为简单起见，我们在 softmax 门函数中使用个体专家和微分熵作为 $\beta_{i}$。发现 NLE 存在不连续性和泛化性差的问题。由于无法抑制较差的专家，PoE 会产生较差的预测均值和过度自信的预测方差。为了缓解这个问题，我们可以使用门函数（例如专家混合方法）来提供理想的预测；或使用依赖于输入的权重（例如 GPoE）来提升预测。
+
+
+### 4.2 专家混合方法
+
+#### 4.2.1 基本原理
+
+专家混合方法（Mixture of Experts，MOE）致力于将拥有独立参数的不同局部专家结合起来，以提高整体准确性和可靠性 <sup class="refplus-num"><a href="#ref-21">[21]</a></sup><sup class="refplus-num"><a href="#ref-22">[22]</a></sup>。如 `图 6` 所示，专家混合方法通常将组合表示为高斯混合模型（GMM）<sup class="refplus-num"><a href="#ref-120">[120]</a></sup>
+
+$$
+\begin{equation*}
+ p(y|\boldsymbol {x}) = \sum _{i=1}^{M} g_{i}(\boldsymbol {x}) p_{i}(y|\boldsymbol {x}) \tag{21}
+\end{equation*}
+$$
+
+其中：
+
+- $g_{i}(\boldsymbol {x})$ 是门函数（通常采用参数化形式例如 softmax 或 probit 函数 <sup class="refplus-num"><a href="#ref-120">[120]</a></sup><sup class="refplus-num"><a href="#ref-121">[121]</a></sup>），门函数可以被认为是专家指示 $z=i$ （即 $\boldsymbol {x}$ 被分配给第 $i$ 个专家 $\mathcal {M}_{i}$）时的概率 $p( z = i) = \pi _{i}$。
+
+- $p_{i}(y|\boldsymbol {x})$ 来自于第 $i$ 个专家 $\mathcal {M}_{i}$，负责混合的第 $i$ 个组份。
+
+`式（21）` 中的门通过输入空间的概率划分来管理混合，用于定义每一个专家负责的子区域。专家可以是各种机器学习模型，例如线性模型和支持向量机 <sup class="refplus-num"><a href="#ref-122">[122]</a></sup><sup class="refplus-num"><a href="#ref-123">[123]</a></sup>。
+ 
+<!-- ![Fig. 6 ](https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/5962385/9244673/8951257/liu6-2957109-large.gif) -->
+
+<img src="https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/5962385/9244673/8951257/liu6-2957109-large.gif" alt="Fig. 6 " style="zoom: 50%;">
+
+&gt; **Fig. 6：** 专家混合的展示
+
+专家混合方法的训练通常假设数据是独立同分布的。这样我们就可以通过最大化对数似然（因子化的） $\sum _{t=1}^{n} \log p(y_{t}|\boldsymbol {x}_{t})$，利用基于梯度的优化器 <sup class="refplus-num"><a href="#ref-124">[124]</a></sup> 或 EM 算法 <sup class="refplus-num"><a href="#ref-120">[120]</a></sup><sup class="refplus-num"><a href="#ref-122">[122]</a></sup><sup class="refplus-num"><a href="#ref-125">[125]</a></sup><sup class="refplus-num"><a href="#ref-126">[126]</a></sup> 同时学习门函数和专家。联合学习允许 “通过数据、专家” 对输入空间进行概率（软）划分，并且为不同但重叠的子区域指定不同专家。最后，$\boldsymbol {x}_{*}$ 处的预测分布为：
+
+$$
+\begin{equation*}
+ p(y_{*}|\mathcal {D},\boldsymbol {x}_{*}) = \sum _{i=1}^{M} g_{i}(\boldsymbol {x}_{*}|\mathcal {D}) p_{i}(y_{*}|\mathcal {D}, \boldsymbol {x}_{*}) \tag{22}
+\end{equation*}
+$$
+
+其中 $g_{i}(\boldsymbol {x}_{*}|\mathcal {D})$ 可以看作后验概率 $p(z_{*}=i|\mathcal {D})$ ，也被称为责任（responsibility）。
+
+**一些改进方法**：为了改进专家混合方法，有人将 `图 6` 中的单层模型扩展为分层架构 <sup class="refplus-num"><a href="#ref-125">[125]</a></sup>；有人采用贝叶斯方法而不是最大似然法来消除过拟合和噪声水平低估 <sup class="refplus-num"><a href="#ref-127">[127]</a></sup>；有人考虑采用 ${t}$ -分布来处理异常值 <sup class="refplus-num"><a href="#ref-128">[128]</a></sup>；最后，有人放弃了 `式（21）` 的条件混合形式，而是考虑引入输入分布 $p(\boldsymbol {x})$，从而形成联合似然 $p(y, \boldsymbol {x})$，以获得更好的专家分配 <sup class="refplus-num"><a href="#ref-122">[122]</a></sup>。
+
+
+#### 4.2.2 大数据问题及其改进方法
+
+在大数据方面，原始的专家混合方法是为多峰值（非平稳）建模而设计的，每个全局专家都要参与所有数据点，导致非常高复杂度； 独立同分布数据假设在这里不成立，因为高斯过程通过联合高斯分布拟合数据依赖关系；并且参数化门函数 $g_{i}$ 在贝叶斯非参数框架中不受青睐。 2001 年，Tresp <sup class="refplus-num"><a href="#ref-129">[129]</a></sup> 首次引入了高斯过程的专家混合时，共使用了 $300$ 万个高斯过程专家，以接近 $\mathcal {O}(3Mn^{3})$ 的复杂度分别捕获了均值、噪声方差和门参数，这显然对大数据没有任何吸引力。大数据高斯过程的专家混合方法应该着重解决两个问题：一是如何降低计算复杂度（模型复杂度问题），二是如何确定专家的数量（模型选择问题）。
+
+在模型复杂度方面，存在三个核心技术路线。
+
+**（1）专家本土化**。
+
+第一个技术路线是专家本土化，例如，高斯过程专家的无限混合方法 (iMGPE) <sup class="refplus-num"><a href="#ref-23">[23]</a></sup> 使用局部似然来去除独立同分布假设：
+
+$$
+\begin{equation*}
+ p(\boldsymbol {y}|\boldsymbol {X}) = \sum _{\boldsymbol {z} \in \mathcal {Z}} p(\boldsymbol {z}|\boldsymbol {X}) \prod _{i} p(\boldsymbol {y}_{i}|\boldsymbol {z}, \boldsymbol {X}_{i}) \tag{23}
+\end{equation*}
+$$
+
+给定专家指示器 $\boldsymbol {z} = [z_{1}, \ldots, z_{n}]^{\top}$ 的实例，当其中每个专家都具有相同训练规模 $m_{0}$ 时，在局部专家上进行似然分解的计算复杂度为 $\mathcal {O}(nm_{0}^{2})$ 。与 <sup class="refplus-num"><a href="#ref-122">[122]</a></sup> 类似，iMGPE 模型通过采用联合分布 $p(\boldsymbol {y}, \boldsymbol {X})$ 进一步了改进 <sup class="refplus-num"><a href="#ref-130">[130]</a></sup>：
+
+
+$$
+\begin{equation*}
+ p(\boldsymbol {y}, \boldsymbol {X}) = \sum _{\boldsymbol {z} \in \mathcal {Z}} p(\boldsymbol {z}) \prod _{i} p(\boldsymbol {y}_{i}|\boldsymbol {z}, \boldsymbol {X}_{i}) p(\boldsymbol {X}_{i}|\boldsymbol {z}). \tag{24}
+\end{equation*}
+$$
+ 
+完全的生成模型能够处理部分指定的数据，并提供逆函数映射。但是，对 `式（23）` 和 `式（24）` 的推断需要求助于昂贵的马尔可夫链蒙特卡罗（MCMC）采样。替代方法通过使用截断表示的 hard-cut EM 算法来实现本地化，其中 E-step 通过专家指示 $\boldsymbol {z}$ 的最大后验概率 (MAP) 或阈值，将数据分配给不同专家 <sup class="refplus-num"><a href="#ref-42">[42]</a></sup><sup class="refplus-num"><a href="#ref-131">[131]</a></sup><sup class="refplus-num"><a href="#ref-132">[132]</a></sup><sup class="refplus-num"><a href="#ref-133">[133]</a></sup>。M-step 仅对小的子集进行运算。
+
+**（2）与稀疏近似结合。**
+
+第二个技术路线在变分 EM 框架下将全局专家与 `第 3.3 节` 中的稀疏近似相结合。通过以下方式打破输入之间的依赖性以使 VI 可行：1) 将高斯过程解释为`式（10）` <sup class="refplus-num"><a href="#ref-24">[24]</a></sup><sup class="refplus-num"><a href="#ref-134">[134]</a></sup> 中的有限贝叶斯线性模型或 2) 使用 FITC 专家分解 $\boldsymbol {f}$ 给定归纳集 $\boldsymbol {f}_{m}$ <sup class="refplus-num"><a href="#ref-42">[42]</a></sup><sup class="refplus-num"><a href="#ref-133">[133]</a></sup>。每个专家有 $m$ 个归纳点，复杂度为 $\mathcal {O}(nm^{2}M)$ ，可以进一步简化为 $\mathcal {O}(nm^{2})$硬切 EM <sup class="refplus-num"><a href="#ref-42">[42]</a></sup><sup class="refplus-num"><a href="#ref-133">[133]</a></sup>。
+
+请注意，前两个技术路线根据数据属性和专家表现动态分配数据。因此，它们被描述为隐式局部化专家的混合 (MILE) <sup class="refplus-num"><a href="#ref-22">[22]</a></sup> 。隐式划分决定了专家的最优分配，从而捕获了专家之间的交互。这一优势鼓励了数据关联的应用 <sup class="refplus-num"><a href="#ref-135">[135]</a></sup><sup class="refplus-num"><a href="#ref-136">[136]</a></sup>。但 MILE 的主要缺点是在竞争性学习过程中，一些专家可能会由于初始参数不合理而导致零系数问题并最终失败 <sup class="refplus-num"><a href="#ref-137">[137]</a></sup>。
+
+**（3）聚类预分区**
+
+为了缓解 MILE 的问题，第三个技术路线是通过聚类技术对输入空间进行预分区，并在训练前将点分配给专家 <sup class="refplus-num"><a href="#ref-138">[138]</a></sup><sup class="refplus-num"><a href="#ref-139">[139]</a></sup>。显式局部化专家 (MELE) <sup class="refplus-num"><a href="#ref-22">[22]</a></sup> 的混合也降低了模型的复杂性，并明确确定了 专家混合方法的架构，并提出了不同的局部专家。同时，MELE 的缺点是基于聚类的分区丢失了来自数据标签和专家的信息，因此无法捕获专家之间的交互。
+
+在模型选择方面：
+
+- Akaike 信息准则 <sup class="refplus-num"><a href="#ref-140">[140]</a></sup> 和同步平衡准则 <sup class="refplus-num"><a href="#ref-141">[141]</a></sup> 已被用来选择一组候选 $M$ 值。
+
+- 更优雅地，在专家指示器 $\boldsymbol {z}$ 上可以引入依赖于输入的狄利克雷过程 (DP) <sup class="refplus-num"><a href="#ref-23">[23]</a></sup>、Polya urn 分布 <sup class="refplus-num"><a href="#ref-130">[130]</a></sup> 或更通用的 Pitman–Yor 过程 <sup class="refplus-num"><a href="#ref-142">[142]</a></sup>， 以自动从数据中推断出专家数量。但由于过于复杂的先验和无限的 $M$，模型推断必须求助于狄利克雷过程的 stick-breaking 表示 <sup class="refplus-num"><a href="#ref-24">[24]</a></sup><sup class="refplus-num"><a href="#ref-133">[133]</a></sup> 。
+
+### 4.3 专家乘积方法
+
+与专家混合方法通过多个概率分布（专家）的加权求和不同，专家乘积方法（Product of Experts，PoE） <sup class="refplus-num"><a href="#ref-25">[25]</a></sup> 将概率分布相乘，从而规避专家混合方法中的权重分配问题。如果专家混合方法类似于 “OR” 运算的话，专家乘积方法则类似于 “AND” 运算：
+
+$$
+\begin{equation*}
+ p(y|\boldsymbol {x}) = \frac {1}{Z} \prod _{i=1}^{M} p_{i}(y|\boldsymbol {x}) \tag{25}
+\end{equation*}
+$$
+
+其中 $Z$ 是归一化器，在进行最大似然（$\sum _{i=1}^{n} \log p(y_{i}|\boldsymbol {x}_{i })$）推断时，$Z$ 是造成推断 intractable 的主要原因 <sup class="refplus-num"><a href="#ref-25">[25]</a></sup>。
+
+幸运的是，高斯过程专家规避了这个问题，因为 `式（25）` 中的 $p_{i}(y|\boldsymbol {x})$ 是高斯分布，多个高斯的乘积仍然是高斯分布，进而可以得到边缘似然的因数分解解析形式：
+
+$$
+\begin{equation*}
+ p(\boldsymbol {y}|\boldsymbol {X}) = \prod _{i=1}^{M} p(\boldsymbol {y}_{i}|\boldsymbol {X}_{i}) \tag{26}
+\end{equation*}
+$$
+
+其中 $p_{i}(\boldsymbol {y}_{i}|\boldsymbol {X}_{i}) \sim \mathcal {N}(\boldsymbol {y}_{i}|\mathbf {0} , \boldsymbol {K}_{i} + \sigma ^{2}_{\epsilon, i} \boldsymbol {I}_{n_{i}})$，协方差矩阵 $\boldsymbol {K}_{i} = k(\boldsymbol {X}_{i}, \boldsymbol {X}_{i}) \in R^{n_{i} \times n_{i}}$； $n_{i}$ 是专家 $\mathcal {M}_{i}$ 的训练集大小。
+
+上述分解将满秩协方差矩阵 $\boldsymbol {K}_{nn}$ 退化为对角分块矩阵 $\mathrm {diag}[\boldsymbol {K}_{1}, \cdots, \boldsymbol {K}_{ M}]$，进而导致 $\boldsymbol {K}^{-1}_{nn} \approx \mathrm {diag}[\boldsymbol {K}_{1}^{-1}, \cdots, \boldsymbol {K}_{M}^{-1}]$ 。因此，在给定 $n_{i} = m_{0}$ 的情况下，复杂度大大降低到 $\mathcal {O}(nm_{0}^{2})$ 。
+
+已经发现，`式（26）` 中的专家乘积似然，是 `式（23）` 中专家混合似然的 “点估计”；而专家混合似然是对专家指示器 $\boldsymbol {z}$ 的所有可能配置的专家乘积似然求平均。因此：
+
+- 门函数和专家的联合学习使专家混合方法实现了专家的最优分配 <sup class="refplus-num"><a href="#ref-143">[143]</a></sup>。通常，鉴于 `式（21）` 的加权求和形式，专家混合方法永远不会比最聪明的专家更聪明；
+- 相反，由于 `式（25）` 的乘积形式，专家乘积方法可以比任何专家都更敏锐。这可以在 `图 5` 中得到证实，在该图中，由于无法抑制较差的专家，专家乘积方法汇总六位独立专家的预测后产生了较差的预测均值和过度自信的预测方差；相反，专家混合方法通过门函数提供了理想的预测。
+
+**专家乘积方法的改进**：为了改进专家乘积方法，我们保留了有效的训练过程但修改了预测过程。已经提出了各种聚合准则来削弱差专家的投票，而不是简单遵循乘积规则来聚合专家的预测。特别是，我们期望聚合预测能够具有以下性质 <sup class="refplus-num"><a href="#ref-143">[143]</a></sup>： 一是聚合预测在概率方面是合理的，二是聚合预测对弱专家来说是稳健的。
+
+给定在 $\boldsymbol {x}_{*}$ 处具有预测分布 $\{p(y_{*}|\mathcal {D}_{i}, \boldsymbol {x}_{*}) = \mathcal {N}(\mu _{i}(\boldsymbol {x}_{*}), \sigma ^{2}_{i}(\boldsymbol {x}_{*}))\}_{i=1}^{M}$ 的多个高斯过程专家 $\{\mathcal{M}_{i} \}_{i=1}^{M}$，专家乘积方法 <sup class="refplus-num"><a href="#ref-25">[25]</a></sup><sup class="refplus-num"><a href="#ref-143">[143]</a></sup><sup class="refplus-num"><a href="#ref-144">[144]</a></sup><sup class="refplus-num"><a href="#ref-145">[145]</a></sup> 可以通过以下改进规则来聚合专家预测：
+
+
+$$
+\begin{equation*}
+ p(y_{*}|\mathcal {D}, \boldsymbol {x}_{*}) = \prod _{i=1}^{M} p_{i}^{\beta _{*i}}(y_{*}|\mathcal {D}_{i}, \boldsymbol {x}_{*}) \tag{27}
+\end{equation*}
+$$
+
+其中 $\beta _{*i}$ 是一个用于量化 $p_{i}(y_{*}|\mathcal {D}_{i}, \boldsymbol {x}_{*})$ 在 $\boldsymbol {x}_{*}$ 处贡献的权重。使用 `式（27）`，我们可以用封闭表达式导出聚合预测均值和方差。原来的乘积规则 <sup class="refplus-num"><a href="#ref-25">[25]</a></sup> 采用常数权重 $\beta _{*i} = 1$，导致聚合精度 $\sigma ^{-2}(\boldsymbol {x}_{*}) = \sum _{i=1}^{M} \sigma ^{-2}_{i}(\boldsymbol {x}_{*})$，它将随着 $M$ 的增加而迅速膨胀。为了减轻过度自信的不确定性，广义专家乘积方法 (the generalized PoE，GPoE) <sup class="refplus-num"><a href="#ref-143">[143]</a></sup> 引入了一个可变的权重 $\beta _{*i}$ （被定义为专家先验和后验之间的微分熵差异），以根据专家的预测不确定性来增加或减少专家的重要性程度。不过，即使采用了这种灵活的权重，GPoE 在离开训练数据时，仍然会产生爆炸性的预测方差 <sup class="refplus-num"><a href="#ref-28">[28]</a></sup>。为了解决这个问题，我们可以施加一个约束 $\sum _{i=1}^{M} \beta _{*i} = 1$（参见 `图 5` 中的预测）或者使用一个简单的权重 $\beta_{*i} = 1/M$，这样在离开训练数据 $\boldsymbol {X}$ 时， GPoE 能够恢复先验高斯过程，但代价是会产生不自信的预测方差 <sup class="refplus-num"><a href="#ref-26">[26]</a></sup>。
+
+此外，贝叶斯委员会机 (he Bayesian committee machine，BCM) <sup class="refplus-num"><a href="#ref-26">[26]</a></sup><sup class="refplus-num"><a href="#ref-146">[146]</a></sup><sup class="refplus-num"><a href="#ref-147">[147]</a></sup><sup class="refplus-num"><a href="#ref-148">[148]</a></sup> 通过施加条件独立假设 $p(\boldsymbol {y}|y_{*})\approx \prod _{i=1}^{M} p(\boldsymbol {y}_{i} | y_{*})$  从另一个角度汇总专家的预测，这显式地为专家引入了一个共同的先验 $p(y_{*}|\boldsymbol {\theta })$。通过使用贝叶斯法则，我们有
+
+$$
+\begin{equation*}
+ p(y_{*}|\mathcal {D}, \boldsymbol {x}_{*}, \boldsymbol {\theta }) = \frac {\prod _{i=1}^{M} p_{i}^{\beta _{*i}}(y_{*}|\mathcal {D}_{i}, \boldsymbol {x}_{*}, \boldsymbol {\theta })}{p^{\sum _{i=1}^{M} \beta _{*i} - 1}(y_{*}|\boldsymbol {\theta })}. \tag{28}
+\end{equation*}
+$$
+ 
+先验相关的项帮助 BCM 在离开 $\boldsymbol {X}$ 时能够恢复先验高斯过程，而类似于 GPoE 的可变 $\beta _{*i}$ 有助于在 $\boldsymbol{X}$ 中产生稳健的 BCM 预测 <sup class="refplus-num"><a href="#ref-26">[26]</a></sup>。不过，BCM 在离开 $\boldsymbol {X}$ 时会产生不可靠的预测均值，这已在 <sup class="refplus-num"><a href="#ref-26">[26]</a></sup> 和 <sup class="refplus-num"><a href="#ref-28">[28]</a></sup> 中被观察和分析。值得注意的是，与专家乘积方法不同，BCM 中的共同先验要求所有专家都应共享超参数。这就是为什么我们显式地以 $\boldsymbol {\theta }$ 为条件写出 `式（28）`。
+
+有人指出，传统的专家乘积法和 BCM 是不一致的 <sup class="refplus-num"><a href="#ref-28">[28]</a></sup><sup class="refplus-num"><a href="#ref-149">[149]</a></sup>，即当 $n \rightarrow \infty$ 时，它们的聚合预测无法恢复完整高斯过程的预测。为了提高聚合的一致性，专家的嵌套逐点聚合法 (the nested pointwise aggregation of experts， NPAE) <sup class="refplus-num"><a href="#ref-27">[27]</a></sup> 通过假设 $\boldsymbol {y}_{i}$ 尚未被观测到而去除了独立性假设，使得 $\mu _{i}( \boldsymbol {x}_{*})$ 成为一个随机变量。 NPAE 以更高的时间复杂度为代价，提供了理论上一致的预测，因为在每个测试点都会对新的 $M \times M$ 协方差矩阵求逆。为了在保持一致预测的同时保持计算高效性，广义 RBCM 方法 (the generalized RBCM， GRBCM) <sup class="refplus-num"><a href="#ref-28">[28]</a></sup> 引入了一个全局委员会专家 $\mathcal {M}_{c}$ 作为基础专家来实现修正，并没有使用固定的先验高斯过程。该方法考虑了全局专家和本地专家之间的协方差，以支持当 $n \to \infty$ 时具有一致性预测。这最终导致如下聚合：
+
+$$
+\begin{equation*}
+ p(y_{*}|\mathcal {D},\boldsymbol {x}_{*}) = \frac {\prod _{i=2}^{M} p_{+i}^{\beta _{*i}}(y_{*}|\mathcal {D}_{+i}, \boldsymbol {x}_{*},)}{p_{c}^{\sum _{i=2}^{M} \beta _{*i} -1}(y_{*}|\mathcal {D}_{c},\boldsymbol {x}_{*})} \tag{29}
+\end{equation*}
+$$
+
+其中 $p_{+i}(y_{*}|\mathcal {D}_{+i}, \boldsymbol {x}_{*})$ 是专家 $\mathcal {M}_{i}$ 在增强数据集 $\mathcal {D}_{+i} = \{ \mathcal {D}_{i}, \mathcal {D}_{c} \}$ 上训练得出的预测分布。
+
+请注意，这些直推式聚合方法通常在专家之间共享超参数 <sup class="refplus-num"><a href="#ref-26">[26]</a></sup>，即 $\boldsymbol {\theta }_{i} = \boldsymbol {\theta}$，这是因为：
+- 1) 它实现了自动正则化并使用了更少的超参数，从而使推断更容易； 
+- 2) 它允许在聚合中暂时忽略高斯过程的噪声项，也就是说，使用 $p_{i}(f_{*}|\mathcal {D}_{i}, \boldsymbol {x}_{*})$ 代替 $p_{i}(y_{*}|\mathcal {D}_{i}, \boldsymbol {x}_{*})$，例如 <sup class="refplus-num"><a href="#ref-26">[26]</a></sup>，以减轻典型聚合的不一致性；
+- 3) 如前所述，BCM 不支持专家拥有独立超参数。但共享超参数限制了捕获非平稳特征的能力，而这是局部近似的优势。
+
+此外，聚合的另一个主要缺点是训练和预测分离而导致的 Kolmogorov 不一致性 <sup class="refplus-num"><a href="#ref-150">[150]</a></sup>，因此它不是一个通用的概率框架。也就是说，当我们扩展到多个测试点的预测分布时，例如 $\boldsymbol {x}_{*}$ 和 $\boldsymbol {x}'_{*}$ ，会存在 $p(y_{*} |\mathcal {D}) \ne \int p(y_{*},y'_{*}|\mathcal {D}) dy'_{*}$ 。
+ 
+
+## 5 可扩展高斯过程的改进
+
+### 5.1 可扩展性
+
+全局近似（尤其是稀疏近似）通常通过 $m$ 个归纳点，将标准三次方复杂度降低到 $\mathcal {O}(nm^{2})$。更进一步，随机变分推断方法（SVI） <sup class="refplus-num"><a href="#ref-1">[1]</a></sup> 可以将计算复杂度降至 $\mathcal {O}(m^{3})$，而对结构化数据的开发可降至 $\mathcal {O}(n + d\log m^{1+1/d})$  <sup class="refplus-num"><a href="#ref-18">[18]</a></sup>。不过，稀疏近似在需要实时预测的场景（例如环境传感和监测）中仍然不适用 <sup class="refplus-num"><a href="#ref-151">[151]</a></sup>。为此，可以使用高级计算基础设施（例如 GPU 和分布式集群/处理器）来实现稀疏近似，以进一步加快计算速度。
+
+**（1）分布式精确高斯过程**
+
+实际上，使用 GPU 和分布式集群的 **精确高斯过程** 已经在分布式学习 <sup class="refplus-num"><a href="#ref-157">[157]</a></sup> 体系中进行了充分研究 <sup class="refplus-num"><a href="#ref-152">[152]</a></sup><sup class="refplus-num"><a href="#ref-153">[153]</a></sup><sup class="refplus-num"><a href="#ref-154">[154]</a></sup><sup class="refplus-num"><a href="#ref-155">[155]</a></sup><sup class="refplus-num"><a href="#ref-156">[156]</a></sup>。它使用现代分布式内存和多核/多 GPU 硬件实现并行和快速线性代数算法，例如 HODLR 算法 <sup class="refplus-num"><a href="#ref-154">[154]</a></sup> 和 MVM 算法。例如，Wang 等 <sup class="refplus-num"><a href="#ref-156">[156]</a></sup> 在 3 天内通过八个 GPU 成功地训练了超过一百万个数据点的精确高斯过程。
+
+**（2）GPU 加速的稀疏高斯过程**
+
+与此同时，GPU 加速的 **稀疏高斯过程** 也得到了开发。由于 `式（15）` 中的大部分项都可以在数据点上进行因式分解，因此可以通过 GPU 并行化和加速推断<sup class="refplus-num"><a href="#ref-29">[29]</a></sup><sup class="refplus-num"><a href="#ref-30">[30]</a></sup> 。此外，通过进一步使用 松弛的 ELBO （`式（17）` ） 或网格型归纳点（`式（20）`），开发了基于 TensorFlow 的 GPflow 库 <sup class="refplus-num"><a href="#ref-31">[31]</a></sup> 和基于 PyTorch 的 `GPyTorch` 库 <sup class="refplus-num"><a href="#ref-158">[158]</a></sup>， 能够充分利用 GPU 硬件。
+
+**（3）并行化稀疏高斯过程**
+
+已经使用消息传递接口框架开发了 **并行稀疏高斯过程**（如并行 PIT 和不完全 Cholesky 分解），以在多台机器上分配计算 <sup class="refplus-num"><a href="#ref-159">[159]</a></sup><sup class="refplus-num"><a href="#ref-160">[160]</a></sup>。理想情况下，与集中式相比，并行化可以实现接近机器数量的加速因子。最近，利用可变相关噪声结构 <sup class="refplus-num"><a href="#ref-43">[43]</a></sup>， <sup class="refplus-num"><a href="#ref-161">[161]</a></sup> 建立了一个支持传统稀疏高斯过程的统一框架，包括 DTC、FI(T)C、PI(T)C 和低秩兼马尔可夫近似 (LMA)等。令人印象深刻的是，Peng 等人 <sup class="refplus-num"><a href="#ref-36">[36]</a></sup> 首先在分布式计算平台上使用多达 10 亿个训练点实现了稀疏高斯过程，并在 2 小时内成功训练了模型。
+
+当 $m_{0}=m$ 时，局部近似通常具有与全局近似相同的复杂性。局部化思想天然地鼓励并行/分布式实现，可以进一步降低计算复杂性（参见 <sup class="refplus-num"><a href="#ref-20">[20]</a></sup><sup class="refplus-num"><a href="#ref-32">[32]</a></sup><sup class="refplus-num"><a href="#ref-33">[33]</a></sup>）。
+
+
+### 5.2 能力
+
+自低秩 Nyström 近似开始，人们已经发现全局稀疏近似可以很好地近似具有高度空间相关性的缓慢变化特征。因为在这种情况下，协方差矩阵的谱展开会被几个大的特征向量支配。相反，当隐函数 $f$ 具有快速变化（非平稳）特征时，例如复杂的时间序列任务 <sup class="refplus-num"><a href="#ref-162">[162]</a></sup>，有限的全局归纳集很难开发出局部模式。不过，局部近似能够捕获局部模式，但无法描述全局模式。因此，为了增强可扩展高斯过程的表示能力，通过串联组合全局和局部近似实现混合近似，是一种很直接的想法。
+
+或者，混合近似可以通过加法过程 <sup class="refplus-num"><a href="#ref-41">[41]</a></sup><sup class="refplus-num"><a href="#ref-163">[163]</a></sup><sup class="refplus-num"><a href="#ref-164">[164]</a></sup> 来完成。例如，在将输入空间划分为子区域后，对于除包含测试点 $\boldsymbol {x}_{*}$ 之外的所有子区域，PIC <sup class="refplus-num"><a href="#ref-41">[41]</a></sup> 及其随机和分布式变体 <sup class="refplus-num"><a href="#ref-35">[35]</a></sup><sup class="refplus-num"><a href="#ref-43">[43]</a></sup><sup class="refplus-num"><a href="#ref-87">[87]</a></sup> 通过保留训练和测试的条件独立性来扩展 PITC，即 $\boldsymbol {f} \perp f_{*} | \boldsymbol {f}_{m}$ ；进而可以将局部和全局近似值集成到一个转换模式中。在数学上，假设 $\boldsymbol {x}_{*} \in \Omega _{j}$ ，我们有：
+
+
+$$
+\begin{equation*}
+ q(\boldsymbol {f}, f_{*} | \boldsymbol {f}_{m}) = p(\boldsymbol {f}_{j}, f_{*}|\boldsymbol {f}_{m}) \prod _{i \neq j}^{M} p(\boldsymbol {f}_{i} | \boldsymbol {f}_{m}). \tag{30}
+\end{equation*}
+$$
+
+ 
+该模型对应于具有可加性核的精确高斯过程：
+
+$$
+\begin{equation*}
+ k_{\mathrm {PIC}}(\boldsymbol {x}_{i}, \boldsymbol {x}_{j}) = k_{\mathrm {SoR}}(\boldsymbol {x}_{i}, \boldsymbol {x}_{j}) + \psi _{ij} [k(\boldsymbol {x}_{i}, \boldsymbol {x}_{j}) - k_{\mathrm {SoR}}(\boldsymbol {x}_{i}, \boldsymbol {x}_{j})]\end{equation*}
+$$
+
+其中 $\psi _{ij} = 1$ 当 $\boldsymbol {x}_{i}$ 和 $\boldsymbol {x}_{j}$ 属于同一个块；否则，$\psi _{ij} = 0$。请注意，PIC 通过将所有子区域大小变为一个来恢复 FIC； PIC 通过将归纳大小变为零成为纯本地高斯过程。通过结合 CS 核 <sup class="refplus-num"><a href="#ref-15">[15]</a></sup><sup class="refplus-num"><a href="#ref-52">[52]</a></sup> 和稀疏近似，类似于 $k_{\mathrm {PIC}}$ 的加法核也被用于 <sup class="refplus-num"><a href="#ref-163">[163]</a></sup><sup class="refplus-num"><a href="#ref-164">[164]</a></sup><sup class="refplus-num"><a href="#ref-165">[165]</a></sup>。此外，作为 PIC 的扩展，树状结构高斯过程<sup class="refplus-num"><a href="#ref-166">[166]</a></sup> 忽略了的大部分子区域间依赖性，但它专注于相邻子区域在链状树结构上的依赖性。几乎纯局部化的模型将时间复杂度降低到线性到 $n$，并允许使用许多。
+
+混合近似也可以通过从粗到细的过程进行，从而产生具有多层的分层结构，从而产生多分辨率 <sup class="refplus-num"><a href="#ref-40">[40]</a></sup><sup class="refplus-num"><a href="#ref-167">[167]</a></sup><sup class="refplus-num"><a href="#ref-168">[168]</a></sup><sup class="refplus-num"><a href="#ref-169">[169]</a></sup>。例如，Lee 等 <sup class="refplus-num"><a href="#ref-40">[40]</a></sup> 将 <sup class="refplus-num"><a href="#ref-166">[166]</a></sup> 的工作扩展为分层划分的高斯过程近似。该模型有多个层，根层是本地化的高斯过程。特别地，每一层都拥有独立的核，其配置由的密度决定；相邻层共享一个互协方差函数，该函数由两个相关核卷积而成，例如 <sup class="refplus-num"><a href="#ref-170">[170]</a></sup>。类似地，Park 和 Choi <sup class="refplus-num"><a href="#ref-167">[167]</a></sup> 提出了一个双层模型，其中一个高斯过程被放置在子集的质心上作为 $g(\boldsymbol {c})\sim\mathcal {GP}(0, k_{g }(\boldsymbol {c}, \boldsymbol {c}'))$ 在顶层构造一个粗略的全局近似；然后在根层的每个子区域中，通过使用全局级高斯过程作为平均先验 $f_{i}(\boldsymbol {x}) \sim \mathcal {GP}(g(\boldsymbol { x}), k_{i}(\boldsymbol {x}, \boldsymbol {x}'))$ 。该模型也被改进为多层结构<sup class="refplus-num"><a href="#ref-168">[168]</a></sup>
+
+不可避免地，局部近似的组合可能会导致不连续的预测和子区域边界的不准确不确定性。例如，树结构高斯过程<sup class="refplus-num"><a href="#ref-40">[40]</a></sup><sup class="refplus-num"><a href="#ref-166">[166]</a></sup> 完全采用局部预测分布，存在严重的不连续性。可以通过在子区域的边界上放置来平滑预测 <sup class="refplus-num"><a href="#ref-40">[40]</a></sup>，然而，这很难实现。 PIC 预测分布由全局项和局部项组成 <sup class="refplus-num"><a href="#ref-41">[41]</a></sup>，这部分缓解了不连续性。为了完全解决不连续性问题，Nguyen 和 Bonilla <sup class="refplus-num"><a href="#ref-42">[42]</a></sup> 以及 Nguyen 等 <sup class="refplus-num"><a href="#ref-133">[133]</a></sup> 将稀疏近似与模型平均策略（例如专家混合方法）相结合。
+
+最后，尽管混合近似，稀疏近似的表示能力可以通过更强大的概率框架来增强，例如，域间高斯过程<sup class="refplus-num"><a href="#ref-39">[39]</a></sup>，它采用类似于多输出高斯过程<sup class="refplus-num"><a href="#ref-10">[10]</a></sup> 中的卷积过程的想法，[ 170] 和高维高斯过程<sup class="refplus-num"><a href="#ref-171">[171]</a></sup>。特别地，它使用线性积分变换 $g(\boldsymbol {z}) = \int w(\boldsymbol {x}, \boldsymbol {z}) f(\boldsymbol {x}) d\boldsymbol {x}$ 到将映射到另一个可能具有不同维度的域。<sup>19</sup> 新域中的引导变量可以拥有一个新核并在旧域中归纳更丰富的依赖性。域间思想也已应用于后验近似 <sup class="refplus-num"><a href="#ref-71">[71]</a></sup><sup class="refplus-num"><a href="#ref-76">[76]</a></sup><sup class="refplus-num"><a href="#ref-172">[172]</a></sup>。此外，从“式（10）”中的权重空间观点来看，鼓励对基函数采用不同的配置，以使用不同的尺度捕获慢速和快速变化的特征<sup class="refplus-num"><a href="#ref-173">[173]</a></sup><sup class="refplus-num"><a href="#ref-174">[174]</a></sup>。这种权重空间非平稳高斯过程确实可以从域间视图中导出（参见 <sup class="refplus-num"><a href="#ref-39">[39]</a></sup>）。
+
+或者，与使用同方差噪声 $\epsilon \sim \mathcal {N}(0, \sigma ^{2}_{\epsilon })$ 的标准高斯过程不同，FITC 已通过变化的噪声扩展为 $p( \boldsymbol {\epsilon }) = \mathcal {N}(\boldsymbol {\epsilon }|\boldsymbol {0}, \mathrm {diag}[\boldsymbol {h}])$ 其中 $\boldsymbol {h} = [ \sigma ^{2}_{\epsilon }(\boldsymbol {x}_{1}), \cdots, \sigma ^{2}_{\epsilon }(\boldsymbol {x}_{n})]^ {\top}$ <sup class="refplus-num"><a href="#ref-175">[175]</a></sup>。此外，Hoang 等 <sup class="refplus-num"><a href="#ref-43">[43]</a></sup> 在相关噪声过程 $p(\boldsymbol {\epsilon }) = \mathcal {N}(\boldsymbol {\epsilon }| \boldsymbol {0}, \boldsymbol {K}_{\epsilon })$ 在分布式变分框架中。统一框架通过改变马尔可夫阶数和噪声结构来适应现有的稀疏近似，例如 DTC 和 PIC。 Yu 等人 <sup class="refplus-num"><a href="#ref-87">[87]</a></sup> 进一步扩展了这篇文章，通过对超参数的贝叶斯处理来防止过拟合。更优雅地，Almosallam 等人 <sup class="refplus-num"><a href="#ref-176">[176]</a></sup> 通过采用类似于 <sup class="refplus-num"><a href="#ref-177">[177]</a></sup> 和 <sup class="refplus-num"><a href="#ref-178">[178]</a></sup> 的附加对数高斯过程，从权重空间视图导出了可扩展的异方差贝叶斯模型，以将噪声方差解释为 $\sigma^{2}_{\epsilon }(\boldsymbol {x}_{i}) = \exp (\boldsymbol {\phi } (\boldsymbol {x}_{i}) \boldsymbol {w} + b)$。不同的是，Liu 等人 <sup class="refplus-num"><a href="#ref-179">[179]</a></sup> 推导了 <sup class="refplus-num"><a href="#ref-177">[177]</a></sup> 的随机和分布式变体，用于可扩展的异方差回归。使用具有混合参数的专家的分布式变体提高了扩展性和能力，而使用全局归纳集的随机变体可能会牺牲预测均值来描述异方差噪声。最后，异方差性也可以通过使用隐变量 <sup class="refplus-num"><a href="#ref-180">[180]</a></sup><sup class="refplus-num"><a href="#ref-181">[181]</a></sup> 增加输入来编码。这也被用于密度估计<sup class="refplus-num"><a href="#ref-182">[182]</a></sup>。
+
+
+## 6 一些扩展及开放问题
+
+### 6.1 可扩展的流形高斯过程
+
+
+在可扩展的高斯过程文献中，我们通常关注训练规模 $n$ 较大的场景（例如 $n \ge 10^{4}$ ），而输入的数量 $d$ 适中（例如，最多到数百个维度）。然而，在实践中，我们可能需要处理具有可比性的 $n$ 和 $d$ 甚至 $d \gg n$ 的任务，从而导致高维可扩展高斯过程的需求。在实践中，我们经常施加低维约束来限制高维问题，即输入通常位于嵌入原始 $d$ 维空间中的的 $p$ 维流形中（$p &lt; d$ ）。这是因为只有当输入大小 $d$ 与基于训练大小 $n$ 的统计功效兼容时，高维统计推断才是可解的 <sup class="refplus-num"><a href="#ref-183">[183]</a></sup>。
+
+因此，各种流形高斯过程<sup class="refplus-num"><a href="#ref-11">[11]</a></sup><sup class="refplus-num"><a href="#ref-175">[175]</a></sup> 表示为
+
+$$
+\begin{equation*}
+ y = f(\boldsymbol {\Upsilon } \boldsymbol {x}) + \epsilon \tag{31}
+\end{equation*}
+$$
+
+ 
+其中 $\boldsymbol {\Upsilon } \in R^{p \times d}$ 是一个映射矩阵，已开发用于通过线性/非线性降维处理高维大数据 <sup class="refplus-num"><a href="#ref-175">[175]</a></sup><sup class="refplus-num"><a href="#ref-184">[184]</a></sup><sup class="refplus-num"><a href="#ref-185">[185]</a></sup> ] 或类似 NN 的输入转换 <sup class="refplus-num"><a href="#ref-186">[186]</a></sup>。结果，核将低维空间中的数据操作为 $k(\boldsymbol {\Upsilon } \boldsymbol {x}, \boldsymbol {\Upsilon } \boldsymbol {x}')$ 。请注意，映射矩阵和可扩展回归是在贝叶斯框架中联合学习的，以产生有利的结果。特别是，可以使用贝叶斯混合模型 <sup class="refplus-num"><a href="#ref-187">[187]</a></sup> 来估计流形的真实维数，然而，这会导致大量的计算预算。
+
+最近一个令人兴奋的理论发现 <sup class="refplus-num"><a href="#ref-183">[183]</a></sup> 证明可以绕过内在流形的学习，因为在原始高维空间中学习的高斯过程可以在 $f$ 不是高度平滑时达到最佳速率。这促使使用基于随机压缩的贝叶斯模型对各种配置进行平均，以减少计算需求 <sup class="refplus-num"><a href="#ref-188">[188]</a></sup>。
+
+由于各个领域（例如计算机视觉（CV））的迫切需求，需要不断的理论和经验努力来设计特定组件，例如卷积核 <sup class="refplus-num"><a href="#ref-171">[171]</a></sup>，用于可扩展的流形高斯过程。
+
+
+### 6.2 可扩展的深度高斯过程
+
+受深度学习在各个领域取得巨大成功的推动，近年来研究了可扩展的深度高斯过程(DGPs) <sup class="refplus-num"><a href="#ref-34">[34]</a></sup><sup class="refplus-num"><a href="#ref-189">[189]</a></sup>。一个简单的代表是将结构 NNs 结合起来和灵活的非参数高斯过程一起，其中 NN 将原始输入空间映射到特征空间以提取非平稳/循环特征，最后一层稀疏高斯过程对潜在空间进行标准回归 <sup class="refplus-num"><a href="#ref-34">[34]</a></sup><sup class="refplus-num"><a href="#ref-99">[99]</a></sup><sup class="refplus-num"><a href="#ref-186">[186]</a></sup><sup class="refplus-num"><a href="#ref-192">[192]</a></sup>。 NN 和高斯过程的参数是通过最大化边缘似然共同学习的，以防止过拟合。 NNs+GP 结构会产生明显的不确定性，并且被发现对 CV 任务中的对抗性示例具有鲁棒性 <sup class="refplus-num"><a href="#ref-193">[193]</a></sup>。不同的是，Cremanns 和 Roos <sup class="refplus-num"><a href="#ref-194">[194]</a></sup> 使用 NN 来学习加法核的输入相关超参数。然后，采用 NeNe 算法简化高斯过程推断。此外，Iwata 和 Ghahramani <sup class="refplus-num"><a href="#ref-195">[195]</a></sup> 使用 NN 的输出作为 SVGP 的先验均值。
+
+更优雅的是，受深度学习的启发，DGP <sup class="refplus-num"><a href="#ref-189">[189]</a></sup> 及其变体 <sup class="refplus-num"><a href="#ref-196">[196]</a></sup><sup class="refplus-num"><a href="#ref-197">[197]</a></sup><sup class="refplus-num"><a href="#ref-198">[198]</a></sup><sup class="refplus-num"><a href="#ref-199">[199]</a></sup><sup class="refplus-num"><a href="#ref-200">[200]</a></sup>，它们采用分层和功能复合
+
+
+$$
+\begin{equation*}
+ y(\boldsymbol {x}) = f_{l}(f_{l-1}(\cdots f_{1}(\boldsymbol {x}))) + \epsilon \tag{32}
+\end{equation*}
+$$
+
+ 
+堆叠多层隐变量模型（LVM）<sup class="refplus-num"><a href="#ref-11">[11]</a></sup><sup class="refplus-num"><a href="#ref-201">[201]</a></sup> 以提取特征。 DGP 在（非）监督场景中展示了极大的灵活性，然而，这导致了非标准高斯过程。最近开发的卷积核 <sup class="refplus-num"><a href="#ref-171">[171]</a></sup> 为 CV 任务 <sup class="refplus-num"><a href="#ref-202">[202]</a></sup> 开辟了 DGP 的道路。有趣的是，`式（32）` 中输入的有限层到层转换可以扩展到无限深，但无穷小，由随机微分方程控制的微分场 <sup class="refplus-num"><a href="#ref-203">[203]</a></sup>。
+
+请注意，DGP 中的推断是棘手且昂贵的。因此，有效的训练需要通过归纳点进行复杂的近似推断 <sup class="refplus-num"><a href="#ref-198">[198]</a></sup><sup class="refplus-num"><a href="#ref-204">[204]</a></sup>，这反过来可能会限制能力。在不损失预测准确性的情况下更轻松地进行推断一直是 DGP 完全展示其超越回归的潜力的一大挑战。
+
+### 6.3 可扩展的多任务高斯过程
+
+由于环境传感器网络和结构设计等各个领域出现的多任务问题，多任务高斯过程(MTGP) <sup class="refplus-num"><a href="#ref-9">[9]</a></sup><sup class="refplus-num"><a href="#ref-10">[10]</a></sup>，也称为多输出高斯过程，旨在学习潜在的 $T$ 相关任务 $\boldsymbol {f} = [f_{1}, \ldots, f_{T}]^{\top}: R^{d} \mapsto R^{T}$ 同时作为
+
+$$
+\begin{equation*}
+ \boldsymbol {f}(\boldsymbol {x}) \sim \mathcal {GP}(\boldsymbol {0}, \boldsymbol {k}_{\mathrm {MTGP}}(\boldsymbol {x},\boldsymbol {x}')), \quad \boldsymbol {y}(\boldsymbol {x}) = \boldsymbol {f}(\boldsymbol {x}) + \boldsymbol {\epsilon } \tag{33}
+\end{equation*}
+$$
+
+其中 $\boldsymbol{\epsilon} = [\epsilon _{1}, \ldots, \epsilon _{T}]^{\top}$ 是单个噪声。 MTGP 中的关键是构建一个有效的多任务核 $\boldsymbol{k}_{\mathrm {MTGP}}(\boldsymbol {x},\boldsymbol {x}') \in R^{T \times T}$ ，它可以通过例如共区域化的线性模型 <sup class="refplus-num"><a href="#ref-205">[205]</a></sup> 和卷积过程 <sup class="refplus-num"><a href="#ref-170">[170]</a></sup> 来构建。与丢失有价值信息的单独任务建模相比，任务的联合学习可以通过利用任务相关性和跨任务利用信息来增强预测。
+
+鉴于每个 $T$ 个任务都有 $n$ 个训练点，MTGP 从所有任务中收集数据并将它们融合到一个完整的协方差矩阵中，从而导致更高的复杂度 $\mathcal {O}(T^{3 }n^{3})$ 。因此，由于大多数 MTGP 中的推断遵循标准过程，因此上述稀疏近似和局部近似已应用于 MTGP <sup class="refplus-num"><a href="#ref-170">[170]</a></sup><sup class="refplus-num"><a href="#ref-206">[206]</a></sup><sup class="refplus-num"><a href="#ref-207">[207]</a></sup><sup class="refplus-num"><a href="#ref-208">[208]</a></sup> 以提高扩展性。
+
+迄今为止，可扩展的 MTGP 主要在任务具有明确定义的标签并共享具有适度维度的输入空间的场景中进行研究。需要许多努力来扩展当前的 MTGP，以应对多任务（多输出）学习机制中的 4V 挑战 <sup class="refplus-num"><a href="#ref-209">[209]</a></sup>。
+
+### 6.4 可扩展的在线高斯过程
+
+通常，假设整个数据 $\mathcal {D}$ _先验_可用以进行离线训练。然而，我们应该考虑数据按顺序到达的场景，即在线或流数据，小批量未知。对于复杂的在线回归，模型 <sup class="refplus-num"><a href="#ref-65">[65]</a></sup> 应该实时适应流数据并处理大规模情况，因为新数据不断到达。
+
+稀疏高斯过程可扩展用于在线学习，因为它们使用一个小的归纳集来总结整个训练数据 <sup class="refplus-num"><a href="#ref-210">[210]</a></sup><sup class="refplus-num"><a href="#ref-211">[211]</a></sup><sup class="refplus-num"><a href="#ref-212">[212]</a></sup>。结果，到达的新数据仅与交互以增强快速在线学习。这是合理的，因为 FITC 和 PITC 的 $\mu (\boldsymbol {x}_{*})$ 和 $\sigma ^{2}(\boldsymbol {x}_{*})$ 的更新只依赖于归纳集和新数据 <sup class="refplus-num"><a href="#ref-213">[213]</a></sup><sup class="refplus-num"><a href="#ref-214">[214]</a></sup>。此外，随机变体自然地展示了在线结构 <sup class="refplus-num"><a href="#ref-215">[215]</a></sup>，因为“式（17）”中的边界支持通过随机优化进行小批量学习。
+
+但是，可扩展的在线高斯过程存在两个问题。首先，其中一些 <sup class="refplus-num"><a href="#ref-211">[211]</a></sup><sup class="refplus-num"><a href="#ref-213">[213]</a></sup><sup class="refplus-num"><a href="#ref-214">[214]</a></sup> 固定超参数以获得每次更新的恒定复杂度。根据经验，优化在前几次迭代中显著改进了模型 <sup class="refplus-num"><a href="#ref-215">[215]</a></sup>。因此，随着先进的计算能力和对准确预测的需求，它可以通过少量迭代在线更新超参数。
+
+其次，可扩展的在线高斯过程隐含地假设新数据和旧数据来自相同的输入分布。然而，在具有复杂迹的任务中情况并非如此，例如，一个不断发展的时间序列过程 <sup class="refplus-num"><a href="#ref-216">[216]</a></sup>。为了解决不断发展的在线学习问题，Nguyen 等人 <sup class="refplus-num"><a href="#ref-217">[217]</a></sup> 提出了一个使用局部近似的简单直观的想法。该方法维护多个本地高斯过程，当它们落入相关本地区域时使用新数据更新特定高斯过程，或者当它们远离旧数据时使用新数据训练新的本地高斯过程，但是导致，来自可用训练数据的信息损失。作为 <sup class="refplus-num"><a href="#ref-65">[65]</a></sup> 和 <sup class="refplus-num"><a href="#ref-218">[218]</a></sup> 的扩展，Bui 等人 <sup class="refplus-num"><a href="#ref-216">[216]</a></sup> 部署了一个优雅的概率框架，以在线方式更新后验分布和超参数，其中新旧之间发生交互。 <sup class="refplus-num"><a href="#ref-219">[219]</a></sup> 中还提供了该贝叶斯在线模型的主要理论界限。
+
+
+### 6.5 可扩展的循环高斯过程
+
+存在各种任务，例如语音识别、系统识别、能量预测和机器人技术，其中数据集是连续的，并且顺序很重要。在这里，我们专注于循环高斯过程<sup class="refplus-num"><a href="#ref-220">[220]</a></sup><sup class="refplus-num"><a href="#ref-221">[221]</a></sup> 来处理顺序数据。
+
+流行的循环高斯过程是具有外生输入的基于高斯过程的非线性自回归模型（GP-NARX）<sup class="refplus-num"><a href="#ref-220">[220]</a></sup>。一般表示为
+
+
+$$
+\begin{equation*}
+ \boldsymbol {x}_{t} \!\!=\! \![y_{t-1}, \!\ldots \!, y_{t-L_{y}}, u_{t-1}, \!\ldots \!, u_{t-L_{u}}], \quad y_{t} \!=\! f(\boldsymbol {x}_{t}) \!+\! \epsilon _{y_{t}} \tag{34}
+\end{equation*}
+$$
+
+其中 $u_{t}$ 是外部输入，$y_{t}$ 是时间 $t$ 的输出观察值，$L_{y}$ 和 $L_{u}$ 是滞后参数，分别表示形成回归向量 $\boldsymbol {x}_{t}$ 的延迟输出和输入的数量，$f$ 是发射函数，$\epsilon _{y_{t}}$ 表示观察噪声。请注意，这里的观察值 $y_{t-1}, \ldots, y_{t-L_{y}}$ 被认为是确定性的。转换后的输入 $\boldsymbol {x}_{t}$ 包含之前的观察和外部输入，可以使用标准可扩展高斯过程（例如稀疏近似）来训练 GP-NARX。由于简单性和适用性，GP-NARX 得到了很好的研究和扩展，以实现针对异常值的稳健预测 <sup class="refplus-num"><a href="#ref-222">[222]</a></sup>、通过合并先验信息进行局部建模 <sup class="refplus-num"><a href="#ref-223">[223]</a></sup> 以及高阶频率响应函数 <sup class="refplus-num"><a href="#ref-224">[224]</a></sup>。然而，GP-NARX 的一个主要缺点是它无法解释 $\boldsymbol {x}_{t}$ 中的观察噪声，从而导致变量错误问题。为了解决这个问题，我们可以进行数据预处理以去除数据中的噪声 <sup class="refplus-num"><a href="#ref-225">[225]</a></sup>，采用考虑输入噪声的高斯过程<sup class="refplus-num"><a href="#ref-204">[204]</a></sup>，并采用接下来介绍的更强大的状态空间模型（SSM）<sup class="refplus-num"><a href="#ref-221">[221]</a></sup>。
+
+GP-SSM 采用更通用的循环结构作为
+
+$$
+\begin{equation*}
+ \boldsymbol {x}_{t} = g(\boldsymbol {x}_{t-1}, u_{t-1}) + \epsilon _{x_{t}}, \quad \boldsymbol {y}_{t} = f(\boldsymbol {x}_{t}) + \epsilon _{y_{t}} \tag{35}
+\end{equation*}
+$$
+
+其中 $\boldsymbol {x}_{t}$ 是充当内部存储器的系统状态，$g$ 是转换函数，$f$ 是发射函数，$\epsilon _{x_{t} }$ 是过渡噪声，最后，$\epsilon _{y_{t}}$ 是发射噪声。请注意，GP-NARX 是具有可观察状态的简化 GP-SSM 模型。 GP-SSM 考虑了转换噪声并带来了不需要滞后参数的灵活性。然而，该模型存在难以处理的推断，因为我们需要边缘化所有隐变量，因此需要近似推断 <sup class="refplus-num"><a href="#ref-221">[221]</a></sup><sup class="refplus-num"><a href="#ref-226">[226]</a></sup><sup class="refplus-num"><a href="#ref-227">[227]</a></sup>。
+
+最后，我们再次看到将循环高斯过程与神经网络相结合的趋势。例如，深度循环高斯过程<sup class="refplus-num"><a href="#ref-228">[228]</a></sup> 试图模仿众所周知的循环神经网络（RNN），每一层都由一个高斯过程建模。与 DGP <sup class="refplus-num"><a href="#ref-189">[189]</a></sup> 类似，深度循环高斯过程中的推断是棘手的，需要复杂的近似，例如 <sup class="refplus-num"><a href="#ref-229">[229]</a></sup>。因此，为了在保持循环能力的同时使模型尽可能简单，长短期记忆 (LSTM) 模型 <sup class="refplus-num"><a href="#ref-230">[230]</a></sup> 直接与可扩展的高斯过程相结合，从而产生分析推断和理想的结果 <sup class="refplus-num"><a href="#ref-192">[192]</a></sup>。
+
+### 6.6 可扩展的高斯过程分类
+
+与本文主要回顾的具有连续真实观察的回归任务不同，分类具有离散的类标签。为此，$y \in \{0, 1\}$ 的二值高斯过程分类 (GPC) 模型 <sup class="refplus-num"><a href="#ref-231">[231]</a></sup> 通常表示为
+
+$$
+\begin{equation*}
+ f \sim \mathcal {GP}(0, k), \quad p(y| f) = \mathrm {Bernoulli}(\pi (f)) \tag{36}
+\end{equation*}
+$$
+
+其中 $\pi (.) \in [{0, 1}]$ 是一个反向链接函数<sup>22</sup>，它将 $f$ 压缩到类概率空间中。不同的是，具有 $y \in \{1, \cdots, C\}$ 的多类高斯过程分类(MGPC) <sup class="refplus-num"><a href="#ref-232">[232]</a></sup> 是
+
+$$
+\begin{equation*}
+ f^{c} \sim \mathcal {GP}(0, k_{c}), \quad p(y|\boldsymbol {f}) = \mathrm {Categorical}(\pi (\boldsymbol {f})) \tag{37}
+\end{equation*}
+$$
+
+其中 $\{f^{c}\}_{c=1}^{C}$ 是 $C$ 类的独立隐函数，$\boldsymbol {f} = [f ^{1}, \cdots, f^{C}]^{\top}: R^{d} \mapsto R^{C}$ 。由于非高斯似然，高斯过程分类的精确推断，然而，是棘手的，因此需要近似推断，其关键是近似非高斯后验 $p(f|y) \propto p(y| f)p(f)$ 与高斯 $q(f|y)$ <sup class="refplus-num"><a href="#ref-231">[231]</a></sup>。
+
+受可扩展高斯过程回归成功的推动，我们可以直接将高斯过程分类视为回归任务 <sup class="refplus-num"><a href="#ref-235">[235]</a></sup>，或者通过将类标签解释为 Dirichlet 分布 <sup class="refplus-num"><a href="#ref-236">[236]</a></sup> 输出的转换将其作为高斯过程回归解决。这回避了非高斯可能性。然而，更原则性的方法是采用`式（36）`和`式（37）`中的高斯过程分类，并结合近似推断，例如拉普拉斯近似，EP和VI，以及第III-C节中的稀疏策略来推导可扩展的高斯过程分类<sup class="refplus-num"><a href="#ref-86">[86]</a></sup><sup class="refplus-num"><a href="#ref-237">[237]</a></sup><sup class="refplus-num"><a href="#ref-238">[238]</a></sup><sup class="refplus-num"><a href="#ref-239">[239]</a></sup><sup class="refplus-num"><a href="#ref-240">[240]</a></sup><sup class="refplus-num"><a href="#ref-241">[241]</a></sup>。
+
+可扩展高斯过程分类，尤其是 MGPC 的主要挑战是：1) 难以处理的推断和后验，以及 2) 大 $C$ 的高训练复杂度。对于第一个问题，随机高斯过程分类导出模型证据，表示为一维高斯分布的积分，可以使用 Gaussian–Hermite 正交法 <sup class="refplus-num"><a href="#ref-75">[75]</a></sup><sup class="refplus-num"><a href="#ref-238">[238]</a></sup> 充分计算。此外，配备 FITC 假设的高斯过程分类拥有完整的分析模型证据 <sup class="refplus-num"><a href="#ref-239">[239]</a></sup><sup class="refplus-num"><a href="#ref-240">[240]</a></sup>。特别是，当采用 logit/softmax 逆链接函数时，Pòlya–Gamma 数据增强 <sup class="refplus-num"><a href="#ref-242">[242]</a></sup> 为高斯过程分类<sup class="refplus-num"><a href="#ref-241">[241]</a></sup><sup class="refplus-num"><a href="#ref-243">[243]</a></sup> 提供了分析推断和后验。最近的一项工作 <sup class="refplus-num"><a href="#ref-244">[244]</a></sup> 提出了一个嘈杂的框架，可以使用传统的可能性为可扩展的二值/MGPC 推导分析 ELBO。对于第二个问题，由于 MGPC 的复杂性与类别的数量 $C$ 成线性关系，或者，我们可以将模型证据表示为 <sup class="refplus-num"><a href="#ref-234">[234]</a></sup> 等类别的总和，从而允许进行有效的随机训练。
+
+## 7 结论 
+
+尽管高斯过程本身历史悠久，但其非参数灵活性和高可解释性使其广受欢迎，但在大数据时代也面临着诸多挑战。在这篇文章中，我们试图总结可扩展高斯过程的状态，以便更好地理解现有技术并获得对新问题和新发现的洞察力。广泛的审查旨在揭示可扩展高斯过程在现实世界中大规模任务的适用性，这反过来又在高斯过程社区中提出了新的挑战、模型和理论。
+
+## 参考文献
+
+<ul id="refplus"><li id="ref-1" data-num="1">[1]  J. Hensman, N. Fusi, and N. D. Lawrence, “Gaussian processes for big data,” in Proc. 29th Conf. Uncertainty Artif. Intell., 2013, pp. 282–290.</li><li id="ref-2" data-num="2">[2]  S. Del Río, V. López, J. M. Benítez, and F. Herrera, “On the use of MapReduce for imbalanced big data using Random Forest,” Inf. Sci., vol. 285, pp. 112–137, Nov. 2014.</li><li id="ref-3" data-num="3">[3]  Y. LeCun, Y. Bengio, and G. Hinton, “Deep learning,” Nature, vol. 521, no. 7553, p. 436, 2015.</li><li id="ref-4" data-num="4">[4]  D. Silver et al., “Mastering the game of go without human knowledge,” Nature, vol. 550, no. 7676, p. 354, 2017.</li><li id="ref-5" data-num="5">[5]  C. E. Rasmussen and C. K. I. Williams, Gaussian Processes for Machine Learning. Cambridge, MA, USA: MIT Press, 2006.</li><li id="ref-6" data-num="6">[6]  G. Matheron, “Principles of geostatistics,” Econ. Geol., vol. 58, no. 8, pp. 1246–1266, 1963.</li><li id="ref-7" data-num="7">[7]  J. Sacks, W. J. Welch, T. J. Mitchell, and H. P. Wynn, “Design and analysis of computer experiments,” Stat. Sci., vol. 4, no. 4, pp. 409–423, 1989.</li><li id="ref-8" data-num="8">[8]  H. Liu, Y.-S. Ong, and J. Cai, “A survey of adaptive sampling for global meta modeling in support of simulation-based complex engineering design,” Struct. Multidisciplinary Optim., vol. 57, no. 1, pp. 393–416, 2018.</li><li id="ref-9" data-num="9">[9]  M. A. Alvarez, L. Rosasco, and N. D. Lawrence, “Kernels for vector valued functions: A review,” Found. Trends Mach. Learn., vol. 4, no. 3, pp. 195–266, 2012.</li><li id="ref-10" data-num="10">[10]  H. Liu, J. Cai, and Y.-S. Ong, “Remarks on multi-output Gaussian process regression,” Knowl.-Based Syst., vol. 144, pp. 102–121, Mar. 2018.</li><li id="ref-11" data-num="11">[11]  N. Lawrence, “Probabilistic non-linear principal component analysis with Gaussian process latent variable models,” J.Mach.Learn.Res., vol. 6, pp. 1783–1816, Nov. 2005.</li><li id="ref-12" data-num="12">[12]  B. Shahriari, K. Swersky, Z. Wang, R. P. Adams, and N. de Freitas, “Taking the human out of the loop: A review of Bayesian optimization,” Proc. IEEE, vol. 104, no. 1, pp. 148–175, Jan. 2016.</li><li id="ref-13" data-num="13">[13]  S. Yin and O. Kaynak, “Big data for modern industry: Challenges and trends,” Proc. IEEE, vol. 103, no. 2, pp. 143–146, Feb. 2015.</li><li id="ref-14" data-num="14">[14]  K. Chalupka, C. K. I. Williams, and I. Murray, “A framework for evaluating approximation methods for Gaussian process regression,” J. Mach. Learn. Res., vol. 14, pp. 333–350, Feb. 2013.</li><li id="ref-15" data-num="15">[15]  T. Gneiting, “Compactly supported correlation functions,” J. Multivariate Anal., vol. 83, no. 2, pp. 493–508, 2002.</li><li id="ref-16" data-num="16">[16]  J. Quiñonero-Candela and C. E. Rasmussen, “A unifying view of sparse approximate Gaussian process regression,” J. Mach. Learn. Res.,vol.6, pp. 1939–1959, Dec. 2005.</li><li id="ref-17" data-num="17">[17]  M. Titsias, “Variational learning of inducing variables in sparse Gaussian processes,” in Proc. Artif. Intell. Statist., 2009, pp. 567–574.</li><li id="ref-18" data-num="18">[18]  A. G. Wilson and H. Nickisch, “Kernel interpolation for scalable structured Gaussian processes (KISS-GP),” in Proc. Int. Conf. Mach. Learn., 2015, pp. 1775–1784.</li><li id="ref-19" data-num="19">[19]  R. B. Gramacy and H. K. H. Lee, “Bayesian treed Gaussian process models with an application to computer modeling,” J. Amer. Stat. Assoc., vol. 103, no. 483, pp. 1119–1130, 2008.</li><li id="ref-20" data-num="20">[20]  R. B. Gramacy et al., “LaGP: Large-scale spatial modeling via local approximate Gaussian processes in R,” J. Stat. Softw., vol. 72, no. 1, pp. 1–46, 2016.</li><li id="ref-21" data-num="21">[21]  S. E. Yuksel, J. N. Wilson, and P. D. Gader, “Twenty years of mixture of experts,” IEEE Trans. Neural Netw. Learn. Syst., vol. 23, no. 8, pp. 1177–1193, Aug. 2012.</li><li id="ref-22" data-num="22">[22]  S. Masoudnia and R. Ebrahimpour, “Mixture of experts: A literature survey,” Artif. Intell. Rev., vol. 42, no. 2, pp. 275–293, 2014.</li><li id="ref-23" data-num="23">[23]  C. E. Rasmussen and Z. Ghahramani, “Infinite mixtures of Gaussian process experts,” in Proc. Adv. Neural Inf. Process. Syst., 2002, pp. 881–888.</li><li id="ref-24" data-num="24">[24]  S. Sun and X. Xu, “Variational inference for infinite mixtures of Gaussian processes with applications to traffic flow prediction,” IEEE Trans. Intell. Transp. Syst., vol. 12, no. 2, pp. 466–475, Jun. 2011.</li><li id="ref-25" data-num="25">[25]  G. E. Hinton, “Training products of experts by minimizing contrastive divergence,” Neural Comput., vol. 14, no. 8, pp. 1771–1800, 2002.</li><li id="ref-26" data-num="26">[26]  M. P. Deisenroth and J. W. Ng, “Distributed Gaussian processes,” in Proc. 32nd Int. Conf. Int. Conf. Mach. Learn., 2015, pp. 1481–1490.</li><li id="ref-27" data-num="27">[27]  D. Rullière, N. Durrande, F. Bachoc, and C. Chevalier, “Nested Kriging predictions for datasets with a large number of observations,” Statist. Comput., vol. 28, no. 4, pp. 849–867, 2018.</li><li id="ref-28" data-num="28">[28]  H. Liu, J. Cai, Y. Wang, and Y.-S. Ong, “Generalized robust Bayesian committee machine for large-scale Gaussian process regression,” in Proc. Int. Conf. Mach. Learn., 2018, pp. 1–10.</li><li id="ref-29" data-num="29">[29]  Y. Gal, M. van der Wilk, and C. E. Rasmussen, “Distributed variational inference in sparse Gaussian process regression and latent variable models,” in Proc. Adv. Neural Inf. Process. Syst. Red Hook, NY, USA: Curran, 2014, pp. 3257–3265.</li><li id="ref-30" data-num="30">[30]  Z. Dai, A. Damianou, J. Hensman, and N. Lawrence, “Gaussian process models with parallelization and GPU acceleration,” 2014, arXiv:1410.4984. [Online]. Available: https://arxiv.org/abs/1410.4984</li><li id="ref-31" data-num="31">[31]  D. G. Matthews et al., “GPflow: A Gaussian process library using TensorFlow,” J.Mach.Learn.Res., vol. 18, no. 1, pp. 1299–1304, 2017.</li><li id="ref-32" data-num="32">[32]  R. B. Gramacy and B. Haaland, “Speeding up neighborhood search in local Gaussian process prediction,” Technometrics, vol. 58, no. 3, pp. 294–303, 2016.</li><li id="ref-33" data-num="33">[33]  R. B. Gramacy, J. Niemi, and R. M. Weiss, “Massively parallel approximate Gaussian process regression,” SIAM/ASA J. Uncertainty Quantification, vol. 2, no. 1, pp. 564–584, 2014.</li><li id="ref-34" data-num="34">[34]  A. G. Wilson, Z. Hu, R. Salakhutdinov, and E. P. Xing, “Deep kernel learning,” in Proc. Artif. Intell. Statist., 2016, pp. 370–378.</li><li id="ref-35" data-num="35">[35]  T. N. Hoang, Q. M. Hoang, and K. H. Low, “A unifying framework of anytime sparse Gaussian process regression models with stochastic variational inference for big data,” in Proc. Int. Conf. Mach. Learn., 2015, pp. 569–578.</li><li id="ref-36" data-num="36">[36]  H. Peng, S. Zhe, X. Zhang, and Y. Qi, “Asynchronous distributed variational Gaussian process for regression,” in Proc. Int. Conf. Mach. Learn., 2017, pp. 2788–2797.</li><li id="ref-37" data-num="37">[37]  R. Rivera and E. Burnaev, “Forecasting of commercial sales with large scale Gaussian processes,” 2017, arXiv:1709.05548. [Online]. Available: https://arxiv.org/abs/1709.05548</li><li id="ref-38" data-num="38">[38]  H. Liu, J. Cai, Y.-S. Ong, and Y. Wang, “Understanding and comparing scalable Gaussian process regression for big data,” Knowl.-Based Syst., vol. 164, pp. 324–335, Jan. 2019.</li><li id="ref-39" data-num="39">[39]  M. Lázaro-Gredilla and A. Figueiras-Vidal, “Inter-domain Gaussian processes for sparse inference using inducing features,” in Proc. Adv. Neural Inf. Process. Syst., 2009, pp. 1087–1095.</li><li id="ref-40" data-num="40">[40]  B.-J. Lee, J. Lee, and K.-E. Kim, “Hierarchically-partitioned Gaussian process approximation,” in Proc. Artif. Intell. Statist., 2017, pp. 822–831.</li><li id="ref-41" data-num="41">[41]  E. Snelson and Z. Ghahramani, “Local and global sparse Gaussian process approximations,” in Proc. Artif. Intell. Statist., 2007, pp. 524–531.</li><li id="ref-42" data-num="42">[42]  T. Nguyen and E. Bonilla, “Fast allocation of Gaussian process experts,” in Proc. Int. Conf. Mach. Learn., 2014, pp. 145–153.</li><li id="ref-43" data-num="43">[43]  T. N. Hoang, Q. M. Hoang, and B. K. H. Low, “A distributed variational inference framework for unifying parallel sparse Gaussian process regression models,” in Proc. Int. Conf. Mach. Learn., 2016, pp. 382–391.</li><li id="ref-44" data-num="44">[44]  G. Camps-Valls, J. Verrelst, J. Muñoz-Marí, V. Laparra, F. Mateo-Jiménez, and J. Gomez-Dans, “A survey on Gaussian processes for earth-observation data analysis: A comprehensive investigation,” IEEE Geosci. Remote Sens. Mag., vol. 4, no. 2, pp. 58–78, Jun. 2016.</li><li id="ref-45" data-num="45">[45]  K. Hayashi, M. Imaizumi, and Y. Yoshida, “On random subsampling of Gaussian process regression: A graphon-based analysis,” 2019, arXiv:1901.09541. [Online]. Available: https://arxiv.org/abs/1901. 09541</li><li id="ref-46" data-num="46">[46]  F. P. Preparata and M. I. Shamos, Computational Geometry: An Introduction. Berlin, Germany: Springer-Verlag, 2012.</li><li id="ref-47" data-num="47">[47]  R. Herbrich, N. D. Lawrence, and M. Seeger, “Fast sparse Gaussian process methods: The informative vector machine,” in Proc. Adv. Neural Inf. Process. Syst., 2003, pp. 625–632.</li><li id="ref-48" data-num="48">[48]  M. Seeger and C. Williams, “Bayesian Gaussian process models: PAC-Bayesian generalisation error bounds and sparse approximations,” Ph.D. dissertation, School Comput. Commun. Sci., Univ. Edinburgh, Edinburgh, Scotland, 2003.</li><li id="ref-49" data-num="49">[49]  S. Keerthi and W. Chu, “A matching pursuit approach to sparse Gaussian process regression,” in Proc. Adv. Neural Inf. Process. Syst., 2006, pp. 643–650.</li><li id="ref-50" data-num="50">[50]  A. Melkumyan and F. T. Ramos, “A sparse covariance function for exact Gaussian process inference in large datasets,” in Proc. Int. Joint Conf. Artif. Intell., vol. 9, 2009, pp. 1936–1942.</li><li id="ref-51" data-num="51">[51]  M. Buhmann, “A new class of radial basis functions with compact support,” Math. Comput., vol. 70, no. 233, pp. 307–318, 2001.</li><li id="ref-52" data-num="52">[52]  H. Wendland, Scattered Data Approximation. Cambridge, U.K.: Cambridge Univ. Press, 2004.</li><li id="ref-53" data-num="53">[53]  A. Gittens and M. W. Mahoney, “Revisiting the nyström method for improved large-scale machine learning,” J.Mach.Learn.Res., vol. 17, no. 1, pp. 3977–4041, 2016.</li><li id="ref-54" data-num="54">[54]  C. K. Williams and M. Seeger, “Using the Nyström method to speed up kernel machines,” in Proc. Adv. Neural Inf. Process. Syst., 2001, pp. 682–688.</li><li id="ref-55" data-num="55">[55]  C. Williams, C. Rasmussen, A. Scwaighofer, and V. Tresp, “Observations on the nyström method for Gaussian process prediction,” Division Inform., Univ. Edinburgh, Edinburgh, Scotland, Tech. Rep., 2002.</li><li id="ref-56" data-num="56">[56]  A. J. Smola and P. L. Bartlett, “Sparse greedy Gaussian process regression,” in Proc. Adv. Neural Inf. Process. Syst., 2001, pp. 619–625.</li><li id="ref-57" data-num="57">[57]  M. E. Tipping, “Sparse Bayesian learning and the relevance vector machine,” J. Mach. Learn. Res., vol. 1, pp. 211–244, Sep. 2001.</li><li id="ref-58" data-num="58">[58]  H. Peng and Y. Qi, “EigenGP: Gaussian process models with adaptive eigenfunctions,” in Proc. Int. Joint Conf. Artif. Intell., 2015, pp. 3763–3769.</li><li id="ref-59" data-num="59">[59]  N. Cressie and G. Johannesson, “Fixed rank Kriging for very large spatial data sets,” J. Roy. Statist. Soc. B (Statist. Methodol.), vol. 70, no. 1, pp. 209–226, 2007.</li><li id="ref-60" data-num="60">[60]  C. E. Rasmussen and J. Quiñonero-Candela, “Healing the relevance vector machine through augmentation,” in Proc. Int. Conf. Mach. Learn., 2005, pp. 689–696.</li><li id="ref-61" data-num="61">[61]  M. Lázaro-Gredilla, J. Quiñonero-Candela, C. E. Rasmussen, and A. R. Figueiras-Vidal, “Sparse spectrum Gaussian process regression,” J. Mach. Learn. Res., vol. 11, pp. 1865–1881, Jun. 2010.</li><li id="ref-62" data-num="62">[62]  Y. Gal and R. Turner, “Improving the Gaussian process sparse spectrum approximation by representing uncertainty in frequency inputs,” in Proc. Int. Conf. Mach. Learn., 2015, pp. 655–664.</li><li id="ref-63" data-num="63">[63]  L. S. L. Tan, V. M. H. Ong, D. J. Nott, and A. Jasra, “Variational inference for sparse spectrum Gaussian process regression,” Statist. Comput., vol. 26, no. 6, pp. 1243–1261, 2016.</li><li id="ref-64" data-num="64">[64]  Q. M. Hoang, T. N. Hoang, and K. H. Low, “A generalized stochastic variational Bayesian hyperparameter learning framework for sparse spectrum Gaussian process regression,” in Proc. AAAI Conf. Artif. Intell., 2017, pp. 2007–2014.</li><li id="ref-65" data-num="65">[65]  L. Csató and M. Opper, “Sparse on-line Gaussian processes,” Neural Comput., vol. 14, no. 3, pp. 641–668, 2002.</li><li id="ref-66" data-num="66">[66]  M. Seeger, C. Williams, and N. Lawrence, “Fast forward selection to speed up sparse Gaussian process regression,” in Proc. Artif. Intell. Statist., 2003, Art. no. 161318.</li><li id="ref-67" data-num="67">[67]  E. Snelson and Z. Ghahramani, “Sparse Gaussian processes using pseudo-inputs,” in Proc. Adv. Neural Inf. Process. Syst., 2006, pp. 1257–1264.</li><li id="ref-68" data-num="68">[68]  E. L. Snelson, “Flexible and efficient Gaussian process models for machine learning,” Ph.D. dissertation, Gatsby Comput. Neurosci. Unit, Univ. College London, London, U.K., 2008.</li><li id="ref-69" data-num="69">[69]  M. Bauer, M. van der Wilk, and C. E. Rasmussen, “Understanding probabilistic sparse Gaussian process approximations,” in Proc. Adv. Neural Inf. Process. Syst., 2016, pp. 1533–1541.</li><li id="ref-70" data-num="70">[70]  D. M. Blei, A. Kucukelbir, and J. D. McAuliffe, “Variational inference: A review for statisticians,” J. Amer. Stat. Assoc., vol. 112, no. 518, pp. 859–877, 2017.</li><li id="ref-71" data-num="71">[71]  A. G. D. G. Matthews, J. Hensman, R. E. Turner, and Z. Ghahramani, “On sparse variational methods and the Kullback–Leibler divergence between stochastic processes,” J.Mach.Learn.Res., vol. 51, pp. 231–239, May 2016.</li><li id="ref-72" data-num="72">[72]  M. K. Titsias, “Variational model selection for sparse Gaussian process regression,” School Comput. Sci., Univ. Manchester, Manchester, U.K., Tech. Rep., 2009.</li><li id="ref-73" data-num="73">[73]  Y. Cao, M. A. Brubaker, D. J. Fleet, and A. Hertzmann, “Efficient optimization for sparse Gaussian process regression,” IEEE Trans. Pattern Anal. Mach. Intell., vol. 37, no. 12, pp. 2415–2427, Dec. 2015.</li><li id="ref-74" data-num="74">[74]  S. Zhe, “Regularized variational sparse Gaussian processes,” in Proc. NIPS Workshop Approx. Inference, 2017, pp. 1–5.</li><li id="ref-75" data-num="75">[75]  A. G. de Garis Matthews, “Scalable Gaussian process inference using variational methods,” Ph.D. dissertation, Dept. Eng., Univ. Cambridge, Cambridge, U.K., 2017.</li><li id="ref-76" data-num="76">[76]  T. D. Bui, J. Yan, and R. E. Turner, “A unifying framework for Gaussian process pseudo-point approximations using power expectation propagation,” J.Mach.Learn.Res., vol. 18, no. 1, pp. 3649–3720, 2017.</li><li id="ref-77" data-num="77">[77]  D. P. Kingma and J. Ba, “Adam: A method for stochastic optimization,” 2014, arXiv:1412.6980. [Online]. Available: https://arxiv.org/ abs/1412.6980</li><li id="ref-78" data-num="78">[78]  M. D. Hoffman, D. M. Blei, C. Wang, and J. Paisley, “Stochastic variational inference,” J.Mach.Learn.Res., vol. 14, pp. 1303–1347, 2013.</li><li id="ref-79" data-num="79">[79]  H. Salimbeni, S. Eleftheriadis, and J. Hensman, “Natural gradients in practice: Non-conjugate variational inference in Gaussian process models,” in Proc. Artif. Intell. Statist., 2018, pp. 689–697.</li><li id="ref-80" data-num="80">[80]  M. Li, D. G. Andersen, and A. Smola, “Distributed delayed proximal gradient methods,” in Proc. NIPS Workshop Optim. Mach. Learn., vol. 3, 2013, pp. 1–5.</li><li id="ref-81" data-num="81">[81]  M. Li, D. G. Andersen, A. J. Smola, and K. Yu, “Communication efficient distributed machine learning with the parameter server,” in Proc. Adv. Neural Inf. Process. Syst., 2014, pp. 19–27.</li><li id="ref-82" data-num="82">[82]  C.-A. Cheng and B. Boots, “Variational inference for Gaussian process models with linear complexity,” in Proc. Adv. Neural Inf. Process. Syst., 2017, pp. 5184–5194.</li><li id="ref-83" data-num="83">[83]  T. Nickson, T. Gunter, C. Lloyd, M. A. Osborne, and S. Roberts, “Blitzkriging: Kronecker-structured stochastic Gaussian processes,” 2015, arXiv:1510.07965. [Online]. Available: https://arxiv.org/abs/ 1510.07965</li><li id="ref-84" data-num="84">[84]  P. Izmailov, A. Novikov, and D. Kropotov, “Scalable Gaussian processes with billions of inducing inputs via tensor train decomposition,” 2017, arXiv:1710.07324. [Online]. Available: https://arxiv. org/abs/1710.07324</li><li id="ref-85" data-num="85">[85]  M. T. R. C. Aueb and M. Lázaro-Gredilla, “Variational inference for Mahalanobis distance metrics in Gaussian process regression,” in Proc. Adv. Neural Inf. Process. Syst., 2013, pp. 279–287.</li><li id="ref-86" data-num="86">[86]  J. Hensman, A. G. Matthews, M. Filippone, and Z. Ghahramani, “MCMC for variationally sparse Gaussian processes,” in Proc. Adv. Neural Inf. Process. Syst., 2015, pp. 1648–1656.</li><li id="ref-87" data-num="87">[87]  H. Yu, T. N. Hoang, K. H. Low, and P. Jaillet, “Stochastic variational inference for Bayesian sparse Gaussian process regression,” 2017, arXiv:1711.00221. [Online]. Available: https://arxiv.org/ abs/1711.00221</li><li id="ref-88" data-num="88">[88]  R. Sheth, Y. Wang, and R. Khardon, “Sparse variational inference for generalized GP models,” in Proc. Int. Conf. Mach. Learn., 2015, pp. 1302–1311.</li><li id="ref-89" data-num="89">[89]  J. Hensman, N. Durrande, and A. Solin, “Variational Fourier features for Gaussian processes,” 2016, arXiv:1611.06740. [Online]. Available: https://arxiv.org/abs/1611.06740</li><li id="ref-90" data-num="90">[90]  Y. Shen, A. Y. Ng, and M. Seeger, “Fast Gaussian process regression using KD-trees,” in Proc. Adv. Neural Inf. Process. Syst., 2006, pp. 1225–1232.</li><li id="ref-91" data-num="91">[91]  V. I. Morariu, B. V. Srinivasan, V. C. Raykar, R. Duraiswami, and L. S. Davis, “Automatic online tuning for fast Gaussian summation,” in Proc. Adv. Neural Inf. Process. Syst., 2009, pp. 1113–1120.</li><li id="ref-92" data-num="92">[92]  K. Cutajar, M. Osborne, J. Cunningham, and M. Filippone, “Preconditioning kernel matrices,” in Proc. Int. Conf. Mach. Learn., 2016, pp. 2529–2538.</li><li id="ref-93" data-num="93">[93]  Y. Saatçi, “Scalable inference for structured Gaussian process models,” Ph.D. dissertation, St. Edmund’s College, Univ. Cambridge, Cambridge, U.K., 2011.</li><li id="ref-94" data-num="94">[94]  E. Gilboa, Y. Saatçi, and J. P. Cunningham, “Scaling multidimensional inference for structured Gaussian processes,” IEEE Trans. Pattern Anal. Mach. Intell., vol. 37, no. 2, pp. 424–436, Feb. 2015.</li><li id="ref-95" data-num="95">[95]  J. P. Cunningham, K. V. Shenoy, and M. Sahani, “Fast Gaussian process methods for point process intensity estimation,” in Proc. Int. Conf. Mach. Learn., 2008, pp. 192–199.</li><li id="ref-96" data-num="96">[96]  A. G. Wilson, E. Gilboa, A. Nehorai, and J. P. Cunningham, “Fast kernel learning for multidimensional pattern extrapolation,” in Proc. Adv. Neural Inf. Process. Syst., 2014, pp. 3626–3634.</li><li id="ref-97" data-num="97">[97]  G. Pleiss, J. R. Gardner, K. Q. Weinberger, and A. G. Wilson, “Constant-time predictive distributions for Gaussian processes,” in Proc. Int. Conf. Mach. Learn., 2018, pp. 4111–4120.</li><li id="ref-98" data-num="98">[98]  A. G. Wilson, C. Dann, and H. Nickisch, “Thoughts on massively scalable Gaussian processes,” 2015, arXiv:1511.01870. [Online]. Available: https://arxiv.org/abs/1511.01870</li><li id="ref-99" data-num="99">[99]  A. G. Wilson, Z. Hu, R. R. Salakhutdinov, and E. P. Xing, “Stochastic variational deep kernel learning,” in Proc. Adv. Neural Inf. Process. Syst., 2016, pp. 2586–2594.</li><li id="ref-100" data-num="100">[100]  T. W. Evans and P. B. Nair, “Scalable Gaussian processes with gridstructured eigenfunctions (GP-GRIEF),” in Proc. NIPS Workshop Adv. Approx. Bayesian Inference, 2017, pp. 1416–1425.</li><li id="ref-101" data-num="101">[101]  J. R. Gardner, G. Pleiss, R. Wu, K. Q. Weinberger, and A. G. Wilson, “Product kernel interpolation for scalable Gaussian processes,” 2018, arXiv:1802.08903. [Online]. Available: https://arxiv.org/abs/ 1802.08903</li><li id="ref-102" data-num="102">[102]  K. Dong, D. Eriksson, H. Nickisch, D. Bindel, and A. G. Wilson, “Scalable log determinants for Gaussian process kernel learning,” in Proc. Adv. Neural Inf. Process. Syst., 2017, pp. 6327–6337.</li><li id="ref-103" data-num="103">[103]  D. R. Burt, C. E. Rasmussen, and M. van der Wilk, “Rates of convergence for sparse variational Gaussian process regression,” in Proc. Int. Conf. Mach. Learn., 2019, pp. 862–871.</li><li id="ref-104" data-num="104">[104]  L. Csató and M. Opper, “Sparse representation for Gaussian process models,” in Proc. Adv. Neural Inf. Process. Syst., 2001, pp. 444–450.</li><li id="ref-105" data-num="105">[105]  J. Schreiter, D. Nguyen-Tuong, and M. Toussaint, “Efficient sparsification for Gaussian process regression,” Neurocomputing, vol. 192, pp. 29–37, Jun. 2016.</li><li id="ref-106" data-num="106">[106]  A. Pourhabib, F. Liang, and Y. Ding, “Bayesian site selection for fast Gaussian process regression,” IIE Trans., vol. 46, no. 5, pp. 543–555, 2014.</li><li id="ref-107" data-num="107">[107]  H.-M. Kim, B. K. Mallick, and C. C. Holmes, “Analyzing nonstationary spatial data using piecewise Gaussian processes,” J. Amer. Stat. Assoc., vol. 100, no. 470, pp. 653–668, 2005.</li><li id="ref-108" data-num="108">[108]  A. Datta, S. Banerjee, A. O. Finley, and A. E. Gelfand, “On nearest neighbor Gaussian process models for massive spatial data,” Wiley Interdiscipl. Rev., Comput. Statist., vol. 8, no. 5, pp. 162–171, 2016.</li><li id="ref-109" data-num="109">[109]  S. Vasudevan, F. Ramos, E. Nettleton, and H. Durrant-Whyte, “Gaussian process modeling of large-scale terrain,” J. Field Robot., vol. 26, no. 10, pp. 812–840, 2009.</li><li id="ref-110" data-num="110">[110]  M. T. Pratola, H. A. Chipman, J. R. Gattiker, D. M. Higdon, R. McCulloch, and W. N. Rust, “Parallel Bayesian additive regression trees,” J. Comput. Graph. Statist., vol. 23, no. 3, pp. 830–852, 2014.</li><li id="ref-111" data-num="111">[111]  D. G. T. Denison, N. M. Adams, C. C. Holmes, and D. J. Hand, “Bayesian partition modelling,” Comput. Statist. Data Anal., vol. 38, no. 4, pp. 475–485, 2002.</li><li id="ref-112" data-num="112">[112]  R. Urtasun and T. Darrell, “Sparse probabilistic regression for activity independent human pose inference,” in Proc. IEEE Conf. Comput. Vis. Pattern Recognit., Jun. 2008, pp. 1–8.</li><li id="ref-113" data-num="113">[113]  A. Datta, S. Banerjee, A. O. Finley, and A. E. Gelfand, “Hierarchical nearest-neighbor Gaussian process models for large geostatistical datasets,” J. Amer. Stat. Assoc., vol. 111, no. 514, pp. 800–812, 2016.</li><li id="ref-114" data-num="114">[114]  X. Emery, “The Kriging update equations and their application to the selection of neighboring data,” Comput. Geosci., vol. 13, no. 3, pp. 269–280, 2009.</li><li id="ref-115" data-num="115">[115]  R. B. Gramacy and H. K. H. Lee, “Adaptive design and analysis of supercomputer experiments,” Technometrics, vol. 51, no. 2, pp. 130–145, 2009.</li><li id="ref-116" data-num="116">[116]  R. B. Gramacy and D. W. Apley, “Local Gaussian process approximation for large computer experiments,” J. Comput. Graph. Statist., vol. 24, no. 2, pp. 561–578, 2015.</li><li id="ref-117" data-num="117">[117]  C. Park and J. Huang, “Efficient computation of Gaussian process regression for large spatial data sets by patching local Gaussian processes,” J.Mach.Learn.Res., vol. 17, no. 174, pp. 1–29, 2016.</li><li id="ref-118" data-num="118">[118]  C. Park and D. Apley, “Patchwork Kriging for large-scale Gaussian process regression,” 2017, arXiv:1701.06655. [Online]. Available: https://arxiv.org/abs/1701.06655</li><li id="ref-119" data-num="119">[119]  J. Mendes-Moreira, C. Soares, A. M. Jorge, and J. F. D. Sousa, “Ensemble approaches for regression: A survey,” ACM Comput. Surv., vol. 45, no. 1, p. 10, Nov. 2012.</li><li id="ref-120" data-num="120">[120]  R. A. Jacobs, M. I. Jordan, S. J. Nowlan, and G. E. Hinton, “Adaptive mixtures of local experts,” Neural Comput., vol. 3, no. 1, pp. 79–87, 2012.</li><li id="ref-121" data-num="121">[121]  J. Geweke and M. Keane, “Smoothly mixing regressions,” J. Econometrics, vol. 138, no. 1, pp. 252–290, 2007.</li><li id="ref-122" data-num="122">[122]  L. Xu, M. I. Jordan, and G. E. Hinton, “An alternative model for mixtures of experts,” in Proc. Adv. Neural Inf. Process. Syst., 1995, pp. 633–640.</li><li id="ref-123" data-num="123">[123]  C. A. M. Lima, A. L. V. Coelho, and F. J. von Zuben, “Hybridizing mixtures of experts with support vector machines: Investigation into nonlinear dynamic systems identification,” Inf. Sci., vol. 177, no. 10, pp. 2049–2074, 2007.</li><li id="ref-124" data-num="124">[124]  K. Chen, L. Xu, and H. Chi, “Improved learning algorithms for mixture of experts in multiclass classification,” Neural Netw., vol. 12, no. 9, pp. 1229–1252, 1999.</li><li id="ref-125" data-num="125">[125]  M. I. Jordan and R. A. Jacobs, “Hierarchical mixtures of experts and the EM algorithm,” Neural Comput., vol. 6, no. 2, pp. 181–214, 1994.</li><li id="ref-126" data-num="126">[126]  S.-K. Ng and G. J. McLachlan, “Extension of mixture-of-experts networks for binary classification of hierarchical data,” Artif. Intell. Med., vol. 41, no. 1, pp. 57–67, 2007.</li><li id="ref-127" data-num="127">[127]  C. M. Bishop and M. Svenskn, “Bayesian hierarchical mixtures of experts,” in Proc. 19th Conf. Uncertainty Artif. Intell. San Mateo, CA, USA: Morgan Kaufmann, 2002, pp. 57–64.</li><li id="ref-128" data-num="128">[128]  F. Chamroukhi, “Skew t mixture of experts,” Neurocomputing, vol. 266, pp. 390–408, Nov. 2017.</li><li id="ref-129" data-num="129">[129]  V. Tresp, “Mixtures of Gaussian processes,” in Proc. Adv. Neural Inf. Process. Syst., 2001, pp. 654–660.</li><li id="ref-130" data-num="130">[130]  E. Meeds and S. Osindero, “An alternative infinite mixture of Gaussian process experts,” in Proc. Adv. Neural Inf. Process. Syst., 2006, pp. 883–890.</li><li id="ref-131" data-num="131">[131]  Y. Yang and J. Ma, “An efficient EM approach to parameter learning of the mixture of Gaussian processes,” in Proc. Int. Symp. Neural Netw., 2011, pp. 165–174.</li><li id="ref-132" data-num="132">[132]  Z. Chen, J. Ma, and Y. Zhou, “A precise hard-cut EM algorithm for mixtures of Gaussian processes,” in Proc. Int. Conf. Intell. Comput., 2014, pp. 68–75.</li><li id="ref-133" data-num="133">[133]  T. N. A. Nguyen, A. Bouzerdoum, and S. L. Phung, “Variational inference for infinite mixtures of sparse Gaussian processes through KLcorrection,” in Proc. IEEE Int. Conf. Acoust., Speech Signal Process., Mar. 2016, pp. 2579–2583.</li><li id="ref-134" data-num="134">[134]  C. Yuan and C. Neubauer, “Variational mixture of Gaussian process experts,” in Proc. Adv. Neural Inf. Process. Syst., 2009, pp. 1897–1904.</li><li id="ref-135" data-num="135">[135]  M. Lázaro-Gredilla, S. Van Vaerenbergh, and N. D. Lawrence, “Overlapping mixtures of Gaussian processes for the data association problem,” Pattern Recognit., vol. 45, no. 4, pp. 1386–1395, 2012.</li><li id="ref-136" data-num="136">[136]  J. Ross and J. Dy, “Nonparametric mixture of Gaussian processes with constraints,” in Proc. Int. Conf. Mach. Learn., 2013, pp. 1346–1354.</li><li id="ref-137" data-num="137">[137]  J. V. Hansen, “Combining predictors: Meta machine learning methods and bias/variance &amp; ambiguity decompositions,” Ph.D. dissertation, Dept. Comput. Sci., Aarhus Univ., Aarhus, Denmark, 2000.</li><li id="ref-138" data-num="138">[138]  D. Nguyen-Tuong, M. Seeger, and J. Peters, “Model learning with local Gaussian process regression,” Adv. Robot., vol. 23, no. 15, pp. 2015–2034, 2009.</li><li id="ref-139" data-num="139">[139]  Z. Liu, L. Zhou, H. Leung, and H. P. Shum, “Kinect posture reconstruction based on a local mixture of Gaussian process models,” IEEE Trans. Vis. Comput. Graphics, vol. 22, no. 11, pp. 2437–2450, Nov. 2016.</li><li id="ref-140" data-num="140">[140]  M. Huang, R. Li, H. Wang, and W. Yao, “Estimating mixture of Gaussian processes by kernel smoothing,” J. Bus. Econ. Statist., vol. 32, no. 2, pp. 259–270, 2014.</li><li id="ref-141" data-num="141">[141]  L. Zhao, Z. Chen, and J. Ma, “An effective model selection criterion for mixtures of Gaussian processes,” in Proc. Int. Symp. Neural Netw., 2015, pp. 345–354.</li><li id="ref-142" data-num="142">[142]  S. P. Chatzis and Y. Demiris, “Nonparametric mixtures of Gaussian processes with power-law behavior,” IEEE Trans. Neural Netw. Learn. Syst., vol. 23, no. 12, pp. 1862–1871, Dec. 2012.</li><li id="ref-143" data-num="143">[143]  Y. Cao and D. J. Fleet, “Generalized product of experts for automatic and principled fusion of Gaussian process predictions,” 2014, arXiv:1410.7827. [Online]. Available: https://arxiv.org/abs/1410.7827</li><li id="ref-144" data-num="144">[144]  T. Chen and J. Ren, “Bagging for Gaussian process regression,” Neurocomputing, vol. 72, nos. 7–9, pp. 1605–1610, Mar. 2009.</li><li id="ref-145" data-num="145">[145]  Y. Okadome, Y. Nakamura, Y. Shikauchi, S. Ishii, and H. Ishiguro, “Fast approximation method for Gaussian process regression using hash function for non-uniformly distributed data,” in Proc. Int. Conf. Artif. Neural Netw., 2013, pp. 17–25.</li><li id="ref-146" data-num="146">[146]  V. Tresp, “A Bayesian committee machine,” Neural Comput., vol. 12, no. 11, pp. 2719–2741, 2000.</li><li id="ref-147" data-num="147">[147]  J. W. Ng and M. P. Deisenroth, “Hierarchical mixture-of-experts model for large-scale Gaussian process regression,” 2014, arXiv:1412.3078. [Online]. Available: https://arxiv.org/abs/1412.3078</li><li id="ref-148" data-num="148">[148]  S. Mair and U. Brefeld, “Distributed robust Gaussian process regression,” Knowl. Inf. Syst., vol. 55, no. 2, pp. 415–435, 2018.</li><li id="ref-149" data-num="149">[149]  B. Szabo and H. van Zanten, “An asymptotic analysis of distributed nonparametric methods,” 2017, arXiv:1711.03149. [Online]. Available: https://arxiv.org/abs/1711.03149</li><li id="ref-150" data-num="150">[150]  Y.-L. K. Samo and S. J. Roberts, “String and membrane Gaussian processes,” J. Mach. Learn. Res., vol. 17, no. 1, pp. 4485–4571, 2016.</li><li id="ref-151" data-num="151">[151]  K. H. Low, J. M. Dolan, and P. Khosla, “Active Markov information theoretic path planning for robotic environmental sensing,” in Proc. 10th Int. Conf. Auton. Agents Multiagent Syst., 2011, pp. 753–760.</li><li id="ref-152" data-num="152">[152]  M. Franey, P. Ranjan, and H. Chipman, “A short note on Gaussian process modeling for large datasets using graphics processing units,” 2012, arXiv:1203.1269. [Online]. Available: https://arxiv. org/abs/1203.1269</li><li id="ref-153" data-num="153">[153]  C. J. Paciorek, B. Lipshitz, W. Zhuo, C. G. G. Kaufman, and R. C. Thomas, “Parallelizing Gaussian process calculations in R,” J. Stat. Softw., vol. 63, no. i10, pp. 1–23, 2015.</li><li id="ref-154" data-num="154">[154]  S. Ambikasaran, D. Foreman-Mackey, L. Greengard, D. W. Hogg, and M. O’Neil, “Fast direct methods for Gaussian processes,” IEEE Trans. Pattern Anal. Mach. Intell., vol. 38, no. 2, pp. 252–265, Feb. 2016.</li><li id="ref-155" data-num="155">[155]  M. Tavassolipour, S. A. Motahari, and M. T. M. Shalmani, “Learning of Gaussian processes in distributed and communication limited systems,” 2017, arXiv:1705.02627. [Online]. Available: https://arxiv.org/abs/1705.02627</li><li id="ref-156" data-num="156">[156]  K. A. Wang, G. Pleiss, J. R. Gardner, S. Tyree, K. Q. Weinberger, and A. G. Wilson, “Exact Gaussian processes on a million data points,” 2019, arXiv:1903.08114. [Online]. Available: https://arxiv.org/ abs/1903.08114</li><li id="ref-157" data-num="157">[157]  J. Dean and S. Ghemawat, “MapReduce: Simplified data processing on large clusters,” Commun. ACM, vol. 51, no. 1, pp. 107–113, 2008.</li><li id="ref-158" data-num="158">[158]  J. Gardner, G. Pleiss, K. Q. Weinberger, D. Bindel, and A. G. Wilson, “GPyTorch: Blackbox matrix-matrix Gaussian process inference with GPU acceleration,” in Proc. Adv. Neural Inf. Process. Syst., 2018, pp. 7576–7586.</li><li id="ref-159" data-num="159">[159]  J. Chen et al., “Decentralized data fusion and active sensing with mobile sensors for modeling and predicting spatiotemporal traffic phenomena,” in Proc. Uncertainty Artif. Intell., 2012, pp. 163–173.</li><li id="ref-160" data-num="160">[160]  J. Chen, N. Cao, K. H. Low, R. Ouyang, C. K.-Y. Tan, and P. Jaillet, “Parallel Gaussian process regression with low-rank covariance matrix approximations,” in Proc. Uncertainty Artif. Intell., 2013, pp. 152–161.</li><li id="ref-161" data-num="161">[161]  K. H. Low, J. Yu, J. Chen, and P. Jaillet, “Parallel Gaussian process regression for big data: Low-rank representation meets Markov approximation,” in Proc. AAAI Conf. Artif. Intell., 2015, pp. 2821–2827.</li><li id="ref-162" data-num="162">[162]  Y. Ding, R. Kondor, and J. Eskreis-Winkler, “Multiresolution kernel approximation for Gaussian process regression,” in Proc. Adv. Neural Inf. Process. Syst., 2017, pp. 3740–3748.</li><li id="ref-163" data-num="163">[163]  J. Vanhatalo, V. Pietiläinen, and A. Vehtari, “Approximate inference for disease mapping with sparse Gaussian processes,” Statist. Med., vol. 29, no. 15, pp. 1580–1607, 2010.</li><li id="ref-164" data-num="164">[164]  J. Vanhatalo and A. Vehtari, “Modelling local and global phenomena with sparse Gaussian processes,” in Proc. 24th Conf. Uncertainty Artif. Intell., 2008, pp. 571–578.</li><li id="ref-165" data-num="165">[165]  D. Gu and H. Hu, “Spatial Gaussian process regression with mobile sensor networks,” IEEE Trans. Neural Netw. Learn. Syst., vol. 23, no. 8, pp. 1279–1290, Aug. 2012.</li><li id="ref-166" data-num="166">[166]  T. D. Bui and R. E. Turner, “Tree-structured Gaussian process approximations,” in Proc. Adv. Neural Inf. Process. Syst., 2014, pp. 2213–2221.</li><li id="ref-167" data-num="167">[167]  S. Park and S. Choi, “Hierarchical Gaussian process regression,” in Proc. Asian Conf. Mach. Learn., 2010, pp. 95–110.</li><li id="ref-168" data-num="168">[168]  E. Fox and D. B. Dunson, “Multiresolution Gaussian processes,” in Proc. Adv. Neural Inf. Process. Syst., 2012, pp. 737–745.</li><li id="ref-169" data-num="169">[169]  D. Nychka, S. Bandyopadhyay, D. Hammerling, F. Lindgren, and S. Sain, “A multiresolution Gaussian process model for the analysis of large spatial datasets,” J. Comput. Graph. Statist., vol. 24, no. 2, pp. 579–599, 2015.</li><li id="ref-170" data-num="170">[170]  M. A. Álvarez and N. D. Lawrence, “Computationally efficient convolved multiple output Gaussian processes,” J.Mach.Learn.Res, . vol. 12, pp. 1459–1500, May 2011.</li><li id="ref-171" data-num="171">[171]  M. van der Wilk, C. E. Rasmussen, and J. Hensman, “Convolutional Gaussian processes,” in Proc. Adv. Neural Inf. Process. Syst., 2017, pp. 2849–2858.</li><li id="ref-172" data-num="172">[172]  F. Tobar, T. D. Bui, and R. E. Turner, “Learning stationary time series using Gaussian processes with nonparametric kernels,” in Proc. Adv. Neural Inf. Process. Syst., 2015, pp. 3501–3509.</li><li id="ref-173" data-num="173">[173]  C. Walder, K. I. Kim, and B. Schölkopf, “Sparse multiscale Gaussian process regression,” in Proc. Int. Conf. Mach. Learn., 2008, pp. 1112–1119.</li><li id="ref-174" data-num="174">[174]  Z. Zhang, K. Duraisamy, and N. A. Gumerov, “Efficient multiscale Gaussian process regression using hierarchical clustering,” 2015, arXiv:1511.02258. [Online]. Available: https://arxiv.org/abs/ 1511.02258</li><li id="ref-175" data-num="175">[175]  E. Snelson and Z. Ghahramani, “Variable noise and dimensionality reduction for sparse Gaussian processes,” in Proc. 22nd Conf. Uncertainty Artif. Intell., 2006, pp. 461–468.</li><li id="ref-176" data-num="176">[176]  I. A. Almosallam, M. J. Jarvis, and S. J. Roberts, “GPz: Non-stationary sparse Gaussian processes for heteroscedastic uncertainty estimation in photometric redshifts,” Monthly Notices Roy. Astron. Soc., vol. 462, no. 1, pp. 726–739, 2016.</li><li id="ref-177" data-num="177">[177]  P. W. Goldberg, C. K. I. Williams, and C. M. Bishop, “Regression with input-dependent noise: A Gaussian process treatment,” in Proc. Adv. Neural Inf. Process. Syst., 1998, pp. 493–499.</li><li id="ref-178" data-num="178">[178]  M. Lázaro-Gredilla and M. K. Titsias, “Variational heteroscedastic Gaussian process regression,” in Proc. 28th Int. Conf. Int. Conf. Mach. Learn. Madison, WI, USA: Omnipress, 2011, pp. 841–848.</li><li id="ref-179" data-num="179">[179]  H. Liu, Y.-S. Ong, and J. Cai, “Large-scale heteroscedastic regression via Gaussian process,” 2018, arXiv:1811.01179. [Online]. Available: https://arxiv.org/abs/1811.01179</li><li id="ref-180" data-num="180">[180]  C. Wang and R. M. Neal, “Gaussian process regression with heteroscedastic or non-Gaussian residuals,” 2012, arXiv:1212.6246. [Online]. Available: https://arxiv.org/abs/1212.6246</li><li id="ref-181" data-num="181">[181]  H. Salimbeni, V. Dutordoir, J. Hensman, and M. Deisenroth, “Deep Gaussian processes with importance-weighted variational inference,” in Proc. 36th Int. Conf. Mach. Learn., 2019, pp. 5589–5598.</li><li id="ref-182" data-num="182">[182]  V. Dutordoir, H. Salimbeni, J. Hensman, and M. Deisenroth, “Gaussian process conditional density estimation,” in Proc. Adv. Neural Inf. Process. Syst., 2018, pp. 2385–2395.</li><li id="ref-183" data-num="183">[183]  Y. Yang and D. B. Dunson, “Bayesian manifold regression,” Ann. Statist., vol. 44, no. 2, pp. 876–905, 2016.</li><li id="ref-184" data-num="184">[184]  M. Chen, J. Silva, J. Paisley, C. Wang, D. Dunson, and L. Carin, “Compressive sensing on manifolds using a nonparametric mixture of factor analyzers: Algorithm and performance bounds,” IEEE Trans. Signal Process., vol. 58, no. 12, pp. 6140–6155, Dec. 2010.</li><li id="ref-185" data-num="185">[185]  A. C. Damianou, M. K. Titsias, and N. D. Lawrence, “Variational inference for uncertainty on the inputs of Gaussian process models,” 2014, arXiv:1409.2287. [Online]. Available: https://arxiv.org/abs/1409.2287</li><li id="ref-186" data-num="186">[186]  R. Calandra, J. Peters, C. E. Rasmussen, and M. P. Deisenroth, “Manifold Gaussian processes for regression,” in Proc. Int. Joint Conf. Neural Netw., Jul. 2016, pp. 3338–3345.</li><li id="ref-187" data-num="187">[187]  B. J. Reich, H. D. Bondell, and L. Li, “Sufficient dimension reduction via Bayesian mixture modeling,” Biometrics, vol. 67, no. 3, pp. 886–895, 2011.</li><li id="ref-188" data-num="188">[188]  R. Guhaniyogi and D. B. Dunson, “Compressed Gaussian process for manifold regression,” J. Mach. Learn. Res., vol. 17, no. 1, pp. 2472–2497, 2016.</li><li id="ref-189" data-num="189">[189]  A. Damianou and N. Lawrence, “Deep Gaussian processes,” in Proc. Artif. Intell. Statist., 2013, pp. 207–215.</li><li id="ref-190" data-num="190">[190]  R. M. Neal, Bayesian Learning for Neural Networks, vol. 118. Berlin, Germany: Springer-Verlag, 1996.</li><li id="ref-191" data-num="191">[191]  A. G. D. G. Matthews, M. Rowland, J. Hron, R. E. Turner, and Z. Ghahramani, “Gaussian process behaviour in wide deep neural networks,” 2018, arXiv:1804.11271. [Online]. Available: https://arxiv.org/ abs/1804.11271</li><li id="ref-192" data-num="192">[192]  M. Al-Shedivat, A. G. Wilson, Y. Saatchi, Z. Hu, and E. P. Xing, “Learning scalable deep kernels with recurrent structure,” J. Mach. Learn. Res., vol. 18, no. 1, pp. 2850–2886, 2017.</li><li id="ref-193" data-num="193">[193]  J. Bradshaw, A. G. D. G. Matthews, and Z. Ghahramani, “Adversarial examples, uncertainty, and transfer testing robustness in Gaussian process hybrid deep networks,” 2017, arXiv:1707.02476. [Online]. Available: https://arxiv.org/abs/1707.02476</li><li id="ref-194" data-num="194">[194]  K. Cremanns and D. Roos, “Deep Gaussian covariance network,” 2017, arXiv:1710.06202. [Online]. Available: https://arxiv.org/abs/ 1710.06202</li><li id="ref-195" data-num="195">[195]  T. Iwata and Z. Ghahramani, “Improving output uncertainty estimation and generalization in deep learning via neural network Gaussian processes,” 2017, arXiv:1707.05922. [Online]. Available: https://arxiv.org/abs/1707.05922</li><li id="ref-196" data-num="196">[196]  Z. Dai, A. Damianou, J. González, and N. Lawrence, “Variational autoencoded deep Gaussian processes,” 2015, arXiv:1511.06455. [Online]. Available: https://arxiv.org/abs/1511.06455</li><li id="ref-197" data-num="197">[197]  T. Bui, D. Hernández-Lobato, J. Hernandez-Lobato, Y. Li, and R. Turner, “Deep Gaussian processes for regression using approximate expectation propagation,” in Proc. Int. Conf. Mach. Learn., 2016, pp. 1472–1481.</li><li id="ref-198" data-num="198">[198]  H. Salimbeni and M. Deisenroth, “Doubly stochastic variational inference for deep Gaussian processes,” in Proc. Adv. Neural Inf. Process. Syst., 2017, pp. 4588–4599.</li><li id="ref-199" data-num="199">[199]  K. Cutajar, E. V. Bonilla, P. Michiardi, and M. Filippone, “Random feature expansions for deep Gaussian processes,” in Proc. 34th Int. Conf. Mach. Learn., 2017, pp. 884–893.</li><li id="ref-200" data-num="200">[200]  M. Havasi, J. M. Hernández-Lobato, and J. J. Murillo-Fuentes, “Inference in deep Gaussian processes using stochastic gradient Hamiltonian Monte Carlo,” in Proc. Adv. Neural Inf. Process. Syst., 2018, pp. 7506–7516.</li><li id="ref-201" data-num="201">[201]  M. K. Titsias and N. D. Lawrence, “Bayesian Gaussian process latent variable model,” in Proc. 13th Int. Conf. Artif. Intell. Statist., 2010, pp. 844–851.</li><li id="ref-202" data-num="202">[202]  V. Kumar, V. Singh, P. K. Srijith, and A. Damianou, “Deep Gaussian processes with convolutional kernels,” 2018, arXiv:1806.01655. [Online]. Available: https://arxiv.org/abs/1806.01655</li><li id="ref-203" data-num="203">[203]  P. Hegde, M. Heinonen, H. Lähdesmäki, and S. Kaski, “Deep learning with differential Gaussian process flows,” in Proc. Int. Conf. Artif. Intell. Statist., 2019, pp. 1812–1821.</li><li id="ref-204" data-num="204">[204]  A. C. Damianou, M. K. Titsias, and N. D. Lawrence, “Variational inference for latent variables and uncertain inputs in Gaussian processes,” J.Mach.Learn.Res., vol. 17, no. 1, pp. 1425–1486, 2016.</li><li id="ref-205" data-num="205">[205]  E. V. Bonilla, K. M. Chai, and C. K. I. Williams, “Multi-task Gaussian process prediction,” in Proc. Adv. Neural Inf. Process. Syst., 2008, pp. 153–160.</li><li id="ref-206" data-num="206">[206]  T. V. Nguyen and E. V. Bonilla, “Collaborative multi-output Gaussian processes,” in Proc. 13th Conf. Uncertainty Artif. Intell., 2014, pp. 643–652.</li><li id="ref-207" data-num="207">[207]  J. Zhao and S. Sun, “Variational dependent multi-output Gaussian process dynamical systems,” J. Mach. Learn. Res., vol. 17, no. 1, pp. 4134–4169, 2016.</li><li id="ref-208" data-num="208">[208]  A. Chiplunkar, E. Rachelson, M. Colombo, and J. Morlier, “Approximate inference in related multi-output Gaussian process regression,” in Proc. Int. Conf. Pattern Recognit. Appl. Methods, 2016, pp. 88–103.</li><li id="ref-209" data-num="209">[209]  D. Xu, Y. Shi, I. W. Tsang, Y.-S. Ong, C. Gong, and X. Shen, “A survey on multi-output learning,” 2019, arXiv:1901.00248. [Online]. Available: https://arxiv.org/abs/1901.00248</li><li id="ref-210" data-num="210">[210]  D. Petelin and J. Kocijan, “Evolving Gaussian process models for predicting chaotic time-series,” in Proc. IEEE Conf. Evolving Adapt. Intell. Syst., Jun. 2014, pp. 1–8.</li><li id="ref-211" data-num="211">[211]  M. F. Huber, “Recursive Gaussian process: On-line regression and learning,” Pattern Recognit. Lett., vol. 45, pp. 85–91, Aug. 2014.</li><li id="ref-212" data-num="212">[212]  T. Le, K. Nguyen, V. Nguyen, T. D. Nguyen, and D. Phung, “GoGP: Fast online regression with Gaussian processes,” in Proc. IEEE Int. Conf. Data Mining, Nov. 2017, pp. 257–266.</li><li id="ref-213" data-num="213">[213]  H. Bijl, J.-W. van Wingerden, T. B. Schön, and M. Verhaegen, “Online sparse Gaussian process regression using FITC and PITC approximations,” IFAC-PapersOnLine, vol. 48, no. 28, pp. 703–708, 2015.</li><li id="ref-214" data-num="214">[214]  H. Bijl, T. B. Schön, J.-W. van Wingerden, and M. Verhaegen, “System identification through online sparse Gaussian process regression with input noise,” IFAC J. Syst. Control, vol. 2, pp. 1–11, Dec. 2017.</li><li id="ref-215" data-num="215">[215]  C.-A. Cheng and B. Boots, “Incremental variational sparse Gaussian process regression,” in Proc. Adv. Neural Inf. Process. Syst., 2016, pp. 4410–4418.</li><li id="ref-216" data-num="216">[216]  T. D. Bui, C. Nguyen, and R. E. Turner, “Streaming sparse Gaussian process approximations,” in Proc. Adv. Neural Inf. Process. Syst., 2017, pp. 3299–3307.</li><li id="ref-217" data-num="217">[217]  D. Nguyen-Tuong, J. R. Peters, and M. Seeger, “Local Gaussian process regression for real time online model learning,” in Proc. Adv. Neural Inf. Process. Syst., 2009, pp. 1193–1200.</li><li id="ref-218" data-num="218">[218]  N. Xu, K. H. Low, J. Chen, K. K. Lim, and E. B. Özgül, “GP-localize: Persistent mobile robot localization using online sparse Gaussian process observation model,” in Proc. AAAI Conf. Artif. Intell. Palo Alto, CA, USA: AAAI Press, 2014, pp. 2585–2592.</li><li id="ref-219" data-num="219">[219]  C. V. Nguyen, T. D. Bui, Y. Li, and R. E. Turner, “Online variational Bayesian inference: Algorithms for sparse Gaussian processes and theoretical bounds,” in Proc. ICML Time Ser. Workshop, 2017, pp. 1–5.</li><li id="ref-220" data-num="220">[220]  J. Kocijan, A. Girard, B. Banko, and R. Murray-Smith, “Dynamic systems identification with Gaussian processes,” Math. Comput. Model. Dyn. Syst., vol. 11, no. 4, pp. 411–424, 2005.</li><li id="ref-221" data-num="221">[221]  R. Frigola, Y. Chen, and C. E. Rasmussen, “Variational Gaussian process state-space models,” in Proc. Adv. Neural Inf. Process. Syst., 2014, pp. 3680–3688.</li><li id="ref-222" data-num="222">[222]  C. L. C. Mattos, J. D. A. Santos, and G. A. Barreto, “An empirical evaluation of robust Gaussian process models for system identification,” in Proc. Int. Conf. Intell. Data Eng. Automated Learn., 2015, pp. 172–180.</li><li id="ref-223" data-num="223">[223]  K. Ažman and J. Kocijan, “Dynamical systems identification using Gaussian process models with incorporated local models,” Eng. Appl. Artif. Intell., vol. 24, no. 2, pp. 398–408, 2011.</li><li id="ref-224" data-num="224">[224]  K. Worden, G. Manson, and E. J. Cross, “On Gaussian process NARX models and their higher-order frequency response functions,” in Solving Computationally Expensive Engineering Problems.Cham, Switzerland: Springer, 2014, pp. 315–335.</li><li id="ref-225" data-num="225">[225]  R. Frigola and C. E. Rasmussen, “Integrated pre-processing for Bayesian nonlinear system identification with Gaussian processes,” in Proc. 52nd IEEE Conf. Decis. Control, Dec. 2013, pp. 5371–5376.</li><li id="ref-226" data-num="226">[226]  R. Frigola, F. Lindsten, T. B. Schön, and C. E. Rasmussen, “Bayesian inference and learning in Gaussian process state-space models with particle MCMC,” in Proc. Adv. Neural Inf. Process. Syst., 2013, pp. 3156–3164.</li><li id="ref-227" data-num="227">[227]  A. Svensson, A. Solin, S. Särkkä, and T. Schön, “Computationally efficient Bayesian learning of Gaussian process state space models,” in Proc. Artif. Intell. Statist., 2016, pp. 213–221.</li><li id="ref-228" data-num="228">[228]  C. L. C. Mattos, Z. Dai, A. Damianou, G. A. Barreto, and N. D. Lawrence, “Deep recurrent Gaussian processes for outlier-robust system identification,” J. Process Control, vol. 60, no. 6, pp. 82–94, Dec. 2017.</li><li id="ref-229" data-num="229">[229]  C. L. C. Mattos and G. A. Barreto, “A stochastic variational framework for recurrent Gaussian processes models,” Neural Netw., vol. 114, pp. 54–72, Apr. 2019.</li><li id="ref-230" data-num="230">[230]  S. Hochreiter and J. Schmidhuber, “Long short-term memory,” Neural Comput., vol. 9, no. 8, pp. 1735–1780, 1997.</li><li id="ref-231" data-num="231">[231]  H. Nickisch and C. E. Rasmussen, “Approximations for binary Gaussian process classification,” J.Mach.Learn.Res.,vol.9, pp. 2035–2078, Oct. 2008.</li><li id="ref-232" data-num="232">[232]  H.-C. Kim and Z. Ghahramani, “Bayesian Gaussian process classification with the EM-EP algorithm,” IEEE Trans. Pattern Anal. Mach. Intell., vol. 28, no. 12, pp. 1948–1959, Dec. 2006.</li><li id="ref-233" data-num="233">[233]  K. M. A. Chai, “Variational multinomial logit Gaussian process,” J.Mach.Learn.Res., vol. 13, pp. 1745–1808, Jun. 2012.</li><li id="ref-234" data-num="234">[234]  F. J. R. Ruiz, M. K. Titsias, A. B. Dieng, and D. M. Blei, “Augment and reduce: Stochastic inference for large Categorical distributions,” in Proc. Int. Conf. Mach. Learn., vol. 10, 2018, pp. 6997–7006.</li><li id="ref-235" data-num="235">[235]  B. Fröhlich, E. Rodner, M. Kemmler, and J. Denzler, “Large-scale Gaussian process multi-class classification for semantic segmentation and facade recognition,” Mach. Vis. Appl., vol. 24, no. 5, pp. 1043–1053, 2013.</li><li id="ref-236" data-num="236">[236]  D. Milios, R. Camoriano, P. Michiardi, L. Rosasco, and M. Filippone, “Dirichlet-based Gaussian processes for large-scale calibrated classification,” in Proc. Adv. Neural Inf. Process. Syst., 2018, pp. 6008–6018.</li><li id="ref-237" data-num="237">[237]  A. Naish-Guzman and S. Holden, “The generalized FITC approximation,” in Proc. Adv. Neural Inf. Process. Syst., 2008, pp. 1057–1064.</li><li id="ref-238" data-num="238">[238]  J. Hensman, A. Matthews, and Z. Ghahramani, “Scalable variational Gaussian process classification,” in Proc. Artif. Intell. Statist., 2015, pp. 351–360.</li><li id="ref-239" data-num="239">[239]  D. Hernández-Lobato and J. M. Hernández-Lobato, “Scalable Gaussian process classification via expectation propagation,” in Proc. Artif. Intell. Statist., 2016, pp. 168–176.</li><li id="ref-240" data-num="240">[240]  C. Villacampa-Calvo and D. Hernández-Lobato, “Scalable multi-class Gaussian process classification using expectation propagation,” in Proc. 34th Int. Conf. Mach. Learn., 2017, pp. 3550–3559.</li><li id="ref-241" data-num="241">[241]  F. Wenzel, T. Galy-Fajou, C. Donner, M. Kloft, and M. Opper, “Efficient Gaussian process classification using Pólya-Gamma data augmentation,” in Proc. Int. Conf. Mach. Learn., 2018, pp. 5417–5424.</li><li id="ref-242" data-num="242">[242]  N. G. Polson, J. G. Scott, and J. Windle, “Bayesian inference for logistic models using Pólya–Gamma latent variables,” J. Amer. Stat. Assoc., vol. 108, no. 504, pp. 1339–1349, 2013.</li><li id="ref-243" data-num="243">[243]  T. Galy-Fajou, F. Wenzel, C. Donner, and M. Opper, “Scalable multiclass Gaussian process classification via data augmentation,” in Proc. NIPS Workshop Approx. Inference, 2018, pp. 1–12.</li><li id="ref-244" data-num="244">[244]  H. Liu, Y.-S. Ong, Z. Yu, J. Cai, and X. Shen, “Scalable Gaussian process classification with additive noise for various likelihoods,” arXiv preprint arXiv:1909.06541, 2019. [Online]. Available: https://arxiv.org/abs/1909.06541</li><li id="ref-245" data-num="245">[245]  C. Park, J. Z. Huang, and Y. Ding, “Domain decomposition approach for fast Gaussian process regression of large spatial data sets,” J. Mach. Learn. Res., vol. 12, pp. 1697–1728, May 2011.</li><li id="ref-246" data-num="246">[246]  F. Meier, P. Hennig, and S. Schaal, “Incremental local Gaussian regression,” in Proc. Adv. Neural Inf. Process. Syst., 2014, pp. 972–980.</li><li id="ref-247" data-num="247">[247]  S. Flaxman, A. Wilson, D. Neill, H. Nickisch, and A. Smola, “Fast Kronecker inference in Gaussian processes with non-Gaussian likelihoods,” in Proc. Int. Conf. Mach. Learn., 2015, pp. 607–616</li></ul><p></p>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/92f7ba1d.html">http://xishansnow.github.io/posts/92f7ba1d.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/">高斯过程</a><a class="post-meta__tags" href="/tags/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a><a class="post-meta__tags" href="/tags/%E5%9C%B0%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/">地统计数据</a><a class="post-meta__tags" href="/tags/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/">可扩展性</a></div><div class="post-share"><div class="social-share" data-image="/img/coffe_02.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/963d7f19.html" title="精确高斯过程的GPU并行推断程序"><img class="cover" src="/img/coffe_12.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">精确高斯过程的GPU并行推断程序</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 高斯过程 (GP) 是灵活的非参数模型，其容量随着可用数据的增加而增长。但标准推断程序的计算局限性将精确高斯过程限制在训练点在一万以内的问题上，对于更大的数据集则需要进行近似。在本文中，我们为精确高斯过程开发了一种可扩展的方法，该方法利用多 GPU 并行化、线性共轭梯度等方法，仅通过矩阵乘法访问协方差矩阵。通过划分和分布协方差矩阵乘法，我们证明，可以在不到 2 小时的时间内训练一个超过一百万个点的精确高斯过程，这是以前认为不可能完成的任务。此外，我们的方法具有普遍适用性，不受网格数据或特定核类型的限制。通过这种可扩展性，我们首次对具有 $10^4$ − $10^6$ 个数据点的数据集，进行了精确高斯过程与可扩展高斯过程近似之间的比较，显示出显著的性能改进。 【原 文】 Wang, K.A. et al. (2019) ‘Exact Gaussian Processes on a Million Data Points’. Available at: https://doi.org/10.48550/ARXIV.1903.08114. 1 引言高斯过程 (GP)...</div></div></div></a><a class="pagination-related" href="/posts/473bc1cc.html" title="对神经切线核的初步理解"><img class="cover" src="/img/coffe_05.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">对神经切线核的初步理解</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 想理解神经网络的训练动态过程，不妨从「神经切线核」入手。那么什么是神经切线核，核机制如何运行？就读于印度理工学院马德拉斯分校电气工程系的 Rajat Vadiraj Dwaraknath 撰文介绍了这一概念。  博客地址：https://rajatvd.github.io/NTK/ 文章动图地址：https://github.com/rajatvd/NTK 神经切线核相关论文地址：https://arxiv.org/abs/1806.07572  1 引言  图 1: _这张动图展示了神经网络的训练动态过程。  最近一系列关于理论深度学习的论文讨论了在 无限宽 极限下分析神经网络的问题。这个极限最初似乎不切实际，甚至研究起来毫无意义；但事实证明，此时的神经网络可以简化为具有神经切线核的 线性模型，这使得梯度下降问题可以更好被研究。此研究虽然看起来很有希望，但实证结果表明，此时的神经网络性能并不比实际的超参数网络更好。无论如何，这仍然为神经网络训练的某些方面提供了理论见解，因此值得研究。...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/97a2ec3c.html" title="现代高斯过程回归速览"><img class="cover" src="/img/book_03.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-03</div><div class="info-item-2">现代高斯过程回归速览</div></div><div class="info-2"><div class="info-item-1">   1 无限模型表达 + 现代计算有没有想过如何创建具有 无限表达能力 的非参数监督学习模型？看看 **高斯过程回归 (GPR)**，这是一种几乎完全根据数据本身学习做出预测的算法（在超参数的帮助下）。将此算法与自动微分等最新的计算进展相结合，可以应用高斯过程回归近乎实时地解决各种受监督的机器学习问题。 在本文中，我们将讨论：  高斯过程回归理论的简要概述/回顾 我们可以使用高斯过程回归解决的问题类型，以及一些例子 高斯过程回归与其他监督学习算法的比较 可以用来实现高斯过程回归的现代编程包和工具  这是我的高斯过程回归系列中的第二篇文章。如需从头开始对高斯过程回归进行严格的介绍，请查看我之前的文章 此处。 2 高斯过程回归的概念在深入研究如何实现和使用高斯过程回归之前，先快速回顾一下这个监督机器学习算法背后的机制和理论。关于以下概念的详细推导/讨论，请查看我之前的文章《高斯过程回归》 的文章。 （i）以 观测到的 训练点为条件，预测测试点的 条件后验分布：     （ii）将测试点目标的 均值 被预测为...</div></div></div></a><a class="pagination-related" href="/posts/3fe8789c.html" title="局部和全局稀疏高斯过程近似"><img class="cover" src="/img/book_18.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-10</div><div class="info-item-2">局部和全局稀疏高斯过程近似</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗高斯过程 (GP) 模型是可以用于回归、分类和其他任务的概率非参数模型。它们在大型数据集上存在计算困难的问题。在过去的十年中，已经开发了许多不同的近似来降低此成本。其中大部分方法可以被称为全局近似，因为它们试图通过一小组支撑点来总结所有训练数据。一种不同的方法是局部回归，其中许多局部专家占据自己的部分空间。在本文中，我们首先研究这些不同方法在哪些情况下会运作良好或失败。然后继续开发一种新的稀疏高斯过程近似，它是全局和局部方法的组合。从理论上讲，我们证明它是 Quinonero-Candela 和 Rasmussen [2005] 提出的稀疏高斯过程近似的自然扩展。我们在一些一维示例和一些大型现实世界数据集上展示了组合近似的好处。  〖原 文〗 Snelson, Edward, and Zoubin Ghahramani. “Local and Global Sparse Gaussian Process Approximations.” In Proceedings of the Eleventh International Conference on...</div></div></div></a><a class="pagination-related" href="/posts/1aa0965f.html" title="🔥 稀疏高斯过程及其变分推断"><img class="cover" src="/img/coffe_09.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-20</div><div class="info-item-2">🔥 稀疏高斯过程及其变分推断</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 高斯过程 （Gaussian Processes,高斯过程） 为贝叶斯推断提供了一个数学上优雅的框架，可以为大量问题提供原则性的不确定性估计。例如，对于某些具有高斯似然的回归问题，高斯过程模型具有封闭形式的后验。然而，后验高斯过程（高斯过程的后验依然是一个高斯过程分布，此处将之简称为后验高斯过程）的计算复杂度与训练样本数量成立方关系，并且所有训练样本均需要在内存中存储。为克服这些问题，已经提出了使用伪训练样本（也称为或）来获取近似后验高斯过程的方法 – 稀疏高斯过程（Sparse Gaussian Processes）。用户可以自己定义伪训练样本的数量，进而控制计算和内存复杂度。在一般情况下，稀疏高斯过程无法得到封闭解，必须求助于近似推断。在此情况下，变分推断是近似推断的一种选择。变分方法将贝叶斯推断问题转化为优化问题，通过最大化对数边缘似然下界（ $\mathbb{ELBO}$...</div></div></div></a><a class="pagination-related" href="/posts/977049a8.html" title="🔥 组合似然法概述"><img class="cover" src="/img/book_01.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-30</div><div class="info-item-2">🔥 组合似然法概述</div></div><div class="info-2"><div class="info-item-1">   【摘 要】组合似然法是用于超大规模高斯随机场高效计算的主要方法之一，本文提供了对组合似然理论和应用的最新发展调查。论文考虑了一系列应用领域，包括地统计学、空间极值、时空模型、集群和纵向数据以及时间序列等。考虑到 Larribe 和 Fearnhead (2011) 已经发表了在统计遗传学方面的综述论文，本文省略了这一重要应用领域。本文重点介绍了组合似然理论发展、组合似然推断的效率和鲁棒性等知识现状。 【原 文】 Varin, C., Reid, N. and Firth, D. (2011) ‘AN OVERVIEW OF COMPOSITE LIKELIHOOD METHODS’, Statistica Sinica, 21(1), pp. 5–42. 1...</div></div></div></a><a class="pagination-related" href="/posts/cc6501c0.html" title="高级模型--高斯过程与核学习"><img class="cover" src="/img/010.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-05</div><div class="info-item-2">高级模型--高斯过程与核学习</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a><a class="pagination-related" href="/posts/b5b2c876.html" title="🔥 高斯过程索引帖"><img class="cover" src="/img/coffe_09.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-09</div><div class="info-item-2">🔥 高斯过程索引帖</div></div><div class="info-2"><div class="info-item-1">   1 高斯过程原理（1）基本原理  Rasmussen 等 2006 年经典书籍《机器学习中的高斯过程》节选第二章 《高斯过程回归》 Rasmussen 等 2006 年经典书籍《机器学习中的高斯过程》节选第三章 《高斯过程分类》 （可以视为非高斯似然的一类，暂无中文稿） Wang 2020 年的 高斯过程回归初步教程: 高斯过程回归模型因其表达方式的灵活性和内涵的不确定性预测能力而广泛用于机器学习应用中。本文解释了构建高斯过程的基本概念，包括多元正态分布、核、非参数模型、联合和条件概率等。然后，简明描述了高斯过程回归以及标准高斯过程回归算法的实现。除了标准高斯过程回归，本文还回顾了目前最先进的高斯过程算法软件包。 Gal Yarlin 2017 年的 高斯过程精简版教程: 本文对高斯过程进行公式推导、原理阐述、可视化以及代码实现，介绍了以高斯过程为基础的高斯过程回归基本原理、超参优化、高维输入等问题。本文可以与上一篇文章相互参考，大部分内容具有雷同。  （2）核（协方差）函数  Rasmussen 等 2006 年经典书籍《机器学习中的高斯过程》节选第四章...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%8B%E7%BB%8D"><span class="toc-text">1 介绍</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

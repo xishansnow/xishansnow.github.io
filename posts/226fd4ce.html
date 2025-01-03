@@ -1,0 +1,757 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>近似贝叶斯计算简明教程（节选） | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="近似贝叶斯计算简明教程（节选）"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/226fd4ce.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '近似贝叶斯计算简明教程（节选）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/book_02.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">近似贝叶斯计算简明教程（节选）</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">近似贝叶斯计算简明教程（节选）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-11T13:23:00.000Z" title="发表于 2023-02-11 21:23:00">2023-02-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.178Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/">贝叶斯统计</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%9F%E8%AE%A1%E6%8E%A8%E6%96%AD/">统计推断</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/">近似贝叶斯</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">17.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>73分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<p>【摘 要】似然是贝叶斯统计推断的基本要素之一，传统方法会通过对似然的参数化建模，来得到其参数的后验分布并进而得到后验预测分布。但在很多时候，似然的建模并不那么明确，甚至无法被参数化建模，使得贝叶斯分析方法陷入困难。近似贝叶斯计算（Approximate Bayesian Computation, ABC）正是解决此问题的基本方法，在最近 20 年左右时间里得到了快速发展。本文解释了一些近似贝叶斯计算的基本概念、原理和示例，帮助初学者快速掌握该方法。 本书节选自 Martin 的 《Bayesian modeling and computation in python》 一书第八章。</p>
+<p>【原 文】 Martin, O.A., Kumar, R. and Lao, J. (2021) Bayesian modeling and computation in python. Boca Raton. <a target="_blank" rel="noopener" href="https://github.com/BayesianModelingandComputationInPython/BookCode_Edition1/">https://github.com/BayesianModelingandComputationInPython/BookCode_Edition1/</a></p>
+<p>在本章中，我们讨论 <strong>近似贝叶斯计算（ Approximate Bayesian Computation ， ABC ）</strong>。近似贝叶斯计算中的 “近似” 指缺乏显式的似然函数（注意：不同于后验分布的近似推断），因此近似贝叶斯计算方法的另一个常见并且更明确的名称是 <strong>无似然方法</strong>。尽管有很多学者认为这两个术语之间存在区别，不能作为可以互换的概念，但无似然方法这个名称还是更容易让初识的人理解。</p>
+<p>当没有明确似然表达式时，近似贝叶斯计算方法会非常有用，但需要有一个能够生成合成数据的参数化 <em>模拟器</em>。这个模拟器有一个或多个未知参数，我们想知道哪一组参数生成的合成数据 <em>足够接近</em> 观测数据，然后再计算这组参数的后验分布。</p>
+<p>近似贝叶斯计算方法在生物科学中变得越来越普遍，特别是在系统生物学、流行病学、生态学和群体遗传学等子领域<sup class="refplus-num"><a href="#ref-Sunnaker2013">[82]</a></sup>。但其也可用于其他领域，因为近似贝叶斯计算能够提供一种解决许多实际问题的灵活方式。
+
+应用的多样性也反映在近似贝叶斯计算的 Python 软件包中 <sup class="refplus-num"><a href="#ref-Dutta2017">[83]</a></sup><sup class="refplus-num"><a href="#ref-Lintusaari2018">[84]</a></sup><sup class="refplus-num"><a href="#ref-Klinger2018">[85]</a></sup> 。不过，额外的近似层也带来了一系列困难，主要是：**在缺乏似然的情况下，足够接近到底指什么？如何能够实际计算一个近似的后验？**
+
+我们将在本章中从一般性角度讨论这些挑战。强烈建议有兴趣将近似贝叶斯计算方法应用于自身问题的读者，用自己领域知识中的例子来补充本章内容。
+
+## 1 超越似然 
+
+根据贝叶斯定理，计算后验需要两个基本成分：先验和似然。但对于某些特定问题，可能无法以封闭形式表达似然，或者计算似然的成本过高。这对于贝叶斯热爱者来说，似乎进入了一条死胡同。
+
+但如果能够以某种方式生成合成数据，情况可能就会有所不同。特别是当此类合成数据能够与真实观测数据足够相似时，似乎能够用该数据的生成过程来近似真实数据的似然。这种合成数据生成器通常被称为 **模拟器**。从近似贝叶斯计算方法角度来看，模拟器就是一个黑盒子，我们在一侧输入参数值，并从另一侧获取模拟数据。
+
+这里的复杂性在于：**不确定哪些输入参数能够生成足以与观测数据相似的合成数据**。
+
+所有近似贝叶斯计算方法共有的基本概念是：**用能够计算某种距离的 $\delta$ 函数替换似然函数，或者更一般地说，计算观测数据 $Y$ 与模拟器生成数据 $\hat Y$之间的某种差异**。
+
+$$
+\hat Y \sim \operatorname{Sim}(\theta)
+$$
+
+$$
+p(\theta \mid Y) \stackrel{\propto } \sim \delta(Y, \hat Y \mid \epsilon)\; p(\boldsymbol{\theta})
+$$
+
+我们的目标是使用函数 $\delta$ 来近似似然函数：
+
+$$
+\lim_{\epsilon \to 0} \delta(Y, \hat Y \mid \epsilon) = p(Y \mid \boldsymbol{\theta})
+$$
+
+我们需要引入了一个容差参数 $\epsilon$，因为对于大多数问题，生成与观测数据 $Y$ 相等的合成数据集 $\hat Y$ 几乎不可能 [^1] 。 $\epsilon$ 值越大，我们对 $Y$ 和 $\hat Y$ 之间的近似程度就越能容忍。一般来说，对于给定问题，较大的 $\epsilon$ 值意味着对后验更粗略的近似。
+
+在实践中，随着数据样本量或维度的增加，找到足够小的 $\delta$ 值将越来越困难 [^2] 。一个简单的解决方案是增加 $\epsilon$ 的值，但这意味着增加了近似误差。因此，更好的解决方案可能是计算一个或多个统计量 $S$ 之间的距离，而不是直接计算合成数据集和真实数据集之间的距离。
+
+$$
+\delta\left(S(Y), S(\hat Y) \mid \epsilon\right)
+$$
+
+当然，使用统计量会给近似贝叶斯计算带来额外的误差源，除非该统计量对于模型参数 $\theta$ 来说是充分统计量。不幸的是，并非所有情况都能满足这种要求。尽管如此，不充分统计量在实践中仍然非常有用。
+
+在本章中，我们将探讨一些不同的距离和统计量，重点关注经过验证的一些方法。
+
+</p><div class="note info no-icon flat"><p><strong>充分统计量</strong></p>
+<p>如果除了某个统计量之外，从同一样本计算的其他统计量无法提供有关该样本的更多信息，则该统计量对于模型参数而言是充分的，被称为充分统计量。换句话说，该统计量 <em>足以</em> 总结你的样本而不会丢失信息。</p>
+<p>例如，给定来自具有期望值 $\mu$ 和已知有限方差的高斯分布的独立同分布样本，样本的均值对于参数 $\mu$ 来说是一个 <strong>充分统计量</strong>。请注意，均值无法说明离散度，因此其仅对参数 $\mu$ 是充分的。</p>
+<p>众所周知，对于独立同分布数据，具有充分统计量且维度与 $\theta$ 相同的唯一分布来自于 <strong>指数族分布</strong> <sup class="refplus-num"><a href="#ref-Darmois1935">[86]</a></sup><sup class="refplus-num"><a href="#ref-Koopman1936">[87]</a></sup><sup class="refplus-num"><a href="#ref-Pitman1936">[88]</a></sup><sup class="refplus-num"><a href="#ref-Andersen1970">[89]</a></sup> 。对于其他类型的分布，充分统计量的维度会随着样本量的增加而增加。</p>
+</div>
+
+
+## 2 近似的后验
+
+执行 ABC 计算的大多数基础方法是按照一定概率做拒绝采样。我们将用 `图1` 以及对算法的抽象描述来逐步解释，如下所示。
+
+（1） 从先验分布中抽取 $\theta$ 的值作为提议。
+
+（2） 将该值传递给模拟器并生成合成数据。
+
+（3） 如果合成数据的距离 $\delta$ 较阈值 $\epsilon$ 更近，则保存提议的 $\theta$，否则拒绝它。
+
+（4） 重复直到获得所需数量的样本。
+
+![figures/ABC_rejection.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211110314-6fc1.webp)
+
+&gt; 图1： 近似贝叶斯计算拒绝采样器的一个步骤。从先验分布（顶部）中抽取一组 $\theta$ 值。将每个值都被传递给模拟器，模拟器生成合成数据集（虚线分布），然后比较合成数据与观测数据（底部）的分布。在这个例子中，只有 $\theta_1$ 能够生成一个与观测数据足够接近的合成数据集，因此 $\theta_0$ 和 $\theta_2$ 被拒绝。请注意，如果仅使用统计量，则需要在第 $2$ 步之后和第 $3$ 步之前计算合成数据和观测数据的统计量信息。
+
+
+ABC 拒绝采样器的主要缺点是： 如果先验分布与后验分布相差太大，我们会花费大部分时间提出将被拒绝的值。因此，更好的办法是从接近真实后验的分布中提出建议值。但通常来说，我们对后验的了解不够，无法手动执行此操作，但可以使用 **序贯蒙特卡洛 (SMC)** 方法来实现。
+
+序贯蒙特卡洛是一种通用采样方法，就像 MCMC 方法一样。 但序贯蒙特卡洛也适用于执行近似贝叶斯计算，并被称为 “序贯蒙特卡洛-近似贝叶斯计算（ SMC-ABC ）” 。如果你想了解更多关于序贯蒙特卡洛方法的细节，可以参阅相关资料，但要理解本章，暂时只需要知道序贯蒙特卡洛是通过在 $s$ 个连续阶段中逐步增加辅助参数 $\beta$ 的值 $\{\beta_0=0 &lt; \beta_1 &lt; ... &lt; \beta_s=1\}$ 实现的。其作法是：从先验（ $\beta = 0$ ）开始采样，直到到达后验（ $\beta = 1$ ）。因此，可以将 $\beta$ 视为一个逐渐开启似然的参数。 $\beta$ 的中间值序列由序贯蒙特卡洛方法自动计算。数据相对于先验的信息越多和（/或）后验几何形态越复杂，则序贯蒙特卡洛所采取的中间步骤就会越多。
+
+`图 2` 显示了一个假设的中间分布序列，从浅灰色的先验到蓝色的后验。
+
+![figures/smc_tempering.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211113123-74bb.webp)
+
+&gt; 图2：序贯蒙特卡洛采样器探索的退火后验序列，从浅灰色的先验 ( $\beta = 0$ ) 到蓝色的真实后验 ( $\beta = 1$ )。开始时较低的 $\beta$ 值有助于防止采样器卡在单一最值中。
+
+## 3 用近似贝叶斯计算拟合一个高斯 
+
+让我们用一个简单的例子先热热身，从均值为 $0$ 、标准差为 $1$ 的高斯分布数据中估计均值和标准差。对于这个问题，我们可以拟合模型：
+
+$$
+\begin{split}
+  \boldsymbol{\mu} \sim &amp;\; \mathcal{N}(0, 1) \\
+  \boldsymbol{\sigma} \sim &amp;\; \mathcal{HN}(1) \\
+  \boldsymbol{s} \sim &amp;\; \mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\sigma})
+\end{split}
+$$
+
+在 `PYMC3` 中编写此模型的方法见代码 `gauss_abc`:
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> pm.Model() <span class="keyword">as</span> gauss:     </span><br><span class="line">  μ = pm.Normal(<span class="string">"μ"</span>, mu=<span class="number">0</span>, sigma=<span class="number">1</span>)     </span><br><span class="line">  σ = pm.HalfNormal(<span class="string">"σ"</span>, sigma=<span class="number">1</span>)     </span><br><span class="line">  s = pm.Normal(<span class="string">"s"</span>, μ, σ, observed=data)     </span><br><span class="line">  trace_g = pm.sample()</span><br></pre></td></tr></table></figure>
+
+使用 `SMC-ABC` 的等效模型见代码:
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> pm.Model() <span class="keyword">as</span> gauss:     </span><br><span class="line">  μ = pm.Normal(<span class="string">"μ"</span>, mu=<span class="number">0</span>, sigma=<span class="number">1</span>)     </span><br><span class="line">  σ = pm.HalfNormal(<span class="string">"σ"</span>, sigma=<span class="number">1</span>)     </span><br><span class="line">  s = pm.Simulator(<span class="string">"s"</span>, normal_simulator, params=[μ, σ],</span><br><span class="line">                   distance=<span class="string">"gaussian"</span>, sum_stat=<span class="string">"sort"</span>,</span><br><span class="line">                   epsilon=<span class="number">1</span>, observed=data)</span><br><span class="line">  trace_g = pm.sample_smc(kernel=<span class="string">"ABC"</span>)</span><br></pre></td></tr></table></figure>
+
+可以看到两种代码之间有两个重要的区别：
+
+- 使用了 `pm.Simulator` 分布
+
+- 使用 `pm.sample_smc(kernel="ABC")` 代替了 `pm.sample()`。
+
+  通过使用 `pm.Simulator` ，我们告诉 PyMC3，不会对似然使用封闭形式表达式，而是定义一个伪似然。此时需要传递一个生成合成数据的 Python 函数，本例中该函数为 `normal_simulator` 以及其参数 `params=[μ, σ]` 。模拟器代码给出了 `normal_simulator` 函数的定义，样本大小为 $1000$ ，未知参数为 $\mu$ 和 $\sigma$ :
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">normal_simulator</span>(<span class="params">μ, σ</span>):</span><br><span class="line">    <span class="keyword">return</span> np.random.normal(μ, σ, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+
+我们还需要向 `pm.Simulator` 传递其他可选参数，包括距离函数 `distance`、统计量信息 `sum_stat` 和阈值 `epsilon` 的值。此外，还要将观测数据以常规似然形式传递给 `pm.Simulator` 。
+
+通过使用 `pm.sample_smc(kernel="ABC")`[^3] ， 我们告诉 PYMC3 在模型中寻找 `pm.Simulator` 并使用它来定义伪似然，其余的采样过程与序贯蒙特卡洛算法中描述的相同。当 `pm.Simulator` 存在时，其他采样器将无法运行。
+
+本例中的 `normal_simulator` 函数原则上可以是任何我们想要的 Python 函数，实际上甚至可以是经过封装的非 Python 代码，例如 Fortran 或 C 代码。这就是近似贝叶斯计算方法的灵活性所在。在本例中，模拟器只是一个 `NumPy` 随机生成器函数的包装器。
+
+与其他采样器一样，建议运行多个链，以便诊断采样器是否无法正常工作，PyMC3 将尝试自动执行此操作。 `图 3` 显示了使用两条链运行代码 `gauss_abc` 的结果。
+
+可以看到，我们能够恢复真实参数，并且采样器没有出现任何明显的采样问题。
+
+![figures/trace_g.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211113234-095d.webp)
+
+&gt; 图 3: 正如预期的 $\mu \approx 0$ 和 $\sigma \approx 1$ 一样，两条链都支持核密度估计和秩图反映的后验。请注意，这两条链中都是通过运行 $2000$ 个并行 SMC 链获得的，如 SMC 算法中所述。
+
+ 
+
+## 4 选择距离函数、阈值和统计量 
+
+如何定义有效的距离度量、统计量和阈值 $\epsilon$ 取决于待解决的问题。这意味着我们应该在获得结果之前进行一些试验和尝试，尤其是在遇到新问题时。像往常一样，事先对方案做充分思考有助于减少备选的数量；不过我们也应该习惯于运行实验，因为它总是有助于更好地理解问题，并对超参数做出更明智的抉择。
+
+在接下来的部分中，我们将讨论一些比较通用的指南。
+
+### 4.1 距离函数的选择
+
+上例中，我们使用了默认距离函数 `distance="gaussian"` 来运行代码 `gauss_abc`，其定义为：
+
+$$
+\sum_i - \frac{||X_{oi} - X_{si}||^2}{2 \epsilon_i^2} \tag{6}
+$$
+
+其中 $X_{o}$ 是观测数据，$X_{s}$ 是模拟数据，$\epsilon$ 是其缩放参数。我们称 `图 6` 为高斯的，因为它在对数尺度上是高斯核 [^4]。我们使用对数尺度来计算伪似然，就和在实际似然（和先验）中一样 [^5]。 $||X_{oi} - X_{si}||^2$ 是欧几里得距离（也称为 $L2$ 范数），因此也可以将公式 `图 6` 描述为加权欧几里得距离。这是目前比较流行的选择，其他选项还有：在 PYMC3 中被称为拉普拉斯距离的 $L1$ 范数（绝对差的和）； $L-\infty$ 范数（差的最大绝对值）；马氏距离：$\sqrt{(xo - xs )^{T}\Sigma(xo - xs)}$， $\Sigma$ 为协方差矩阵。
+
+高斯距离、拉普拉斯等可以应用于整个数据，或者应用于统计量。此外，还专门引入了一些能够避免统计量计算、但效果也很好的距离函数 <sup class="refplus-num"><a href="#ref-Perez2008">[90]</a></sup><sup class="refplus-num"><a href="#ref-Jiang2018">[91]</a></sup><sup class="refplus-num"><a href="#ref-Bernton2019">[92]</a></sup>。我们将介绍其中的 `Wasserstein 距离` 和 `KL 散度`。
+
+在代码 `gauss_abc` 中，我们使用了 `sum_stat="sort"` [^6]，这告诉 PYMC3 在计算公式 `图 6` 之前对数据进行排序。这相当于计算 `一维 2-Wasserstein 距离`，如果使用 $L1$ 范数，则将得到 `一维 1-Wasserstein 距离`。当然，也可以为大于 $1$ 的维度定义 `Wasserstein 距离`（ <sup class="refplus-num"><a href="#ref-Bernton2019">[92]</a></sup>  ）。
+
+在计算距离之前对数据排序，会使分布之间的比较更加公平。想象一下，如果有两个完全相等的样本，但是一个从低到高排序，另一个是高到低排序。此时应用公式 `图 6` 这样的度量，会得出“两个样本不同”的结论。但如果先排序而后计算距离，会得出“两个样本相同”结论。这是一个非常极端的场景，但有助于阐明数据排序背后的直觉。此外，对数据进行排序的前提，是假设我们只关心数据分布，不关心数据顺序；否则的话，做排序处理会破坏数据中本来存在的结构。
+
+为了避免定义和计算统计量而引入的另一个距离是使用 KL 散度（ 参见第 {ref}`DKL` 部分 ）。通常使用以下表达式来近似计算 KL 散度 （ <sup class="refplus-num"><a href="#ref-Perez2008">[90]</a></sup><sup class="refplus-num"><a href="#ref-Jiang2018">[91]</a></sup> ）：
+
+$$
+\frac{d}{n}  \sum \left(- \frac{\log(\frac{\nu_d}{\rho_d})}{\epsilon} \right) + \log\left(\frac{n}{n-1}\right)
+$$
+
+其中 $d$ 是数据集的维度（变量或特征的数量），$n$ 是观测数据点的数量。 $\nu_d$ 包含观测数据到模拟数据的 `1-最近邻距离`，$\rho_d$ 包含观测数据到自身的 `2-最近邻距离`（ 注意，如果你将数据集与其自身进行比较，则 `1-最近邻距离` 永远为零 ）。由于该方法涉及最近邻搜索的 $2n$ 次操作，因此通常使用 `k-d 树` 来实现 <sup class="refplus-num"><a href="#ref-Bentley1975">[93]</a></sup> 。
+
+### 4.2 阈值的选择
+
+在许多近似贝叶斯计算方法中，$\epsilon$ 参数用作硬阈值，生成距离大于 $\epsilon$ 的样本的参数 $\theta$ 值将被拒绝。此外，$\epsilon$ 可以是用户必须设置的递减值列表，或者算法自适应找到的结果 [^7]。
+
+在 PYMC3 中，$\epsilon$ 采用的是距离函数的尺度，就像在公式 `图 6` 中一样，所以不能用作硬阈值。我们可以根据需要设置 $\epsilon$ 。我们可以选择一个标量值（ 相当于将所有 $i$ 的 $\epsilon_i$ 设置为相等 ）。这在评估数据上的距离而不是统计量上的距离时非常有用。在此情况下，合理猜测可能是数据的经验标准差。
+
+如果我们改为使用统计量，那么可以将 $\epsilon$ 设置为值列表。这通常是必要的，因为每个统计量可能具有不同的尺度。如果尺度差异太大，那么每个统计量的贡献将是不均衡的，甚至可能出现单个统计量主导距离计算的情况。在此情况下，$\epsilon$ 的一个常用选择是在先验预测分布下的 $i^{\text{th}}$ 个统计量的经验标准差，或中值绝对差，因为这样选择相对于异常值来说更为稳健。使用先验预测分布的问题之一是其可能比后验预测分布更宽，因此，为了找到一个合适的 $\epsilon$ 值，我们可能希望将上述有依据的猜测作为上限，然后从这些值中尝试一些较低的值。然后我们可以根据计算成本、所需的精度/误差水平和采样器的效率等几个因素来选择 $\epsilon$ 的最终值。一般来说，$\epsilon$ 的值越低，近似值就越好。
+
+`图 4` 显示了 $\mu$ 和 $\sigma$ 的几个 $\epsilon$ 阈值设置以及 NUTS 采样的森林图（ 使用正常似然而不是模拟器 ）。
+
+![figures/trace_g_many_eps.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211113241-b556.webp)
+
+&gt; 图 4: $\mu$ 和 $\sigma$ 的森林图，使用 `NUTS` 或近似贝叶斯计算获得，$\epsilon$ 为 $1$ 、$5$ 和 $10$ 的递增值。
+
+
+减小 $\epsilon$ 的值并非毫无限制的，因为过低的值有时会使采样器非常低效，表明目标是一个没有太大意义的准确度水平。`图 5` 显示了当来自代码 `gauss_abc` 的模型以 `epsilon=0.1` 的值进行采样时，序贯蒙特卡洛采样器难以收敛，采样器非常失败。
+
+![figures/trace_g_eps_too_low.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211113245-e8e2.webp)
+
+&gt; 图 5: 模型`trace_g_001`的核密度估计和秩图，收敛失败表明 $\epsilon=0.1$ 的取值对于该问题来说太苛刻了。
+
+
+为了能够为 $\epsilon$ 确定一个好的值，可以使用一些非近似贝叶斯计算方法中的模型评价工具，例如贝叶斯 $p$ 值和后验预测检查，如图 `图 6`、`图 7` 和 `图 8`。 `图 6` 包含值 $\epsilon=0.1$ ，主要是为了展示校准不佳的模型。但在实践中，如果获得像 `图 5` 中的秩图，我们应该停止分析计算得到的后验，并重新检查模型定义。此外，对于近似贝叶斯计算方法，还应检查超参数 $\epsilon$ 的值、统计量或距离函数。
+
+![figures/bpv_g_many_eps_00.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211113249-ec2a.webp)
+
+&gt; 图 6： $\epsilon$ 值递增的边缘贝叶斯 $p$ 值分布。对于一个校准良好的模型，我们应该预期一个均匀分布。可以看到 $\epsilon=0.1$ 的校准很糟糕，因为 $\epsilon$ 的值也是如此。对于 $\epsilon$ 的所有其他值，分布看起来更加均匀，并且均匀性水平随着 $\epsilon$ 的增加而降低。`se` 值是预期均匀分布和核密度估计之间的（缩放的）平方差。
+
+ 
+
+![figures/bpv_g_many_eps_01.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211113253-8fef.webp)
+
+&gt; 图 7： 增加 $\epsilon$ 值的贝叶斯 $p$ 值。蓝色曲线是观测分布，灰色曲线是预期分布。对于一个校准良好的模型，我们期望分布集中在 $0.5$ 左右。可以看到 $\epsilon=0.1$ 的校准很糟糕，因为 $\epsilon$ 的值太低了。可以看到 $\epsilon=1$ 提供了最好的结果。
+
+
+![figures/ppc_g_many_eps.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211113257-ffc4.webp)
+
+&gt; 图 8： $\epsilon$ 递增时的后验预测检查。蓝色曲线是观测分布，灰色曲线是预期分布。令人惊讶的是，从 $\epsilon=0.1$ 中似乎得到了一个很好的调整，即便我们知道来自该后验的样本不可信。这是一个非常简单的例子，我们完全靠运气得到了正确答案。这是一个 *a too good to be true fit* 的例子。实际上这是最糟糕的！如果我们只考虑具有看起来合理的后验样本的模型（ 即不是 $\epsilon=0.1$ ），则可以看到 $\epsilon=1$ 提供了最好的结果。
+
+ 
+
+### 4.3 统计量的选择
+
+统计量的选择可能比距离函数的选择更难，并且会产生更大的影响。
+
+出于此原因，许多研究都集中在这个主题上，从使用不需要统计量的距离 <sup class="refplus-num"><a href="#ref-Jiang2018">[91]</a></sup><sup class="refplus-num"><a href="#ref-Bernton2019">[92]</a></sup> 到选择统计量的策略 <sup class="refplus-num"><a href="#ref-Sisson2018">[94]</a></sup>。
+
+一个好的统计量提供了低维度和信息量之间的平衡。当我们没有足够统计量数据时，很容易通过添加大量统计量数据来进行过度补偿。直觉是信息越多越好。然而，增加统计量的数量实际上会降低近似后验 <sup class="refplus-num"><a href="#ref-Sisson2018">[94]</a></sup> 的质量。对此的一种解释是，我们从计算数据上的距离转移到计算摘要上的距离以减少维度，通过增加我们正在违背该目的的摘要统计数据的数量。
+
+在一些领域，如群体遗传学，近似贝叶斯计算方法非常普遍，人们开发了大量有用的统计量数据 <sup class="refplus-num"><a href="#ref-Beaumont2002">[95]</a></sup><sup class="refplus-num"><a href="#ref-Beaumont2010">[96]</a></sup><sup class="refplus-num"><a href="#ref-Pudlo2016">[97]</a></sup>。一般来说，查看你正在研究的应用领域的文献以了解其他人在做什么是一个好主意，因为他们已经尝试并测试了许多替代方案的机会很高。
+
+如有疑问，我们可以遵循上一节中的相同建议来评估模型拟合，即秩图、贝叶斯 $p$ 值、后验预测检查等，并在必要时尝试替代方案（参见图 `图 5`， `图 6`、`图 7` 和 `图 8`）。
+
+## 5 g-and-k 分布 
+
+一氧化碳 ( $CO$ ) 是一种无色、无味的气体，大量吸入有害甚至致命。当某物燃烧时会产生这种气体，尤其是在氧气含量低的情况下。世界上许多城市通常会监测一氧化碳和其他气体，如二氧化氮 ( $NO_2$ )，以评估空气污染程度和空气质量。在城市中，一氧化碳的主要来源是汽车以及其他燃料化石车辆或机械。 `图 9` 显示了 $2010$ 年至 $2018$ 年布宜诺斯艾利斯市一个站点测量的每日 $CO$ 水平的直方图。
+
+正如我们所见，数据似乎略微向右偏。此外，数据显示了一些具有非常高的观测值。
+
+底部子图省略了 $3$ 到 $30$ 之间的 $8$ 个观测值。
+
+![figures/co_ppm_bsas.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211113301-66c4.webp)
+
+&gt; 图 9: $CO$ 水平的直方图。顶部子图显示整个数据，底部子图忽略了大于 $3$ 的值。
+
+
+为了拟合这些数据，我们将引入`单变量 g-and-k 分布`。这是一个 $4$ 参数的分布，能够描述具有高偏度和/或高峰度的数据 <sup class="refplus-num"><a href="#ref-Tukey1977">[13]</a></sup><sup class="refplus-num"><a href="#ref-Rayner2002">[99]</a></sup>。`g-and-k 分布`的密度函数没有封闭形式的表达式，并且通过其分位数函数（即累积分布函数的逆函数）来进行定义：
+
+$$
+a + b \ \left(1 + c \ \text{tanh}\left[\frac{gz(x)}{2}\right]\right) \left(1+z(x)^2\right)^k z(x)
+$$
+
+其中 $z$ 是标准高斯累积分布函数的逆函数，$x \in (0,1)$。
+
+（1）参数 $a$ 、 $b$ 、 $g$ 和 $k$ 分别为位置、尺度、偏度和峰度参数。如果 $g$ 和 $k$ 均为 $0$，则恢复了具有均值 $a$ 和标准差 $b$ 的高斯分布。
+
+（2）$g &gt; 0$ 给出正（右）偏度，$g &lt; 0$ 给出负（左）偏度。参数 $k \geqslant 0$ 给出的尾部比高斯分布长，而 $k &lt; 0$ 的尾部比高斯分布短。 
+
+（3）$a$ 和 $g$ 可以取任何实数值。通常将 $b$ 限制为正数并且 $k \geqslant -0.5$ 或有时 $k \geqslant 0$ （即尾部与高斯分布中的尾部一样重或更重）。
+
+（4）此外，通常固定 $c=0.8$。
+
+有了所有这些限制，我们可以保证得到一个严格递增的分位数函数 <sup class="refplus-num"><a href="#ref-Rayner2002">[99]</a></sup>，而这正是连续分布函数的标志。
+
+代码 `gk_quantile` 定义了 `g-and-k 分位数分布`。我们省略了 `cdf` 和 `pdf` 的计算，因为涉及太多额外内容，而且在我们的例子中暂时用不到 [^8]。
+
+虽然 `g-and-k 分布` 的概率密度函数可以用数值方法推算 <sup class="refplus-num"><a href="#ref-Rayner2002">[99]</a></sup><sup class="refplus-num"><a href="#ref-Prangle2017">[100]</a></sup>，但使用反演方法从 `g-and-k 模型` 中进行模拟更直接和快捷 <sup class="refplus-num"><a href="#ref-Drovandi2011">[101]</a></sup><sup class="refplus-num"><a href="#ref-Prangle2017">[100]</a></sup>。
+
+为了实现反演方法，我们对 $x \sim \mathcal{U}(0, 1)$ 进行采样并替换公式 {eq}`eq:g_and_k`。代码 `gk_quantile` 展示了如何在 Python 中执行此操作，`图 10` 展示了 `g-and-k 分布` 的示例。
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">g_and_k_quantile</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.quantile_normal = stats.norm(<span class="number">0</span>, <span class="number">1</span>).ppf</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">ppf</span>(<span class="params">self, x, a, b, g, k</span>):</span><br><span class="line">        z = <span class="variable language_">self</span>.quantile_normal(x)</span><br><span class="line">        <span class="keyword">return</span> a + b * (<span class="number">1</span> + <span class="number">0.8</span> * np.tanh(g*z/<span class="number">2</span>)) * ((<span class="number">1</span> + z**<span class="number">2</span>)**k) * z</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">rvs</span>(<span class="params">self, samples, a, b, g, k</span>):</span><br><span class="line">        x = np.random.normal(<span class="number">0</span>, <span class="number">1</span>, samples)</span><br><span class="line">        <span class="keyword">return</span> ppf(<span class="variable language_">self</span>, x, a, b, g, k)</span><br></pre></td></tr></table></figure>
+
+![figures/gk_quantile.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211113306-03e2.webp)
+
+&gt; 图 10: 第一行显示了分位数函数，也称为累积分布函数（ `CDF` ）的逆函数。给定一个分位数值，它会返回代表该分位数的变量值。例如，如果你有 $P(X &lt;= x_q) = q$，则将 $q$ 传递给分位数函数可以得到 $x_q$。图中第二行显示了（近似的）概率密度函数。对于此示例，使用核密度估计可以直接从代码 [gk_quantile](gk_quantile) 生成的随机样本中计算得到概率密度函数。
+
+ 
+
+要使用 `SMC-ABC` 拟合 `g-k 分布`，可以使用高斯距离和 `sum_stat="sort"`。或者，也可以考虑为这个问题量身定制的统计量。参数 $a$ 、$b$ 、 $g$ 和 $k$ 分别与位置、尺度、偏度和峰度相关联。因此，可以用这些量的稳健估计来作为新的专用统计量 <sup class="refplus-num"><a href="#ref-Drovandi2011">[101]</a></sup> ：
+
+$$
+\begin{split}
+sa &amp;= e4 \\
+sb &amp;= e6 - e2 \\  
+sg &amp;= (e6 + e2 - 2*e4)/sb \\ 
+sk &amp;= (e7 - e5 + e3 - e1)/sb \\
+\end{split}
+$$
+
+其中 $e1$ 到 $e7$ 是八分位数，即将样本分成八个子集的分位数。
+
+如果注意，可以看到 $sa$ 是中位数，$sb$ 是四分位数范围，它们分别作为位置和离散度的稳健估计量。 $sg$ 和 $sk$ 看起来有点模糊，但它们分别是偏度 <sup class="refplus-num"><a href="#ref-Bowley1920">[102]</a></sup> 和峰度 <sup class="refplus-num"><a href="#ref-Moors1988">[103]</a></sup> 的稳健估计量。
+
+对于对称分布，$e6-e4$ 和 $e2-e4$ 将具有相同的幅度但符号相反，此时 $sg$ 将为零，而对于偏斜分布，$e6-e4$ 将大于 $ e2-e4$ 或相反。
+
+当 $e6$ 和 $e2$ 附近的概率质量减少时（ 即当质量从分布的中心部分移动到尾部时 ），$sk$ 的分子项在增加。而 $sg$ 和 $sk$ 中的分母都充当了归一化因子。
+
+综合分析后，可以使用 Python 为问题创建新的统计量，如以下代码所示。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">octo_summary</span>(<span class="params">x</span>):</span><br><span class="line">    e1, e2, e3, e4, e5, e6, e7 = np.quantile(</span><br><span class="line">        x, [<span class="number">.125</span>, <span class="number">.25</span>, <span class="number">.375</span>, <span class="number">.5</span>, <span class="number">.625</span>, <span class="number">.75</span>, <span class="number">.875</span>])</span><br><span class="line">    sa = e4</span><br><span class="line">    sb = e6 - e2</span><br><span class="line">    sg = (e6 + e2 - <span class="number">2</span>*e4)/sb</span><br><span class="line">    sk = (e7 - e5 + e3 - e1)/sb</span><br><span class="line">    <span class="keyword">return</span> np.array([sa, sb, sg, sk])</span><br></pre></td></tr></table></figure>
+
+现在我们需要定义一个模拟器，只需将之前在代码 `gk_quantile` 中定义的 `g_and_k_quantile()` 函数的 `rvs` 方法封装起来即可。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gk = g_and_k_quantile()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gk_simulator</span>(<span class="params">a, b, g, k</span>):</span><br><span class="line">    <span class="keyword">return</span> gk.rvs(<span class="built_in">len</span>(bsas_co), a, b, g, k)</span><br></pre></td></tr></table></figure>
+
+在定义了统计量和模拟器并导入数据之后，就可以定义模型了。
+
+对于这个例子，基于所有参数都限制为正的事实，可以使用弱信息先验。 $CO$ 水平不能取负值，因此 $a$ 为正值； $g$ 也预计为 $0$ 或正值，因为大部分测量值预计为“low”，只有某些测量值值较大。我们也有理由假设参数很有可能低于 $1$。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> pm.Model() <span class="keyword">as</span> gkm:</span><br><span class="line">    a = pm.HalfNormal(<span class="string">"a"</span>, sigma=<span class="number">1</span>)</span><br><span class="line">    b = pm.HalfNormal(<span class="string">"b"</span>, sigma=<span class="number">1</span>)</span><br><span class="line">    g = pm.HalfNormal(<span class="string">"g"</span>, sigma=<span class="number">1</span>)</span><br><span class="line">    k = pm.HalfNormal(<span class="string">"k"</span>, sigma=<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    s = pm.Simulator(<span class="string">"s"</span>, gk_simulator,</span><br><span class="line">    params=[a, b, g, k],        </span><br><span class="line">                     sum_stat=octo_summary,</span><br><span class="line">                     epsilon=<span class="number">0.1</span>,</span><br><span class="line">                     observed=bsas_co)</span><br><span class="line">    </span><br><span class="line">    trace_gk = pm.sample_smc(kernel=<span class="string">"ABC"</span>, parallel=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+`图 11` 显示了拟合后 `gkm 模型` 的配对图。
+
+![figures/pair_gk.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211114309-e25a.webp)
+
+&gt; 图 11： 分布略微偏斜，并且具有一定程度的峰度，正如所预计的那样，少量的 $CO$ 水平比其他大部分情况要高出一到两个数量级。可以看到 $b$ 和 $k$ （略微）相关。这也是可预期的，因为随着尾部密度（峰度）的增加，离散度会同时增加，但如果 $k$ 增加，`g-and-k 分布`可以保持 $b$ 较小。这就像 $k$ 在吸收离散度一样，有点类似于在学生 $t$ 分布中使用的尺度和 $\nu$ 参数的情况。
+
+
+## 6 移动平均模型的近似
+
+移动平均 (MA) 模型是建模单变量时间序列的常用方法。 $MA(q)$ 模型指定输出变量线性依赖于随机项 $\lambda$ 的当前值和 $q$ 个历史值， $q$ 被称为 `MA 模型` 的阶数。
+
+$$
+y_t = \mu + \lambda_t + \theta_1 \lambda_{t-1} + \cdots + \theta_q \lambda_{t-q}
+$$
+
+其中 $\lambda$ 是高斯白噪声误差项 [^9]。
+
+这里将使用 <sup class="refplus-num"><a href="#ref-Marin2012">[104]</a></sup> 中的玩具模型。在该例中，使用均值为 $0$ 的 $MA(2)$ 模型（ 即 $\mu =0$ )，模型如下所示：
+
+$$
+y_t = \lambda_t + \theta_1 \lambda_{t-1} +  \theta_2 \lambda_{t-2}
+$$
+
+如下代码（ `ma2_simulator_abc` ）显示了此模型的 Python 模拟器，在 `图 12` 中，可以看到 $\theta1 = 0.6$ 、 $\theta2=0.2$ 时该模拟器的两个实现。
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">moving_average_2</span>(<span class="params">θ<span class="number">1</span>, θ<span class="number">2</span>, n_obs=<span class="number">200</span></span>):</span><br><span class="line">    λ = np.random.normal(<span class="number">0</span>, <span class="number">1</span>, n_obs+<span class="number">2</span>)</span><br><span class="line">    y = λ[<span class="number">2</span>:] + θ<span class="number">1</span>*λ[<span class="number">1</span>:-<span class="number">1</span>] + θ<span class="number">2</span>*λ[:-<span class="number">2</span>]</span><br><span class="line">    <span class="keyword">return</span> y</span><br></pre></td></tr></table></figure>
+
+![figures/ma2_simulator_abc.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211114035-739e.webp)
+
+&gt; 图 12： $MA(2)$ 模型的两种实现， $\theta1=0.6$ ， $\theta2 =0.2$。左列为核密度估计，右列为时间序列。
+
+ 
+
+理论上，我们可以尝试想要的任何距离函数和/或统计量来拟合 $MA(q)$ 模型，但此处我们不会这样做，而是使用 $MA(q)$ 模型的一些属性作为牵引。时间序列的自相关性是 $MA(q)$ 模型的一个重要属性。理论表明，对于 $MA(q)$ 模型，大于 $q$ 的滞后效应为零，因此对于 $MA(2)$ ，使用滞后 $1$ 和滞后 $2$ 的自相关函数作为统计量似乎也是合理的。此外，为了避免计算数据的方差，我们将使用自协方差函数而不是自相关函数。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">autocov</span>(<span class="params">x, n=<span class="number">2</span></span>):</span><br><span class="line">    <span class="keyword">return</span> np.array([np.mean(x[i:] * x[:-i]) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n+<span class="number">1</span>)])</span><br></pre></td></tr></table></figure>
+
+此外，除非引入一些约束，否则 $MA(q)$ 模型是不可识别的。对于 $$MA(1)$$ 模型，约束为 $-1&lt;\theta_1&lt;1$。 对于 $MA(2)$， 约束为 $-2&lt;\theta_1&lt;2$ 、 $\theta_1 + \theta_2 &gt; -1$ 和 $\theta_1 - \theta_2 &lt; 1$，这意味着需要从一个三角形中采样，如 `图 14`。
+
+结合自定义的统计量和可识别约束的近似贝叶斯计算模型见如下代码 `MA2_abc` 。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> pm.Model() <span class="keyword">as</span> m_ma2:</span><br><span class="line">    θ<span class="number">1</span> = pm.Uniform(<span class="string">"θ1"</span>, -<span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">    θ<span class="number">2</span> = pm.Uniform(<span class="string">"θ2"</span>, -<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">    p1 = pm.Potential(<span class="string">"p1"</span>, pm.math.switch(θ<span class="number">1</span>+θ<span class="number">2</span> &gt; -<span class="number">1</span>, <span class="number">0</span>, -np.inf))</span><br><span class="line">    p2 = pm.Potential(<span class="string">"p2"</span>, pm.math.switch(θ<span class="number">1</span>-θ<span class="number">2</span> &lt; <span class="number">1</span>, <span class="number">0</span>, -np.inf))</span><br><span class="line"></span><br><span class="line">    y = pm.Simulator(<span class="string">"y"</span>, moving_average_2, </span><br><span class="line">                     params=[θ<span class="number">1</span>, θ<span class="number">2</span>],</span><br><span class="line">                     sum_stat=autocov,</span><br><span class="line">                     epsilon=<span class="number">0.1</span>,</span><br><span class="line">                     observed=y_obs)</span><br><span class="line"></span><br><span class="line">    trace_ma2 = pm.sample_smc(<span class="number">3000</span>, kernel=<span class="string">"ABC"</span>)</span><br></pre></td></tr></table></figure>
+
+`pm.Potential` 是一种无需向模型添加新变量，即可将任意项合并到（伪）似然的方法。引入约束特别有用。在代码 [MA2_abc](MA2_abc) 中，如果 `pm.math.switch` 中的第一个参数为真，则我们将 $0$ 与似然相加，否则为 $-\infty$。
+
+![figures/ma2_trace.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211114321-2da6.webp)
+
+&gt; 图 13: $MA(2)$ 模型的近似贝叶斯计算轨迹图。正如预计的那样，真实参数被恢复，秩图看起来非常平坦。
+
+ 
+
+![figures/ma2_triangle.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211114325-3366.webp)
+
+&gt; 图 14: 代码 `MA2_abc` 中定义的 $MA(2)$ 模型的近似贝叶斯计算后验。中间的子图为 $\theta1$ 和 $\theta2$ 的联合后验分布，两侧为其边缘分布；灰色的三角形代表先验分布；均值用黑色的点表示。
+
+ 
+
+## 7 在近似贝叶斯计算的场景中做模型比较 
+
+近似贝叶斯计算方法经常用于模型选择。虽然已经提出了许多模型比较方法 <sup class="refplus-num"><a href="#ref-Sisson2018">[94]</a></sup><sup class="refplus-num"><a href="#ref-Beaumont2019">[105]</a></sup>，但此处将重点讨论两种方法：**贝叶斯因子法**（包括与 `LOO` 的比较）和 **随机森林法** <sup class="refplus-num"><a href="#ref-Pudlo2016">[97]</a></sup>。
+
+与参数推断一样，在模型比较中统计量的选择至关重要。当使用模型的预测结果来评估多个模型时，如果它们都做出了大致相同的预测，则我们无法偏爱其中任何一个模型。相同的思想可以应用于（含统计量的）近似贝叶斯计算场景下的模型比较和选择。如果使用均值作为统计量，而模型预测的均值相同，那么此统计量将不足以区分模型的优劣。
+
+我们应该花更多时间来思考是什么让模型与众不同。
+
+### 7.1 贝叶斯因子法 
+
+用于做模型比较的一个常见量是边缘似然。通常这种比较采用边缘似然比的形式，即**贝叶斯因子**。如果贝叶斯因子的值大于 $1$ ，则分子中的模型优于分母中的模型，反之亦然。在 {ref}`Bayes_factors` 中，我们讨论了有关贝叶斯因子的更多细节，包括其注意事项。其中一个警示是边缘似然通常难以计算。幸运的是，`SMC 方法`和扩展的 `SMC-ABC 方法`能够将边缘似然的计算转变成采样的副产品。 PYMC3 中的 `SMC` 计算并保存轨迹中的对数边缘似然，因此可以通过执行 `trace.report.log_marginal_likelihood` 来访问对数边缘似然的值。考虑到该值采用对数刻度，因此在计算贝叶斯因子时可以这样做：
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ml1 = trace_1.report.log_marginal_likelihood</span><br><span class="line">ml2 = trace_2.report.log_marginal_likelihood</span><br><span class="line">np.exp(ml1 - ml2)</span><br></pre></td></tr></table></figure>
+
+当使用统计量时，通常不能用近似贝叶斯计算方法得出的边缘似然来比较竞争中的模型 <sup class="refplus-num"><a href="#ref-Robert2011">[106]</a></sup>，除非统计量对于模型比较来说是充分的。这一点非常令人沮丧，因为除了一些形式化示例或特定模型之外，没有通用的指南来确保模型的充分性 <sup class="refplus-num"><a href="#ref-Robert2011">[106]</a></sup> 。如果使用所有数据（ 即不依赖统计量 ）则不存在问题。这类似于 {ref}`Bayes_factors` 中的讨论，即计算边缘似然通常是比计算后验困难得多的问题。即便我们设法找到了足以计算后验的统计量，也不能保证它对模型比较也有效。
+
+为了更好地理解边缘似然在近似贝叶斯计算中的表现，现在将分析一个简短的实验。该实验中还包含 `LOO`，因为我们认为 `LOO` 是比`边缘似然`和`贝叶斯因子`更好的整体指标。
+
+实验的基本方法是将具有显式似然的模型的对数边缘似然值、使用 `LOO` 计算的值、近似贝叶斯计算模型（采用含统计量和不含统计量的模拟器）的值进行比较。结果显示在图 `图 14` 中，和代码 [gauss_nuts](gauss_nuts) 以及代码 [gauss_abc](gauss_abc) 中的。边缘（伪）似然值由 `SMC` 和 `LOO 值`（ 调用 `az.loo()` 函数 ）的乘积计算得出。请注意，`LOO` 是在逐点的对数似然值上定义的，而在近似贝叶斯计算中，我们只能访问逐点的对数伪似然值。
+
+从 `图 15` 中可以看到，通常 `LOO` 和对数边缘似然的表现相似。从第一列中可以看到，`model_1` 始终被选为比 `model_0` 更好（这里越高越好）。模型之间的对数边缘似然的差（斜率）较 `LOO` 更大，这可以解释为 “边缘似然的计算明确考虑了先验，而 `LOO` 仅通过后验间接进行”，参见 {ref}`Bayes_factors`  以了解详情。即使 `LOO` 值和边缘似然值因样本而异，它们也会存在比较一致的表现。我们可以从 `model_0` 和 `model_1` 之间线的斜率看到这一点。虽然线的斜率并不完全相同，但非常相似。这是模型选择方法的理想表现。如果我们比较`model_1`和`model_2`，可以得出类似结论。另外，注意两种模型对于 `LOO` 基本上无法区分，而边缘似然反映了更大的差异。再一次，原因是 `LOO` 仅从后验计算，而边缘似然直接考虑了先验。
+
+![figures/model_comp_normal_00.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211114332-6226.webp)
+
+&gt; 图 15: 模型 `m_0` 与公式 {eq}`eq:Gauss_model` 中描述的模型相似，但具有 $\sigma \sim \mathcal{HN}(0.1)$。 `model_1` 与公式 {eq}`eq:Gauss_model` 相同。 `model_2` 与公式 {eq}`eq:Gauss_model` 相同，但使用 $\sigma \sim \mathcal{HN}(10)$。
+
+第一行对应于对数边缘似然值，第二行对应于 `LOO` 计算的值。
+
+各列分别对应于序贯蒙特卡洛方法（`SMC`）、完整数据集的近似贝叶斯计算方法（ `SMC-ABC` ）、 使用均值统计量的近似贝叶斯计算方法（ `SMC-ABC_sm` ）、使用均值和标准差统计量的近似贝叶斯计算方法（ `SMC-ABC_sq` ）。我们共进行了 $50$ 次实验，每次实验的样本量为 $50$。
+
+
+图中第二列显示了近似贝叶斯计算方法的效果。我们仍然选择了 `model_1` 作为更好的模型，但现在 `model_0` 的离散度比 `model_1` 或 `model_2` 的离散度要大得多。此外，现在得到了相互交叉的线。综合起来，这两个观测似乎表明我们仍然可以使用 `LOO` 或对数边缘似然来选择最佳模型，但是相对值（ 例如由 `az.compare()` 计算的值或贝叶斯因子），则具有较大的变化性。
+
+第三列显示了使用均值作为统计量时的情况。现在模型 `model_0` 和 `model_1` 看起来差不多，但 `model_2` 看起来比较糟糕。它几乎就像前一列的镜面图。这表明当使用含统计量的近似贝叶斯计算方法时，对数边缘似然和 `LOO` 可能无法提供合理答案。
+
+第四列显示了使均值和标准差作为统计量时的情况。我们看到，可以定性地恢复第二列时观测到的表现。
+
+<div class="note info no-icon flat"><p><strong>关于伪似然的尺度</strong></p>
+<p>请注意 $y$ 轴上的比例是不同的，尤其是跨列时。原因有两个：</p>
+<p>（1）当使用近似贝叶斯计算时，我们使用按 $\epsilon$ 缩放的核函数来逼近似然；</p>
+<p>（2）当使用统计量时，我们正在减小数据的大小。另请注意，如果增加均值或分位数等统计量的样本量，则该大小将保持不变，即无论从 $10$ 次还是 $1000$ 次观测中计算均值，结果都是相同的数字。</p>
+</div>
+
+`图 16` 可以帮助我们理解 `图 15` 中讨论的内容，建议你自己分析这两个图。
+
+当前我们将重点关注两个结果：
+
+首先，在执行 `SMC-ABC_sm` 时，我们有充分的均值统计量，但没有数据离散度的信息，因此参数 `a` 和 `σ` 的后验不确定性基本上由先验控制。注意 `model_0` 和 `model_1` 对于 `μ` 的估计值非常相似，而 `model_2` 的不确定性非常大。
+
+其次，关于参数 `σ` ，`model_0` 的不确定性非常小，`model_1` 的不确定性应该更大，`model_2` 的不确定性大得离谱。
+
+综上所述，我们可以看到为什么对数边缘似然和 `LOO` 表明 `model_0` 和 `model_1` 差不多，但 `model_2` 却非常不同。而基本上，`SMC-ABC_sm` 无法很好地拟合！因此使用 `SMC-ABC_sm` 计算的对数边缘似然和 `LOO` 与使用 `SMC` 或  `SMC-ABC` 计算的结果相矛盾。如果使用均值和标准差作为统计量（ `SMC-ABC_sq` ），我们可以部分恢复使用完整数据集的 `SMC-ABC` 时的表现。
+
+
+
+![figures/model_comp_normal_forest.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211114341-bc16.webp)
+
+&gt; 图 16：模型 `m_0` 与公式 {eq}`eq:Gauss_model` 中描述的模型相似，但具有 $\sigma \sim \mathcal{HN}(0.1)$。 `model_1` 与公式 {eq}`eq:Gauss_model` 相同。 `model_2` 与公式 {eq}`eq:Gauss_model` 相同，但使用 $\sigma \sim \mathcal{HN}(10)$。
+
+第一行包含边缘似然值，第二行包含 `LOO 值`。图中的列表示计算这些值的不同方法，分别是：序贯蒙特卡洛（`SMC`）、使用整个数据集的近似贝叶斯计算（`SMC-ABC`）、 使用均值作为统计量的近似贝叶斯计算（`SMC-ABC_sm`）、使用均值和标准差统计量的近似贝叶斯计算（`SMC-ABC_sq` ）。我们进行了 $50$ 次实验，每次实验的样本量为 $50$。
+
+
+图 `图 17` 和 `图 18` 显示了类似的分析，但 `model_0` 是几何模型，而 `model_1` 是泊松模型。数据服从移位的泊松分布 $\mu \sim 1 + \text{Pois}(2.5)$ 。我们将这些图的分析留给读者作为练习。
+
+![figures/model_comp_pois_geom_00.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211114346-06e1.webp)
+
+&gt; 图 17: 模型 `m_0` 是先验为 $p \sim \mathcal{U}(0, 1)$ 的几何分布，而 `model_1` 是先验为 $\mu \sim \mathcal{E}(1)$ 的泊松分布。数据服从移位的泊松分布 $\mu \sim 1 + \text{Pois}(2.5)$。序贯蒙特卡洛（ `SMC` ）、完整数据集的近似贝叶斯计算（ `SMC-ABC` ）、 使用均值作为统计量的近似贝叶斯计算（`SMC-ABC_sm`）、使用均值和标准差统计量的近似贝叶斯计算（`SMC-ABC_sq` ）。 我们进行了 $50$ 次实验，每次实验的样本量为 $50$。
+
+![figures/model_comp_pois_geom_forest.png](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211114350-20db.webp)
+
+&gt; 图 18： `model_0` 是先验为 $p \sim \mathcal{U}(0, 1)$ 的几何模型/模拟器 `model_1` 是先验为 $p \sim \text{Expo}(1)$ 的泊松模型/模拟器。第一行包含边缘似然值，第二行包含 `LOO` 值。各列表示计算这些值的不同方法：序贯蒙特卡洛（ `SMC` ）、完整数据集的近似贝叶斯计算（ `SMC-ABC` ）、 使用均值作为统计量的近似贝叶斯计算（`SMC-ABC_sm`）、使用均值和标准差统计量的近似贝叶斯计算（`SMC-ABC_sq` ）。 我们进行了 $50$ 次实验，每次实验的样本量为 $50$。
+
+在近似贝叶斯计算的文献中，常使用贝叶斯因子来尝试将相对概率分配给模型，而这在某些领域是有价值的。所以我们想提醒那些从业者，在近似贝叶斯计算框架下这种做法存在一些潜在问题，特别是在实际应用中使用统计量比不使用统计量的情况要普遍得多。
+
+模型比较仍然有用，主要是如果采用更具探索性的方法以及在模型比较之前执行模型批判以改进或丢弃明显错误指定的模型。这是在本书中为非近似贝叶斯计算方法采用的一般方法，因此我们认为将其扩展到近似贝叶斯计算框架也很自然。本书中也偏爱 `LOO` 而不是边缘似然，尽管目前尚缺少有关近似贝叶斯计算方法中 `LOO` 优缺点的研究，但我们认为 `LOO` 也可能对近似贝叶斯计算方法有用。请大家继续关注未来的消息！
+
+<div class="note info no-icon flat"><p><strong>模型批判和模型比较</strong></p>
+<p>虽然总是会出现一些错误指定，但模型比较可以帮助我们更好地理解模型及其错误指定。只有在我们证明模型对数据提供了合理的拟合之后，才应该进行模型比较。比较明显未拟合的模型没有太大意义。</p>
+</div>
+
+### 7.2 随机森林法 
+
+我们在上一节中讨论的一些注意事项促进了近似贝叶斯计算框架下模型选择新方法的研究。其中一种替代方法是**将模型选择问题定义为随机森林分类问题** <sup class="refplus-num"><a href="#ref-Pudlo2016">[97]</a></sup> [^11]。随机森林是一种基于许多决策树的组合分类和回归方法  w。
+
+该方法的主要思想是：最可能的模型可以从先验或后验预测分布的模拟样本中通过构建随机森林分类器获得。在原始论文中，作者使用了先验预测分布，但也提到对于更高级的近似贝叶斯计算方法，可以使用其他分布。在这里，我们将使用后验预测分布。对于 $m$ 个模型，模拟数据在参考表中进行了排序，参见 `表 1` 。
+
+其中每一行是来自后验预测分布的一个样本，每一列是 $n$ 个统计量之一。我们使用这个参考表来训练分类器，其任务是在给定统计量值的情况下，正确分类模型。重要的是要注意，用于模型选择的统计量和用于计算后验的统计量不一定相同。事实上，建议包括更多的统计量信息。一旦分类器训练完成，我们就使用和参考表中相同的 $n$ 个统计量作为其输入，不过这次统计量的值来自于观测数据。分类器预测的模型将是最佳模型。
+
+ 
+![table15](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211115655-1951.webp)
+
+&gt; 表 1: 参考表
+
+此外，还可以计算最佳模型相对于其他模型的近似后验概率。再一次，可以使用随机森林来实现，但这次使用回归，将错误分类的错误率作为结果变量，将参考表中的统计量作为自变量 <sup class="refplus-num"><a href="#ref-Pudlo2016">[97]</a></sup>。
+
+### 7.3 移动平均模型的模型选择 
+
+让我们回到移动平均的例子，这次将重点关注以下问题。 $MA(1)$ 或 $MA(2)$ 是更好的选择吗？为了回答这个问题，我们将使用 `LOO`（基于逐点伪似然值）和`随机森林法`。 $MA(1)$ 模型看起来像这样：
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> pm.Model() <span class="keyword">as</span> m_ma1:</span><br><span class="line">    θ<span class="number">1</span> = pm.Uniform(<span class="string">"θ1"</span>, -<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">    y = pm.Simulator(<span class="string">"y"</span>, moving_average_1,</span><br><span class="line">                     params=[θ<span class="number">1</span>], sum_stat=autocov, epsilon=<span class="number">0.1</span>, observed=y_obs)</span><br><span class="line">    trace_ma1 = pm.sample_smc(<span class="number">2000</span>, kernel=<span class="string">"ABC"</span>)</span><br></pre></td></tr></table></figure>
+
+为了比较使用 `LOO` 的近似贝叶斯计算模型，不能直接使用 `az.compare` 函数。我们需要首先创建一个带有 `log_likelihood` 组的 `InferenceData` 对象，详见代码 `idata_pseudo`。此比较的结果汇总在 `表 2` 中，可以看到 $MA(2)$ 模型是首选。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">idata_ma1 = az.from_pymc3(trace_ma1)</span><br><span class="line">lpll = {<span class="string">"s"</span>: trace_ma2.report.log_pseudolikelihood}</span><br><span class="line">idata_ma1.log_likelihood = az.data.base.dict_to_dataset(lpll)</span><br><span class="line"></span><br><span class="line">idata_ma2 = az.from_pymc3(trace_ma2)</span><br><span class="line">lpll = {<span class="string">"s"</span>: trace_ma2.report.log_pseudolikelihood}</span><br><span class="line">idata_ma2.log_likelihood = az.data.base.dict_to_dataset(lpll)</span><br><span class="line"></span><br><span class="line">az.compare({<span class="string">"m_ma1"</span>:idata_ma1, <span class="string">"m_ma2"</span>:idata_ma2})</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+![table02](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230211121704-b85c.webp)
+
+&gt;表 2: 使用 LOO 对 ABC-模型的比较进行总结
+
+
+要使用随机森林法，可以使用本书随附代码中包含的 `select_model` 函数。为了使该函数工作，我们需要传递一个包含模型名称和轨迹的元组列表、一个统计量列表和观测数据。作为统计量，我们将使用前六个自相关。选择这些统计量有两个原因：第一个表明我们可以使用一组不同于拟合数据的统计量；第二个表明我们可以混合有用的统计量（前两个自相关）和不是非常有用的统计量（其余的）。请记住，理论说，对于一个 $MA(q)$ 过程，最多有 $q$ 个自相关。对于复杂问题，例如群体遗传学问题，使用数百甚至数万个统计量数据的情况并不少见 <sup class="refplus-num"><a href="#ref-Collin2020">[107]</a></sup>。
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line">select_model([(m_ma1, trace_ma1), (m_ma2, trace_ma2)],</span><br><span class="line">             statistics=[partial(autocov, n=<span class="number">6</span>)],</span><br><span class="line">             n_samples=<span class="number">5000</span>,</span><br><span class="line">             observations=y_obs)</span><br></pre></td></tr></table></figure>
+
+`select_model` 返回最佳模型的索引值（从 $0$ 开始）和估计得出的模型后验概率。对于示例，我们得到模型 $0$ 的概率为 $0.68$ 。在这个例子中，`LOO` 和`随机森林法`都同意模型选择结论，甚至模型间的相对权重，这让人比较放心。
+
+## 8 为近似贝叶斯计算选择先验 
+
+没有封闭形式的似然使得好模型更加难以得到，因此近似贝叶斯计算方法通常比其他近似解更脆弱。因此，我们应格外小心一些建模的选择，包括先验的选择和比有明确似然时更严谨的模型评估。这些都是为获得近似似然而必须付出的成本。
+
+与其他方法相比，在近似贝叶斯计算方法中更仔细的选择先验，可能比在其他方法中更有价值。如果在近似似然时会丢失信息，那我们希望通过包含更多信息的先验来进行部分补偿。此外，更好的先验通常会使我们免于浪费计算资源和时间。对于近似贝叶斯计算拒绝方法，我们使用先验作为采样分布，这是显而易见的。但 `SMC` 方法也是如此，特别是模拟器对输入参数比较敏感时。例如，当使用近似贝叶斯计算推断常微分方程时，某些参数组合可能难以进行数值模拟，从而导致模拟速度极慢。在 `SMC` 和  `SMC-ABC` 的加权采样过程中出现了使用模糊先验的另一个问题，因为在对退火后验进行评估时，除了少数先验样本外，几乎所有样本的权重都非常小。这导致 `SMC` 粒子在几个步骤后变得奇异（ 因为只选择了少数重量较大的样本 ）。这种现象称为权重崩塌，这也是粒子方法的一个众所周知的问题 <sup class="refplus-num"><a href="#ref-Bickel2008">[108]</a></sup> 。
+
+良好的先验可以降低计算成本，从而在一定程度上允许我们使用 `SMC` 和  `SMC-ABC` 拟合更复杂的模型。除了提供信息性更强的先验和在本书中讨论过的有关先验选择/评估的内容之外，我们暂时没有针对近似贝叶斯计算方法的进一步推荐。
+
+## 习题 
+
+**8E1.** In your words explain how 近似贝叶斯计算 is approximate? What object or quantity is approximated and how.
+
+**8E2.** In the context of 近似贝叶斯计算，what is the problem that SMC is trying to solve compared to rejection sampling? 
+
+**8E3.** Write a Python function to compute the Gaussian kernel as in Equation `图 6`, but without the summation.
+
+Generate two random samples of size 100 from the same distribution. Use the implemented function to compute the distances between those two random samples. You will get two distributions each of size 100. Show the differences using a KDE plot, the mean and the standard deviation.
+
+**8E4.** What do you expect to the results to be in terms of accuracy and convergence of the sampler if in model `gauss` model from Code Block [gauss_abc](gauss_abc) we would have used `sum_stat="identity"`. Justify.
+
+**8E5.** Refit the `gauss` model from Code Block [gauss_abc](gauss_abc) using `sum_stat="identity"`.
+
+Evaluate the results using: 
+
+1.  Trace Plot 
+
+2.  Rank Plot 
+
+3.  $\hat R$ 
+
+4.  The mean and HDI for the parameters $\mu$ and $\sigma$.
+
+Compare the results with those from the example in the book (i.e. using `sum_stat="sort"`).
+
+**8E6.** Refit the `gauss` model from Code Block [gauss_abc](gauss_abc) using quintiles as summary statistics.
+
+1. How the results compare with the example in the book? 
+
+2.  Try other values for `epsilon`. Is 1 a good choice? 
+
+**8E7.** Use the `g_and_k_quantile` class to generate a sample (n=500) from a g-and-k distribution with parameters a=0,b=1,g=0.4,k=0. Then use the `gkm` model to fit it using 3 different values of $\epsilon$ (0.05, 0.1, 0.5). Which value of $\epsilon$ do you think is the best for this problem? Use diagnostics tools to help you answer this question.
+
+**8E8.** Use the sample from the previous exercise and the `gkm` model. Fit the using the summary statistics `octo_summary`, the `octile-vector` (i.e. the quantiles 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875) and `sum_stat="sorted"`. Compare the results with the known parameter values, which option provides higher accuracy and lower uncertainty? 
+
+**8M9.** In the GitHub repository you will find a dataset of the distribution of citations of scientific papers. Use  SMC-ABC to fit a g-and-k distribution to this dataset. Perform all the necessary steps to find a suitable value for `"epsilon"` and ensuring the model converge and results provides a suitable fit.
+
+**8M10.** The Lotka-Volterra is well-know biological model describing how the number of individuals of two species change when there is a predator-prey interaction <sup class="refplus-num"><a href="#ref-Otto2011">[109]</a></sup>. Basically, as the population of prey increase there is more food for the predator which leads to an increase in the predator population. But a large number of predators produce a decline in the number of pray which in turn produce a decline in the predator as food becomes scarce. Under certain conditions this leads to an stable cyclic pattern for both populations.
+
+In the GitHub repository you will find a Lotka-Volterra simulator with unknown parameters and the data set `Lotka-Volterra_00`. Assume the unknown parameters are positive. Use a  SMC-ABC model to find the posterior distribution of the parameters.
+
+ **8H11.** Following with the Lotka-Volterra example. The dataset `Lotka-Volterra_01` includes data for a predator prey with the twist that at some point a disease suddenly decimate the prey population. Expand the model to allow for a "switchpoint", i.e. a point that marks two different predator-prey dynamics (and hence two different set of parameters).
+
+ **8H12.** This exercise is based in the sock problem formulated by Rasmus Bååth. The problem goes like this. We get 11 socks out of the laundry and to our surprise we find that they are all unique, that is we can not pair them. What is the total number of socks that we laundry? Let assume that the laundry contains both paired and unpaired socks, we do not have more than two socks of the same kind. That is we either have 1 or 2 socks of each kind.
+
+ Assume the number of socks follows a $\text{NB}(30, 4.5)$. And that the proportion of unpaired socks follows a $\text{Beta}(15, 2)$ 
+
+Generate a simulator suitable for this problem and create a  SMC-ABC model to compute the posterior distribution of the number of socks, the proportion of unpaired socks, and the number of pairs.
+
+## 参考文献
+
+<ul id="refplus"><li id="ref-Salvatier2016" data-num="1">[1]  John Salvatier, Thomas V Wiecki, and Christopher Fonnesbeck. Probabilistic programming in python using pymc3. PeerJ Computer Science, 2:e55, 2016.</li><li id="ref-Dillon2017" data-num="2">[2]  Joshua V. Dillon, Ian Langmore, Dustin Tran, Eugene Brevdo, Srinivas Vasudevan, Dave Moore, Brian Patton, Alex Alemi, Matt Hoffman, and Rif A Saurous. Tensorflow distributions. arXiv preprint arXiv:1711.10604, 2017.</li><li id="ref-Kumar2019" data-num="3">[3]  Ravin Kumar, Colin Carroll, Ari Hartikainen, and Osvaldo Martin. Arviz a unified library for exploratory analysis of bayesian models in python. Journal of Open Source Software, 4(33):1143, 2019.</li><li id="ref-Westfall2013" data-num="4">[4]  P. Westfall and K.S.S. Henning. Understanding Advanced Statistical Methods. Chapman &amp; Hall/CRC Texts in Statistical Science. Taylor &amp; Francis, 2013. ISBN 9781466512108.</li><li id="ref-Blitzstein2019" data-num="5">[5]  J.K. Blitzstein and J. Hwang. Introduction to Probability, Second Edition. Chapman &amp; Hall/CRC Texts in Statistical Science. CRC Press, 2019. ISBN 9780429766732.</li><li id="ref-Metropolis1953" data-num="6">[6]  Nicholas Metropolis, Arianna W Rosenbluth, Marshall N Rosenbluth, Augusta H Teller, and Edward Teller. Equation of state calculations by fast computing machines. The journal of chemical physics, 21(6):1087–1092, 1953.</li><li id="ref-HASTINGS1970" data-num="7">[7]  WK HASTINGS. Monte carlo sampling methods using markov chains and their applications. Biometrika, 57(1):97–109, 1970.</li><li id="ref-Rosenbluth2003" data-num="8">[8]  Marshall N Rosenbluth. Genesis of the monte carlo algorithm for statistical mechanics. In AIP Conference Proceedings, volume 690, 22–30. American Institute of Physics, 2003.</li><li id="ref-McElreath2020" data-num="9">[9]  R. McElreath. Statistical Rethinking: A Bayesian Course with Examples in R and Stan. Chapman &amp; Hall/CRC Texts in Statistical Science. CRC Press, 2020. ISBN 9781482253481.</li><li id="ref-Lakens2018" data-num="10">[10]  Daniel Lakens, Federico G. Adolfi, Casper J. Albers, Farid Anvari, Matthew A. J. Apps, Shlomo E. Argamon, Thom Baguley, Raymond B. Becker, Stephen D. Benning, Daniel E. Bradford, Erin M. Buchanan, Aaron R. Caldwell, Ben Van Calster, Rickard Carlsson, Sau-Chin Chen, Bryan Chung, Lincoln J. Colling, Gary S. Collins, Zander Crook, Emily S. Cross, Sameera Daniels, Henrik Danielsson, Lisa DeBruine, Daniel J. Dunleavy, Brian D. Earp, Michele I. Feist, Jason D. Ferrell, James G. Field, Nicholas W. Fox, Amanda Friesen, Caio Gomes, Monica Gonzalez-Marquez, James A. Grange, Andrew P. Grieve, Robert Guggenberger, James Grist, Anne-Laura van Harmelen, Fred Hasselman, Kevin D. Hochard, Mark R. Hoffarth, Nicholas P. Holmes, Michael Ingre, Peder M. Isager, Hanna K. Isotalus, Christer Johansson, Konrad Juszczyk, David A. Kenny, Ahmed A. Khalil, Barbara Konat, Junpeng Lao, Erik Gahner Larsen, Gerine M. A. Lodder, Jiří Lukavský, Christopher R. Madan, David Manheim, Stephen R. Martin, Andrea E. Martin, Deborah G. Mayo, Randy J. McCarthy, Kevin McConway, Colin McFarland, Amanda Q. X. Nio, Gustav Nilsonne, Cilene Lino de Oliveira, Jean-Jacques Orban de Xivry, Sam Parsons, Gerit Pfuhl, Kimberly A. Quinn, John J. Sakon, S. Adil Saribay, Iris K. Schneider, Manojkumar Selvaraju, Zsuzsika Sjoerds, Samuel G. Smith, Tim Smits, Jeffrey R. Spies, Vishnu Sreekumar, Crystal N. Steltenpohl, Neil Stenhouse, Wojciech Swiatkowski, Miguel A. Vadillo, Marcel A. L. M. Van Assen, Matt N. Williams, Samantha E. Williams, Donald R. Williams, Tal Yarkoni, Ignazio Ziano, and Rolf A. Zwaan. Justify your alpha. Nature Human Behaviour, 2(3):168–171, 2018.</li><li id="ref-Deming2016" data-num="11">[11]  David Deming. Do extraordinary claims require extraordinary evidence? Philosophia, 44(4):1319–1331, 2016.</li><li id="ref-Gelman2017" data-num="12">[12]  Andrew Gelman, Daniel Simpson, and Michael Betancourt. The prior can often only be understood in the context of the likelihood. Entropy, 19(10):555, 2017.</li><li id="ref-Tukey1977" data-num="13">[13]  John W. Tukey. Exploratory Data Analysis. Addison-Wesley, 1977.</li><li id="ref-Diaconis2006" data-num="14">[14]  Persi Diaconis. Theories of Data Analysis: From Magical Thinking Through Classical Statistics, chapter 1, pages 1–36. John Wiley &amp; Sons, Ltd, 2006.</li><li id="ref-Gabry2019" data-num="15">[15]  Jonah Gabry, Daniel Simpson, Aki Vehtari, Michael Betancourt, and Andrew Gelman. Visualization in bayesian workflow. Journal of the Royal Statistical Society: Series A (Statistics in Society), 182(2):389–402, 2019.</li><li id="ref-Gelman2020" data-num="16">[16]  Andrew Gelman, Aki Vehtari, Daniel Simpson, Charles C Margossian, Bob Carpenter, Yuling Yao, Lauren Kennedy, Jonah Gabry, Paul-Christian Bürkner, and Martin Modrák. Bayesian workflow. arXiv preprint arXiv:2011.01808, 2020.</li><li id="ref-Gelman0955" data-num="17">[17]  A. Gelman, J.B. Carlin, H.S. Stern, D.B. Dunson, A. Vehtari, and D.B. Rubin. Bayesian Data Analysis, Third Edition. Chapman &amp; Hall/CRC Texts in Statistical Science. Taylor &amp; Francis, 2013. ISBN 9781439840955.</li><li id="ref-Vehtari2021" data-num="18">[18]  Aki Vehtari, Andrew Gelman, Daniel Simpson, Bob Carpenter, and Paul-Christian Bürkner. Rank-Normalization, Folding, and Localization: An Improved $\widehat R$ for Assessing Convergence of MCMC. Bayesian Analysis, pages 1 – 38, 2021. URL: https://doi.org/10.1214/20-BA1221, doi:10.1214/20-BA1221.</li><li id="ref-Hoyer2017" data-num="19">[19]  Stephan Hoyer and Joe Hamman. Xarray: nd labeled arrays and datasets in python. Journal of Open Research Software, 2017.</li><li id="ref-Gneiting2007" data-num="20">[20]  Tilmann Gneiting and Adrian E Raftery. Strictly proper scoring rules, prediction, and estimation. Journal of the American statistical Association, 102(477):359–378, 2007.</li><li id="ref-Vehtari2021" data-num="21">[21]  Aki Vehtari, Daniel Simpson, Andrew Gelman, Yuling Yao, and Jonah Gabry. Pareto smoothed importance sampling. arXiv preprint arXiv:1507.02646, 2021.</li><li id="ref-Paananen2021" data-num="22">[22]  Topi Paananen, Juho Piironen, Paul-Christian Bürkner, and Aki Vehtari. Implicitly adaptive importance sampling. Statistics and Computing, 31(2):1–19, 2021.</li><li id="ref-Hoeting1999" data-num="23">[23]  Jennifer A Hoeting, David Madigan, Adrian E Raftery, and Chris T Volinsky. Bayesian model averaging: a tutorial (with comments by m. clyde, david draper and ei george, and a rejoinder by the authors. Statistical science, 14(4):382–417, 1999.</li><li id="ref-Yao2018" data-num="24">[24]  Yuling Yao, Aki Vehtari, Daniel Simpson, and Andrew Gelman. Using stacking to average bayesian predictive distributions (with discussion). Bayesian Analysis, 13(3):917–1007, 2018.</li><li id="ref-Rubin1981" data-num="25">[25]  Donald B Rubin. Estimation in parallel randomized experiments. Journal of Educational Statistics, 6(4):377–401, 1981.</li><li id="ref-Horst0218" data-num="26">[26]  Allison Marie Horst, Alison Presmanes Hill, and Kristen B Gorman. palmerpenguins: Palmer Archipelago (Antarctica) penguin data. 2020. R package version 0.1.0. URL: https://allisonhorst.github.io/palmerpenguins/, doi:10.5281/zenodo.3960218.</li><li id="ref-Piponi2020" data-num="27">[27]  Dan Piponi, Dave Moore, and Joshua V. Dillon. Joint distributions for tensorflow probability. arXiv preprint arXiv:2001.11819, 2020.</li><li id="ref-Lao2020" data-num="28">[28]  Junpeng Lao, Christopher Suter, Ian Langmore, Cyril Chimisov, Ashish Saxena, Pavel Sountsov, Dave Moore, Rif A Saurous, Matthew D Hoffman, and Joshua V. Dillon. Tfp.mcmc: modern markov chain monte carlo tools built for modern hardware. arXiv preprint arXiv:2002.01184, 2020.</li><li id="ref-Fox1318" data-num="29">[29]  J. Fox. Applied Regression Analysis and Generalized Linear Models. SAGE Publications, 2015. ISBN 9781483321318.</li><li id="ref-Gorman2014" data-num="30">[30]  Kristen B Gorman, Tony D Williams, and William R Fraser. Ecological sexual dimorphism and environmental variability within a community of antarctic penguins (genus pygoscelis). PloS one, 9(3):e90081, 2014.</li><li id="ref-Capretto2020" data-num="31">[31]  Tomás Capretto, Camen Piho, Ravin Kumar, Jacob Westfall, Tal Yarkoni, and Osvaldo A Martin. Bambi: a simple interface for fitting bayesian linear models in python. arXiv preprint arXiv:2012.10754, 2020.</li><li id="ref-Bates2014" data-num="32">[32]  Douglas Bates, Martin Mächler, Ben Bolker, and Steve Walker. Fitting linear mixed-effects models using lme4. arXiv preprint arXiv:1406.5823, 2014.</li><li id="ref-Pinheiro2020" data-num="33">[33]  Jose Pinheiro, Douglas Bates, Saikat DebRoy, Deepayan Sarkar, and R Core Team. nlme: Linear and Nonlinear Mixed Effects Models. 2020. R package version 3.1-151. URL: https://CRAN.R-project.org/package=nlme.</li><li id="ref-Gabry2020" data-num="34">[34]  Jonah Gabry and Ben Goodrich. Estimating generalized (non-)linear models with group-specific terms with rstanarm. 6 2020. URL: https://mc-stan.org/rstanarm/articles/glmer.html.</li><li id="ref-Burkner2017" data-num="35">[35]  Paul-Christian Bürkner. Brms: an r package for bayesian multilevel models using stan. Journal of statistical software, 80(1):1–28, 2017.</li><li id="ref-Davidson-Pilon2015" data-num="36">[36]  C. Davidson-Pilon. Bayesian Methods for Hackers: Probabilistic Programming and Bayesian Inference. Addison-Wesley Data &amp; Analytics Series. Pearson Education, 2015. ISBN 9780133902921.</li><li id="ref-Greenhill2011" data-num="37">[37]  Brian Greenhill, Michael D Ward, and Audrey Sacks. The separation plot: a new visual method for evaluating the fit of binary models. American Journal of Political Science, 55(4):991–1002, 2011.</li><li id="ref-Gelman2020" data-num="38">[38]  A. Gelman, J. Hill, and A. Vehtari. Regression and Other Stories. Analytical Methods for Social Research. Cambridge University Press, 2020. ISBN 9781107023987.</li><li id="ref-Martin2018" data-num="39">[39]  O. Martin. Bayesian Analysis with Python: Introduction to Statistical Modeling and Probabilistic Programming Using PyMC3 and ArviZ, 2nd Edition. Packt Publishing, 2018. ISBN 9781789341652.</li><li id="ref-Grubbs1969" data-num="40">[40]  Frank E Grubbs. Procedures for detecting outlying observations in samples. Technometrics, 11(1):1–21, 1969.</li><li id="ref-Betancourt2020" data-num="41">[41]  Michael Betancourt. Towards a principled bayesian workflow. https://betanalpha.github.io/assets/case_studies/principled_bayesian_workflow.html, 4 2020.</li><li id="ref-Gelman2005" data-num="42">[42]  Andrew Gelman. Analysis of variance—why it is more important than ever. The annals of statistics, 33(1):1–53, 2005.</li><li id="ref-Neal2003" data-num="43">[43]  Radford M Neal. Slice sampling. The annals of statistics, 31(3):705–767, 2003.</li><li id="ref-Papaspiliopoulos2007" data-num="44">[44]  Omiros Papaspiliopoulos, Gareth O Roberts, and Martin Sköld. A general framework for the parametrization of hierarchical models. Statistical Science, pages 59–73, 2007.</li><li id="ref-Betancourt2020" data-num="45">[45]  Michael Betancourt. Hierarchical modeling. https://betanalpha.github.io/assets/case_studies/hierarchical_modeling.html, 11 2020.</li><li id="ref-Lemoine2019" data-num="46">[46]  Nathan P Lemoine. Moving beyond noninformative priors: why and how to choose weakly informative priors in bayesian analyses. Oikos, 128(7):912–928, 2019.</li><li id="ref-Wood8379" data-num="47">[47]  S.N. Wood. Generalized Additive Models: An Introduction with R, Second Edition. Chapman &amp; Hall/CRC Texts in Statistical Science. CRC Press, 2017. ISBN 9781498728379.</li><li id="ref-Potvin1990" data-num="48">[48]  Catherine Potvin, Martin J Lechowicz, and Serge Tardif. The statistical analysis of ecophysiological response curves obtained from experiments involving repeated measures. Ecology, 71(4):1389–1400, 1990.</li><li id="ref-Pedersen2019" data-num="49">[49]  Eric J Pedersen, David L Miller, Gavin L Simpson, and Noam Ross. Hierarchical generalized additive models in ecology: an introduction with mgcv. PeerJ, 7:e6876, 2019.</li><li id="ref-Rasmussen2005" data-num="50">[50]  Carl Edward Rasmussen and Christopher K. I. Williams. Gaussian Processes for Machine Learning. The MIT Press, Cambridge, Mass, 2005. ISBN 978-0-262-18253-9.</li><li id="ref-Taylor2018" data-num="51">[51]  Sean J Taylor and Benjamin Letham. Forecasting at scale. The American Statistician, 72(1):37–45, 2018.</li><li id="ref-Adams2007" data-num="52">[52]  Ryan Prescott Adams and David JC MacKay. Bayesian online changepoint detection. arXiv preprint arXiv:0710.3742, 2007.</li><li id="ref-Strang2714" data-num="53">[53]  G. Strang. Introduction to Linear Algebra. Wellesley-Cambridge Press, 2009. ISBN 9780980232714.</li><li id="ref-Harvey1993" data-num="54">[54]  Andrew C Harvey and Neil Shephard. Structural time series models. Handbook of Statistics,(edited by GS Maddala, CR Rao and HD Vinod), 11:261–302, 1993.</li><li id="ref-Box2008" data-num="55">[55]  G.E.P. Box, G.M. Jenkins, and G.C. Reinsel. Time Series Analysis: Forecasting and Control. Wiley Series in Probability and Statistics. Wiley, 2008. ISBN 9780470272848.</li><li id="ref-Shumway2019" data-num="56">[56]  R. Shumway and D. Stoffer. Time Series: A Data Analysis Approach Using R. Chapman &amp; Hall/CRC Texts in Statistical Science. CRC Press, 2019. ISBN 9781000001563.</li><li id="ref-West2013" data-num="57">[57]  M. West and J. Harrison. Bayesian Forecasting and Dynamic Models. Springer Series in Statistics. Springer New York, 2013. ISBN 9781475793659.</li><li id="ref-Sarkka2013" data-num="58">[58]  S. Särkkä. Bayesian Filtering and Smoothing. Bayesian Filtering and Smoothing. Cambridge University Press, 2013. ISBN 9781107030657.</li><li id="ref-Durbin2012" data-num="59">[59]  James Durbin and Siem Jan Koopman. Time series analysis by state space methods. Oxford university press, 2012.</li><li id="ref-Grewal2014" data-num="60">[60]  Mohinder S Grewal and Angus P Andrews. Kalman filtering: Theory and Practice with MATLAB. John Wiley &amp; Sons, 2014.</li><li id="ref-Chopin2020" data-num="61">[61]  N. Chopin and O. Papaspiliopoulos. An Introduction to Sequential Monte Carlo. Springer Series in Statistics. Springer International Publishing, 2020. ISBN 9783030478445.</li><li id="ref-Burkner2020" data-num="62">[62]  Paul-Christian Bürkner, Jonah Gabry, and Aki Vehtari. Approximate leave-future-out cross-validation for bayesian time series models. Journal of Statistical Computation and Simulation, 90(14):2499–2523, 2020.</li><li id="ref-Carvalho2010" data-num="63">[63]  Carlos M. Carvalho, Nicholas G. Polson, and James G. Scott. The horseshoe estimator for sparse signals. Biometrika, 97(2):465–480, 2010.</li><li id="ref-Piironen2017" data-num="64">[64]  Juho Piironen, Aki Vehtari, and others. Sparsity information and regularization in the horseshoe and other shrinkage priors. Electronic Journal of Statistics, 11(2):5018–5051, 2017.</li><li id="ref-Piironen2017" data-num="65">[65]  Juho Piironen and Aki Vehtari. On the hyperprior choice for the global shrinkage parameter in the horseshoe prior. In Artificial Intelligence and Statistics, 905–913. PMLR, 2017.</li><li id="ref-Riutort-Mayol2020" data-num="66">[66]  Gabriel Riutort-Mayol, Paul-Christian Bürkner, Michael R Andersen, Arno Solin, and Aki Vehtari. Practical hilbert space approximate bayesian gaussian processes for probabilistic programming. arXiv preprint arXiv:2004.11408, 2020.</li><li id="ref-Breiman2001" data-num="67">[67]  Leo Breiman. Statistical modeling: the two cultures (with comments and a rejoinder by the author). Statistical science, 16(3):199–231, 2001.</li><li id="ref-Zhou0055" data-num="68">[68]  Z.H. Zhou. Ensemble Methods: Foundations and Algorithms. Chapman &amp; Hall/CRC data mining and knowledge discovery series. CRC Press, 2012. ISBN 9781439830055.</li><li id="ref-Chipman2010" data-num="69">[69]  Hugh A. Chipman, Edward I. George, and Robert E. McCulloch. Bart: bayesian additive regression trees. The Annals of Applied Statistics, 4(1):266–298, 2010.</li><li id="ref-Rockova2019" data-num="70">[70]  Veronika Ročková and Enakshi Saha. On theory for bart. In The 22nd International Conference on Artificial Intelligence and Statistics, 2839–2848. PMLR, 2019.</li><li id="ref-Lakshminarayanan2015" data-num="71">[71]  Balaji Lakshminarayanan, Daniel Roy, and Yee Whye Teh. Particle gibbs for bayesian additive regression trees. In Artificial Intelligence and Statistics, 553–561. PMLR, 2015.</li><li id="ref-Molnar2020" data-num="72">[72]  C. Molnar. Interpretable Machine Learning. Lulu.com, 2020. ISBN 9780244768522.</li><li id="ref-Molnar2020" data-num="73">[73]  Christoph Molnar, Giuseppe Casalicchio, and Bernd Bischl. Interpretable machine learning–a brief history, state-of-the-art and challenges. In Joint European Conference on Machine Learning and Knowledge Discovery in Databases, 417–431. Springer, 2020.</li><li id="ref-Friedman2001" data-num="74">[74]  Jerome H Friedman. Greedy function approximation: a gradient boosting machine. Annals of statistics, pages 1189–1232, 2001.</li><li id="ref-Goldstein2015" data-num="75">[75]  Alex Goldstein, Adam Kapelner, Justin Bleich, and Emil Pitkin. Peeking inside the black box: visualizing statistical learning with plots of individual conditional expectation. journal of Computational and Graphical Statistics, 24(1):44–65, 2015.</li><li id="ref-Liu2019" data-num="76">[76]  Yi Liu, Veronika Ročková, and Yuexi Wang. Variable selection with abc bayesian forests. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 2019.</li><li id="ref-Carlson2020" data-num="77">[77]  Colin J. Carlson. Embarcadero: species distribution modelling with bayesian additive regression trees in r. Methods in Ecology and Evolution, 11(7):850–858, 2020.</li><li id="ref-Bleich2014" data-num="78">[78]  Justin Bleich, Adam Kapelner, Edward I George, and Shane T Jensen. Variable selection for bart: an application to gene regulation. The Annals of Applied Statistics, pages 1750–1781, 2014.</li><li id="ref-Breiman2001" data-num="79">[79]  Leo Breiman. Random forests. Machine learning, 45(1):5–32, 2001.</li><li id="ref-Balog2015" data-num="80">[80]  Matej Balog and Yee Whye Teh. The mondrian process for machine learning. arXiv preprint arXiv:1507.05181, 2015.</li><li id="ref-Roy2008" data-num="81">[81]  Daniel M Roy and Yee Whye Teh. The mondrian process. In Proceedings of the 21st International Conference on Neural Information Processing Systems, 1377–1384. 2008.</li><li id="ref-Sunnaker2013" data-num="82">[82]  Mikael Sunnåker, Alberto Giovanni Busetto, Elina Numminen, Jukka Corander, Matthieu Foll, and Christophe Dessimoz. Approximate bayesian computation. PLoS computational biology, 9(1):e1002803, 2013.</li><li id="ref-Dutta2017" data-num="83">[83]  Ritabrata Dutta, Marcel Schoengens, Jukka-Pekka Onnela, and Antonietta Mira. Abcpy: a user-friendly, extensible, and parallel library for approximate bayesian computation. In Proceedings of the platform for advanced scientific computing conference, 1–9. 2017.</li><li id="ref-Lintusaari2018" data-num="84">[84]  Jarno Lintusaari, Henri Vuollekoski, Antti Kangasraasio, Kusti Skytén, Marko Jarvenpaa, Pekka Marttinen, Michael U Gutmann, Aki Vehtari, Jukka Corander, and Samuel Kaski. Elfi: engine for likelihood-free inference. Journal of Machine Learning Research, 19(16):1–7, 2018.</li><li id="ref-Klinger2018" data-num="85">[85]  Emmanuel Klinger, Dennis Rickert, and Jan Hasenauer. Pyabc: distributed, likelihood-free inference. Bioinformatics, 34(20):3591–3593, 2018.</li><li id="ref-Darmois1935" data-num="86">[86]  Georges Darmois. Sur les lois de probabilitéa estimation exhaustive. CR Acad. Sci. Paris, 260(1265):85, 1935.</li><li id="ref-Koopman1936" data-num="87">[87]  Bernard Osgood Koopman. On distributions admitting a sufficient statistic. Transactions of the American Mathematical society, 39(3):399–409, 1936.</li><li id="ref-Pitman1936" data-num="88">[88]  Edwin James George Pitman. Sufficient statistics and intrinsic accuracy. In Mathematical Proceedings of the cambridge Philosophical society, volume 32, 567–579. Cambridge University Press, 1936.</li><li id="ref-Andersen1970" data-num="89">[89]  Erling Bernhard Andersen. Sufficiency and exponential families for discrete sample spaces. Journal of the American Statistical Association, 65(331):1248–1255, 1970.</li><li id="ref-Perez2008" data-num="90">[90]  Fernando Pérez-Cruz. Kullback-leibler divergence estimation of continuous distributions. In 2008 IEEE international symposium on information theory, 1666–1670. IEEE, 2008.</li><li id="ref-Jiang2018" data-num="91">[91]  Bai Jiang. Approximate bayesian computation with kullback-leibler divergence as data discrepancy. In International conference on artificial intelligence and statistics, 1711–1721. PMLR, 2018.</li><li id="ref-Bernton2019" data-num="92">[92]  Espen Bernton, Pierre E Jacob, Mathieu Gerber, and Christian P Robert. Approximate bayesian computation with the wasserstein distance. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 81(2):235–269, 2019.</li><li id="ref-Bentley1975" data-num="93">[93]  Jon Louis Bentley. Multidimensional binary search trees used for associative searching. Communications of the ACM, 18(9):509–517, 1975.</li><li id="ref-Sisson2018" data-num="94">[94]  S.A. Sisson, Y. Fan, and M. Beaumont. Handbook of Approximate Bayesian Computation. Chapman &amp; Hall/CRC Handbooks of Modern Statistical Methods. CRC Press, 2018. ISBN 9781439881514.</li><li id="ref-Beaumont2002" data-num="95">[95]  Mark A. Beaumont, Wenyang Zhang, and David J Balding. Approximate bayesian computation in population genetics. Genetics, 162(4):2025–2035, 2002.</li><li id="ref-Beaumont2010" data-num="96">[96]  Mark A. Beaumont. Approximate bayesian computation in evolution and ecology. Annual review of ecology, evolution, and systematics, 41:379–406, 2010.</li><li id="ref-Pudlo2016" data-num="97">[97]  Pierre Pudlo, Jean-Michel Marin, Arnaud Estoup, Jean-Marie Cornuet, Mathieu Gautier, and Christian P Robert. Reliable abc model choice via random forests. Bioinformatics, 32(6):859–866, 2016.</li><li id="ref-Tukey1977" data-num="98">[98]  John W. Tukey. Modern Techniques in Data Analysis. In proceesings of the Sponsored Regional Research Conference. 1977.</li><li id="ref-Rayner2002" data-num="99">[99]  Glen D Rayner and Helen L MacGillivray. Numerical maximum likelihood estimation for the g-and-k and generalized g-and-h distributions. Statistics and Computing, 12(1):57–75, 2002.</li><li id="ref-Prangle2017" data-num="100">[100]  Dennis Prangle. Gk: an r package for the g-and-k and generalised g-and-h distributions. arXiv preprint arXiv:1706.06889, 2017.</li><li id="ref-Drovandi2011" data-num="101">[101]  Christopher C Drovandi and Anthony N Pettitt. Likelihood-free bayesian estimation of multivariate quantile distributions. Computational Statistics &amp; Data Analysis, 55(9):2541–2556, 2011.</li><li id="ref-Bowley1920" data-num="102">[102]  A.L. Bowley. Elements of Statistics. Number v. 2 in Elements of Statistics. P.S. King, 1920.</li><li id="ref-Moors1988" data-num="103">[103]  JJA Moors. A quantile alternative for kurtosis. Journal of the Royal Statistical Society: Series D (The Statistician), 37(1):25–32, 1988.</li><li id="ref-Marin2012" data-num="104">[104]  Jean-Michel Marin, Pierre Pudlo, Christian P Robert, and Robin J Ryder. Approximate bayesian computational methods. Statistics and Computing, 22(6):1167–1180, 2012.</li><li id="ref-Beaumont2019" data-num="105">[105]  Mark A. Beaumont. Approximate bayesian computation. Annual review of statistics and its application, 6:379–403, 2019.</li><li id="ref-Robert2011" data-num="106">[106]  Christian P Robert, Jean-Marie Cornuet, Jean-Michel Marin, and Natesh S Pillai. Lack of confidence in approximate bayesian computation model choice. Proceedings of the National Academy of Sciences, 108(37):15112–15117, 2011.</li><li id="ref-Collin2020" data-num="107">[107]  François-David Collin, Arnaud Estoup, Jean-Michel Marin, and Louis Raynal. Bringing abc inference to the machine learning realm: abcranger, an optimized random forests library for abc. In JOBIM 2020, volume 2020. 2020.</li><li id="ref-Bickel2008" data-num="108">[108]  Peter Bickel, Bo Li, Thomas Bengtsson, and others. Sharp failure rates for the bootstrap particle filter in high dimensions. In Pushing the limits of contemporary statistics: Contributions in honor of Jayanta K. Ghosh, pages 318–329. Institute of Mathematical Statistics, 2008.</li><li id="ref-Otto2011" data-num="109">[109]  S.P. Otto and T. Day. A Biologist's Guide to Mathematical Modeling in Ecology and Evolution. Princeton University Press, 2011. ISBN 9781400840915.</li><li id="ref-R5672" data-num="110">[110]  D. R. Cox. Principles of statistical inference. Cambridge University Press, 2006. ISBN 978-0521685672.</li><li id="ref-Gelman2008" data-num="111">[111]  Andrew Gelman. The folk theorem of statistical computing. https://statmodeling.stat.columbia.edu/2008/05/13/the_folk_theore/, 5 2008.</li><li id="ref-Clark2009" data-num="112">[112]  Matthew PA. Clark and Brian D. Westerberg. How random is the toss of a coin? Cmaj, 181(12):E306–E308, 2009.</li><li id="ref-Bradbury2018" data-num="113">[113]  James Bradbury, Roy Frostig, Peter Hawkins, Matthew James Johnson, Chris Leary, Dougal Maclaurin, George Necula, Adam Paszke, Jake VanderPlas, Skye Wanderman-Milne, and Qiao Zhang. JAX: composable transformations of Python+NumPy programs. 2018. URL: http://github.com/google/jax.</li><li id="ref-Gilks1994" data-num="114">[114]  Wally R Gilks, Andrew Thomas, and David J Spiegelhalter. A language and program for complex bayesian modelling. Journal of the Royal Statistical Society: Series D (The Statistician), 43(1):169–177, 1994.</li><li id="ref-Carpenter2017" data-num="115">[115]  Bob Carpenter, Andrew Gelman, Matthew D Hoffman, Daniel Lee, Ben Goodrich, Michael Betancourt, Marcus Brubaker, Jiqiang Guo, Peter Li, and Allen Riddell. Stan: a probabilistic programming language. Journal of statistical software, 76(1):1–32, 2017.</li><li id="ref-Gorinova2019" data-num="116">[116]  Maria I Gorinova, Andrew D Gordon, and Charles Sutton. Probabilistic programming with densities in slicstan: efficient, flexible, and deterministic. Proceedings of the ACM on Programming Languages, 3(POPL):1–30, 2019.</li><li id="ref-Kochurov2019" data-num="117">[117]  Max Kochurov, Colin Carroll, Thomas Wiecki, and Junpeng Lao. Pymc4: exploiting coroutines for implementing a probabilistic programming framework. Program Transformations for ML Workshop at NeurIPS, 2019. URL: https://openreview.net/forum?id=rkgzj5Za8H.</li><li id="ref-Papamakarios2019" data-num="118">[118]  George Papamakarios, Eric Nalisnick, Danilo Jimenez Rezende, Shakir Mohamed, and Balaji Lakshminarayanan. Normalizing flows for probabilistic modeling and inference. arXiv preprint arXiv:1912.02762, 2019.</li><li id="ref-Willard2020" data-num="119">[119]  Brandon T Willard. Minikanren as a tool for symbolic computation in python. arXiv preprint arXiv:2005.11644, 2020.</li><li id="ref-Kammar2013" data-num="120">[120]  Ohad Kammar, Sam Lindley, and Nicolas Oury. Handlers in action. ACM SIGPLAN Notices, 48(9):145–158, 2013.</li><li id="ref-Wood2014" data-num="121">[121]  Frank Wood, Jan Willem Meent, and Vikash Mansinghka. A new approach to probabilistic programming inference. In Artificial Intelligence and Statistics, 1024–1032. PMLR, 2014.</li><li id="ref-Tolpin2016" data-num="122">[122]  David Tolpin, Jan-Willem van de Meent, Hongseok Yang, and Frank Wood. Design and implementation of probabilistic programming language anglican. In Proceedings of the 28th Symposium on the Implementation and Application of Functional programming Languages, 1–12. 2016.</li><li id="ref-Bingham2019" data-num="123">[123]  Eli Bingham, Jonathan P Chen, Martin Jankowiak, Fritz Obermeyer, Neeraj Pradhan, Theofanis Karaletsos, Rohit Singh, Paul Szerlip, Paul Horsfall, and Noah D Goodman. Pyro: deep universal probabilistic programming. The Journal of Machine Learning Research, 20(1):973–978, 2019.</li><li id="ref-Phan2019" data-num="124">[124]  Du Phan, Neeraj Pradhan, and Martin Jankowiak. Composable effects for flexible and accelerated probabilistic programming in numpyro. arXiv preprint arXiv:1912.11554, 2019.</li><li id="ref-Tran2018" data-num="125">[125]  Dustin Tran, Matthew Hoffman, Dave Moore, Christopher Suter, Srinivas Vasudevan, Alexey Radul, Matthew Johnson, and Rif A Saurous. Simple, distributed, and accelerated probabilistic programming. arXiv preprint arXiv:1811.02091, 2018.</li><li id="ref-Moore2018" data-num="126">[126]  Dave Moore and Maria I Gorinova. Effect handling for composable program transformations in edward2. arXiv preprint arXiv:1811.06150, 2018.</li><li id="ref-Gorinova2020" data-num="127">[127]  Maria Gorinova, Dave Moore, and Matthew Hoffman. Automatic reparameterisation of probabilistic programs. In International Conference on Machine Learning, 3648–3657. PMLR, 2020.</li><li id="ref-Meent2018" data-num="128">[128]  Jan-Willem van de Meent, Brooks Paige, Hongseok Yang, and Frank Wood. An introduction to probabilistic programming. arXiv preprint arXiv:1809.10756, 2018.</li><li id="ref-Downey2014" data-num="129">[129]  Allen B. Downey. Think Stats: Exploratory Data Analysis. O'Reilly Media;, 2014.</li><li id="ref-Westfall2014" data-num="130">[130]  Peter H Westfall. Kurtosis as peakedness, 1905–2014. rip. The American Statistician, 68(3):191–195, 2014.</li><li id="ref-Cover2012" data-num="131">[131]  T.M. Cover and J.A. Thomas. Elements of Information Theory. Wiley, 2012. ISBN 9781118585771.</li><li id="ref-Akaike1998" data-num="132">[132]  Hirotogu Akaike. Information theory and an extension of the maximum likelihood principle. In Selected papers of hirotugu akaike, pages 199–213. Springer, 1998.</li><li id="ref-Watanabe2010" data-num="133">[133]  Sumio Watanabe and Manfred Opper. Asymptotic equivalence of bayes cross validation and widely applicable information criterion in singular learning theory. Journal of machine learning research, 2010.</li><li id="ref-Vehtari2017" data-num="134">[134]  Aki Vehtari, Andrew Gelman, and Jonah Gabry. Practical bayesian model evaluation using leave-one-out cross-validation and waic. Statistics and computing, 27(5):1413–1432, 2017.</li><li id="ref-Gilks1995" data-num="135">[135]  W.R. Gilks, S. Richardson, and D. Spiegelhalter. Markov Chain Monte Carlo in Practice. Chapman &amp; Hall/CRC Interdisciplinary Statistics. CRC Press, 1995. ISBN 9781482214970.</li><li id="ref-Friel2012" data-num="136">[136]  Nial Friel and Jason Wyse. Estimating the evidence–a review. Statistica Neerlandica, 66(3):288–308, 2012.</li><li id="ref-Neal1994" data-num="137">[137]  Radford M Neal. Contribution to the discussion of “approximate bayesian inference with the weighted likelihood bootstrap” by michael a. newton and adrian e. raftery. Journal of the Royal Statistical Society. Series B (Methodological), 56:41–42, 1994.</li><li id="ref-Gronau2017" data-num="138">[138]  Quentin F Gronau, Alexandra Sarafoglou, Dora Matzke, Alexander Ly, Udo Boehm, Maarten Marsman, David S Leslie, Jonathan J Forster, Eric-Jan Wagenmakers, and Helen Steingroever. A tutorial on bridge sampling. Journal of mathematical psychology, 81:80–97, 2017.</li><li id="ref-Navarro2020" data-num="139">[139]  Danielle Navarro. A personal essay on bayes factors. PsyArXiv, 2020.</li><li id="ref-Schad2021" data-num="140">[140]  Daniel J Schad, Bruno Nicenboim, Paul-Christian Bürkner, Michael Betancourt, and Shravan Vasishth. Workflow techniques for the robust use of bayes factors. arXiv preprint arXiv:2103.08744, 2021.</li><li id="ref-Abbott2008" data-num="141">[141]  E.A. Abbott and R. Jann. Flatland: A Romance of Many Dimensions. Oxford World's Classics. OUP Oxford, 2008. ISBN 9780199537501.</li><li id="ref-Martin2020" data-num="142">[142]  Gael M Martin, David T Frazier, and Christian P Robert. Computing bayes: bayesian computation from 1763 to the 21st century. arXiv preprint arXiv:2004.06425, 2020.</li><li id="ref-Duane1987" data-num="143">[143]  Simon Duane, Anthony D Kennedy, Brian J Pendleton, and Duncan Roweth. Hybrid monte carlo. Physics letters B, 195(2):216–222, 1987.</li><li id="ref-Brooks2011" data-num="144">[144]  S. Brooks, A. Gelman, G. Jones, and X.L. Meng. Handbook of Markov Chain Monte Carlo. Chapman &amp; Hall/CRC Handbooks of Modern Statistical Methods. CRC Press, 2011. ISBN 9781420079425.</li><li id="ref-Betancourt2017" data-num="145">[145]  Michael Betancourt. A conceptual introduction to hamiltonian monte carlo. arXiv preprint arXiv:1701.02434, 2017.</li><li id="ref-Yao2018" data-num="146">[146]  Yuling Yao, Aki Vehtari, Daniel Simpson, and Andrew Gelman. Yes, but did it work?: evaluating variational inference. In International Conference on Machine Learning, 5581–5590. PMLR, 2018.</li><li id="ref-Blei2017" data-num="147">[147]  David M. Blei, Alp Kucukelbir, and Jon D. McAuliffe. Variational inference: a review for statisticians. Journal of the American statistical Association, 112(518):859–877, 2017.</li><li id="ref-Kucukelbir2017" data-num="148">[148]  Alp Kucukelbir, Dustin Tran, Rajesh Ranganath, Andrew Gelman, and David M. Blei. Automatic differentiation variational inference. The Journal of Machine Learning Research, 18(1):430–474, 2017.</li><li id="ref-Kruschke2015" data-num="149">[149]  J.K. Kruschke. Doing Bayesian Data Analysis: A Tutorial with R, JAGS, and Stan. Academic Press. Academic Press, 2015. ISBN 9780124058880.</li></ul><p></p>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/226fd4ce.html">http://xishansnow.github.io/posts/226fd4ce.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/">贝叶斯统计</a><a class="post-meta__tags" href="/tags/%E8%87%AA%E7%94%B1%E4%BC%BC%E7%84%B6%E8%AE%A1%E7%AE%97/">自由似然计算</a><a class="post-meta__tags" href="/tags/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF%E8%AE%A1%E7%AE%97/">近似贝叶斯计算</a></div><div class="post-share"><div class="social-share" data-image="/img/book_02.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/eb7227e5.html" title="近似贝叶斯计算索引帖"><img class="cover" src="/img/009.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">近似贝叶斯计算索引帖</div></div><div class="info-2"><div class="info-item-1">   注： 近似贝叶斯计算（Approximate Bayesian Comnpution, ABC）主要面向似然函数无法解析给出的场景，即似然函数是 intractable 的。在传统的空间信息技术领域中，不管是点参考数据还是面元数据，一般都会给出高斯、泊松等似然假设，因此目前的应用较少，此部分内容暂时作为了解范畴。    1 概论 《近似贝叶斯计算简明教程》：节选自 Martin《Python 中的贝叶斯建模和计算》一书的第八章。  2 序列数据 当面临序列问题时，会涉及传统有显式似然的 序贯蒙特卡洛方法（SMC） 向无显式似然的 序贯蒙特卡洛近似贝叶斯计算（SMC-ABC） 的转变。  3          #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {        ...</div></div></div></a><a class="pagination-related" href="/posts/64381b5c.html" title="最大似然、最大后验与贝叶斯推断"><img class="cover" src="/img/book_03.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">最大似然、最大后验与贝叶斯推断</div></div><div class="info-2"><div class="info-item-1">   【摘 要】在机器学习和统计学习领域，最大似然、最大后验和贝叶斯推断是参数估计和预测最为常见的三种方法，堪称三座圣杯。本文从掌握证据（观测数据）出发，分别讨论了三种方法的原理、特点以及区别，而且内容极为简明易懂，是了解上述三个概念不可多得的好教材。该文是普渡大学机器人视觉实验室的自编教程，值得收藏。 【原 文】  （1）Kak, A. (2014) ‘ML, MAP, and Bayesian—the holy trinity of parameter estimation and data prediction’, An RVL Tutorial Presentation at Purdue University. （2）Kak, A. (2014) ‘Monte Carlo integration in bayesian estimation’. </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/5600cedb.html" title="6️⃣  概率图推断--部分可观测马尔可夫随机场及 EM 算法"><img class="cover" src="/img/002.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-10</div><div class="info-item-2">6️⃣  概率图推断--部分可观测马尔可夫随机场及 EM 算法</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a><a class="pagination-related" href="/posts/ddea1113.html" title="近似推断--平均场近似"><img class="cover" src="/img/009.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-10</div><div class="info-item-2">近似推断--平均场近似</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a><a class="pagination-related" href="/posts/cc6501c0.html" title="高级模型--高斯过程与核学习"><img class="cover" src="/img/010.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-05</div><div class="info-item-2">高级模型--高斯过程与核学习</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a><a class="pagination-related" href="/posts/5f7d3c16.html" title="随机变分推断"><img class="cover" src="/img/003.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-12</div><div class="info-item-2">随机变分推断</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 随机变分推断是一种用于近似后验分布的可扩展算法。我们为一般性的概率模型开发了该技术，并且用两个概率主题模型（潜狄利克雷分配和分层狄利克雷过程主题模型）来证明了它的可用性。我们使用随机变分推断分析了几个大型文档集合：来自 Nature 的 30 万篇文章、来自《纽约时报》的 180 万篇文章和来自维基百科的 380 万篇文章。结果表明：随机变分推断可以轻松处理如此大规模的数据集，并且优于只能处理较小数据集的传统变分推断。我们还表明贝叶斯非参数主题模型的表现要优于参数模型。 【原 文】 Hoffman, M., Blei, D. M., Wang, C., &amp; Paisley, J. (2013). Stochastic Variational Inference. arXiv: http://arxiv.org/abs/1206.7051 1 问题提出现代数据分析需要使用海量数据进行计算。想象下如下案例: (1) 我们拥有 200...</div></div></div></a><a class="pagination-related" href="/posts/4e1bbb89.html" title="🔥  贝叶斯方法索引帖"><img class="cover" src="/img/book_12.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-08</div><div class="info-item-2">🔥  贝叶斯方法索引帖</div></div><div class="info-2"><div class="info-item-1">   一、知识要点1.1 贝叶斯思维与工作流推荐的几本基础入门书籍：  Martin 2015 年的 《Bayesian Analysis with Python》  Martin 2022 年的 《Bayesian Modeling and Computation in Python》 Kruschke 2015 年的 《Doing Bayesian Data Analysis》  1.2 主要的贝叶斯推断方法（1） 关于基础的推断方法  普渡大学机器人视觉实验室的自编教程： 普渡大学的一篇入门教程，清晰地从贝叶斯定理出发，阐明了最大似然估计、最大后验估计、贝叶斯估计三者之间的关系，值得仔细品读。 （2）关于似然函数  Reid 等 2010 年  《似然与基于似然的推断》 ：...</div></div></div></a><a class="pagination-related" href="/posts/7e8d23a9.html" title="🔥  主要的贝叶斯推断方法"><img class="cover" src="/img/book_17.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-08</div><div class="info-item-2">🔥  主要的贝叶斯推断方法</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 统计推断是贝叶斯概率框架中最为重要的部分，也是概率机器学习的核心部分。几乎所有的概率机器学习模型，都会涉及根据观测量来获取隐变量或模型参数相关知识的问题，这就是统计推断。与频率主义不同，贝叶斯推断方法并不给出隐变量的确切值，而是保留了模型的不确定性，给出隐变量的概率分布。由于输出的不再是点，而是一个分布，导致贝叶斯统计推断的难度大大增加了。尤其是在复杂模型和大数据集中，问题更明显。本文对贝叶斯统计推断技术进行了综述，以便快速对相关领域知识有一个理解。 【原 文】 参考 Blei 的讲座自行整理。         1...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/favi.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">西山晴雪</div><div class="author-info-description">It's time to...</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://gitee.com/xishansnow"><i class="fab fa-github"></i><span>个人Gitee</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://gitee.com/XiShanSnow" target="_blank" title="Gitee"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:XiShanSnow@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/0.html" title="无标题">无标题</a><time datetime="2024-08-09T13:55:38.211Z" title="发表于 2024-08-09 21:55:38">2024-08-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/0.html" title="无标题">无标题</a><time datetime="2024-08-09T13:55:38.208Z" title="发表于 2024-08-09 21:55:38">2024-08-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/9daba997.html" title="测试">测试</a><time datetime="2023-06-16T15:22:00.000Z" title="发表于 2023-06-16 23:22:00">2023-06-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/5f5b1f29.html" title="🔥  变分推断方法索引帖">🔥  变分推断方法索引帖</a><time datetime="2023-05-18T13:31:00.000Z" title="发表于 2023-05-18 21:31:00">2023-05-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/46ae35f1.html" title="👍 变分推断方法综述 ">👍 变分推断方法综述 </a><time datetime="2023-05-18T13:31:00.000Z" title="发表于 2023-05-18 21:31:00">2023-05-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

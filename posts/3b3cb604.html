@@ -1,0 +1,437 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>贝叶斯深度学习研究综述 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="贝叶斯深度学习研究综述"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/3b3cb604.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '贝叶斯深度学习研究综述',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/006.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">贝叶斯深度学习研究综述</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">贝叶斯深度学习研究综述</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-07-01T04:00:00.000Z" title="发表于 2021-07-01 12:00:00">2021-07-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.191Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/BayesNN/">BayesNN</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">贝叶斯神经网络</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">11.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>39分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>【摘 要】 一个全面的人工智能系统不仅需要感知环境，还需要推断关系（甚至因果）及其不确定性。过去十年中，深度学习在感知任务中取得了重大进展，例如：用于视觉对象识别和语音识别。但对更高级的推断任务而言，具有贝叶斯性质的概率图模型（Probabilistic Graphical Model， PGM ）则更强大和灵活。近年，贝叶斯深度学习作为统一的概率框架出现，将深度学习和贝叶斯模型紧密结合在一起，用深度学习对文本、图像的感知能力来提高进一步推断的性能，反过来，通过推断过程的反馈来增强文本或图像的感知能力。本文对贝叶斯深度学习进行了较为全面的介绍，综述了贝叶斯深度学习在推荐系统、主题模型、控制等方面的应用，并讨论了贝叶斯深度学习与神经网络的贝叶斯处理等相关课题的联系与区别。</p>
+<p>【原 文】 Wang H， Yeung D Y. A survey on Bayesian deep learning[J]. ACM Computing Surveys (CSUR)， 2020， 53(5): 1-37.</p>
+<p>【作者博客】 <a target="_blank" rel="noopener" href="http://wanghao.in/BDL.html">wanghao.in/BDL.html</a></p>
+<p>【阅后感】 贝叶斯深度学习的综述建议阅读<a href="6157.html">《贝叶斯深度学习快速上手教程》</a>。本文重点关注<code>第 4 节</code>，作者提出了一种传统神经网络与随机神经网络铰链的混合神经网络架构，并用概率图模型进行了抽象表达。</p>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>过去十年中，深度学习在包括视觉对象识别、文本理解和语音识别在内的许多流行感知任务中取得了巨大的成功。这些任务分别对应于人工智能系统的视觉、阅读和听觉能力，它们无疑对 AI 有效感知环境不可或缺。但构建一个实用、全面的 AI 系统，不仅需要感知，更应具备思考的能力。</p>
+<p>以医学诊断为例，医生除了要看可见症状、医学检测数据和患者描述外，还必须寻找症状间的关系，并推断出相应病因。只有如此，医生才能为病人提供医疗建议。此例中，虽然视觉和听觉能力允许医生从病人那里获取信息，但定义医生的关键是思维部分。这里的思维能力可能涉及识别条件依赖、因果推断、逻辑推断和处理不确定性等，它们显然超出了传统深度学习方法的能力。幸运的是，另一种机器学习范式— <code>概率图形模型（ PGM ）</code>—擅长概率和推断，尤其是不确定性。问题是，  PGM  在感知任务中效果似乎不如深度学习模型好，特别是感知任务通常涉及大规模和高维信号（如图像和视频）。为解决该问题，将深度学习和 PGM 统一在一个原则性概率框架内是一个自然而然的选择，即<code>贝叶斯深度学习（Bayesian Deep Learning， BDL ）</code> 。</p>
+<p>上例中，感知任务涉及感知患者的症状（例如，通过查看医学图像），而推断任务涉及处理条件依赖、因果推断、逻辑推断和不确定性。通过贝叶斯深度学习中的原则性集成，感知任务和推断任务被视为一个整体，相互受益。既能够看到医学图像帮助医生进行诊断和推断，也能看到诊断和推断反过来帮助理解医学图像。假设医生不确定医学图像中的黑斑是什么，但如果她能够推断出病因，则可以帮她更好地决定黑斑是不是肿瘤。</p>
+<p>再以推荐系统 <code>[1，70，71，92，121]</code> 为例。高精度推荐系统需要：（1）完整理解项目内容（例如，文档和电影中的内容）<code>[85]</code> ，（2）仔细分析用户档案和偏好 <code>[126，130，134]</code>；（3）正确评估用户间的相似性 <code>[3，12，46，109]</code> 。深度学习具有高效处理密集高维数据（如电影内容）的能力，因此擅长于任务一，而 PGM 对用户、项目和评级之间的条件依赖关系进行建模，则擅长于任务二和任务三。因此，将两者统一在一个概率框架中可以让我们两全其美。这种整合还带来额外好处，即推荐过程中的不确定性可以得到优雅的处理。更重要的，还可以推导出具体模型的贝叶斯处理方法，从而得到更可靠的预测 <code>[68，121]</code> 。</p>
+<p>第三个示例是控制系统，考虑依据摄像机的实时视频流来控制复杂的动态系统。该问题可转化为迭代地执行两个任务：原始图像感知和动态模型控制。处理原始图像的感知任务可通过深度学习来实现，而控制任务通常需要更复杂的模型，如隐马尔可夫模型和卡尔曼滤波器 <code>[35，74]</code> 。通过控制模型选择的动作可以影响接收到的视频流，并进一步完成反馈循环。为在感知任务和控制任务之间实现有效迭代过程，需要信息在它们之间来回流动。感知组件将是控制组件估计其状态的基础，具有内置动态模型的控制组件将能够预测未来的轨迹（图像）。因此，采用贝叶斯深度学习解决此问题比较合适 <code>[125]</code> 。同样，在该概率框架下可以自然地处理来自原始图像的噪声和控制过程中的不确定性。</p>
+<p>上面的例子展示了 BDL 的主要优势：（1）感知任务和推断任务之间的信息交换；（2）对高维数据的条件依赖；（3）对不确定性的有效建模。</p>
+<p>在不确定性方面， BDL 应用于复杂任务时，有三种参数不确定性需要考虑：</p>
+<ol>
+<li>神经网络的参数的不确定性；</li>
+<li>与任务相关的参数的不确定性；</li>
+<li>感知部分和任务部分信息传递的不确定性。</li>
+</ol>
+<p>通过使用概率分布而不是点估计来表示未知参数， BDL 提供了一个很有前途的框架来统一处理上述不确定性。特别是，第三种不确定性只能在 BDL 这样的统一框架下处理，因为分别训练感知组件和任务组件相当于假设两者之间交换信息时不存在不确定性。另外，神经网络在使用时存在过度参数化的问题，因此如何高效处理如此庞大的参数空间的不确定性，是一个比较大的挑战。此外，概率图模型通常更简洁，参数空间更小，从而可以提供更好的可解释性。</p>
+<p>除了上述优点外， BDL 的另外一个优点是内置 <code>隐式正则化</code> 。通过对隐藏单元、神经网络参数或指定条件依赖关系的模型参数施加先验， BDL 可在一定程度上避免过拟合，特别是在数据不足的情况下。通常， BDL 模型中的感知组件是某种类型神经网络的贝叶斯公式，任务组件使用 PGM 描述不同隐藏或观测变量之间的关系，正则化对它们都至关重要。对于感知部分，正则化技术（如权重衰减和 Dropout <code>[103]</code>） 被证明在改善神经网络性能方面是非常有效的，并且都有合理的贝叶斯解释  <code>[22]</code>。对于任务部分，专家知识或先验信息作为一种规则化，在数据稀缺的情况下，可通过施加先验信息来指导模型。</p>
+<p>当然，将 BDL 应用于实际任务时也存在挑战。</p>
+<p>首先，设计一个具有合理时间复杂度的有效贝叶斯神经网络模型非常重要。这项工作是由 <code>[42，72，80]</code> 开创的，但由于缺乏可伸缩性，并没有被广泛采用。幸运的是，最近在此方向上的一些进展  <code>[2，9，31，39，58,119,121]</code> 似乎揭示了贝叶斯神经网络的实际应用。</p>
+<p>第二个挑战是确保感知组件和任务组件之间高效有效的信息交换。理想情况下，一阶和二阶信息（例如，均值和方差）应该能够在两个分量之间来回流动。一种自然的方式是将感知部分表示为 PGM，并将其无缝地连接到特定于任务的 PGM，如 <code>[24,118,121]</code> 中所做的那样。</p>
+<p>本文提供了对 BDL 的全面概述，并为各种应用提供了具体模型。文章其余部分安排如下：第 2 节回顾了一些基本的深度学习模型；第 3 节介绍了 PGM 的主要概念和技术；第 4 节将阐述统一 BDL 框架的基本原理，并详细说明实现其感知组件和任务组件的选择；第 5 节回顾了应用于推荐系统、主题模型和控制等多个领域的 BDL 模型，分别展示了 BDL 在监督学习、非监督学习和一般表征学习中的作用；第 6 节对未来研究问题进行了讨论，并对全文进行了总结。</p>
+<h2 id="2-深度学习"><a href="#2-深度学习" class="headerlink" title="2 深度学习"></a>2 深度学习</h2><p>深度学习通常指两层以上的神经网络。为更好地理解深度学习，我们从最简单的神经网络—多层感知器(MLP)开始，说明传统深度学习如何工作。之后，将回顾基于 MLP 的其他几种深度学习模型。该章主要介绍经典深度学习方法，文章中提到的方法包括 MLP、AutoEncoder、CNN、RNN 等。</p>
+<h3 id="2-1-多层感知机（MLP）"><a href="#2-1-多层感知机（MLP）" class="headerlink" title="2.1 多层感知机（MLP）"></a>2.1 多层感知机（MLP）</h3><h3 id="2-2-自编码器（Autocoder）"><a href="#2-2-自编码器（Autocoder）" class="headerlink" title="2.2 自编码器（Autocoder）"></a>2.2 自编码器（Autocoder）</h3><p>该部分提一下自编码器。这是一种能将输入编码为更紧凑表示的神经网络，同时能够将这种紧凑表示进行重建。这方面的资料也很多，这里主要说明一下 AE 的变种——SDAE（Stacked Denoising AutoEncoders）</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/bayesian_stat_20210519114919ac.webp" alt="图片"></p>
+<p>SDAE 的结构如上图所示，和 AE 不同的是，<img src="https://mmbiz.qpic.cn/mmbiz_svg/kMaz9nc8bgIEdcLicp5Kd2P8l09AZmh4HW06nU1nJjPg9ads3EgQHxBNOj9yeFeGRt5MzLygT1d6ibicmUkg4IBuxiacXZxv9qSS/640?wx_fmt=svg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片">可以看做输入数据！<a target="_blank" rel="noopener" href="https://mmbiz.qpic.cn/mmbiz_svg/kMaz9nc8bgIEdcLicp5Kd2P8l09AZmh4HvDFqkO0cVdySkKIPiaHKTbAGjic4RLDeTGmWl8tVt7rek6e8sPDYyPrDtZHVoBQlGX/640?wx_fmt=svg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">图片</a>加入噪声或者做了一些随机处理后的结果（比如可以把！<a target="_blank" rel="noopener" href="https://mmbiz.qpic.cn/mmbiz_svg/kMaz9nc8bgIEdcLicp5Kd2P8l09AZmh4HvDFqkO0cVdySkKIPiaHKTbAGjic4RLDeTGmWl8tVt7rek6e8sPDYyPrDtZHVoBQlGX/640?wx_fmt=svg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">图片</a>中的数据随机选 30%变为零）。所以 SDAE 做的就是试图把处理过的 corrupted data 恢复成 clean data。SDAE 可以转化为如下优化问题：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtz40YBzeNTG1YsMMwmH83fK6rY181d6bnERMXyAnCkQUiabW62D5ARtg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<h3 id="2-3-卷积神经网络（CNN）"><a href="#2-3-卷积神经网络（CNN）" class="headerlink" title="2.3 卷积神经网络（CNN）"></a>2.3 卷积神经网络（CNN）</h3><h3 id="2-4-循环神经网络（RNN）"><a href="#2-4-循环神经网络（RNN）" class="headerlink" title="2.4 循环神经网络（RNN）"></a>2.4 循环神经网络（RNN）</h3><h2 id="3-概率图模型"><a href="#3-概率图模型" class="headerlink" title="3 概率图模型"></a>3 概率图模型</h2><p>概率图形模型（Probabilistic Graphical Models，PGM）使用图形表示法来描述随机变量及其之间的关系。与包含节点和边的图类似，PGM 具有表示随机变量的节点和表示它们间概率关系的边。</p>
+<h3 id="3-1-主要模型"><a href="#3-1-主要模型" class="headerlink" title="3.1 主要模型"></a>3.1 主要模型</h3><p>PGM 本质上有两种类型，有向 PGM（历史遗留下来也称为贝叶斯网络，注意与贝叶斯神经网络的区别）和无向 PGM（也称为马尔可夫随机场） <code>[5]</code>。本文主要关注有向 PGM ，有关无向 PGM 的详细信息，请参阅 <code>[5]</code>。</p>
+<p>PGM 的一个经典例子是潜狄拉克雷分配( Latent Dirichlet Allocation，LDA)，被用于对文档中单词和主题生成关系建模 <code>[8]</code> 。通常，PGM 带有模型的图形化表示和一个生成过程，用来描述随机变量是如何一步一步产生的。</p>
+<p>图 4 显示了 LDA 的图模型，相应的生成过程如下：</p>
+<p>对于每个文档 $j(j=1,2, \ldots, J)$ ，</p>
+<p>(1) 从狄拉克雷分布中抽取主题概率 $\theta_{j} \sim \operatorname{Dirichlet}(\alpha)$ 。</p>
+<p>(2) 对于文档 $\mathbf{w}<em>j$ 中的每个词  $w</em>{j_n}$ ，</p>
+<pre><code> (a) 从多项分布中抽取主题赋值 $z_{j_n} \sim \operatorname{Mult}\left(\theta_{j}\right)$ 。
+
+ (b) 从多项分布中抽取词 $w_{j_n} \sim \operatorname{Mult}\left(\beta_{z_{j_n}}\right)$ 。
+</code></pre>
+<p>上面的生成过程提供了随机变量是如何生成的。在图 4 的图模型中，阴影节点表示观测到的变量，而其他节点是隐变量( $\theta$ 和 $z$ )或参数( $\alpha$ 和 $\beta$ )。一旦定义了模型，就可以应用学习算法自动学习隐变量和参数。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/bayesian_stat_20210519163118fb.webp"></p>
+<p>图 4 LDA 的概率图模型，$J$ 是文档数，$D$ 是文档中的词数，$K$ 是主题的数量。</p>
+<p>由于其贝叶斯性质，诸如 LDA 的 PGM 很容易扩展以合并其他信息或执行其他任务。例如，在 LDA 之后，提出了主题模型的不同变体。<code>[7,113]</code> 被建议纳入时间信息，<code>[6]</code> 通过假设主题之间的相关性扩展了 LDA。<code>[44]</code> 将 LDA 从批处理模式扩展到在线设置，从而可以处理大型数据集。在推荐系统上，协作主题回归( CTR )<code>[112]</code> 扩展了 LDA 以纳入评级信息并提出推荐。然后，该模型被进一步扩展以包含社会信息 <code>[89,115,116]</code> 。</p>
+<h3 id="3-2-学习与推断"><a href="#3-2-学习与推断" class="headerlink" title="3.2 学习与推断"></a>3.2 学习与推断</h3><p><strong>严格地说，查找参数（如图 4 中的 $\alpha$ 和 $\beta$ )的过程称为学习，查找给定参数的隐变量（如图 4 中的 $\theta$ 和 $z$ )的过程称为推断。</strong>然而，如果只给出观测变量（如图 4 中的 $w$ ），学习和推断通常是交织在一起的。通常，LDA 的学习和推断会在隐变量（对应于推断）更新和参数（对应于学习）更新之间交替进行。一旦学习和推断完成，就可以学习得到参数 $\alpha$ 和 $\beta$ 。如果有新文档到来，就可以固定学习到的 $\alpha$ 和 $\beta$ ，然后单独执行推断以找到新文档的主题概率 $\theta_J$ 。</p>
+<p>与 LDA 类似，每种 PGM 都有各种学习和推断算法可用。其中，最具成本效益的方法可能是最大后验概率（MAP），它相当于将隐变量的后验概率最大化。使用 MAP ，学习过程等同于用正则化最小化（或最大化）目标函数。一个著名的例子是 <code>概率矩阵分解(PMF)[96]</code>，其中图模型的学习等价于用 $L2$ 正则化将一个大矩阵分解成两个低秩矩阵。</p>
+<p>尽管 MAP 效率很高，但它只给出了隐变量（包括模型参数）的点估计。为考虑不确定性并充分利用贝叶斯模型的能力，人们不得不求助于贝叶斯处理，如变分推断和 MCMC 。例如，原始的 LDA 使用变分推断来获得近似真实分布的后验分布 <code>[8]</code> 。隐变量和参数的学习则归结为最小化变分分布和真实后验分布之间的 KL 散度。除变分推断，贝叶斯处理的另一选择是 MCMC。例如，已经提出了 MCMC 算法（如 <code>[86]</code> ）来学习 LDA 的后验分布。</p>
+<blockquote>
+<p>注： PGM 推断任务大致可分为两类：概率推断任务（求概率分布）和最大后验推断任务（求变量值）。概率推断主要用于推断得到随机变量的联合概率，进而在联合概率分布基础上计算边缘概率分布或条件概率分布，是一种生成式任务，常用方法有变量消除法、信念传播法、变分法、MCMC 方法等。最大后验推断任务则寻求使得后验联合概率最大化的变量值，是一种判别式任务，常用方法有经最大化改造后的变量消除法、团树传播法、后向传播法等。</p>
+</blockquote>
+<h2 id="4-贝叶斯深度学习"><a href="#4-贝叶斯深度学习" class="headerlink" title="4 贝叶斯深度学习"></a>4 贝叶斯深度学习</h2><p>在这一节中，将列出一些最新的 BDL 模型，它们在推荐系统、主题模型、控制等方面都有应用。这些模型的摘要如表 1 所示。</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtBGyjGq16RGgZzMJaXTVVt91FgJrMiboxQIbtqjCaukCwvRIjTZUe8BQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<h3 id="4-1-贝叶斯神经网络与贝叶斯深度学习简史"><a href="#4-1-贝叶斯神经网络与贝叶斯深度学习简史" class="headerlink" title="4.1 贝叶斯神经网络与贝叶斯深度学习简史"></a>4.1 贝叶斯神经网络与贝叶斯深度学习简史</h3><p>与 BDL 高度相关的主题是贝叶斯神经网络( BNN )或神经网络的贝叶斯处理。与其他贝叶斯处理类似， BNN 对神经网络的参数施加先验，目的是学习这些参数的后验分布。在推断阶段，后验分布被边缘化以产生最终预测（此处不知如何理解，感觉应当是基于后验做一次抽样）。此过程被称为贝叶斯模型平均（Bayesian Model Averaging） <code>[5]</code> ，可被视为学习了无限数量的神经网络（或神经网络的分布），而后通过集成来聚合结果。</p>
+<blockquote>
+<p>  注：贝叶斯神经网络通过为神经网络的权重引入不确定性进行正则化（regularization）。你可以把它想象成一个集成（ensemble）了无穷多组神经网络（权重分布上的每一种可能性构成一个确定的神经网络，从此角度看，贝叶斯神经网络可以视为所有可能性的集成）的模型。</p>
+</blockquote>
+<p>对 BNN 的研究可以追溯到 20 世纪 90 年代，经典著作始于 <code>[42，72，80]</code> 。多年来，出现了大量文献 <code>[2，9，31，39，58,100]</code> ，实现了更好的扩展，并结合了最新的深度神经网络进展。由于贝叶斯神经网络历史悠久，术语“贝叶斯深度学习”有时专指“贝叶斯神经网络” <code>[73,128]</code> 。本文使用泛化的“贝叶斯深度学习”来指代包含贝叶斯神经网络的概率框架。因为具有感知组件和<code>空</code>任务组件的 BDL 模型等价于贝叶斯神经网络。</p>
+<p>有趣的是，虽然 BNN 开始于 20 世纪 90 年代，但更广泛意义上的 BDL 研究大约始于 2014 年 <code>[38,114,118,121]</code> ，略晚于 2012 年 ImageNet LSVRC 竞赛的深度学习突破 <code>[62]</code>。正如将在后面几节中看到的， BNN 通常用作 BDL 模型中的感知组件。</p>
+<p>如今 BDL 越来越受欢迎，已经在推荐系统和计算机视觉等领域获得了成功应用，并成为各种会议研讨会的主题（例如，NeurIPS BDL Workshop 6）。</p>
+<h3 id="4-2-通用架构"><a href="#4-2-通用架构" class="headerlink" title="4.2 通用架构"></a>4.2 通用架构</h3><p>如第 1 节提到的， BDL 是一个原则性的概率框架，包含两个紧密集成的组件：感知组件和任务组件。</p>
+<h4 id="（1）两个组件"><a href="#（1）两个组件" class="headerlink" title="（1）两个组件"></a><strong>（1）两个组件</strong></h4><p>图 5 以一个简单的 BDL 模型为例显示了其概率图模型。左侧红色矩形内的部分表示感知组件，右侧蓝色矩形内的部分表示任务组件。通常，感知组件应当是一个具有多个非线性处理层（在 PGM 中表示为链结构）的深度学习模型的概率公式。</p>
+<p>虽然感知组件中的节点和边相对简单，但任务组件中的节点和边通常描述更复杂的变量之间的分布和关系。具体而言，任务组件可采用多种形式。可以是典型的贝叶斯网络（即有向 PGM），例如 LDA、深度贝叶斯网络 <code>[117]</code> ，也可以是随机过程 <code>[51，94]</code> 。</p>
+<blockquote>
+<p>  注：概率图模型分为两类，一是有向图模型，通常被称为贝叶斯网络，二是无向图模型，通常被称为马尔可夫随机场。因为在研究随机过程时，常假设其为马尔可夫随机场，所以此处用随机过程代指了马尔科夫随机场。</p>
+</blockquote>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/bayesian_stat_20210519120555fb.webp" alt="图片"></p>
+<center>
+
+<p>图 5  一个 BDL 模型的概率图。左侧红色矩形表示感知组件，右侧蓝色矩形表示任务组件，铰链变量集合 $Omega_h={H}$ 。</p>
+</center>
+
+<h4 id="（2）三类变量"><a href="#（2）三类变量" class="headerlink" title="（2）三类变量"></a><strong>（2）三类变量</strong></h4><p> BDL 模型中有三类变量：<code>感知变量（perception variables）</code> 、 <code>铰链变量（hinge variables ）</code> 和 <code>任务变量（task variables ）</code> 。</p>
+<p>本文使用 $Omega_p$ 表示感知变量集（例如，图 5 中的 $X_0$ 、 $X_1$ 和 $W_1$ 等），它们是感知组件中的变量。通常，$Omega_p$ 是深度学习模型的概率公式中出现的 <code>权重参数</code> 和 <code>神经元（隐变量）</code> 。</p>
+<p> $Omega_h$ 用于表示铰链变量集（如图 5 中的 $H$ )，此类变量来自于任务组件，但直接与感知组件交互。</p>
+<p>任务变量集（如图 5 中的 $A$ 、$B$ 和 $C$ ），即任务组件中与感知组件无直接关系的变量，被表示为 $Omega_t$ 。</p>
+<h4 id="（3）面向有监督和无监督的生成式过程"><a href="#（3）面向有监督和无监督的生成式过程" class="headerlink" title="（3）面向有监督和无监督的生成式过程"></a>（3）面向有监督和无监督的生成式过程</h4><p>如果两个组件之间的边指向 $Omega_h$，则依据概率图模型理论，所有变量的联合概率分布可以写为：</p>
+<p>$$<br>p\left(\Omega_{p}, \Omega_{h}, \Omega_{t}\right)=p\left(\Omega_{p}\right) p\left(\Omega_{h} \mid \Omega_{p}\right) p\left(\Omega_{t} \mid \Omega_{h}\right) \tag{式 2}<br>$$</p>
+<p>如果两个组件之间的边源自 $Omega_h $ ，则所有变量的联合概率分布可以写为：</p>
+<p>$$<br>p\left(\Omega_{p}, \Omega_{h}, \Omega_{t}\right)=p\left(\Omega_{t}\right) p\left(\Omega_{h} \mid \Omega_{t}\right) p\left(\Omega_{p} \mid \Omega_{h}\right) \tag{式 3}<br>$$</p>
+<p>公式 (2) 和 (3) 假设数据的生成过程不同，并对应于不同学习任务。</p>
+<p>式 2 用于监督学习，其中感知组件充当概率（或贝叶斯）表示学习器，以促进任何下游任务（参见 5.1 节示例）。式 3  用于无监督学习，其中任务组件提供结构化约束和领域知识，以帮助感知组件学习更强的表示（参见 5.2 节示例）。</p>
+<p>请注意，除上述两种情况外， BDL 还可能存在既有指向 $Omega_h$ 又有源自 $\Omega_h$ 的边的情况，此时联合分布的分解将更加复杂。</p>
+<blockquote>
+<p>  注：上述联合概率分布基于概率图模型的推断计算。细节参见概率图模型相关理论和书籍。</p>
+</blockquote>
+<h4 id="（4）独立性要求"><a href="#（4）独立性要求" class="headerlink" title="（4）独立性要求"></a>（4）独立性要求</h4><p>铰链变量 $Omega_h$ 和相关条件分布的引入大大简化了模型（特别是当 $Omega_h$ 的入度或出度为 1 时），便于学习，并提供归纳偏差（有关目标函数的假设）以聚焦 $Omega_h$ 内部的信息。</p>
+<p>请注意，铰链变量始终位于任务组件中；铰链变量 $Omega_h$ 和感知组件之间的连接（如图 5 中的 $X_4→H$ ）应该尽量独立，以方便感知组件实施并行计算。例如，$H$ 中的每一行只与 $X_4$ 中的一个对应行相关。虽然在 BDL 模型中这不是强制性的，但满足此要求将显著提高模型训练时的并行计算效率。</p>
+<h4 id="（5）-铰链方差-Omega-h-的灵活性"><a href="#（5）-铰链方差-Omega-h-的灵活性" class="headerlink" title="（5） 铰链方差 $Omega_h$ 的灵活性"></a>（5） 铰链方差 $Omega_h$ 的灵活性</h4><p>如第 1 节所述， 对感知组件和任务组件之间交换信息的不确定性建模，是 BDL 的主要动机之一。 这归根结底是对与 $Omega_h$ 相关的一些不确定性进行建模。例如：在式 2 中，该不确定性反映在条件概率密度 $p(Omega_h|Omega_p)$ 的方差中。根据灵活性程度， $Omega_h$ 有三种类型的方差（为简单起见，本例中假设 BDL 的联合似然为公式 2 ，$Omega_p={p}$ 、 $\Omega_h={h}$ ， 且 $p(Omega_h|Omega_p)= \mathcal{N}(\mu_p，σ^2_p)$） ：</p>
+<ul>
+<li>Zero-Variance（ZV，没有不确定性，方差为零）：假设在两个组件之间的信息交换过程中不存在不确定性。在本例中，ZV 表现为直接设置 $σ^2_p= 0$ 。</li>
+<li>Hyper-Variance（HV，方差大小由超参数决定）：假设信息交换期间的不确定性通过超参数定义。在本例中，HV 表现为 $σ^2_p$ 是手动调整的超参数。</li>
+<li>Learnable Variance（LV，使用可学习参数表示）：使用可学习参数来表示信息交换过程中的不确定性。在本例中，$σ^2$ 为可学习参数。</li>
+</ul>
+<p>显然在模型灵活性方面，$LV&gt;HV&gt;ZV$。正常情况下，如果适当地正则化，<code>LV 模型</code> 的性能应当优于 <code>HV 模型</code> ，而 <code>HV 模型</code> 又优于 <code>ZV 模型</code> 。表 1 中显示了不同 BDL 模型中 $\Omega_h$ 的方差类型。</p>
+<p>请注意，尽管表中每种模型都有特定的铰链方差类型，但始终可以调整模型以设计出满足其他类型要求的模型。例如，虽然表中的 CDL 是 <code>HV 模型</code>，但可以很容易地调整 CDL 中的 $p(Omega_h|Omega_p)$ 来设计其对应的  ZV 和 LV 项。<code>[121]</code> 的作者比较了 <code>HV CDL</code> 和 <code>ZV CDL</code> 的性能，发现前者要好得多，这意味着对两个组件之间的不确定性进行建模对性能至关重要。</p>
+<h4 id="（6）学习算法"><a href="#（6）学习算法" class="headerlink" title="（6）学习算法"></a>（6）学习算法</h4><p>由于 BDL 的性质，实用的学习算法需满足以下准则：</p>
+<ul>
+<li>准则 1：应当是在线算法，以便能够很好地扩展到大数据集；</li>
+<li>准则 2：应当足够有效，能够随着感知组件中的空闲参数数量线性扩展。</li>
+</ul>
+<p>准则 1 暗示传统的变分推断或 MCMC 方法可能不适用。通常需要它们的在线版本 <code>[45]</code> 。大多数基于 SGD 的方法也不起作用，除非只执行 MAP 推断（与贝叶斯处理相反）。</p>
+<p>准则 2 是必需的，因为在感知组件中通常有大量空闲参数。这意味着基于拉普拉斯近似的方法 <code>[72]</code>是不现实的，因为其涉及到海森矩阵中与自由参数数量成二次方关系的计算复杂度。</p>
+<h3 id="4-3-感知组件"><a href="#4-3-感知组件" class="headerlink" title="4.3 感知组件"></a>4.3 感知组件</h3><p>理想情况下，感知组件应是贝叶斯（或概率）神经网络，以便与任务组件（任务组件天生是概率的）兼容，确保感知组件具备处理参数及输出不确定性的能力。</p>
+<p>正如 4.1 节提到的，贝叶斯神经网络的研究可以追溯到 20 世纪 90 年代 <code>[31，42，72，80]</code>。但当时的开创性工作由于缺乏可扩展性而没有被广泛采纳。为解决此问题，最近有了一些发展，例如 <code>受限玻尔兹曼机(RBM)  [40，41]</code>、<code>概率广义堆叠去噪自动编码器(pSDAE)[118,121]</code>、<code>变分自编码器(VAE)[58]</code>、<code>概率反向传播(PBP)[39]</code>、<code>贝叶斯后向传播(BBB)[9]</code> 、<code>贝叶斯暗知识(BDK)[2]</code> 和 <code>自然参数网络(NPN)[119]</code>。</p>
+<p>最近，<code>生成性对抗性网络(GAN)[30]</code> 作为一种新的神经网络训练方案盛行，并在图像生成方面显示出生命力。随后，GAN 的贝叶斯公式（以及相关的理论结果）也被提出 <code>[30，37]</code> 。这些模型也是 BDL 框架感知组件的潜在构建块。</p>
+<p>本小节主要介绍最新的贝叶斯神经网络，如 RBM、pSDAE、VAE 和 NPN 。建议读者参考 <code>[29]</code> ，了解在此方向上的早期工作。</p>
+<h4 id="（1）受限玻尔兹曼机（Restrict-Boltzmann-Machine，RBM）"><a href="#（1）受限玻尔兹曼机（Restrict-Boltzmann-Machine，RBM）" class="headerlink" title="（1）受限玻尔兹曼机（Restrict Boltzmann Machine，RBM）"></a>（1）受限玻尔兹曼机（Restrict Boltzmann Machine，RBM）</h4><p>RBM 是一种特殊的 BNN ，用于学习输入随机变量的分布。RBM 具有两层神经元，其中相邻层的神经元之间全相连，同层的神经元之间无相连（此即所谓受限的定义）。其主要特点：一是没有反向传播（BP）训练，RBM 的反向过程是在给定激活值的情况下估计输入 $X$ 的概率，期间使用与前向传递过程相同的权重参数，可以被表达为  $p(x|a; w)$ 。，二是隐层神经元是二值的。如果这两层是更深网络的一部分，那么第一个隐藏层的输出会被传递到第二个隐藏层作为输入，进而就可以有很多隐藏层，直至扩展到最终的分类层。对于简单的前馈网络，RBM 本质上起着自编码器的作用。</p>
+<p>具体而言，RBM 定义了以下能量：</p>
+<p>$$<br>E(\mathbf{v}, \mathbf{h})=-\mathbf{v}^{T} \mathbf{W h}-\mathbf{v}^{T} \mathbf{b}-\mathbf{h}^{T} \mathbf{a} \notag<br>$$</p>
+<p>其中 $\mathbf{v}$ 表示可见神经元，$\mathbf{h}$ 表示二值的隐藏神经元。$W$ 、$a$ 和 $b$ 是可学习的权重参数。能量函数可推出以下条件分布：</p>
+<p>$$<br>p(\mathbf{v} \mid \mathbf{h})=\frac{\exp (-E(\mathbf{v}, \mathbf{h}))}{\sum_{\mathbf{v}} \exp (-E(\mathbf{v}, \mathbf{h}))}, \quad p(\mathbf{h} \mid \mathbf{v})=\frac{\exp (-E(\mathbf{v}, \mathbf{h}))}{\sum_{\mathbf{h}} \exp (-E(\mathbf{v}, \mathbf{h}))} \tag{式 4}<br>$$</p>
+<p>RBM 是使用 <code>对比散度（Contrastive Divergence）”[40]</code> 而不是后向传播来训练。一旦经过训练，RBM 就可以通过边缘化其他神经元来推断 $\mathbf{h}$ 或 $\mathbf{v}$。还可以堆叠 RBM 层以形成 <code>深度信念网络(DBN)[76]</code> ，使用深度 RBN 的多个分支进行多模态学习 <code>[104]</code>，或者将 DBN 与卷积层相结合以形成卷积 DBN <code>[65]</code>。</p>
+<h4 id="（2）广义概率堆叠去噪自编码器（pSDAE）"><a href="#（2）广义概率堆叠去噪自编码器（pSDAE）" class="headerlink" title="（2）广义概率堆叠去噪自编码器（pSDAE）"></a>（2）广义概率堆叠去噪自编码器（pSDAE）</h4><p>在第 2.2 节引入 SDAE 之后，如果假设净输入 $X_c$ 和损坏输入 $X_0$ 均为观测变量，类似于 <code>[4，5，13，72]</code>，可以定义概率堆叠去噪自编码器（pSDAE）的生成过程：</p>
+<p>(1) 对于 SDAE 网络的 每一层  $l$</p>
+<p>对于权重矩阵 $W_l$ 中的每一列 $n$ ，抽取 $\mathbf{W}<em>{l,n} \sim \mathcal{N}(0, \lambda_w^{-1} \mathbf{I}</em>{K_l})$ 。</p>
+<p>抽取偏差向量 $\mathbf{b}<em>{l} \sim \mathcal{N}\left(0, \lambda</em>{w}^{-1} \mathbf{I}<em>{K</em>{l}}\right)$。</p>
+<p>对于 $\mathrm{X}_{l}$ 中的每一行  $j$ ，抽取</p>
+<p>$$<br>\mathbf{X}<em>{l, j *} \sim \mathcal{N}\left(\sigma\left(\mathbf{X}</em>{l-1, j *} \mathbf{W}<em>{l}+\mathbf{b}</em>{l}\right), \lambda_{s}^{-1} \mathbf{I}<em>{K</em>{l}}\right) \tag{式 5}<br>$$</p>
+<p>(2) 对于每个元素 $j$ ，</p>
+<p>抽取干净输入 $\mathbf{X}<em>{c, j *} \sim \mathcal{N}\left(\mathbf{X}</em>{L, j *}, \lambda_{n}^{-1} \mathbf{I}_{B}\right)$.</p>
+<p>注意，如果 $λ_s$ 趋于无穷大，则公式(5)中的高斯分布将变成以 $σ(X_{l−1，j∗}W_l+b_l)$ 为中心的 <code>狄拉克增量分布[106]</code>，其中σ(·)是 Sigmoid 函数，并且模型将退化为普通 SDAE 的贝叶斯公式。这也是我们称之为“广义”SDAE 的原因。</p>
+<p>网络的前 L/2 层充当编码器，后 L/2 层充当解码器。后验概率最大化等价于考虑权重衰减的重构误差最小化。</p>
+<p>继 pSDAE 之后，其卷积版本 <code>[132]</code> 和递归版本 <code>[122]</code> 都已提出，并在知识图谱嵌入和推荐系统中得到了应用。</p>
+<h4 id="（3）变分自编码器（Variational-Autoencoders，VAE）"><a href="#（3）变分自编码器（Variational-Autoencoders，VAE）" class="headerlink" title="（3）变分自编码器（Variational Autoencoders，VAE）"></a>（3）变分自编码器（Variational Autoencoders，VAE）</h4><p>变分自编码器(VAE) <code>[58]</code> 本质上试图学习最大化证据下限( ELBO )的参数 ϕ 和 $\theta$ ：</p>
+<p>$$<br>\mathcal{L}<em>{v a e}=E</em>{q_{\phi}(z \mid \mathbf{x})}\left[\log p_{\theta}(\mathbf{x} \mid \mathbf{z})\right]-K L\left(q_{\phi}(\mathbf{z} \mid \mathbf{x}) | p(\mathbf{z})\right) \tag{式 6}<br>$$</p>
+<p>其中 $q_ϕ(z|x)$ 是由 $ϕ$ 参数化的编码器，$p_\theta(x|z)$ 是由 $\theta$ 参数化的解码器。第一项的负值类似于普通自编码器中的重构误差，而 KL 散度作为编码器的正则化项。在训练期间，$q_ϕ(z|x)$ 将输出高斯分布的均值和方差，通过重参数化技巧从该均值和方差中采样 $z$ 。通常 $q_ϕ(z|x)$ 由具有两个分支的 MLP 参数化，一个分支产生平均值，另一个分支产生方差。</p>
+<p>类似于 pSDAE 的情况，已经提出了多种 VAE 变体。例如，<code>重要性加权自编码器(IWAE)[11]</code> 通过重要性加权得到了更紧致的下界，<code>[129]</code> 将 LSTM、VAE 和扩展 CNN 结合用于文本建模，<code>[17]</code> 提出了 VAE 的递归版本，称为变分 RNN(VRNN)。</p>
+<h4 id="（4）自然参数网络（Natural-Parameter-Networks，NPN）"><a href="#（4）自然参数网络（Natural-Parameter-Networks，NPN）" class="headerlink" title="（4）自然参数网络（Natural-Parameter Networks，NPN）"></a>（4）自然参数网络（Natural-Parameter Networks，NPN）</h4><p>与通常采用确定性输入的普通神经网络不同，<code>NPN[119]</code> 是一种以分布为输入的概率神经网络。输入分布通过线性和非线性变换层来产生输出分布。在 NPN 中，所有隐藏神经元和权值也是以封闭形式表示的分布。请注意，这与 VAE 不同，VAE 只有中间层输出 $z$ 是分布。</p>
+<p>例如，在普通线性 NN 中，$f_w(x)=wx$ 将标量 $x$ 作为输入，并基于标量参数 $w$ 计算输出；而相应的高斯 NPN 假设 $w$ 是从高斯分布 $\mathcal{N}(w_m，w_s)$ 中抽取的样本，$x$ 是从 $\mathcal{N}(x_m，x_s)$ 中抽得（当输入确定时，$x_s$ 被设置为 0）。 $\theta=(w_m，w_s)$ 被视为可学习的参数对，NPN 将计算输出高斯分布的均值 $\mu _\theta(x_m，x_s)$ 和方差  $s_\theta(x_m，x_s)$ （为清楚起见，忽略偏差项）：</p>
+<p>$$<br>\mu_{\theta}\left(x_{m}, x_{s}\right)=E[w x]=x_{m} w_{m} \tag{式 7}<br>$$</p>
+<p>$$<br>s_{\theta}\left(x_{m}, x_{s}\right)=D[w x]=x_{s} w_{s}+x_{s} w_{m}^{2}+x_{m}^{2} w_{s} \tag{式 8}<br>$$</p>
+<p>因此，该高斯 NPN 的输出是表示高斯分布的元组 $(\mu _\theta(x_m，x_s)，s_\theta(x_m，x_s))$ ，而不是单个值。如果不可用，则可以将 NPN 的输入 $x_s$  的方差设置为 0。请注意，由于 $s_\theta(x_m，0)=x_m^2w_s$ ，即使对于所有数据点 $x_s=0$ ， $w_m$ 和 $w_s$ 依然可学习得到。上面的推导在实践中被推广到处理向量和矩阵·<code>[119]</code> 。除高斯分布外，NPN 还支持其他指数族分布，如泊松分布和伽马分布 <code>[119]</code>。</p>
+<p>继 NPN 之后，提出了一个轻量级版本 <code>[26]</code>，以加快训练和推断过程。另一个变体 <code>MaxNPN[100]</code> 扩展了 NPN 以处理最大池化层和类别层。<code>ConvNPN[87]</code> 启用 NPN 中的卷积层。在模型量化和压缩方面，<code>BinaryNPN[107]</code> 也被提出为 NPN 的二进制版本，以获得更好的效率。</p>
+<h3 id="4-4-任务组件"><a href="#4-4-任务组件" class="headerlink" title="4.4 任务组件"></a>4.4 任务组件</h3><p>本小节将介绍不同形式的任务组件。任务组件的目的是将概率先验知识合并到 BDL 模型中。这样的知识可以用 PGM 自然地表示出来。具体地说，它可以是典型的（或浅层）贝叶斯网络 <code>[5，54]</code> 、<code>双向推断网络[117]</code> 或 <code>随机过程[94]</code> 。</p>
+<h4 id="（1）-贝叶斯网络（Bayesian-Network，BN）"><a href="#（1）-贝叶斯网络（Bayesian-Network，BN）" class="headerlink" title="（1） 贝叶斯网络（Bayesian Network，BN）"></a>（1） 贝叶斯网络（Bayesian Network，BN）</h4><p>贝叶斯网络是任务组件最常见的选择。正如第 3 节提到的，贝叶斯网络可以自然地表示条件依赖关系并处理不确定性。除上面介绍的 LDA，一个更直接的例子是·<code>概率矩阵分解(PMF)[96]</code> ，其中使用贝叶斯网络来描述用户、项目和评分之间的条件依赖关系。具体地说，PMF 假定了以下生成过程：</p>
+<p>(1) 对每一个项目 $j$， 抽取隐项目向量： $\mathbf{v}<em>{i} \sim \mathcal{N}\left(\mathbf{0}, \lambda</em>{v}^{-1} \mathbf{I}_{K}\right)$.</p>
+<p>(2) 对于每个用户 $i$ ，抽取隐用户向量： $\mathbf{u}<em>{i} \sim \mathcal{N}\left(\mathbf{0}, \lambda</em>{u}^{-1} \mathbf{I}_{K}\right)$.</p>
+<p>(3) 对于每个（用户-项目）对 $(i, j)$，抽取评分： $\mathbf{R}<em>{i j} \sim \mathcal{N}\left(\mathbf{u}</em>{i}^{T} \mathbf{v}<em>{j}, \mathbf{C}</em>{i j}^{-1}\right.$ ).</p>
+<p>在上述生成过程中，$\mathrm{C}<em>{i j}^{-1}$ 对应于评分的方差 $\mathrm{R}</em>{i j}$。 通过使用最大后验估计，学习 PMF 的数量，以最大化  $p\left(\left{\mathbf{u}<em>{i}\right},\left{\mathbf{v}</em>{j}\right} \mid\left{\mathbf{R}<em>{i j}\right},\left{\mathbf{C}</em>{i j}\right}, \lambda_{u}, \lambda_{v}\right)$ 的 log 似然：</p>
+<p>$$<br>\mathscr{L}=-\frac{\lambda_{u}}{2} \sum_{i}\left|\mathbf{u}<em>{i}\right|</em>{2}^{2}-\frac{\lambda_{v}}{2} \sum_{j}\left|\mathbf{v}<em>{j}\right|</em>{2}^{2}-\sum_{i, j} \frac{\mathrm{C}<em>{i j}}{2}\left(\mathbf{R}</em>{i j}-\mathbf{u}<em>{i}^{T} \mathbf{v}</em>{j}\right)^{2} \notag<br>$$</p>
+<p>请注意，还可以通过完全贝叶斯处理将另一层先验强加给超参数。例如，<code>[97]</code> 对潜在因子的精度矩阵施加先验，并通过 Gibbs 抽样学习贝叶斯 PMF。</p>
+<p>在 5.1 节中，我们将展示如何将 PMF 用作任务组件，以及定义用于显著提高推荐系统性能的感知组件。</p>
+<h4 id="（2）双向推断网络（Bidirectional-Inference-Networks，BIN）"><a href="#（2）双向推断网络（Bidirectional-Inference-Networks，BIN）" class="headerlink" title="（2）双向推断网络（Bidirectional Inference Networks，BIN）"></a>（2）双向推断网络（Bidirectional Inference Networks，BIN）</h4><p>典型贝叶斯网络假定随机变量之间存在“浅”的条件依赖关系。在生成过程中，通常从由其母变量的线性组合参数化的条件分布中提取一个随机变量（可以是隐变量，也可以是可观测变量）。例如，在 PMF 中，从主要由 $u_i$ 和 $v_j$ 的线性组合参数化的高斯分布中提取评级 $R_{i j}$ ，即 $R_{i j}∼\mathcal{N}(u^T_iv_j，C^{−1}_{i j})$。</p>
+<p>这种“浅”的线性结构可以用非线性甚至深的非线性结构来代替，从而形成一个深的贝叶斯网络。例如，<code>双向推断网络(BIN)[117]</code> 是一类深度贝叶斯网络，其在每个条件分布中启用深度非线性结构，同时保留将先验知识合并为贝叶斯网络的能力。</p>
+<p>例如，图 6（左）显示了 BIN，其中每个条件分布由贝叶斯神经网络参数化。具体地说，此示例假定进行以下因子分解：</p>
+<p>$$<br>p\left(v_{1}, v_{2}, v_{3} \mid X\right)=p\left(v_{1} \mid X\right) p\left(v_{2} \mid X, v_{1}\right) p\left(v_{3} \mid X, v_{1}, v_{2}\right) \notag<br>$$</p>
+<p>普通贝叶斯网络通过简单的线性运算对每个分布进行参数化。例如，$p(v2|X，v_1)=N(v_2|Xw_0+v_1w_1+b，σ^2)$ 。相反，BIN 使用 BNN 。例如，BIN 有 $p(v_2|X，v_1)=\mathcal{N}(v_2|\mu _\theta(X，v_1)，s_\theta(X，v_1))$ ，其中 $\mu_\theta(X，v_1)$ 和 $s_\theta(X，v_1)$ 是 BNN 的输出均值和方差。通过对所有 BNN （例如，图 6（左）中的 BNN 1、 BNN 2 和 BNN 3)执行 BP 来完成对深层贝叶斯网络的推断和学习 <code>[117]</code>。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/bayesian_stat_2021051915021738.webp"></p>
+<p>图 6 左：BIN 的一个简单示例，每个条件分布由贝叶斯神经网络( BNN )或简单地用概率神经网络参数化。右：另一个例子 BIN。阴影节点和透明节点分别表示观测到的变量和未观测到的变量。</p>
+<p>与普通（浅）贝叶斯网络相比，深度贝叶斯网络（如 BIN）可以有效、高效地处理深度和非线性的条件依赖。此外，基于深度贝叶斯网络的任务组件以神经网络为构建块，可以更好地与感知组件协同工作，感知组件通常也是一个神经网络。图 6（右）显示了一个更复杂的情况，其中既有观测到的（阴影节点）变量，也有未观测到的（透明节点）变量。</p>
+<h4 id="（3）随机过程（Stochastic-Processes，SP）"><a href="#（3）随机过程（Stochastic-Processes，SP）" class="headerlink" title="（3）随机过程（Stochastic Processes，SP）"></a>（3）随机过程（Stochastic Processes，SP）</h4><p>除了普通贝叶斯网络和深度贝叶斯网络之外，任务组件也可以采取随机过程的形式 <code>[94]</code> 。例如，维纳过程可以自然地描述连续时间布朗运动模型 $x_{t+u}|x_t∼N(x_t，λ_uI)$，其中 $x_{t+u}$和 $x_t$ 分别是时间 $t$ 和 $t+u$ 的状态。在图模型文献中，这样的过程已经被用来对博文主题随时间连续时间的演变过程进行建模<code>[113]</code>。</p>
+<p>另一个例子是在自动语音识别任务中使用泊松过程对音素的边界位置进行建模<code>[51]</code>。具体地说，泊松过程定义了生成过程 $Deltat_i=t_i−t_{i−1}∼g(λ(t))$ ，其中$t={t_1，t_2，.······，t_N}$ 作为边界位置集合，$g(λ(t))$ 是参数为 $λ(t)$ （也称为强度）的指数分布。该随机过程自然地模拟了连续时间内音素边界的出现。参数 $λ(t)$ 可以是将原始语音信号作为输入的神经网络的输出 <code>[51，83，99]</code>。</p>
+<p>有趣的是，随机过程可以看作是一种动态贝叶斯网络。为理解这一点，可以用等价的形式重写上面的泊松过程，其中给定 $t_{i−1}$ ，在时间 $t$ 没有发生 $t_i$ 的概率 $P(t_i&gt;t)=exp(∫_{t_{i−1}}^{t_i}−λ(t)dt)$ 。显然，维纳过程和泊松过程都是马尔可夫过程，可以用动态贝叶斯网络来表示 <code>[78]</code>。</p>
+<p>为方便讲解，第 5 节重点使用普通贝叶斯网络作为任务组件；如果需要，它们可以自然地替换为其他类型的任务组件，以表示不同的先验知识。</p>
+<h2 id="5-具体的-BDL-模型和应用"><a href="#5-具体的-BDL-模型和应用" class="headerlink" title="5 具体的 BDL 模型和应用"></a>5 具体的 BDL 模型和应用</h2><p>上一章讨论完构成 BDL 的基本模型结构，我们自然希望能够把该套大一统的框架运用在一些实际的问题上。因此，该章主要讨论了 BDL 的各种应用场景，包括推荐系统，控制问题等。在这里我们默认任务模块使用普通 Bayesian networks 作为此部分的模型。</p>
+<h3 id="5-1-推荐系统中的有监督贝叶斯深度学习"><a href="#5-1-推荐系统中的有监督贝叶斯深度学习" class="headerlink" title="5.1 推荐系统中的有监督贝叶斯深度学习"></a>5.1 推荐系统中的有监督贝叶斯深度学习</h3><p>Collaborative Deep Learning。文章在此部分提出 Collaborative Deep Learning（CDL）来处理推荐系统的问题，这种方法连接了 content information（一般使用深度学习方法处理）和 rating matrix（一般使用协同过滤）。</p>
+<p>使用 4.3.2 提到的 Probabilistic SDAE，CDL 模型的生成过程如下：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxt6vaxs3GUnAG9kwGiawEWHYoA8rdI5pULhXhJUk7HMXUzefunx2NCMyg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>为了效率，我们可以设置趋向正无穷，此时候，CDL 的图模型就可以用下图来表示了：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtBictcZ5PHMQcerhXolsbx5ZTaNhexK0NOC7aoT5STavNfGibnTxzJq8w/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>红色虚线框中的就是 SDAE（图上是 L=2 的情况），右边是 degenerated CDL，我们可以看到，degenerated CDL 只有 SDAE 的 encoder 部分。根据我们之前定义过的，<img src="https://mmbiz.qpic.cn/mmbiz_svg/kMaz9nc8bgIEdcLicp5Kd2P8l09AZmh4HA13jYmyibTUCau6CjibR3oQkOAWJsas2KgCYp5AbGbjXSUDN2ib2JkbutpiaIModrBg9/640?wx_fmt=svg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片">就是 hinge variable，而！<a target="_blank" rel="noopener" href="https://mmbiz.qpic.cn/mmbiz_svg/kMaz9nc8bgIEdcLicp5Kd2P8l09AZmh4Hic9bAL5jWGaAj4kib0bBsRgNXNMfruFo5eicY9YrholaIDQyia9XLwS0DnJkzs1bu5uL/640?wx_fmt=svg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">图片</a>是 task variables，其他的是 perception variables。</p>
+<p>那么我们应该如何训练此模型呢？直观来看，由于现在所有参数都被我们当做随机变量，我们可以使用纯贝叶斯方法，比如 VI 或 MCMC，然而这样计算量往往是巨大的，因此，我们使用一个 EM-style 的算法去获得 MAP 估计。先定义需要优化的目标，我们希望最大化后验概率，可以等价为最大化给定！<a target="_blank" rel="noopener" href="https://mmbiz.qpic.cn/mmbiz_svg/kMaz9nc8bgIEdcLicp5Kd2P8l09AZmh4HhiakuvR7TTRCYBfsdxh5EC53SE50UYwRhoJuEOY9ZHHrhMLZetksF0RiaGlQwwFzP2/640?wx_fmt=svg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">图片</a>的 joint log-likelihood。</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtEO78eLxkQYjNqBfs2D4dyr0jZDJy9sXdDiac5JqibmMPnvzPIstlDntw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>注意，当！<a target="_blank" rel="noopener" href="https://mmbiz.qpic.cn/mmbiz_svg/kMaz9nc8bgIEdcLicp5Kd2P8l09AZmh4HVrcSYVibGDG5eic56WCgJYJuahbSEp554IXwqM96V80icJeElZq8dlZ6JiaNFZXOSicPV/640?wx_fmt=svg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">图片</a>趋向无穷时，训练 CDL 的概率图模型就退化为了训练下图的神经网络模型：两个网络有相同的加了噪音的输入，而输出是不同的。</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtLXvCGx3GyGs6FLibpSDNoawBBvnnKRmW1VNFeERRLyuvsvO3bWjN8qQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>有了优化的目标，参数该如何去更新呢？和巧妙的 EM 算法的思路类似，我们通过迭代的方法去逐步找到一个局部最优解：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtveaP2nvqrlblb5MrVThfaxfLnKFfOs1zJHFkicewVXkIyfxiaXg9xGtg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>当我们估计好参数，预测新的评分就容易了，我们只需要求期望即可，也就是根据如下公式计算：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxt9RhoWrOeBhyve6lmC6ebqX3c7ceoFAicnicjLlrfJWStgmCgIiaeq6iaQw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>Bayesian Collaborative Deep Learning：除了这种模型，我们可以对上面提到的 CDL 进行另外一种扩展。这里我们不用 MAP 估计，而是 sampling-based 算法。主要过程如下：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtDObbqW8rIPwPTEMOIIfmR20YBa6YFVDj0jKibcC9PpDxZ21GQ3pnLJg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>当！<a target="_blank" rel="noopener" href="https://mmbiz.qpic.cn/mmbiz_svg/kMaz9nc8bgIEdcLicp5Kd2P8l09AZmh4HVrcSYVibGDG5eic56WCgJYJuahbSEp554IXwqM96V80icJeElZq8dlZ6JiaNFZXOSicPV/640?wx_fmt=svg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">图片</a>趋向正无穷并使用 adaptive rejection Metropolis sampling 时，对！<a target="_blank" rel="noopener" href="https://mmbiz.qpic.cn/mmbiz_svg/kMaz9nc8bgIEdcLicp5Kd2P8l09AZmh4HiaQia7XkwSx17UVqknFr7ibNjQvoDhdjJuia0ybwdSZowWmkw2ru1Apzj02scj3iaGicCI/640?wx_fmt=svg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">图片</a>采样就相当于 BP 的贝叶斯泛化版本。</p>
+<p>Marginalized Collaborative Deep Learning：在 SDAE 的训练中，不同训练的 epoch 使用不同的 corrupted input，因此训练过程中需要遍历所有的 epochs，Marginalized SDAE 做出了改进：通过边缘化 corrupted input 直接得到闭式解。</p>
+<p>Collaborative Deep Ranking：除了关注精确的评分，我们也可以直接关注 items 的排名，比如 CDR 算法：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtGsA4LAheXCyVcD0qbfy6Xia4YKYy8vdpnekqTHJQNbQVtwg9NW4jpFQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>此时候我们需要优化的 log-likelihood 就会成为：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_png/gYUsOT36vfp0G9xjCH5OudvPdPBngyxttFCibApL6cU5AtLNBQblPCOvQK7g2TxGlDOiciapG0K4SLINjLU6siarBA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>Collaborative Variational Autoencoders：另外，我们可以将感知模块的 Probabilistic SDAE 换成 VAE，则生成过程如下：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtNSI0tFjUxFUtOvbyMX7eE4lzmpt5uibwBbfjsTwJ7QtS2bFGz0tMrKw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>总之，推荐系统问题往往涉及高维数据（文本、图像）处理以及条件关系推断（用户物品关系等），CDL 这类模型使用 BDL 的框架，能发挥很重要的作用。当然其他监督学习的任务也可以参考推荐系统的应用使用 CDL 的方法。</p>
+<h3 id="5-2-主题模型中的无监督贝叶斯深度学习"><a href="#5-2-主题模型中的无监督贝叶斯深度学习" class="headerlink" title="5.2 主题模型中的无监督贝叶斯深度学习"></a>5.2 主题模型中的无监督贝叶斯深度学习</h3><p>该小节过渡到非监督问题中，在这类问题中我们不再追求 “match” 我们的目标，而更多是 “describe” 我们的研究对象。</p>
+<p>Relational Stacked Denoising Autoencoders as Topic Models （RSDAE）：在 RSDAE 中我们希望能在关系图的限制下学到一组 topics（或者叫潜因子）。RSDAE 能“原生地”集成潜在因素的层次结构和可用的关系信息。其图模型的形式和生成过程如下：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtWrHgicqyWia8TE0Swswiax8j14mN7aSLkfjibY8UKP8vCwavB6aqu3yeicQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtMZF4WIXrPiak0F040f1icicXCUiam7fhc8aaYnpJAjEcogx595uMtdNj6g/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>同样的，我们最大化后验概率，也就是最大化各种参数的 joint log-likelihood：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtqoib4Cqf2icCVrW0ylc7biaUd8SLoZicAD4ZuiaISEjfzRvxibd7iacnwvyxQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>训练的时候我们依然使用 EM-style 的算法去找 MAP 估计，并求得一个局部最优解（当然也可以使用一些带 skip 的方法尝试跳出局部最优），具体如下：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtxeLGqR9rlPMowhDfzq8QDHBJ8zbcaC3VOJPTz86GbR9uib2p9KUacdQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>Deep Poisson Factor Analysis with Sigmoid Belief Networks：泊松过程适合对于非负计数相关的过程建模，考虑到此特性，我们可以尝试把 Poisson factor analysis（PFA）用于非负矩阵分解。这里我们以文本中的 topic 问题作为例子，通过取不同的先验我们可以有多种不同的模型。</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtTIfbABMaP0vUqFfhV9nH6rXRTMsAokkYn3KUickAhJjKibXVn8JDTPQQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>比如说，我们可以通过采用基于 sigmoid belief networks（SBN）的深度先验，构成 DeepPFA 模型。DeepPFA 的生成过程具体如下：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtUnmib5pXM2TgGOMLZDNJ88ibibFibuAibf55xnZ4YGvfwEqR2SN4dhAHa6A/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>此模型训练的方式是用 Bayesian Conditional Density Filtering（BCDF），这是 MCMC 的一种 online 版本；也可以使用 Stochastic Gradient Thermostats（SGT），属于 hybrid Monto Carlo 类的采样方法。</p>
+<p>Deep Poisson Factor Analysis with Restricted Boltzmann Machine：我们也可以将 DeepPFA 中的 SBN 换成 RBM 模型达到相似的效果。</p>
+<p>可以看到，在基于 BDL 的话题模型中，感知模块用于推断文本的 topic hierarchy，而任务模块用于对词汇与话题的生产过程，词汇-话题关系，文本内在关系建模。</p>
+<h3 id="5-3-控制系统中的贝叶斯深度表示学习"><a href="#5-3-控制系统中的贝叶斯深度表示学习" class="headerlink" title="5.3 控制系统中的贝叶斯深度表示学习"></a>5.3 控制系统中的贝叶斯深度表示学习</h3><p>前面两小节主要谈论 BDL 在监督学习与无监督学习的应用，该节主要关注另外一个领域：representation learning。用控制问题为例。</p>
+<p>Stochastic Optimal Control：在该节，我们考虑一个未知动态系统的随机最优控制问题，在 BDL 的框架下解决的具体过程如下：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtbGibHAibQpggA6DBFVjxQT29Wuwibic3xq94gib96YOT65TgwuGRAc3Uibrw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p> BDL -Based Representation Learning for Control：为了能够优化上述问题，有三个关键的部分，具体如下：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtGvYFEhiaKNpCrbKIbWoZVDD50CNETw5JknfRibu50UIcHAd8EEZfnu3w/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>Learning Using Stochastic Gradient Variational Bayes：该模型的损失函数是如下这种形式：</p>
+<p><img src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/gYUsOT36vfp0G9xjCH5OudvPdPBngyxtaRBDJkqqRCap5YZe64hsT3uNcog57BUFmjp5qPEQiaQcjjrEOPmOVsA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>在控制的问题中，我们通常希望能够从原始输入中获取语义信息，并在系统状态空间中保持局部线性。而 BDL 的框架正好适用该点，两个组件分别能完成不同的工作：感知模块可以捕获 live video，而任务模块可以推断动态系统的状态。</p>
+<h3 id="5-4-其他贝叶斯深度学习的应用"><a href="#5-4-其他贝叶斯深度学习的应用" class="headerlink" title="5.4 其他贝叶斯深度学习的应用"></a>5.4 其他贝叶斯深度学习的应用</h3><p>除了上面提到的， BDL 还有其他诸多运用场景：链路预测、自然语言处理、计算机视觉、语音、时间序列预测等。比如，在链路预测中，可以将 GCN 作为感知模块，将 stochastic blockmodel 作为任务处理模块等。</p>
+<h2 id="6-结论与展望"><a href="#6-结论与展望" class="headerlink" title="6 结论与展望"></a>6 结论与展望</h2><p>现实中很多任务都会涉及两个方面：感知高维数据（图像、信号等）和随机变量的概率推断。 BDL 正是应对这种问题的方案：结合了 NN 和 PGM 的长处。而广泛的应用使得 BDL 能够成为非常有价值的研究对象，目前这类模型仍然有着众多可以挖掘的地方。</p>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/3b3cb604.html">http://xishansnow.github.io/posts/3b3cb604.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">贝叶斯神经网络</a><a class="post-meta__tags" href="/tags/BayesNN/">BayesNN</a><a class="post-meta__tags" href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">贝叶斯深度学习</a><a class="post-meta__tags" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a><a class="post-meta__tags" href="/tags/%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B/">主题模型</a><a class="post-meta__tags" href="/tags/%E8%87%AA%E5%8A%A8%E6%8E%A7%E5%88%B6/">自动控制</a></div><div class="post-share"><div class="social-share" data-image="/img/006.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/5baf34d6.html" title="2️⃣  概率视角看变分自编码器"><img class="cover" src="/img/book_09.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">2️⃣  概率视角看变分自编码器</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 本文从神经网络和概率机器学习两个视角，介绍了 VAE 背后的数学原理。严格意义上来说，变分自编码器（ VAE）是一种面向连续型隐变量的黑盒变分推断方法。其建立在基于神经网络的函数逼近之上，并可用随机梯度下降进行训练。VAE 已在生成多种复杂数据方面显示出很好的前景，包括手写数字、人脸、门牌号、CIFAR 图像、场景物理模型、分割以及从静态图像预测未来。 〖原文〗 Jaan Altosaar；Understanding Variational Autoencoders (VAEs) from two perspectives: deep learning and graphical models.；2016 p{text-indent:2em}  1 问题的提出为什么深度学习研究人员和概率机器学习人员在讨论变分自编码器时会感到困惑？什么是变分自编码器？为什么围绕这个术语存在不合理的混淆？ 这是因为存在概念和语言上的代沟！!! 神经网络科学和概率模型之间缺少共同的语言。本文的目标之一是弥合这一差距，并允许它们之间进行更多的协作和讨论，并提供一致的实现（Github...</div></div></div></a><a class="pagination-related" href="/posts/e065d60c.html" title="概率 PCA 模型"><img class="cover" src="/img/book_14.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">概率 PCA 模型</div></div><div class="info-2"><div class="info-item-1">   【摘 要】概率 PCA 模型（pPCA）。 </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/67c3f1d6.html" title="贝叶斯神经网络快速上手教程"><img class="cover" src="/img/coffe_11.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-14</div><div class="info-item-2">贝叶斯神经网络快速上手教程</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 现代深度学习方法已经成为研究人员和工程师常用的强大工具，可以解决以前似乎不可能解决的问题。然而，深度学习是一种黑箱方法，与其预测相关的不确定性很难量化。而贝叶斯统计学提供了一种形式化方法来理解和量化与深度神经网络预测相关的不确定性。本文为正在使用机器学习（特别是深度学习）的研究人员和科学家，提供了一个相关文献和工具集的概述，以帮助大家设计、实现、训练、使用和评估贝叶斯神经网络。 【原 文】 Laurent Valentin Jospin, Wray Buntine, Farid Boussaid, Hamid Laga, and Mohammed Bennamoun. 2020.Hands-on Bayesian Neural Networks - a Tutorial for Deep Learning Users.ACM Comput. Surv.1, 1 ( July 2020),35 pages. arxiv.org/abs/2007.06823 【阅后感】...</div></div></div></a><a class="pagination-related" href="/posts/32c5c644.html" title="🔥  神经网络泛化的贝叶斯概率视角"><img class="cover" src="/img/book_16.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-03</div><div class="info-item-2">🔥  神经网络泛化的贝叶斯概率视角</div></div><div class="info-2"><div class="info-item-1">   【摘 要】在现代深度学习中，估计贝叶斯模型平均值的积分有很多挑战，包括高维的参数空间和复杂的后验形态。但是，将这一挑战切实地视为一个积分问题，而非试图为蒙特卡洛近似获得后验样本，会为未来的进展提供机会。贝叶斯深度学习已经取得了快速的实际进展，现在的方法能够比标准训练有更好的准确性和校准，而且开销最小。 【原 文】Wilson, A.G. and Izmailov, P. (2020) ‘Bayesian Deep Learning and a Probabilistic Perspective of Generalization’, in Advances in Neural Information Processing Systems. Curran Associates, Inc., pp. 4697–4708. Available at: https://proceedings.neurips.cc/paper/2020/hash/322f62469c5e3c7dc3e58f5a4d1ea399-Abstract.html. 〖论文贡献〗  论文表明：...</div></div></div></a><a class="pagination-related" href="/posts/ef4c963d.html" title="有关贝叶斯深度学习误解的回应"><img class="cover" src="/img/008.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-20</div><div class="info-item-2">有关贝叶斯深度学习误解的回应</div></div><div class="info-2"><div class="info-item-1">   【原文序言】 本人对最近 关于贝叶斯深度学习的一些误解 发布了回应 。从那以后，大家一直要求我将其更进一步发展为容易被理解，且能自成一体的参考资料。为此，我专门在此发布此帖，希望对那些正在寻求了解 “贝叶斯推断独特之处” 以及 “贝叶斯推断在深度学习中为何有价值” 的人们有所帮助。此外，最近人们存在一些对 深度集成 和 贝叶斯方法 之间的误解，认为两者之间存在相互竞争的关系，因此，本文还旨在帮助大家厘清 近似贝叶斯推断 和 深度集成 之间的联系。 【论文背景】 2019 年 12 月， OpenAI 的研究人员 Carles Gelada 发布了一篇推文，表示 “贝叶斯神经网络毫无意义”，其主要论据是深度集成方法已经被证明比传统贝叶斯方法更为有效。一石激起千层浪，社区对此言论展开了激烈的讨论，其中纽约大学的 Wilson 教授 对此给予了驳斥，并专门发论文进行了科学地回应。不过话说回来， Carles Gelada 可能真的书读少了，模型选择、模型平均、模型集成不仅仅是贝叶斯领域的重点领域，而且很可能是未来机器真正自动选择 AI 模型的可能解决途径之一。 【原 文】...</div></div></div></a><a class="pagination-related" href="/posts/377a7c38.html" title="MCDropout 用于多任务学习"><img class="cover" src="/img/book_18.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-02</div><div class="info-item-2">MCDropout 用于多任务学习</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 理解模型的不确定性（uncertainty）是机器学习的关键。但能够理解不确定性的传统机器学习方法（如高斯过程，Gaussian Processes, GP），很难应用于如图像、视频等高维数据。深度学习（Deep Learning）能够高效处理该类数据，但其难以对不确定性建模。本文将介绍一个重新兴起的领域，称为贝叶斯深度学习 （贝叶斯深度学习），它提供了一个可以建模不确定性的深度学习框架。贝叶斯深度学习可以达到最先进的结果，同时也能理解不确定性。 【原 文】 见 Deep Learning Is Not Good Enough,We Need Bayesian Deep Learning for Safe AI 【阅后感】 本文作者是 MC Dropout 方法提出团队的成员之一，本文以博客形式发布，浅显易懂，可以作为入门级别的读物。重点掌握：（1）不确定性的来源和分类；（2）不同不确定性的建模思路；（3）在偶然不确定性方面，作者提出了数据依赖和任务依赖两种子类型，并针对任务依赖型数据不确定性进行了建模；（4）具体技术细节参考博文中提供的两篇论文。 1、...</div></div></div></a><a class="pagination-related" href="/posts/b5cb80b8.html" title="贝叶斯神经网络技术浅析"><img class="cover" src="/img/coffe_13.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-20</div><div class="info-item-2">贝叶斯神经网络技术浅析</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗神经网络已经为许多机器学习任务提供了最先进的结果，例如计算机视觉、语音识别和自然语言处理领域的检测、回归和分类任务等。尽管取得了成功，但它们通常是在频率学派框架内实施的，这意味着其无法对预测中的不确定性进行推断。本文介绍了贝叶斯神经网络及一些开创性研究，对不同近似推断方法进行了比较，并提出未来改进的一些方向。 〖原 文〗Goan, E., &amp; Fookes, C. (2020). Bayesian Neural Networks: An Introduction and Survey. https://arxiv.org/abs/2006.12024 〖阅后感〗获得神经网络预测不确定性的方法有很多种（参见《深度神经网络中的不确定性调研报告》），而本文主要介绍其中的贝叶斯神经网络方法。内容涉及浅层神经网络中的贝叶斯方法尝试、深层神经网络中面临的问题即推断方法等。 1 引言长期以来，仿生学一直是技术发展的基础。科学家和工程师反复使用物理世界的知识来模仿自然界对经过数十亿年演变而来的复杂问题的优雅解决方案。生物仿生学在统计学和机器学习中的重要应用是发展了感知机...</div></div></div></a><a class="pagination-related" href="/posts/926f8964.html" title="🔥  神经网络中的不确定性研究综述"><img class="cover" src="/img/coffe_04.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-22</div><div class="info-item-2">🔥  神经网络中的不确定性研究综述</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 在过去十年中，神经网络几乎触及了每一个科学领域，并成为各种现实世界应用的关键部分。由于越来越多的传播和使用，人们对神经网络预测结果的信心也变得越来越重要。但基础的神经网络要么无法提供不确定性估计，要么存在过于自信或信心不足的问题。为了克服这个问题，许多研究人员致力于理解和量化神经网络中的预测不确定性。前人已经确定了不同类型和来源的不确定性，并提出了各种估计和量化神经网络中不确定性的方法。本文全面概述了神经网络中的不确定性估计，回顾了该领域的最新进展，突出了当前的挑战，并确定了潜在的研究机会。它旨在为任何对神经网络中的不确定性估计感兴趣的人提供一个宽泛的概述和介绍，而不预先假定读者具备该领域的先验知识。为此，论文首先对不确定性来源这一关键因素进行了全面介绍，并将其分为（可还原的） 模型不确定性 和（不可还原的） 数据不确定性 。介绍了基于单一确定性神经网络、贝叶斯神经网络、神经网络集成、测试时数据增强...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="toc-text">1 概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0"><span class="toc-text">2 深度学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA%EF%BC%88MLP%EF%BC%89"><span class="toc-text">2.1 多层感知机（MLP）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%EF%BC%88Autocoder%EF%BC%89"><span class="toc-text">2.2 自编码器（Autocoder）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88CNN%EF%BC%89"><span class="toc-text">2.3 卷积神经网络（CNN）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88RNN%EF%BC%89"><span class="toc-text">2.4 循环神经网络（RNN）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B"><span class="toc-text">3 概率图模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%B8%BB%E8%A6%81%E6%A8%A1%E5%9E%8B"><span class="toc-text">3.1 主要模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%8E%A8%E6%96%AD"><span class="toc-text">3.2 学习与推断</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0"><span class="toc-text">4 贝叶斯深度学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AE%80%E5%8F%B2"><span class="toc-text">4.1 贝叶斯神经网络与贝叶斯深度学习简史</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E9%80%9A%E7%94%A8%E6%9E%B6%E6%9E%84"><span class="toc-text">4.2 通用架构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E4%B8%A4%E4%B8%AA%E7%BB%84%E4%BB%B6"><span class="toc-text">（1）两个组件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E4%B8%89%E7%B1%BB%E5%8F%98%E9%87%8F"><span class="toc-text">（2）三类变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E9%9D%A2%E5%90%91%E6%9C%89%E7%9B%91%E7%9D%A3%E5%92%8C%E6%97%A0%E7%9B%91%E7%9D%A3%E7%9A%84%E7%94%9F%E6%88%90%E5%BC%8F%E8%BF%87%E7%A8%8B"><span class="toc-text">（3）面向有监督和无监督的生成式过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%884%EF%BC%89%E7%8B%AC%E7%AB%8B%E6%80%A7%E8%A6%81%E6%B1%82"><span class="toc-text">（4）独立性要求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%885%EF%BC%89-%E9%93%B0%E9%93%BE%E6%96%B9%E5%B7%AE-Omega-h-%E7%9A%84%E7%81%B5%E6%B4%BB%E6%80%A7"><span class="toc-text">（5） 铰链方差 $Omega_h$ 的灵活性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%886%EF%BC%89%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"><span class="toc-text">（6）学习算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E6%84%9F%E7%9F%A5%E7%BB%84%E4%BB%B6"><span class="toc-text">4.3 感知组件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%8F%97%E9%99%90%E7%8E%BB%E5%B0%94%E5%85%B9%E6%9B%BC%E6%9C%BA%EF%BC%88Restrict-Boltzmann-Machine%EF%BC%8CRBM%EF%BC%89"><span class="toc-text">（1）受限玻尔兹曼机（Restrict Boltzmann Machine，RBM）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%B9%BF%E4%B9%89%E6%A6%82%E7%8E%87%E5%A0%86%E5%8F%A0%E5%8E%BB%E5%99%AA%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%EF%BC%88pSDAE%EF%BC%89"><span class="toc-text">（2）广义概率堆叠去噪自编码器（pSDAE）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E5%8F%98%E5%88%86%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%EF%BC%88Variational-Autoencoders%EF%BC%8CVAE%EF%BC%89"><span class="toc-text">（3）变分自编码器（Variational Autoencoders，VAE）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%884%EF%BC%89%E8%87%AA%E7%84%B6%E5%8F%82%E6%95%B0%E7%BD%91%E7%BB%9C%EF%BC%88Natural-Parameter-Networks%EF%BC%8CNPN%EF%BC%89"><span class="toc-text">（4）自然参数网络（Natural-Parameter Networks，NPN）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E4%BB%BB%E5%8A%A1%E7%BB%84%E4%BB%B6"><span class="toc-text">4.4 任务组件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%881%EF%BC%89-%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%EF%BC%88Bayesian-Network%EF%BC%8CBN%EF%BC%89"><span class="toc-text">（1） 贝叶斯网络（Bayesian Network，BN）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%8F%8C%E5%90%91%E6%8E%A8%E6%96%AD%E7%BD%91%E7%BB%9C%EF%BC%88Bidirectional-Inference-Networks%EF%BC%8CBIN%EF%BC%89"><span class="toc-text">（2）双向推断网络（Bidirectional Inference Networks，BIN）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%EF%BC%88Stochastic-Processes%EF%BC%8CSP%EF%BC%89"><span class="toc-text">（3）随机过程（Stochastic Processes，SP）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%85%B7%E4%BD%93%E7%9A%84-BDL-%E6%A8%A1%E5%9E%8B%E5%92%8C%E5%BA%94%E7%94%A8"><span class="toc-text">5 具体的 BDL 模型和应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E6%9C%89%E7%9B%91%E7%9D%A3%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0"><span class="toc-text">5.1 推荐系统中的有监督贝叶斯深度学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84%E6%97%A0%E7%9B%91%E7%9D%A3%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0"><span class="toc-text">5.2 主题模型中的无监督贝叶斯深度学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0"><span class="toc-text">5.3 控制系统中的贝叶斯深度表示学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E5%85%B6%E4%BB%96%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-text">5.4 其他贝叶斯深度学习的应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%BB%93%E8%AE%BA%E4%B8%8E%E5%B1%95%E6%9C%9B"><span class="toc-text">6 结论与展望</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

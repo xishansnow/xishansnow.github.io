@@ -1,0 +1,1071 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>点参考数据及克里金法 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="点参考数据及克里金法"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/3b1cf105.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '点参考数据及克里金法',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/coffe_05.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">点参考数据及克里金法</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">点参考数据及克里金法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-02-01T12:50:00.000Z" title="发表于 2022-02-01 20:50:00">2022-02-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.198Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/">GeoAI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/">点参考数据</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">17.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>67分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>【阅读建议】 点参考数据的空间预测和模拟问题，大致有传统克里金法和目前应用比较广泛的基于似然的方法。本文主要介绍源于地统计学的传统克里金方法，一来掌握空间统计中的基础方法，二来便于与后面几篇文章中提到的高斯过程之间建立联系。克里金方法在对空间随机场作出本征平稳假设的情况下，利用参数化的变异函数对不同位置处随机变量的偏差之间存在的空间结构（相关性）进行建模，利用有限样本点的最大似然求解最优参数，并将其用于预测任务。</p>
+<p>【引文信息】</p>
+<ul>
+<li>[1] 史舟， 李艳编， 地统计学在土壤学中的应用. Beijing: Zhong guo nong ye chu ban she， 2006.</li>
+<li>[2] 王政权， 地统计学及在生态学中的应用. Bei jing: Ke xue chu ban she， 1999.</li>
+</ul>
+<h2 id="1-引言"><a href="#1-引言" class="headerlink" title="1 引言"></a>1 引言</h2><p>空间数据的获取通常具有一定的成本，是进行空间分析的基础与起源。为了提高研究结论的精度，我们希望能够获取研究区域内更多、更全面的精确空间属性数据信息。然而，在实际研究工作中，由于人力成本、资源等外部条件限制，我们无法对全部未知区域加以采样与测量，而往往只能得到研究区域内有限数量的采样点及其相关属性数据。因此，往往可以考虑选取合适的空间采样点，利用一定数学模型，依据已知采样点各自对应属性数据对研究区域所有位置的未知属性信息加以预测（Predict）。 </p>
+<p>在空间信息技术领域，空间插值（Spatial Interpolation）是实现此类空间预测的另一种称呼，空间插值是一种将离散采样点测量数据转换为连续数据表面的常用方法，包括内插（Interpolation）和外推（Extrapolation）两种形式。一般地，对样本点范围以内（即所有采样点最大外接矩形内部）的空间进行插值，才可称作“内插”（部分文献亦直接使用术语 “插值”）；反之则称 “外推” 或 “预测（Forecast）”，往往认为外推的结果误差较大。  </p>
+<p>空间插值理论及其方法基于著名的 “地理学第一定律（Tobler’s First Law of Geography）”，即一般地，距离越近的地物具有越高的相关性。这一至今已产生深远影响的地学定律最早由美籍瑞士地理学家 Waldo R. Tobler 教授于 1970 年提出。</p>
+<p>在各方法所对应的数学计算原理层面，空间插值一般可以分为确定性插值方法（Deterministic Interpolation）与地统计插值方法（Geostatistics，亦称非确定性插值方法）两种。前者基于研究区域内各信息点之间相似程度或整个表面的平滑程度，创建连续的拟合表面；根据插值计算时所使用样本点范围，又可进一步分为全局插值法与局部插值法。</p>
+<p>本文的重点是地统计插值方法，此类方法基于研究区域内各信息点的综合统计学规律，其核心要素有两个：一是变异函数，用于建模空间自相关性以及结构，实现属性的空间自相关性量化；二是克里金法，以变异函数理论与结构分析为基础，通过克里金预测方程创建得出空间过程表面。</p>
+<h2 id="2-基础理论"><a href="#2-基础理论" class="headerlink" title="2 基础理论"></a>2 基础理论</h2><p>和传统统计技术一样，地统计学也是建立在概率论基础上的。在经典统计学中的一些基本概念例如均值、方差和协方差等，在地统计学中也存在。但经典统计学和地统计学的区别也是真真切切存在的。下面介绍地统计学独有的概念。</p>
+<h3 id="2-1-空间过程、区域化变量与随机函数"><a href="#2-1-空间过程、区域化变量与随机函数" class="headerlink" title="2.1 空间过程、区域化变量与随机函数"></a>2.1 空间过程、区域化变量与随机函数</h3><p><strong>（1）空间过程</strong></p>
+<p>地统计学将研究域内的每一个感兴趣的属性视为一个空间随机过程（或空间随机场），域内任意点处的属性取值都是一个随机变量。直观地理解，就是在空间域内的一个具有一定厚度的表面（Surface），其中每个点的均值一起构成了一个确定性表面，而厚度则代表了各点属性取值的不确定性。</p>
+<p>如果对任意点处的随机变量作出高斯分布的假设，则该空间过程是二维或三维空间场景中的一个高斯过程。</p>
+<p>与传统统计中通过多次独立实验获得随机变量的统计特性不同，在地统计中，$n$ 个不同空间测站获得的测量值，被视为空间过程某一次随机实验的结果，注意是单次实验结果。</p>
+<div class="note info no-icon flat"><p>看到表面（Surface）这个词，很容易让人联想到趋势面分析。趋势面分析也是拟合表面的一种形式，但其思路与空间过程的思路存在着本质的不同。趋势面分析源自典型的频率派方法，它认为每个样本点都是来自表面模型的一次独立采样 $(\mathbf{s}, z)$，拟合任务是根据多次重复的观测数据来重建表面模型 $z&#x3D;f(\mathbf{s})$。在趋势面分析中，任意位置 $\mathbf{s}$ 处的属性值被视为随位置而变化的某个确定值，不同位置处的不确定性主要来源于测量误差，且相互独立。</p>
+</div>
+
+<p><strong>（2）区域化变量</strong></p>
+<p>如果令域内某个位置 $\mathbf{s}$ 处的 $z$ 属性为随机变量，则可以发现 $z$ 会随着 $\mathbf{s}$ 而变化，因此 $z$ 被称为区域化变量，即不同位置是不同的变量。区域化变量可以表示为 $z(\mathbf{s}),\mathbf{s} \in D$ 。</p>
+<p>如果假设不同位置处的 $z$ 变量完全独立，则理论上所有位置处可以有自己独立的概率分布形式和均值、方差等统计量。但自然世界的事实恰恰与这种独立性假设相反，根据地理学第一定律，空间事物之间往往体现着依赖性，而地统计学正是基于该定律，利用样本点之间的空间结构和相关性，使得我们能够利用单次实验结果和有限样品就能实现对整个空间过程的建模，并将之用于空间预测（插值）。</p>
+<p><strong>（3）随机函数</strong></p>
+<p>可以用随机函数 $Z(\mathbf{s})$ 的概念来同时表达空间过程的随机性质和区域化变量的区域性质。其中随机的概念表明在任意给定位置 $\mathbf{s}_i$ 处的属性 $Z(\mathbf{s}_i)$ 是一个随机变量，具有随机特性；而函数的概念表明，这种随机特性会随着 $\mathbf{s}$ 而变化，不同的 $\mathbf{s}$ 值对应不同的随机变量，并且不同位置处的随机变量在一定程度上依赖于所处的区域位置和空间结构。</p>
+<p>由此可见， 随机函数可以被视为空间过程的一种形式化表达方式，而区域化变量可以被视为随机函数（空间过程）在某个位置处的一个实现。而实验在 $\mathbf{s}_i$ 处采集的样品，则是区域化变量 $Z(\mathbf{s}_i)$ 的一次采样结果。</p>
+<div class="note info no-icon flat"><p>注解： </p>
+<p>有关贝叶斯分层建模方法的文献中，会对数据、过程、参数进行层次化建模，在此类文献中符号 $Z$ 通常指观测数据，而非空间过程，这与此处的符号可能有些不一致。 </p>
+</div>
+
+<!-- ### 2.2 地统计的概率建模方法 -->
+<!---->
+<!-- 在研究区域内位置 $\mathbf{s}_0$ 处的随机变量 $Z(\mathbf{s}_0)$ 服从如下概率分布： -->
+<!---->
+<!-- $$ -->
+<!-- P[Z(\mathbf{s}_0)< z] = F_{\mathbf{s}_0} (z) -->
+<!-- $$ -->
+<!---->
+<!-- P 是位置 $\mathbf{s}_0$ 处的实测值低于某一固定值 $z$ 的概率，F 的取值在 $0$ 到 $1$ 之间。 -->
+<!---->
+<!---->
+
+
+<h3 id="2-2-平稳性假设"><a href="#2-2-平稳性假设" class="headerlink" title="2.2 平稳性假设"></a>2.2 平稳性假设</h3><p>地统计学认为空间过程（随机函数）中不同点处的随机变量具有不同的分布，其解空间非常庞大，而现实中仅能得到有限位置处随机变量的一个或几个稀少的观测，无法根据这些有限的观测数据求解无穷大的解空间。因此，必须要对空间过程作出一些必要的假设。其中一个重要假设就是平稳性假设，即假设不同位置的随机变量，其概率分布之间存在某种不变性。</p>
+<h4 id="（1）严格平稳性假设（强平稳性）"><a href="#（1）严格平稳性假设（强平稳性）" class="headerlink" title="（1）严格平稳性假设（强平稳性）"></a>（1）严格平稳性假设（强平稳性）</h4><p>严格平稳假设是指过程中所有随机变量具有完全相同的概率分布，随机性质完全相同。严格平稳假设过于严格了，几乎不适用于现实世界中的任何情况，因此，可以通过放宽一些平稳条件，从而形成一些更有意义的平稳性假设。</p>
+<h4 id="（2）二阶平稳性假设（弱平稳性假设）"><a href="#（2）二阶平稳性假设（弱平稳性假设）" class="headerlink" title="（2）二阶平稳性假设（弱平稳性假设）"></a>（2）二阶平稳性假设（弱平稳性假设）</h4><p>二阶平稳性假设又称弱平稳假设，该假设不强制要求处处具有相同的概率分布，而是放宽为处处具有相同的二阶统计量，且任意两个随机变量之间的协方差仅仅依赖于其二者之间的距离与方向，而与其具体位置无关。<br>上述两个条件分别表示为：  </p>
+<p><strong>条件 1</strong>: $E[Z(\mathbf{s})] &#x3D; m, \quad \mathbf{s} \in D$</p>
+<p><strong>条件 2</strong>: $\operatorname{Cov}[Z(\mathbf{s}),Z(\mathbf{s+h})] &#x3D; C(h), \quad \mathbf{s},\mathbf{s+h} \in D$</p>
+<p>其中，$E[Z(\mathbf{s})]$ 为区域化变量 $Z(\mathbf{s})$ 的数学期望， $\operatorname{Cov}[Z(\mathbf{s}),Z(\mathbf{s+h})]$ 为区域化变量 $Z(\mathbf{s})$ 与 $Z(\mathbf{s+h})$ 的自协方差函数，$C(\mathbf{h})$ 为仅与 $\mathbf{h}$ 有关的协方差取值，$m$ 为一常数，$\mathbf{h}$ 为步长（或距离、滞后）。<code>条件 2</code> 表明任意两个区域化变量之间的自相关性仅与两者之间的步长有关。</p>
+<p>协方差函数依赖于测量随机变量时使用的量纲和尺度，将其进行归一化转换为 <strong>自相关函数</strong> 可能更容易比较和理解：$\rho(\mathbf{h}) &#x3D; c(\mathbf{h}&#x2F;C(0))$。此处的 $C(0)$ 表示 $\mathbf{h}&#x3D;\mathbf{0}$ 时的协方差，就是先验方差 $\sigma^2$。</p>
+<p>上述二阶平稳性假设是针对整个研究区域范围而言。若区域化变量仅仅在某个有限子区域中满足上述条件，则称此区域化变量满足准二阶平稳性假设（Quasi Second Stationary Assumption）。准二阶平稳性假设可以视作一种折中方案，既考虑到平稳范围的大小，又顾及到有效数据的数量。</p>
+<h4 id="（3）-本征假设性假设"><a href="#（3）-本征假设性假设" class="headerlink" title="（3） 本征假设性假设"></a>（3） 本征假设性假设</h4><p>本征假设（Intrinsic Hypothesis）又称内蕴假设。该假设对二阶平稳性进一步放宽，认为只要区域化变量的增量满足二阶平稳性条件即可。即：</p>
+<p><strong>条件 1</strong>： $E[Z(\mathbf{s})-Z(\mathbf{s+h})]&#x3D; 0, \quad \mathbf{s,s+h} \in D$ </p>
+<p><strong>条件 2</strong>:  $\operatorname{Var}[Z(\mathbf{s}) - Z(\mathbf{s+h})]&#x3D;E[{Z(\mathbf{s}) - Z(\mathbf{s+h})}^2] &#x3D; 2 \gamma(\mathbf{h})$</p>
+<p><code>条件 1</code> 表明，在整个研究区域内，区域化随机变量的增量均值为 $0$，或等价的，区域化变量的均值处处相等；<code>条件 2</code> 表明该增量存在方差函数，该方差函数只依赖于步长 $\mathbf{h}$，而与所处位置无关。上式中，$\gamma(\mathbf{h})$ 是步长 $\mathbf{h}$ 上的半方差值，因此也被称为半方差函数，人们更习惯称之为变异函数。</p>
+<p>由于二阶平稳假设条件在现实世界中也很难出现，因此本征假设将用户从二阶平稳假设的严格限制中解放了出来，使其适用范围得到了大大扩展。</p>
+<p>同样的，本征假设亦是针对整个研究区域范围而言。若区域化变量仅仅某个子区域中满足上述条件，则称此区域化变量满足准本征假设（Quasi Intrinsic Hypothesis）。与准二阶平稳性假设类似，准本征假设亦可视作一种折中方案，其同样既考虑到了本征假设对应范围的大小，又顾及到了有效数据的数量。  </p>
+<div class="note info no-icon flat"><p>可以看出，本征假设运用于区域化变量的增量 $Z(\mathbf{s+h}) - Z(\mathbf{s})]$ 上，而不是运用到 $Z(\mathbf{s})$ 本身。如果一个本征平稳的空间过程在 $Z(\mathbf{s+h})$ 和 $Z(\mathbf{s})$ 之间的协方差函数也存在且仅依赖于步长 $\mathbf{h}$ ，则 $Z(\mathbf{s})$ 也是二阶平稳的。也就是说，二阶平稳性过程肯定是本征平稳的，而本征平稳性过程不一定是二阶平稳的。</p>
+</div>
+
+<p>本征假设是地统计学中对随机函数的基本假设。</p>
+<h4 id="（4）-说明"><a href="#（4）-说明" class="headerlink" title="（4） 说明"></a>（4） 说明</h4><p>事实上，本征假设的 <code>条件 1</code> （即 $E[Z(\mathbf{s})-Z(\mathbf{s+h})]&#x3D; 0$ 或者 $E[Z(\mathbf{s})] &#x3D; m$ ）也很少能被一些空间过程（随机函数）满足。例如，春天的平均温度通常是南方高于北方，从北到南温度呈不断增加的趋势。在这种情况下，可以考虑将空间过程分解为一个大尺度趋势（或漂移）和一个中小尺度上的空间过程（只对各位置处的偏差建模）。也就是说，$Z(\mathbf{s})&#x3D; \mu(\mathbf{s}) + \epsilon(\mathbf{s})$，其中仅 $\epsilon(\mathbf{s})$ 被视为随机过程。</p>
+<h2 id="3-变异函数及其拟合"><a href="#3-变异函数及其拟合" class="headerlink" title="3 变异函数及其拟合"></a>3 变异函数及其拟合</h2><p>根据上一节的介绍，本征平稳性假设下的变异函数（以及二阶平稳性假设下的协方差函数）决定了空间过程中区域化变量之间的空间结构和相关性，是地统计学的基石。对其进行科学合理的建模，并将模型应用于新位置处区域化变量的预测，是地统计最核心的内容。</p>
+<h3 id="3-1-与变异函数相关的统计概念"><a href="#3-1-与变异函数相关的统计概念" class="headerlink" title="3.1 与变异函数相关的统计概念"></a>3.1 与变异函数相关的统计概念</h3><p>变异函数与协方差函数、自相关函数之间具有紧密的联系，理解他们之间的关系，有助于对理论方法的理解。</p>
+<p>在二阶平稳性假设下，存在以下性质和关系：</p>
+<p>（1）协方差函数满足： $|C(h)| \leq C(0) &#x3D;  \operatorname{Var}(Z(x))$</p>
+<p>（2）协方差函数与自相关函数的关系：$\rho(\mathbf{h}) &#x3D; C(\mathbf{h})&#x2F;C(0)$</p>
+<p>（3）变异函数与协方差函数的关系： $\gamma(\mathbf{h}) &#x3D; C(0) - C(\mathbf{h})$</p>
+<p>（4）变异函数与自相关函数的关系：$\gamma(\mathbf{h})&#x3D;\sigma^2 (1-\rho(\mathbf{h}))$</p>
+<p>在本征平稳性假设下：</p>
+<p>虽然 $\gamma(\mathbf{h})$ 存在，但协方差函数 $C(\mathbf{h})$ 不一定存在，所以上述等式不一定成立。 显然变异函数能够在更多情况下表现出有效性，因此在地统计学中得到了比协方差函数更为广泛的应用。</p>
+<p>二阶平稳性和本征平稳性可以通过变异函数图进行判别：二阶平稳随机过程的半方差会随着步长 $\mathbf{h}$ 增加而增大，到一定程度后该值不再有显著变化，基本保持在一个水平上不变（即基台值）；而本征平稳的随机过程可能不存在基台值。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221202150520-0e2a.webp" alt="协方差函数与变异函数的关系"></p>
+<blockquote>
+<p>左图：变异函数与协方差函数的关系；右图：协方差函数不存在时的变异函数</p>
+</blockquote>
+<h3 id="3-2-变异函数及其特征"><a href="#3-2-变异函数及其特征" class="headerlink" title="3.2 变异函数及其特征"></a>3.2 变异函数及其特征</h3><p>变异函数，又称为半方差函数，用于描述区域化变量的空间变化特征与强度。根据上一节中的式，变异函数被定义为区域化变量增量平方的数学期望的 $\frac{1}{2}$；变异函数的取值与区域化变量样点所处位置 $\mathbf{s}$ 无关，仅与样点之间的步长（或距离、滞后）$\mathbf{h}$ 有关。</p>
+<p>在大多数情况下（并非全部），区域化变量的经验变异函数曲线会呈现出 “先快速上升，再增速减缓，后趋于平稳” 的曲线特征。在地统计学中，此变异函数曲线具有几个十分重要的相关概念：</p>
+<div class="note info no-icon flat"><p>经验变异函数指根据实验数据获得的变异函数。</p>
+</div>
+
+
+<p><img src="https://cimg.fx361.com/images/2022/01/27/qkimageshunjhunj202111hunj20211102-1-l.jpg"></p>
+<p><strong>（1）块金（Nugget）</strong></p>
+<p><strong>块金</strong> 代表区域化变量的随机性大小。由理论角度，在步长为 $0$（即滞后距为零）时，区域化变量的样点数值应当相等，因此在步长无限趋近于 $0$ 时，对应变异函数值也应当亦向 $0$ 趋近。但在实际研究中却发现，经验变异函数在步长为 $0$ 时，其取值并不为 $0$ ，而是一个大于 $0$ 的值。这一数值被称为块金常数。</p>
+<p>地统计学加将块金效应归因于测量误差（独立的随机白噪声，具有固定的方差）和微尺度变化（由小于样本测量的最小距离的空间变化引起的随机性，由于通过样本无法对其建模，因此只能假设其为独立的、具有固定方差的白噪声）。  </p>
+<p><strong>（2）基台（Sill）</strong></p>
+<p><strong>基台</strong> 用于衡量区域化变量变化幅度的大小。当步长无限增大并到达某一程度后，经验变异函数若趋于平稳，则这一平稳水平所对应的变异函数值即为基台值。此情形下的空间过程是一个二阶平稳的随机过程。有些空间过程的半方差值会随着步长无限增长，即不存在基台值，则此时的空间过程可能是本征平稳的，但肯定不是二阶平稳的。  </p>
+<p><strong>（3）变程（Range）</strong></p>
+<p><strong>变程</strong> 用于衡量区域化变量自相关范围的大小。当步长无限增大并到达某一程度后，经验变异函数若趋于平稳，则此时对应的步长即为变程。由此可见，变程特指一个阈值，步长小于变程的样本存在空间自相关，而步长大于变程样本则不存在空间自相关。在实际工作中，当变异函数是渐进接近基台时，通常采用 $0.95$ 倍基台值对应的步长作为有效变程。  </p>
+<p><strong>（4）偏基台（Partial Sill）</strong></p>
+<p>基台值与块金常数之间的差值，被称为 <strong>偏基台值</strong>（Partial Sill），用于衡量空间变异性的范围。</p>
+<p><strong>（5）块金系数</strong></p>
+<p><strong>块金系数</strong>： 块金常数与基台值的比值，用于衡量空间变异性程度。  </p>
+<p><strong>（6）孔穴效应</strong></p>
+<p>有些变异函数的半方差值在达到最大值后开始减小，然后又增大，呈现出某种周期波动的变化。此时变异函数的最大半方差值对应于协方差函数的最小值，两者之间看起来像一个孔穴，因此被称为孔穴效应。孔穴效应的出现，意味着随着距离增加，空间变化呈现一种有规律的重复。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221202160910-0bdc.webp" alt="孔穴效应"></p>
+<p><strong>（7）漂移</strong> </p>
+<p>当变异函数以一个凹向上的形式接近原点时，表明其已经受到了漂移或趋势的影响，导致区域化变量的均值不再是常数，而是一个以位置 $\mathbf{s}$ 为自变量的函数，即 $E[Z(\mathbf{s})] &#x3D; m(\mathbf{s})$，式中的 $m(\mathbf{s})$ 为漂移。此时，二阶平稳性和本征平稳性假设都不成立。解决此问题的方法是将空间过程分解为两部分：非平稳部分（宏观尺度的变化，用漂移 $m(\mathbf{s})$ 建模） 和平稳部分（微观尺度的变化，用$\varepsilon(\mathbf{s})$ 建模 ），通常漂移 $m(\mathbf{s})$ 是确定性的函数（如全局性的趋势面函数、局部的近邻加权函数等），而 $\varepsilon(\mathbf{s})$ 是其对应的残差。</p>
+<h3 id="3-3-变异函数的类型"><a href="#3-3-变异函数的类型" class="headerlink" title="3.3 变异函数的类型"></a>3.3 变异函数的类型</h3><p>根据区域化变量的变异函数特征，可以将变异函数分为不同类别加以区分和建模。</p>
+<p>依据变异函数基台值的有无，可以将模型分为：</p>
+<ul>
+<li><strong>有基台值模型</strong><ul>
+<li>纯块金效应模型</li>
+<li>球状模型（Spherical Model）</li>
+<li>指数模型（Exponential Model）</li>
+<li>高斯模型（Cubic Model或Gaussian Model）</li>
+<li>线性有基台模型（Linear with Sill Model）</li>
+</ul>
+</li>
+<li><strong>无基台值模型</strong> <ul>
+<li>线性无基台值模型</li>
+<li>幂指数模型</li>
+<li>对数模型</li>
+</ul>
+</li>
+<li><strong>孔穴效应模型</strong>  <ul>
+<li>基台值模型</li>
+<li>无基台值模型</li>
+</ul>
+</li>
+</ul>
+<p><strong>套合模型</strong>：针对某种区域化变量而言，其在不同方向、不同滞后距情况下可能受到不同因素影响；<strong>套合模型</strong>可以很好解决这一问题。套合结构可以表示为多个变异函数之和，每一个变异函数均代表着某种方向或某一尺度中的变异性，从而对区域化变量的特征加以更好概括。</p>
+<p>上述所有模型都可以被视为对变异函数的某种理论上的参数化假设，其参数可以根据观测数据推断得出。因此，对于一次地统计研究过程来说，重要的是根据观测数据给出的结果，科学合理地作出对变异函数的假设，并利用样本数据推断得出变异函数的参数，以完成后续预测任务。</p>
+<h3 id="3-4-变异函数的选择"><a href="#3-4-变异函数的选择" class="headerlink" title="3.4 变异函数的选择"></a>3.4 变异函数的选择</h3><p>通过对样本数据的探索性分析，研究人员可以尝试上述各种可能的变异函数模型。其大致工作流如下：</p>
+<p><strong>（1）获得半方差云图</strong></p>
+<p>拿到样品数据后，通过计算空间域 $D$ 内任意位置点对 $(\mathbf{s}_i,\mathbf{s}_j)$ 观测值之间的差异，并量化不同尺度上区域化变量的变异情况，这种差异可以用半方差值来量化计算：</p>
+<p>$$<br>\gamma(\mathbf{s}_i,\mathbf{s}_j) &#x3D; \frac{1}{2}[z(\mathbf{s}_i) - z(\mathbf{s}_j)]^2<br>$$</p>
+<p>令半方差值以任意两点之间的向量 $\mathbf{h}_{ij}$ 为自变量，则有:</p>
+<p>$$<br>\gamma^*(\mathbf{h}_{ij}) &#x3D; \frac{1}{2}[z(\mathbf{s}_i) - z(\mathbf{s}_j)]^2<br>$$</p>
+<p>如果假设这种变异具有各向同性，则有：</p>
+<p>$$<br>\gamma^*(| \mathbf{h}_{ij} |) &#x3D; \frac{1}{2}[z(\mathbf{s}_i) - z(\mathbf{s}_j)]^2<br>$$</p>
+<p>此时我们可以根据步长 $| \mathbf{h}_{ij} |$ 绘制出所有样品间半方差值构成的云图：</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221202164714-da03.webp" alt="半方差云图"></p>
+<blockquote>
+<p>所有样品位置对之间的半方差云图，据此可以大致了解变异函数的宏观情况</p>
+</blockquote>
+<p><strong>（2）生成经验半方差函数图</strong></p>
+<p>在实际工作中，通常将步长划分为不同的区间，并在区间内计算半方差的统计特性（如均值、方差等），进而得到经验半方差值和经验半方差图。 一种计算经验半方差值的简单方法是求均值：</p>
+<p>$$<br>\gamma^*(h) &#x3D; \frac{1}{2N(h)}  \sum \limits_{i&#x3D;1}^{N(h)}[z(\mathbf{s}_i + h) - z(\mathbf{s}_i)]^2<br>$$</p>
+<p>其中 $N(h)$ 表示落入 $h$ 区间的半方差位置对数量。下图是对上面半方差云图求均值后绘制出的经验半方差函数图。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221202170658-4dec.webp" alt="经验半方差图"></p>
+<p>经验变异函数在原点处的性状非常重要，反映了区域化变量不同尺度的连续型。通常包括五种情况：</p>
+<ul>
+<li>抛物线型：当 $|\mathbf{h}| \rightarrow 0$ 时，$\gamma(\mathbf{h}) \rightarrow A|\mathbf{h}|^2$（$A$ 为常数），$\gamma(\mathbf{h})$ 在原点处二次可导，并且随机函数本身在均方意义下可导。其反映出区域化变量具有高度空间连续性特征</li>
+<li>线性型: 当 $|\mathbf{h}| \rightarrow 0$ 时，$\gamma(\mathbf{h}) \rightarrow A|\mathbf{h}|$。$\gamma(\mathbf{h})$ 在原点处保持连续。其反映出区域化变量具有平均意义上的连续性。</li>
+<li>间断型: 当 $|\mathbf{h}| \rightarrow 0$ 时，$\gamma(\mathbf{h}) \rightarrow C(0)$。$\gamma(\mathbf{h})$ 在原点处间断，反映块金效应的存在。该性状说明变异函数连续性较差，但当步长增大时，又可逐渐变得比较连续。</li>
+<li>随机型: 当 $|\mathbf{h}| \rightarrow 0$ 时，$\gamma(\mathbf{h}) \rightarrow C(0)$, 但当 $h$ 增大时，$| \mathbf{h} | \rightarrow \infty$，$\gamma(\mathbf{h})$ 仍然在 $C(0)$ 附近摆动。无论 $h$ 多么小, 区域化变量 $Z(\mathbf{s})$ 与 $Z(\mathbf{s+h}$ 之间总是不相关。这种类型被称纯块金效应型。它反映了区域化变量完全不存在空间相关的情况,或者说反映了变量是普通的随机变量。此时 $C(0)$ 等于先验方差，$C(0) &#x3D;  \operatorname{Var}(Z(\mathbf{s}))$。</li>
+<li>过渡型: 当 $|\mathbf{h}| \rightarrow 0$ 时，$\gamma(\mathbf{h}) \rightarrow C(0)$；当 $\mathbf{h} &#x3D; a$ 时，$\gamma(a) &#x3D; C(0) + C$。这种变异函数是处于抛物线型和纯块金效应型之间的过渡型，即变异函数 $\gamma(h)$ 存在块金常数 $C(0)$ 和基台值 $C(0)+C$。有时也将其中的 $C$ 称为 “拱高”。 当存在块金常数 $C(0)&gt;0$ 时, 基台值等于块金常数加上拱 高, 当块金常数 $C(0)&#x3D;0$ 时, 基台值就等于“拱高”。过渡型是实际研究工作中最常遇到的一种类型。</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221202175122-5ef2.webp" alt="变异函数原点处的性状"></p>
+<p><strong>（3）选择理论半方差函数</strong></p>
+<p>实际上理论变异函数模型 $\gamma(h)$ 是未知的，要从有效的空间取样数据中去估计。对各种不同的 $h$ 值可计算出一系列 $\gamma^*(h)$ 值, 因此, 要用一个理论模型去拟合这一系列的 $\gamma^*(h)$ 值。这本质上是根据上述的经验数据分析，选择 <code>第 4.3 节</code> 中合适的变异函数。有关各类变异函数的详细信息，请参考相关文献。</p>
+<p>但有两种现实性的情况是必须考虑的，一是变异函数的结构往往不是单纯的一种，而是多层次结构相互叠加在一起，例如，土壤中某一元素的含量 在 $h \approx 0$ 时，其差异主要由测量误差造成；在 $h \leq 1m$ 时，可能还要加上土壤水分造成的变异成分；在 $h \leq 1m$ 时，可能还要加上地形造成的变异成分。对于这种复杂情况该如何建模？二是不同方向上的变异特征是否相似或相同，如果不同该如何建模？ 这种将出现在不同距离 $h$ 和不同方向上同时起作用的变异性组合模型结构，被称为套合结构。相关建模方法，参见地统计学文献，在此不再赘述。</p>
+<h3 id="3-5-变异函数的拟合"><a href="#3-5-变异函数的拟合" class="headerlink" title="3.5 变异函数的拟合"></a>3.5 变异函数的拟合</h3><p>变异函数的拟合与具体选择的理论半方差函数有关，但基本思想都是最优曲线拟合。其拟合过程包括三个步骤：确定曲线类型、参数最优估计、最优曲线确定。</p>
+<p><strong>确定曲线类型</strong>：即 <code>第 3.4 节</code> 所述的经验数据方法，主体依靠专家的判断和假设。</p>
+<p><strong>参数最优估计</strong>：确定目标函数（通常是最小方差），然后采用最小二乘法做最优化估计。某些过于复杂的模型可以借助泰勒展开转换为线性模型后做近似优化。具体优化算法不再赘述。</p>
+<p><strong>最优曲线确定</strong>：即在多个曲线模型中选择最适合的那个。可以采用机器学习理论中的模型比较与选择，此外还应当包括对单个模型的检验。</p>
+<h2 id="4-克里金法简介"><a href="#4-克里金法简介" class="headerlink" title="4 克里金法简介"></a>4 克里金法简介</h2><p>克里金法（Kriging Method）是以上述变异函数理论及其结构分析为基础，在有限区域内对区域化变量进行线性无偏最优估计（Best Linear Unbiased Prediction，BLUP）的一种方法，在地统计学中也被称为空间最优无偏估计器（Spatial BLUP）。</p>
+<p><strong>（1）克里金法的内涵</strong></p>
+<p>克里金法(Kriging）实质上是利用区域化变量的原始观测数据和变异函数的结构特点， 对未采样点的区域化变量取值进行线性无偏最优估计的一种方法。从数学角度讲，就是一种对空间分布的数据求线性最优无偏内插估计量的一种方法。更具体地讲，它是根据待估样点（或待估块段）有限邻域内若干已测定的样点数据，在认真考虑了样点的分布、数值、空间相互位置关系（体现为变异函数），以及样点与待估点之间的相互空间位置关系，对该待估点值进行的一种线性无偏最优估计。</p>
+<p>克里金法与普通的估计方法不同，它最大限度地利用了空间取样所提供的各种信息。在估计未知点数值时，它不仅考虑了落在该点的数据，而且还考虑了邻近样点的数据；不仍考虑了待估点与邻近巳知样点的空间位置，而且还考虑了各邻近样点彼此之间的位置关系。除了上述的几何因素外，还利用了已有观测值空间分布的结构特征，使这种估计比其他传统估计方法更精确，更符合实际，并且避免系统误差的出现，同时该方法能够给出估计误差和精度（ Journel 等，1978；Ripley 1981）。</p>
+<p>但需要注意的是：如果变异函数和相关分析结果表明区域化变量的空间相关性不存在，则克里金法不适用。</p>
+<p><strong>（2）克里金法的种类</strong></p>
+<p>地统计学的诞生与克里金的早期研究工作有着重要联系，以致国际上许多地统计学工作者（ Guarasio 等，1976; Verly 等，1983）将地统计学与克里金法同等对待。但其实更主要的原因是：空间预测（插值） 本身是地统计学最主要的研究任务之一。多年来地统计学家们围绕这一方面进行了大量研究工作，自 70 年代以来发展了多种空间局部估计方法。</p>
+<p>克里金法顶层可以分为线性和非线性两类。其中：</p>
+<p><strong>线性克里金法</strong>：可以根据对变量均值的假设条件不同，分为简单克里金、普通克里金和泛克里金。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221202201717-41b6.webp" alt="几种线性克里金方法的形式区别"></p>
+<p><strong>非线性克里金扩展</strong>：在线性克里金方法基础上，克里金方法朝几个方向进一步做了扩展。 </p>
+<ul>
+<li>一是比泛克里金提供更为宽松的非稳定假设前提，使克里金方法最优估值更佳;</li>
+<li>二是朝多变量方向发展,如发展为各种协同克里金方法;</li>
+<li>三是朝非线形克里金方法发展,如指示克里金法、析取克里金法等。</li>
+</ul>
+<p>下面是对上述克里金方法的简单介绍:</p>
+<ul>
+<li><p><strong>➀  线性克里金</strong></p>
+<ul>
+<li><strong>普通克里金法（Ordinary Kriging）</strong>： 是单个变量的局部线形最优无偏估计方法,也是最稳健最常用的一种方法。其假设均值为确定未知的常数。</li>
+<li>**简单克里金法(Simple Kriging)**：它假设空间过程的均值依赖于空间位置，并且是已知的，但在实际中均值一般很难得到，因此很少直接用于估计。但它可以用于其他形式的克里金法，如指示和析取克里金法，在这些方法中，数据进行了转换并且均值已知。</li>
+<li>**泛克里金法(Universal Kriging)**：把一个确定性的趋势模型加人到克里金估值中,将空间过程分解为趋势项和残差项两个部分，有其合理的一面。如果能够很容易地预测残差项的变异函数，那么该方法会得到广泛应用。</li>
+</ul>
+</li>
+<li><p><strong>➁  非线性克里金</strong></p>
+<ul>
+<li><strong>指示克里金法（Indictor Kriging）</strong>：将连续型随机变量转换为二值形式,是一种非线性、非参数的克里金预测方法。</li>
+<li><strong>对数正态克里金法（Logistic Normal Kriging）</strong>：如果样本本身不服从正态分布，但其对数服从正态分布(（土壤的属性常常如此，Webster， 1985），则使用对数正态克里金法。</li>
+<li><strong>析取克里金法（Disjunctive Kriging）</strong>：是一种有严格参数的非线性克里金方法。这种方法不但可以预测，还能够提供超过或不超过某一阈值的概率，因此从决策非常有用。</li>
+</ul>
+</li>
+<li><p><strong>➂  协同克里金法</strong></p>
+<ul>
+<li><strong>普通协同克里金法（Ordinary Cokriging）</strong>：将单个变量的普通克里金法扩展到两个或多个变量，这些变量间要存在一定的协同区域化关系。如果那些测试成本低、样品较多的变量与那些测试成本较高的、样品较少的变量在空间上具有一定的相关性，那么该方法就非常有用。可以利用较密采样得到的数据来提高样品较小数据的预测精度。</li>
+</ul>
+</li>
+<li><p><strong>➃  其他克里金</strong></p>
+<ul>
+<li>概率克里金法(ProbabilityKriging)。由于指示克里金法并没有考虑一个值与阅值的 接近程度而只是它的位置,因此提出了概率克里金法。对每个值它利用rankorder作为辅助变量,利用协同克里金法来预测指示值。</li>
+</ul>
+</li>
+</ul>
+<p><strong>（3）克里金法的主要估计量</strong></p>
+<p>对于任何一种估计，实际值和估计值之间总是存在偏差，不能要求估计值和实际值相等。问题是要求的估计方法在估计过程中要满足两点要求:</p>
+<ul>
+<li>变异的平均数为零，即变异的数学期望等于零，此估计是一种无偏估计;</li>
+<li>估计结果的方差最小，即估计是一种最优估计</li>
+</ul>
+<p>克里金早期的工作中就是采用样品的加权平均值来求估计值的。也就是说，对于任意待估点或块段 $V$ 的实际值 $Z_V(\mathbf{s})$，其估计值 $Z_V^*(\mathbf{s})$ 是通过该待估点或待估块段影响范围内的 $n$ 个有效样品值 ${ Z(\mathbf{s}_i), i&#x3D;1,2,\ldots,n}$ 的线性组合得到的，即</p>
+<p>$$<br>Z_V^*(\mathbf{s}) &#x3D; \sum_{i&#x3D;1}^{n} \lambda_i Z(\mathbf{s}_i)<br>$$</p>
+<p>上式中， $\lambda_i$ 为权重系数，是各已知样品 $Z_V(\mathbf{s})$ 在估计 $Z_V^*(\mathbf{s})$ 时影响大小的系数。由此可见，$Z_V^*(\mathbf{s})$ 的好坏主要取决于怎样计算或选择权重系数 $\lambda_i$，而这正是克里金法的主要内容。</p>
+<p>根据式也可以看出，对于不同 $\mathbf{s}$ 显然有单独的一套权重系数，也就是说，克里金法需要对不同位置单独求解一套权重系数。这虽然提高了预测的计算复杂度，但其优点是能够反映不同位置的空间差异特性。</p>
+<p>估计量 $Z_V^*(\mathbf{s})$ 被称为实际值 $Z_V(\mathbf{s})$ 的克里金估计量（Kriginge Etimator）。显然， $Z_V^*(\mathbf{s})$ 是 $Z_V(\mathbf{s})$ 的线性、无偏、最优估计量。</p>
+<h2 id="5-线性预测克里金法"><a href="#5-线性预测克里金法" class="headerlink" title="5 线性预测克里金法"></a>5 线性预测克里金法</h2><h3 id="5-1-普通克里金法"><a href="#5-1-普通克里金法" class="headerlink" title="5.1 普通克里金法"></a>5.1 普通克里金法</h3><p>普通克里金法假定均值是未知的确定常数。主要有两种类型： <code>点状普通克里金</code> 和 <code>块段普通克里金</code>。</p>
+<h4 id="5-1-1-点状普通克里金法（-Punctual-Kriging-）"><a href="#5-1-1-点状普通克里金法（-Punctual-Kriging-）" class="headerlink" title="5.1.1 点状普通克里金法（ Punctual Kriging ）"></a>5.1.1 点状普通克里金法（ Punctual Kriging ）</h4><p><strong>（1）预测式</strong></p>
+<p>假定 $Z(\mathbf{s})$ 是满足本征假设的一个随机过程, 该随机过程有 $n$ 个观测值 $z(\mathbf{s}_i), i&#x3D;1,2, \cdots n$。要预测未采样点 $\mathbf{s}_0$ 处的值, 则线性预测值 $Z^*(\mathbf{s}_0)$ 可以表示如下：</p>
+<p>$$<br>Z^*\left(\mathbf{s}<em>0\right)&#x3D;\sum</em>{i&#x3D;1}^n \lambda_i Z\left(\mathbf{s}_i\right) \tag{5.1}<br>$$</p>
+<p><strong>（2）模型参数求解</strong></p>
+<p>克里金法用无偏、最小方差预测作为准则，来优化权重值。它在满足以下两个条件下,可以实现线性无偏最优估计。</p>
+<p><strong>条件 1: 无偏性条件:</strong> </p>
+<p>$$<br>E\left[Z^*\left(\mathbf{s}_0\right)-Z\left(\mathbf{s}_0\right)\right]&#x3D;0 \tag{5.2}<br>$$</p>
+<p><strong>条件 2: 最优条件:</strong> </p>
+<p>$$<br>\operatorname{Var}[Z^*(\mathbf{s}_0)-Z(\mathbf{s}_0)]&#x3D;\min \tag{5.3}<br>$$</p>
+<p>利用 <code>式 (5.1)</code> 取代 <code>式 (5.2)</code> 的左边部分, 则有:</p>
+<p>$$<br>E\left[Z^*\left(\mathbf{s}_0\right)-Z\left(\mathbf{s}<em>0\right)\right] &#x3D; E\left[\sum</em>{i&#x3D;1}^n \lambda_i Z\left(\mathbf{s}_i\right)-Z\left(\mathbf{s}<em>0\right)\right]&#x3D;\sum</em>{i&#x3D;1}^n \lambda_i E\left[Z\left(\mathbf{s}_i\right)\right]-E\left[Z\left(\mathbf{s}_0\right)\right] \tag{5.4}<br>$$</p>
+<p>结合本征假设 $E\left[Z\left(\mathbf{s}_i\right)\right]&#x3D;E\left[Z\left(\mathbf{s}_0\right)\right]&#x3D;m$  ，可以进一步表示为:</p>
+<p>$$<br>\sum_{i&#x3D;1}^n \lambda_i E\left[Z\left(\mathbf{s}<em>i\right)\right]-E\left[Z\left(\mathbf{s}<em>0\right)\right]&#x3D;\sum</em>{i&#x3D;1}^n \lambda_i m-m&#x3D;m\left(\sum</em>{i&#x3D;1}^n \lambda_i-1\right)&#x3D;0  \tag{5.5}<br>$$</p>
+<p>很显然要使 <code>式 (5.5)</code>  成立, 必须满足如下条件:</p>
+<p>$$<br>\sum_{i&#x3D;1}^n \lambda_i&#x3D;1  \tag{5.6}<br>$$</p>
+<p>在本征假设条件下, <code>式 (5.3)</code> 左边的式子可表示为:</p>
+<p>$$<br>\begin{aligned}<br>\operatorname{Var}\left[Z^<em>\left(\mathbf{s}_0\right)-Z\left(\mathbf{s}_0\right)\right] &amp; &#x3D;E\left[\left{Z^</em>\left(\mathbf{s}_0\right)-Z\left(\mathbf{s}<em>0\right)\right}^2\right] \<br>&amp; &#x3D;E\left[\left{\sum</em>{i&#x3D;1}^n \lambda_i Z\left(\mathbf{s}_i\right)-Z\left(\mathbf{s}<em>0\right)\right}^2\right] \<br>&amp; &#x3D;2 \sum</em>{i&#x3D;1}^n \lambda_i \gamma\left(\mathbf{s}<em>i, \mathbf{s}<em>0\right)-\sum</em>{i&#x3D;1}^n \sum</em>{j&#x3D;1}^n \lambda_i \lambda_j \gamma\left(\mathbf{s}_i, \mathbf{s}_j\right)  \tag{5.7}<br>\end{aligned}<br>$$</p>
+<p>式中 $\gamma\left(\mathbf{s}_i, \mathbf{s}_j\right)$ 是数据点 $\mathbf{s}_i$ 和 $\mathbf{s}_j$ 之间的半方差值; $\gamma\left(\mathbf{s}_i, \mathbf{s}_0\right)$ 是数据点 $\mathbf{s}_i$ 和预测点 $\mathbf{s}_0$ 之间的半方差值。</p>
+<p>由本征平稳假设可知，任何克里金法的核心预测问题，就是计算 <code>式（5.7）</code> 的预测方差。为了得到最优估计，需要令其最小化以求得最优参数值。但根据 <code>式（5.6）</code>，这是一个有约束的最优化问题。我们可以通过拉格朗日乘子法来实现优化求解，因此引入拉格朗日乘子 $\varphi$。</p>
+<p>定义一个辅助函数 $f\left(\lambda_i, \varphi\right)$, 它的数学表达式为:</p>
+<p>$$<br>f\left(\mathbf{s}_i, \varphi\right)&#x3D;\operatorname{Var}\left[Z^*\left(\mathbf{s}_0\right)-Z\left(\mathbf{s}<em>0\right)\right]-2 \varphi\left(\sum</em>{i&#x3D;1}^n \lambda_i-1\right)  \tag{5.8}<br>$$</p>
+<p>分别对权重 $\lambda_i$ 和拉格朗日乘子 $\varphi$ 求一阶导数并使其等于 $0$，则对任意 $i&#x3D;1,2,\ldots,n$，有：</p>
+<p>$$<br>\begin{aligned}<br>&amp; \frac{\partial f\left(\lambda_i, \varphi\right)}{\partial \lambda_i}&#x3D;0 \<br>&amp; \frac{\partial f\left(\lambda_i, \varphi\right)}{\partial \varphi}&#x3D;0  \tag{5.9}<br>\end{aligned}<br>$$</p>
+<p>进而得到方程组:</p>
+<p>$$<br>\begin{aligned}<br>&amp; \sum_{i&#x3D;1}^n \lambda_i \gamma\left(\mathbf{s}_i, \mathbf{s}_j\right)+\varphi&#x3D;\gamma\left(\mathbf{s}_j, \mathbf{s}<em>0\right) \<br>&amp; \sum</em>{i&#x3D;1}^n \lambda_i&#x3D;1  \tag{5.10}<br>\end{aligned}<br>$$</p>
+<p>上式中，变异函数 $\gamma(\cdot,\cdot)$ 通过经验变异函数拟合得出，可视为已知（这是克里金法与变异函数之间的主要结合点）。位置 $\mathbf{s}_0, \mathbf{s}_i$ 均为已知。因此，这是一个求 $n+1$ 个未知数的 $n+1$ 阶线性方程组，成熟的解方案，就此我们得到了克里金法所需的所有参数 $\lambda_i$ 和 $\varphi$。</p>
+<p><strong>（3）预测方差</strong></p>
+<p>将上述系数的解、已观测坐标 ${\mathbf{s}_i: i &#x3D;1,\ldots,N }$ 、待估坐标点 $\mathbf{s}_0$ 直接代入 <code>式（5.7）</code>, 可以得到 $\mathbf{s}_0$ 处的预测方差为:</p>
+<p>$$<br>\sigma^2\left(\mathbf{s}<em>0\right)&#x3D;\sum</em>{i&#x3D;1}^n \lambda_i \gamma\left(\mathbf{s}_i, \mathbf{s}_0\right)+\varphi   \tag{5.11}<br>$$</p>
+<p>如果预测点 $\mathbf{s}_0$ 恰好是其中的一个实测点 $\mathbf{s}_j$, 则有 $\lambda\left(\mathbf{s}_j\right)&#x3D;1$ 而其他所有测点的权重等于 $0$，此时 $\sigma^2\left(\mathbf{s}_0\right)$ 最小。事实上将权重代人 <code>式 (5.1)</code>  时，有 $\sigma^2\left(\mathbf{s}_0\right)&#x3D;0$。也就是说，预测值 $z\left(\mathbf{s}_0\right)$ 就是实测值 $z\left(\mathbf{s}_j\right)$ 。因此，点状克里金法被称为一种精确的插值方法。</p>
+<p><strong>（4）向量表示</strong></p>
+<p>上面的过程改写成向量形式更容易理解, 对点状克里金预测, 有:</p>
+<p>$$<br>A \cdot\left[\begin{array}{l}<br>\boldsymbol{\lambda} \<br>\varphi<br>\end{array}\right]&#x3D;B    \tag{5.12}<br>$$</p>
+<p>这里<br>$$<br>\begin{gathered}<br>A&#x3D;\left[\begin{array}{ccccc}<br>\gamma\left(\mathbf{s}_1, \mathbf{s}_1\right) &amp; \gamma\left(\mathbf{s}_1, \mathbf{s}_2\right) &amp; \cdots &amp; \gamma\left(\mathbf{s}_1, \mathbf{s}_n\right) &amp; 1 \<br>\gamma\left(\mathbf{s}_2, \mathbf{s}_1\right) &amp; \gamma\left(\mathbf{s}_2, \mathbf{s}_2\right) &amp; \cdots &amp; \gamma\left(\mathbf{s}_2, \mathbf{s}_n\right) &amp; 1 \<br>\cdots &amp; \cdots &amp; \cdots &amp; \cdots &amp; \cdots \<br>\gamma\left(\mathbf{s}_n, \mathbf{s}_1\right) &amp; \gamma\left(\mathbf{s}_n, \mathbf{s}_2\right) &amp; \cdots &amp; \gamma\left(\mathbf{s}_n, \mathbf{s}_n\right) &amp; 1 \<br>1 &amp; 1 &amp; \cdots &amp; 1 &amp; 0<br>\end{array}\right], \<br>B&#x3D;\left[\begin{array}{c}<br>\gamma\left(\mathbf{s}_1, \mathbf{s}_0\right) \<br>\gamma\left(\mathbf{s}_2, \mathbf{s}_0\right) \<br>\cdots \<br>\gamma\left(\mathbf{s}_n, \mathbf{s}_0\right) \<br>1<br>\end{array}\right],\left[\begin{array}{c}<br>\boldsymbol{\lambda} \<br>\varphi<br>\end{array}\right]&#x3D;\left[\begin{array}{c}<br>\lambda_1 \<br>\lambda_2 \<br>\vdots \<br>\lambda_n \<br>\varphi<br>\end{array}\right]<br>\end{gathered}  \tag{5.13}<br>$$</p>
+<p>矩阵 $A$ 中的 $\gamma\left(\mathbf{s}_1, \mathbf{s}_1\right), \ldots, \gamma\left(\mathbf{s}_n, \mathbf{s}_n\right)$ 是实测点之间的半方差值, 矩阵 $B$ 中的 $\gamma\left(\mathbf{s}_1\right.$, $\left.\mathbf{s}_0\right) \cdots \cdots \gamma\left(\mathbf{s}_n, \mathbf{s}_0\right)$ 为实测点 $\mathbf{s}_i$ 和待估点（或内插点） $\mathbf{s}_0$ 之间的半方差值, $\varphi$ 是拉格郎日乘子。矩阵 $A$ 是 可逆的, 因此有克里金参数:<br>$$<br>\left[\begin{array}{l}<br>\boldsymbol{\lambda} \<br>\varphi<br>\end{array}\right]&#x3D;A^{-1} \cdot B  \tag{5.14}<br>$$</p>
+<p>根据估计的参数，可得克里金预测方差为:</p>
+<p>$$<br>\sigma^2\left(\mathbf{s}_0\right) &#x3D; B^T\left[\begin{array}{l}<br>\boldsymbol{\lambda} \<br>\varphi<br>\end{array}\right] \tag{5.15}<br>$$</p>
+<h4 id="5-1-2-块段普通克里金法"><a href="#5-1-2-块段普通克里金法" class="headerlink" title="5.1.2 块段普通克里金法"></a>5.1.2 块段普通克里金法</h4><p>块段是空间中的一个子区间，根据其是一维、 二维或者三维的, 块段可以是一条线、一个平面或者一个立方体。令 $B$ 表示待估块段，其中心位置为 $\mathbf{s}$, 其均值为 $Z_B$。则应当有：</p>
+<p>$$<br>\begin{align*}<br>Z(B) &amp;&#x3D; \frac{1}{B} \int_B Z(\mathbf{s}) d \mathbf{s}\<br>E[Z(B)] &amp;&#x3D; \frac{1}{B} \int_B E[Z(\mathbf{s})] d \mathbf{s} &#x3D; m<br>\end{align*}<br>$$</p>
+<p>在待估块段 $B$ 的邻域内，有一组 $n$ 个已知样点 $\mathbf{s}_i, (i&#x3D;1,2,\ldots,n)$，其观测值为 $Z(\mathbf{s}_i)$。 根据本征假设，其数学期望也为 $m$。</p>
+<p><strong>（1）预测公式</strong></p>
+<p>如果要预测的是一个块段 $B$ 的值，其实就是求解  $Z(B)$ 的线性估计量 $Z^*(B)$。这种情况下，块段的克里金预测值仍是数据的简单线性加权。</p>
+<p>$$<br>Z^*(B)&#x3D;\sum_{i&#x3D;1}^n \lambda_i Z\left(x_i\right) \tag{5.16}<br>$$</p>
+<p><strong>（2）模型参数求解</strong></p>
+<p>与上一节相似，根据无偏性条件可得系数之和为 $1$。根据最优性条件，可得方差为:<br>$$<br>\begin{aligned}<br>\operatorname{var}\left[Z^*(B)\right] &amp; &#x3D;E\left[\left{Z^*(B)-Z(B)\right}^2\right] \<br>&amp; &#x3D;2 \sum_{i&#x3D;1}^n \lambda_i \bar{\gamma}\left(x_i, B\right)-\sum_{i&#x3D;1}^n \sum_{j&#x3D;1}^n \lambda_i \lambda_j \gamma\left(x_i, x_j\right)-\bar{\gamma}(B, B) \tag{5.17}<br>\end{aligned}<br>$$</p>
+<p>式中: $\bar{\gamma}(x_i, B)$ 是第 $i$ 个样点与块段 $B$ 之间的平均半方差值, 可以用数学积分的形式来表示：</p>
+<p>$$<br>\bar{\gamma}\left(x_i, B\right)&#x3D;\frac{1}{|B|} \int_B \gamma\left(x_i, x\right) d x \tag{5.18}<br>$$</p>
+<p>式中: $\gamma(x_i, x^{\prime})$ 表示样点 $x_i$ 和用来描述块段 $B$ 的点 $x$ 之间的半方差值。</p>
+<p>$$<br>\bar{\gamma}(B, B)&#x3D;\frac{1}{|B|^2} \int_B \int_B \gamma\left(x_i, x^{\prime}\right) d x d x^{\prime} \tag{5.19}<br>$$</p>
+<p>式中: $\gamma\left(x_i, x\right)$ 是点 $x_i$ 和掠过块段 $B$ 的 $x^{\prime}$ 之间的半方差值。在点状克里金法中, $\bar{\gamma}(B$, B）变为 $\gamma\left(x_0, x_0\right)&#x3D;0$ 。</p>
+<p>由此，可得块段克里金方程组为:<br>$$<br>\begin{aligned}<br>&amp; \sum_{i&#x3D;1}^n \lambda_i \gamma\left(x_i, x_j\right)+\varphi(B)&#x3D;\gamma\left(x_j, B\right) \<br>&amp; \sum_{i&#x3D;1}^n \lambda_i&#x3D;1 \tag{5.20}<br>\end{aligned}<br>$$</p>
+<p><strong>（3）预测方差</strong></p>
+<p>将结果代入 <code>式 （5.17）</code> ，可得预测方差为:</p>
+<p>$$<br>\sigma^2(B)&#x3D;\sum_{i&#x3D;1}^n \lambda_i \bar{\gamma}\left(x_i, B\right)+\varphi(B)-\bar{\gamma}(B, B) \tag{5.21}<br>$$</p>
+<p><strong>（4）向量形式</strong></p>
+<p>改写为向量形式，其中 $B$ 为:</p>
+<p>$$<br>B&#x3D;\left[\begin{array}{c}<br>\gamma\left(x_1, B\right) \<br>\gamma\left(x_2, B\right) \<br>\cdots \<br>\gamma\left(x_n, B\right) \<br>1<br>\end{array}\right] \tag{5.22}<br>$$</p>
+<p>预测方差可表示成:</p>
+<p>$$<br>\sigma^2(B)&#x3D;B^T\left[\begin{array}{l}<br>\lambda \<br>\varphi<br>\end{array}\right]-\bar{\gamma}(B, B) \tag{5.23}<br>$$</p>
+<h3 id="5-2-简单克里金法"><a href="#5-2-简单克里金法" class="headerlink" title="5.2 简单克里金法"></a>5.2 简单克里金法</h3><p>普通克里金法适用于均值未知的应用场景，但有时我们可以从先验知识中知道一个随机变量的均值, 此时可以利用这种先验知识来提高预测精度，这就是简单克里金法。这种克里金预测方法仍然是线性加和, 但将随机过程的均值 $\mu$ 包括了进去, 这种随机过程必须是二阶平稳的。简单克里金预测对那些只满足本征假设的随机过程并不是特别适合。简单克里金的预测公式为:</p>
+<p><strong>（1）预测公式</strong></p>
+<p>$$<br>Z^*\left(\mathbf{s}<em>0\right)&#x3D;\sum</em>{i&#x3D;1}^n \lambda_i z\left(\mathbf{s}<em>i\right)+\left(1-\sum</em>{i&#x3D;1}^n \lambda_i\right) \mu \tag{5.24}<br>$$</p>
+<p>其中 $\lambda_i$ 是权重，$\mu$ 为已知均值。</p>
+<p><strong>（2）模型参数求解</strong></p>
+<p>简单克里金法中不再有权重总和等于 $1$ 的条件。权重求解可以利用下面公式计算得来（推导过程参考 <code>式 5.7</code>）:</p>
+<p>$$<br>\sum_{i&#x3D;1}^n \lambda_i \gamma\left(\mathbf{s}_i, \mathbf{s}_j\right)&#x3D;\gamma\left(\mathbf{s}_0, \mathbf{s}_j\right), \quad j&#x3D;1,2, \cdots, n \tag{5.25}<br>$$</p>
+<p>公式中不再有拉格朗日乘子, 成为一个 $n$ 阶线性方程组。</p>
+<p><strong>（3）预测方差</strong></p>
+<p>简单克里金的预测方差利用下面公式得到:</p>
+<p>$$<br>\sigma_{S K}^2\left(\mathbf{s}<em>0\right)&#x3D;\sum</em>{i&#x3D;1}^n \lambda_i \gamma\left(\mathbf{s}_i, \mathbf{s}_0\right) \tag{5.26}<br>$$</p>
+<p><strong>（4）向量形式</strong></p>
+<p>预测方程组可以表示为向量形式为：</p>
+<p>$$<br>A \cdot \boldsymbol{\lambda}&#x3D;B \tag{5.27}<br>$$</p>
+<p>其中：</p>
+<p>$$<br>\begin{gathered}<br>A&#x3D;\left[\begin{array}{cccc}<br>\gamma\left(\mathbf{s}_1, \mathbf{s}_1\right) &amp; \gamma\left(\mathbf{s}_1, \mathbf{s}_2\right) &amp; \cdots &amp; \gamma\left(\mathbf{s}_1, \mathbf{s}_n\right) \<br>\gamma\left(\mathbf{s}_2, \mathbf{s}_1\right) &amp; \gamma\left(\mathbf{s}_2, \mathbf{s}_2\right) &amp; \cdots &amp; \gamma\left(\mathbf{s}_2, \mathbf{s}_n\right) \<br>\cdots &amp; \cdots &amp; \cdots &amp; \cdots \<br>\gamma\left(\mathbf{s}_n, \mathbf{s}_1\right) &amp; \gamma\left(\mathbf{s}_n, \mathbf{s}_2\right) &amp; \cdots &amp; \gamma\left(\mathbf{s}_n, \mathbf{s}_n\right)<br>\end{array}\right], \<br>B&#x3D;\left[\begin{array}{c}<br>\gamma\left(\mathbf{s}_1, \mathbf{s}_0\right) \<br>\gamma\left(\mathbf{s}_2, \mathbf{s}_0\right) \<br>\cdots \<br>\gamma\left(\mathbf{s}_n, \mathbf{s}_0\right)<br>\end{array}\right], \boldsymbol{\lambda}&#x3D;\left[\begin{array}{c}<br>\lambda_1 \<br>\lambda_2 \<br>\vdots \<br>\lambda_n<br>\end{array}\right] \tag{5.28}<br>\end{gathered}<br>$$</p>
+<p>矩阵 $A$ 中的 $\gamma\left(\mathbf{s}_1, \mathbf{s}_1\right) \cdots \cdots \gamma\left(\mathbf{s}_n, \mathbf{s}_n\right)$ 是实测点之间的半方差值, 矩阵 $B$ 中的 $\gamma\left(\mathbf{s}_1, \mathbf{s}_0\right)$ $\cdots \gamma\left(\mathbf{s}_n, \mathbf{s}_0\right)$ 为实测点 $\mathbf{s}_i$ 和待估点（内插点） $\mathbf{s}_0$ 之间的半方差值。矩阵 $A$ 是可逆的, 因此有:</p>
+<p>$$<br>\boldsymbol{\lambda}&#x3D;A^{-1} \cdot B \tag{5.29}<br>$$<br>同普通克里金法一样, 该方法可以推广到块段 $B$ 。通过将 <code>式 (5.25)</code> 中右边部分的 $\gamma\left(\mathbf{s}_0, \mathbf{s}_j\right)$ 用 $\bar{\gamma}\left(B, \mathbf{s}_j\right)$ 替换即可。</p>
+<p>一般而言, 简单克里金法的预测方差稍小于由普通克里金预测的方差, 通常认为这是由于引进了数据均值 $\hat{\mu}$ 从而提高了预测的精度。</p>
+<p>Wackernagel (1995) 表示, 如果要用到克里金预测的均值，即令 $\hat{\mu}&#x3D;\hat{Z}(R)$, 则有</p>
+<p>$$<br>\sigma_{K K}^2\left(\mathbf{s}<em>0\right)&#x3D;\sigma</em>{S K}^2\left(\mathbf{s}<em>0\right)+\left{1-\sum</em>{i&#x3D;1}^N \lambda_i^\kappa\right} \psi(R) \tag{5.30}<br>$$</p>
+<p>换句话说, 即普通克里金预测的方差是简单克里金预测的方差与均值预测方差的加和。由于没有更多的信息, 采用这种方法很难额外获得什么。如果均值是利用大量的数据预测得到, 那么与 $\sigma_{S K}^2\left(\mathbf{s}_0\right)$ 相比, $\psi(R)$ 将会是很小的, 即假定简单克里金的权重和接近于 $1$ , 那么上式中右边第二部分就有可能是非常小的。</p>
+<h3 id="5-3-泛克里金法"><a href="#5-3-泛克里金法" class="headerlink" title="5.3 泛克里金法"></a>5.3 泛克里金法</h3><p><strong>（1）预测公式</strong></p>
+<p>泛克里金法假定均值未知, 但不是一个常数, 而是一个由多项式构成的漂移（趋势）:</p>
+<p>$$<br>m(\mathbf{s})&#x3D;\sum_{l&#x3D;1}^L a_l f_l(\mathbf{s}) \tag{5.31}<br>$$</p>
+<p>式中: $a_l$ 为未知系数; $l$ 为多项式阶数。此时, 泛克里金模型可以由随机性和确定性两个部分来构成:</p>
+<p>$$<br>Z(\mathbf{s})&#x3D;m(\mathbf{s})+\boldsymbol{\varepsilon}(\mathbf{s}) \tag{5.32}<br>$$</p>
+<p>公式中 $\varepsilon(\mathbf{s})$ 为随机部分, 是一个符合 $[0,1]$ 分布的随机函数, 又叫做残差 (residual)。 确定性部分 $m(\mathbf{s})$ 叫做漂移 (drift)。</p>
+<p><strong>（2）模型参数求解</strong></p>
+<p>作为一种线性预测克里金方法, 泛克里金的估值结果也是寻求无偏条件下的最优解。但是与之前的简单克里金和普通克里金方法不同，在泛克里金法中，由于漂移的存在，在估计 $Z(\mathbf{s})$ 的估计值 $Z_{uk}^*(\mathbf{s})$ 时，需要先要估计漂移 $m(\mathbf{s})$ 的估计值 $m^*(\mathbf{s})$。也就是说，泛克里金法本质上是对漂移模型参数和残差模型参数同时求解的扩展克里金方法。</p>
+<p>首先，泛克里金的预测方差可以分为两个部分（参阅相关文档）：</p>
+<p>$$<br>E[Z_{uk}^*(\mathbf{s}_0)-Z(\mathbf{s}<em>0)]^2 &#x3D; \operatorname{Var}[Z</em>{uk}^*(\mathbf{s}_0)-Z(\mathbf{s}<em>0)] + (E[Z</em>{uk}^*(\mathbf{s}_0)-Z(\mathbf{s}_0)])^2 \tag{5.33}<br>$$</p>
+<p>根据无偏性原则，利用 <code>式（5.31）</code> 的均值表达式，应当有如下期望为 $0$：</p>
+<p>$$<br>\begin{aligned}<br>E\left[Z_{uk}^*\left(\mathbf{s}<em>0\right)-Z\left(\mathbf{s}<em>0\right)\right] &amp; &#x3D;\sum</em>{i&#x3D;1}^n \lambda_i \sum</em>{l&#x3D;1}^L a_l f_l\left(\mathbf{s}<em>i\right)-\sum</em>{l&#x3D;1}^L a_l f_l\left(\mathbf{s}<em>0\right) \<br>&amp; &#x3D;\sum</em>{i&#x3D;1}^L a_l\left(\sum_{i&#x3D;1}^n \lambda_i f_l\left(\mathbf{s}<em>i\right)-\sum</em>{i&#x3D;1}^L f_l\left(\mathbf{s}_0\right)\right) \tag{5.34}<br>\end{aligned}<br>$$</p>
+<p>式中 $a_l$ 为未知系数，要满足此条件，需有:</p>
+<p>$$<br>\sum_{i&#x3D;1}^n \lambda_i f_l\left(\mathbf{s}<em>i\right)-\sum</em>{i&#x3D;1}^L f_l\left(\mathbf{s}<em>0\right)&#x3D;0 \text{ 或 } \sum</em>{i&#x3D;1}^n \lambda_i f_l\left(\mathbf{s}<em>i\right)&#x3D;\sum</em>{i&#x3D;1}^L f_l\left(\mathbf{s}_0\right)  \tag{5.35}<br>$$</p>
+<p>式中 $l&#x3D;1, \cdots, L$。 </p>
+<p>可以看出， <code>式（5.35）</code> 构成了 $L$ 个方程。因此, Matheron (1969) 称之为泛条件, 依此推导的克里金方法称为泛克里金法。</p>
+<p>根据方差最小原则，<code>式（5.33）</code> 的均方误差 $E[Z_{uk}^*(\mathbf{s}_0)-Z(\mathbf{s}_0)]^2$ 应当最小化。依据无偏性假设，该式右边的第二项 $(E[Z_i^*(\mathbf{s}_0)-Z(\mathbf{s}_0)])^2$ 趋于 $0$。均方误差可以改写为:</p>
+<p>$$<br>\begin{align*}<br>E\left[\left(Z_{uk} \left(\mathbf{s}_0\right)-Z\left(\mathbf{s}<em>0\right)\right)^2\right]&#x3D; &amp; \operatorname{Var}\left[Z</em>{uk}^<em>\left(\mathbf{s}<em>0\right)-Z\left(\mathbf{s}<em>0\right)\right] \<br>&#x3D; &amp; \sum</em>{i&#x3D;1}^n \sum</em>{j&#x3D;1}^n \lambda_i \lambda_j C_p\left(\mathbf{s}_i, \mathbf{s}<em>j\right)-2 \sum</em>{i&#x3D;1}^n \lambda_i C_p\left(\mathbf{s}_i, \mathbf{s}_0\right) \<br>&amp; +C_p\left(\mathbf{s}_0, \mathbf{s}_0\right) \tag{5.36}<br>\end{align</em>}<br>$$</p>
+<p>其中，$C_p\left(\mathbf{s}_i, \mathbf{s}_j\right)$ 表示两个区域化变量 $Z\left(\mathbf{s}_i\right)$ 和 $Z\left(\mathbf{s}_j\right)$ 之间的协方差函数, 即:</p>
+<p>$$<br>C_p(\mathbf{s}_i, \mathbf{s}_j) &#x3D; E[Z(\mathbf{s}_i)Z(\mathbf{s}_j)] - E[Z(\mathbf{s}_i)] E[Z(\mathbf{s}_j)] \tag{5.37}<br>$$</p>
+<p>因此，问题最终归结为在 <code>式（5.35）</code> 约束下的 <code>式（5.36）</code> 最优化问题。通过拉格朗日乘子最优化方法, 可以得到如下泛克里金权重计算的方程组:</p>
+<p>$$<br>\begin{cases}\sum_{j&#x3D;1}^n \lambda_j C_p\left(\mathbf{s}_i, \mathbf{s}<em>j\right)+\sum</em>{l&#x3D;1}^L \varphi_k f_l\left(\mathbf{s}_i\right)-C_p\left(\mathbf{s}_i, \mathbf{s}<em>0\right)&#x3D;0 &amp; i&#x3D;1,2, \cdots, n \ \sum</em>{i&#x3D;1}^n \lambda_i f_l\left(\mathbf{s}_i\right)-f_l\left(\mathbf{s}_0\right)&#x3D;0 &amp; l&#x3D;0,1, \cdots, L\end{cases}  \tag{5.38}<br>$$</p>
+<p><code>式（5.38）</code> 中方程的数量受漂移的多项式假设约束。例如：采用一次多项式时（线性漂移） $L&#x3D;3$，见 <code>式（5.39）</code>。采用二次多项式（二次漂移）时 $L&#x3D;6$，见 <code>式（5.40）</code>。</p>
+<p>该方程组共有 $n+L$ 个方程组成，需要求解 $n$ 个 $\lambda$ 参数，和 $L$ 个拉格朗日乘子参数 $\varphi$。</p>
+<p>$$<br>f_0&#x3D;1, \quad f_1&#x3D;\mathbf{s}_1 \quad f_2&#x3D;\mathbf{s}_2 \tag{5.39}<br>$$</p>
+<p>$$<br>f_3&#x3D;\mathbf{s}_1^2, \quad f_4&#x3D;\mathbf{s}_1 \mathbf{s}_2, \quad f_5&#x3D;\mathbf{s}_2^2 \tag{5.40}<br>$$</p>
+<p><strong>（3）估计方差</strong></p>
+<p>将系数解代入预测方程，可得估计方差为：</p>
+<p>$$<br>\sigma^2_{uk} &#x3D; C_p(\mathbf{s},\mathbf{s})a - \sum_{i&#x3D;1}^n \lambda_n C_p(\mathbf{s}_0,\mathbf{s}<em>i) + \sum</em>{l&#x3D;1}^L \varphi_l f_l(\mathbf{s})<br>$$</p>
+<p><strong>（4）向量形式</strong></p>
+<p>泛克里金方程式, 如同普通克里金法一样 [见公式 (5.12)], 是一系列的线性等式, 可 以用下列矩阵表示:</p>
+<p>$$<br>A \cdot\left[\begin{array}{l}<br>\lambda \<br>\varphi<br>\end{array}\right]&#x3D;B \tag{5.41}<br>$$</p>
+<p>矩阵 $A$ 和矢量 $\lambda$ 和 $B$ 是数据点和目标点的空间位置的函数, 可以用下式表示:</p>
+<p>$$<br>A&#x3D;\left[\begin{array}{cccccc}<br>C_p\left(\mathbf{s}_1, \mathbf{s}_1\right) &amp; \cdots &amp; C_p\left(\mathbf{s}_1, \mathbf{s}_n\right) &amp; f_1\left(\mathbf{s}_1\right) &amp; \cdots &amp; f_L\left(\mathbf{s}_1\right) \<br>\vdots &amp; \ddots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \<br>C_p\left(\mathbf{s}_n, \mathbf{s}_1\right) &amp; \cdots &amp; C_p\left(\mathbf{s}_n, \mathbf{s}_n\right) &amp; f_1\left(\mathbf{s}_n\right) &amp; \cdots &amp; f_L\left(\mathbf{s}_n\right) \<br>f_1\left(\mathbf{s}_1\right) &amp; \cdots &amp; f_1\left(\mathbf{s}_n\right) &amp; 0 &amp; \cdots &amp; 0 \<br>\vdots &amp; \ddots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \<br>f_L\left(\mathbf{s}_1\right) &amp; \cdots &amp; f_L\left(\mathbf{s}_n\right) &amp; 0 &amp; \cdots &amp; 0<br>\end{array}\right] \tag{5.42}<br>$$</p>
+<p>$$<br>{\left[\begin{array}{c}<br>\lambda \<br>\varphi<br>\end{array}\right]&#x3D;\left[\begin{array}{c}<br>\lambda_1 \<br>\vdots \<br>\lambda_n \<br>\varphi_0 \<br>\vdots \<br>\varphi_L<br>\end{array}\right], B&#x3D;\left[\begin{array}{c}<br>C_p\left(\mathbf{s}_1, \mathbf{s}_0\right) \<br>\vdots \<br>C_p\left(\mathbf{s}_n, \mathbf{s}_0\right) \<br>f_1\left(\mathbf{s}_0\right) \<br>\vdots \<br>f_L\left(\mathbf{s}_0\right)<br>\end{array}\right]}  \tag{5.43}<br>$$</p>
+<p>同普通克里金一样, $A$ 是可逆的, 且权重和朗格拉日乘子可以得到:</p>
+<p>$$<br>\left[\begin{array}{l}<br>\lambda \<br>\varphi<br>\end{array}\right]&#x3D;A^{-1} \cdot B \tag{5.44}<br>$$</p>
+<p>该权重被揷人到公式 (5.36) 中, 得到泛克里金方差为:</p>
+<p>$$<br>\sigma_{uk}^2&#x3D;C_p\left(\mathbf{s}_0, \mathbf{s}_0\right)-\left[\begin{array}{l}<br>\lambda \<br>\varphi<br>\end{array}\right]^T B \tag{5.45}<br>$$</p>
+<h2 id="6-非线性预测克里金法"><a href="#6-非线性预测克里金法" class="headerlink" title="6 非线性预测克里金法"></a>6 非线性预测克里金法</h2><details class="toggle" ><summary class="toggle-button" style="">此处待遇到实际问题时再处理</summary><div class="toggle-content"><!--
+
+普通克里金法是地统计学预测和模拟最常用的方法。它通过对目标点或块段周围的实测值进行简单线性结合来对未采样区（目标点或块段）的区域化变量进行无偏和最优预测。然而 有时原始数据分布严重偏斜，非正态，不能直接采用线性克里金方法进行研究。有时我们想要得到更多的信息，比如想知道目标点的真值超过某一给定阙值的可能性或概率，这些概率并不是已知的实测数据的简单线性结合。
+
+针对上述问题，20 世纪 60 年代后，逐渐出现了非线性地统计技术。最早由 Krige 在南非勘探金矿工作中提出了对数正态回归方法、后来发展为对数正态克里金法。Matheron 又在 1976 年提出了析取克里金法，用于观测样本经非线性函数计算后 对未知点的估值。80 年代后，Journel(1983)提出了指示克里金法，将克里金方法应用于离 散变量或分类分项指标进行估值。
+
+利用这些方法已有许多报道。Matheron 专门发展了析取克里金法来用于采矿业，后来又成功的应用于环境保护、土地管理和土壤科学等领域。Yate 等 (1986a，1986b) 将其用于土壤水的研究中；Lark 和 Ferguson(2004)用于土壤养分（有效磷）含量缺乏或过剩的概率分布评价，为田间生产提供推荐施肥方案。Yate and Yates (1988) 用它来预测由于污水中滤过性毒菌引起的污染。
+
+### 6.1 对数正态克里金法
+
+在某些行业中, 如环境、采矿业和石油工业, 一个较为普遍的现象是所采得的实测数据是 严重偏斜的, 是非正态的。由于一些异常值对方差的影响很大, 使变异函数对偏斜分布尤其是 强烈的偏斜分布很铰感。可以采取对数的形式来去除偏斜并使方差平稳化。如果将数据转换为 对数后, 转换后的数据为近似正态分布, 也就是所谓的对数正态分布, 从而产生了对数正态克 立格法。
+
+将数据 $z\left(\mathbf{s}_1\right), z\left(\mathbf{s}_2\right), \cdots$ 转为对应的自然对数形式即 $y\left(\mathbf{s}_1\right), y\left(\mathbf{s}_2\right), \cdots$ 后, 我们称 $y\left(\mathbf{s}_1\right), y\left(\mathbf{s}_2\right), \cdots$ 是来自二阶平稳性的随机变量 $Y(\mathbf{s})=\ln Z(\mathbf{s})$ 的一个样本。计算 $Y(\mathbf{s})$ 的变 异函数, 然后用转换后的数据通过普通克里金法或简单克里金法来预测目标点或块段的 $Y$ 值。 预测值也是对数的形式。
+
+有时对数可以发挥很好的作用。但在许多其他学科, 如采矿学、探测地球物理学和污染监 测中, 调查人员想以数据的原始形式来表达预测的结果, 这时必须要将对数转回为原始的形 式, 这种回转是很简单直接的。令目标点 $\mathbf{s}_0$ 处的自然对数的克里金预测结果为 $\hat{Y}\left(\mathbf{s}_0\right)$, 其方 差为 $\sigma^2\left(\mathbf{s}_0\right)$, 那么预测值的回转公式, 对简单克里金法为：
+
+对普通克里金法为:
+
+$$
+\hat{Z}_{\mathscr{S K}}\left(\mathbf{s}_0\right)=\e\mathbf{s}p \left\{\hat{Y}_{\mathscr{S}}\left(\mathbf{s}_0\right)+\sigma_{S K}^2\left(\mathbf{s}_0\right) / 2\right\}
+$$
+
+式中: $\psi$ 为普通克里金法中的朗格拉日乘子。对简单克里金法, $Z\left(\mathbf{s}_0\right)$ 的预测方差为
+
+$$
+\operatorname{var}_{S K}\left[\hat{Z}\left(\mathbf{s}_0\right)\right]=\mu^2 \e\mathbf{s}p \left(\sigma_{S K}^2\right)\left[1-\e\mathbf{s}p \left\{-\sigma_{S K}^2\left(\mathbf{s}_0\right) / 2\right\}\right]
+$$
+
+式中: $\mu$ 为 $Z(\mathbf{s})$ 的均值。由于普通克里金的平均值 $\mu$ 为未知的, 因此不能得到普通克立 格预测方差的无偏回转公式。
+
+在某些领域内, 喜欢采用常用对数进行转换。用 $\log _{10} Z(\mathbf{s})$ 的变异函数代替 $\ln Z(\mathbf{s})$ 的变 异函数, 这时, 普通克里金的回转公式变为:
+
+$$
+\hat{Z}\left(\mathbf{s}_0\right)=\e\mathbf{s}p \left\{\hat{Y}\left(\mathbf{s}_0\right) \times \ln 10+0.5 \sigma_Y^2\left(\mathbf{s}_0\right) \times(\ln 10)^2\right\}
+$$
+
+
+Journel 和 Huijjberegts 指出，公式(5.3.1) 对非对数正态的分布是很敏感的，会造成预测结果产生偏差。并建议通过比较预测的均值和实测数据的均值来检查这种偏差。如果将这两者的均值的比率用 $Q$ 来表示，则公式(5.3.1)可以改写为：
+
+
+$$
+\hat{Z}_{SK}(\mathbf{s}_0) - Q \e\mathbf{s}p\{\hat{Y|_{s\mathbf{s}}(\mathbf{s}_0) + \sigma^2_{SK}}(\mathbf{s}_0)/2\}
+$$
+
+公式(5.3.2)也可以以同样的方式来改写。一般情况下，$Q$ 一直是很接近 1 的，因此不需要进行这种改变。
+
+### 6.2 指示克里金法
+
+现在在许多国家，都颁布法令来限制大气、水和土壤中栋些对环境和人类存在潜在危害的物质含量。如瑜土联邦政府也规跋了土壤中重金属的最大含量。例如，镇和锂分别为 0.8mg/kg 和 50mg/kg。空气的质量可以通过 SO:的含量来衡量，政府也可以对此设定所容许的最大含量。
+
+如果超过阗值（设为z*）,执法部门就可以采取措施来限制这种污染物的释放。我国于1995年颁布了中华人民共和国土壤环境质量标准(GB15618-1995)（表5-2）,该标准根据土壤应用功能和保护目标将土壤环境质量分为三类，同时进行了三级标准的划分，一类土壤执行一级标准，保护区域自然生态，维护自然胖景的土填环境质量；二类土壤执行二级标准，保证农业生产，维护人体健康；三类土壤执行三级标准，保障农林生产和植物正常生长。这一标准给土壤重金属污染和风险评价各分级的体系提供了阈值。
+
+在农业上也有类似情况。在气候潮湿的环境下,王裹可能会酸化，地面上生长的作物增加了这种酸化的趋势,农民要通过施加石灰来对其进行迷制。需要的石灰的多少经常要通过关键 的pPH(阎值)来控制。如果土壤中的pPH低于这个闻值,则要向土地中加人石灰。同时农民 想要知道农场中每个地方的pPH是否都低于这个阀值,如果有的区域pH超过这个阅值,则不 需要采取什么掀施。旱区的农民经常不得不控制土地的盐碱化,同样也存在着土壤电导率和可 交换钠的阎值问题。如果超过这些阅值,农户将不得不施石膏肥料于土壤中并将可溶性盖分滤 出。另外,如Webster和Oliver(1989)对苏格兰牧草地土壤钻的含量进行研究。因为如果土 壤中微量元紧钻的含量小于0.25mg/kg,就会通过生物链影响到牧草和食草家畜所吸收的微 里元素钻的缺乏,就要对土壤采取一定的处理措施。所以他们通过对该特定阈值进行概率分布 评价来指导实际的土壤管理。
+
+通常的情况是只有在采样点才确切地知道某种属性含量的真值。环境保护机构、农场主、 牧羊人必须要预测或模拟其他地方的值,这种预测是有误差的。然而尽管有误差,还必须要根 据这种预测来进行决策。如果预测值大大超过阗值或远远小于阅值,决策者就可以采取合适的 措施,事情会较为好办。困难在于预测值与阆值比较接近的地方,可能会导致错误的判断,从 而产生严重的后果。例如,如果水中硝酸盐含量低于阎值50mg/L,而预测值却超过该阅值, 鬣丨…匕堕、夕d更民才攀荸(会′被|蘑艮铲磊lj覆5]妻j酸堇!藿虏′(J释赫【(署遣乞被薯L'菅]癜【若情况刚好相反,那么食用这些地方的水的消费 者就倒震了。
+
+类似的,如果土壤中的pPH小于某种作物生长的阀值5.5,而农民的预测是大于5.5,那 么他就不会向土壤中添加石灰肥,从而造成喜产,利浪降低。若相反pPH的真值超过5.5,而 农民的预测是小于该值,他将会为购买石灰而花费不必要的钱。若牧羊人过高估计了土壤中原 本不足量的钴的含量而不采取任何措施来纠正这种不足的现象,那么他的羊群将不会兴旺甚至 会过早的死亡。如果他过低估计了土壤中原本充足的钻的含量,他可能会再向土壤中或动物的 饲料中不必要地添加钻,或者对动物的血液进行检验,这付出的代价也就更加昂贵。
+
+在这样的情况下,土地经营者将会为补救一种原本不存在的土块状况而态视了真正存在的 威胁。为了避免不必要的浪费和减产的风险,土地经营者或执法人员需要知道他们对未知的值 进行预测所持有的风险性。
+采矿人员面临同样的问题。在任何情况下,都有一个金尸的价格和采矿的代价问题。大于 菪一阎值,采矿就是有利可图的,否则就无利可图甚至亏本。如果将预测值随便当作真值,开 矿人员则面临着经济风险。
+
+如果我们用线性克里金法来预测格网节点处的*值,并生成插值图,结果可能会出现两种 情况,一种情况是栋些地方的z值超过=.;另一种情况是一些区域的z值小于阗值z.。但我们 不知道这些预测值作为真值,它的不确定概率是多少,也就是风险性的问题。所以,研究人员 指示克里金、析取克里金等非线性克里金方法被逐淀提出。
+
+如给定原始数据z(z),则未采样点z处,其真值超过给定阅值=的概率可以用下面公式 来表示:
+
+ProbLZ(z\mathbf{s}r0)一2|z(zi)if二1,2,...,NJ]二1一Prob[Z(zro)不z:|z(r;)】(5.3.6)
+
+这里N是所有数据的个数。
+
+要确定概率,首先霄要知道条件期望或是每个目标点处的期望值,这就依赖于Z(r〉的概 率分布。但是Z(rz)的多元分布是不可得的,部分原因是只有随机变量的一个实现,部分是由 于确切的概率分布多少是从理论分布分离出来的。
+
+克服这一困难有两个办法,这两个办法都要对数据进行转换,且在实跆中都有应用。其中简单一些的方法是用指示克里金法(IndicatorKriging),它不需要对理论的分布进行假定,从 这个意义上来讲它是非参数的。它将一个在连续的尺度上测试的变量转化为好几个指示变量, 每个变量在样点取1或0,并预测其他地方的值。另外一个解欧办法是析取克里金法(Dis- junctiveKriging)〔(见本节第三部分),它利用厄密多项式将数据转化为标准的正态分布,将预 浏值与正态分布进行比较来得到所要的概率。
+
+尼管指示克里金法和析取克里金法故描述为非线性方法,但两者都是数据的非线性转化的 线性克里金法。指示克里金法包括简单指示克里金法和普通指示克里金法,析叟克里金法是厄 密多项式的简单克里金法。两者都可以对某一邻基内的未知点或块段的真值超过或低于某一给 定阅值的概率进行预测,以评价预测值被当作真值所冒的风险性。下面先简单回顽一下指示变 量的克里金法.
+
+1.指示码(Indicatorcoding)指示变量是重要的二元变量,仅仅取0和1两个值。这样 的变量通常表示存在或不存在。在土坊科学中,经常用1来表示土样中某种物质的存在性,而 用0来表示不存在。也可以从一个连续性变量z(z)来生成一个指示变量。(z)。方法很简单, 如果zCz)》小于或等于某一闻值z,则规定指示变量为1,否则为0,
+
+w(乙)二1,如z(z)妮z(5.3.7)
+
+0,其他
+
+因此就可以把z划为两部分,一部分为*(zr)万z=.,另一部分为z(z)二z.,些分别赋值为1 和0。如果z(rz)是一个随机过程Z(rz)》的实现,那么。(z)可以被认为是一万指示随机函数 Q-[LZ(z)万=.J的实现。为了方便,后面将随机函数简化表示为Q.[r;*:],它的实现简化表示 为aoLzi;\mathbf{s}小。 通过这种转换,某种程度上使预测结果更解决实际应用.“如评价土壤重金属污染问题,通 过设定司理的污染浓度闻值=*,那么就可以将一个连续性的随机变量Z(r)转化为一个指示函 数,对这个指示函数而言,1!表示没有受到污染可以被接受,、0表示受到污染不能被接受。
+
+另外,我们也可以定义多个阎值,并丁为每个阗值生成一个新的指示变量。如定义S个
+
+阅值为z4,,s二1,2,...,S,从而得到指示变量w,忍,…,心,分别等于:
+
+心(z)二1“芳*(z)么z,其他为0-
+心(Z)二1“若z(z)万z.t2,,其他为0(5.3.8)
+w(z)二1“芳z(z)万=,其他为0
+
+这些可以被当作是相应的随机函数Q.(\mathbf{s}),s5二1,2,...,S的实现、对这个随机函数,
+
+如果*(z)妙zuo,则有Q.(rz)一1;否则,Q.(\mathbf{s})二0。
+指示变量的数学期望,EtQ[Z(z)不=.]},可以概率的形式表示:
+ProbLZ(z)么=:]=EKtQ[Z(r)万z.了(5,3.9)
+该概率Prob[Z(z)五=.],是一累积分布,
+Prob[Z(z)尹z]二1一ProbLZ(z)二z.]二C[Z(ziz:)]】(5.3.10)
+
+许多环境变量具有多元特性,例如岩石、土壤、植被等,经常具有两个以上的类型。这时 就可以将每个类型编码表示存在或不存在来转化为指示变量。如区分一个地方的水稽土、红壤 和潮土,就可以建立三元变量,分别将其编码表示为1或是0这些类型互相之闰是排斥的, 在这种情况下,只能是三个中的一个为1,其他为0。
+
+2.指示半方羟函数“指示随机函数的取异函数形式类似于连续变量的变异函数,可以表示为:
+
+$$
+\gamma_c(h)=\frac{1}{2} E\left[\left\{\Omega\left[Z\left(\mathbf{s} ; z_c\right)\right]-\Omega\left[Z\left(\mathbf{s}+h ; z_c\right)\right]\right\}^2\right]
+$$
+
+其半方差值可以通过转化后的指示数据计算得到:
+
+$$
+\gamma_{z_c}(h)=\frac{1}{2 m(h)} \sum_{i=1}^{m(h)}\left\{\tilde{\omega}\left(\mathbf{s}_i ; z_c\right)-\tilde{\omega}\left(\mathbf{s}_i+h ; z_c\right)\right\}^2
+$$
+
+(1) 交互的指示变异函数 对任何两个國值 $z_u$ 和 $z_v$, 可以定义一个交互的指示变异函数 来预测:
+
+$$
+\gamma_{z_w}(h)=\frac{1}{2} E\left[\left\{\Omega\left[Z\left(\mathbf{s} ; z_u\right)\right]-\Omega\left[Z\left(\mathbf{s}+h ; z_u\right)\right]\right\} \times\left\{\Omega\left[Z\left(\mathbf{s} ; z_v\right)\right]-\Omega\left[Z\left(\mathbf{s}+h ; z_v\right)\right]\right\}\right]
+$$
+
+（2）指示协方差函数 如果随机过程遵从二阶平稳假设, 那么指示变量间的空间相关性 可以通过下面的协方差函数来表示:
+
+$$
+\begin{aligned}
+C_Z^n(h) & =\operatorname{cov}\left\{\Omega\left[Z\left(\mathbf{s} ; z_c\right)\right], \Omega\left[Z\left(\mathbf{s}+h ; z_c\right)\right]\right\} \\
+& =E\left\{\Omega\left[Z\left(\mathbf{s} ; z_c\right)\right] \Omega\left[Z\left(\mathbf{s}+h ; z_c\right)\right]\right\}-\left\{E\left[\Omega\left[Z\left(\mathbf{s} ; z_c\right)\right]\right]\right\}^2
+\end{aligned}
+$$
+
+类似的, 阈值 $z_u$ 和 $z_v$ 的指示变量在步长 $h$ 上的交互协方差为:
+
+$$
+\begin{aligned}
+C_{u v}^n(h)= & \operatorname{cov}\left[\Omega\left[Z\left(\mathbf{s} ; z_u\right)\right], \Omega\left[Z\left(\mathbf{s}+h ; z_v\right)\right]\right] \\
+= & E\left\{\Omega\left[Z\left(\mathbf{s} ; z_u\right)\right] \Omega\left[Z\left(\mathbf{s}+h ; z_v\right)\right]\right\}- \\
+& E\left\{\Omega\left[Z\left(\mathbf{s} ; z_u\right)\right]\right\} E\left\{\Omega\left[Z\left(\mathbf{s} ; z_v\right)\right]\right\}
+\end{aligned}
+$$
+
+3. 指示克里金法 对每-一个目标点或块段, 利用指示变量建立其预测值计算公式:
+
+$$
+\hat{\Omega}\left(\mathbf{s}_0 ; z_c\right)=\sum_{i=1}^N \lambda_i \omega\left(\mathbf{s}_i ; z_c\right)
+$$
+
+这里 $\lambda_i$ 是权重。指示值通常是有界限的, 它的样品平均 $\left(\bar{\omega} ; z_c\right)$ 通常是作为它的期望。 因而我们可以用简单克里金法来预测 $\Omega\left(\mathbf{s}_0 ; z_c\right)$ ：
+
+$$
+\hat{\Omega}\left(\mathbf{s}_0 ; z_c\right)=\sum_{i=1}^N \lambda_i \omega\left(\mathbf{s}_i ; z_c\right)+\left\{1-\sum_{i=1}^N \lambda_\omega\right\}\left(\bar{\omega} ; z_c\right)
+$$
+
+权重是通过下面的简单克里金方程得到:
+
+$$
+\sum_{i=1}^N \lambda_i \gamma^{\Omega}\left(\mathbf{s}_i, \mathbf{s}_j ; z_c\right)=\gamma^{\Omega}\left(\mathbf{s}_0, \mathbf{s}_j ; z_c\right), \quad j=1,2, \cdots, N
+$$
+
+式中: $\gamma^n\left(\mathbf{s}_i, \mathbf{s}_j ; z_c\right)$ 是阈值 $z_c$ 处的第 $i$ 个和第 $j$ 个采样点之间的指示半方差值; $\lambda^{\Omega}$ $\left(\mathbf{s}_0, \mathbf{s}_j ; z_c\right)$ 是同一阈值的目标点 $\mathbf{s}_0$ 和点 $\mathbf{s}_j$ 之间的指示半方差值。就像当对连续性变量进行 揷值时, 可以在 $\mathbf{s}_0$ 的领域内利用 $n<<N$ 来代替 $N$ 。
+
+预测结果值处于 0 和 1 之间, 是真值为 1 时的概率:
+
+$$
+\operatorname{Prob}\left[\Omega\left(\mathbf{s}_0 ; z_c\right)=1 \mid \omega\left(\mathbf{s}_i\right), i=1,2, \cdots, n\right]=F\left\{\mathbf{s}_0 \mid(n)\right\}
+$$
+
+式中: ( $n$ ) 表示特定的邻域内所有的样点数据; $F\left\{\mathbf{s}_0 \mid(n)\right\}$ 表示 $\Omega\left(\mathbf{s}_0\right)=1$ 时的条件 概率。
+
+现要利用给定的数据来预测末采样点 $\mathbf{s}_0$ 处区域化变量 $Z$ 的真值不超过阈值 $z_c$ 的概率, 根 据公式 (5.3.10), 公式可以写为:
+
+$$
+\operatorname{Prob}\left[Z\left(\mathbf{s}_0\right) \leqslant z_c \mid z\left(\mathbf{s}_i\right) ; i=1,2, \cdots, N\right]=1-\operatorname{Prob}\left[Z\left(\mathbf{s}_0\right)>z_c \mid z\left(\mathbf{s}_i\right) ; i=1,2, \cdots, N\right]
+$$
+
+(5.3.20)
+
+但是上述方法将数据转化为由特定阈值决定的指示变量, 只简单划分为两级, 会使原始数据中许多丰富的信息会丢失了。这里, 可以通过对几个阈值重复该过程, 对每个目标点通过累 计建立 $\hat{F}\left(\mathbf{s}_0, z_s\right)$ 的累积分布函数来使这种原始数据信息的丢失得到适当地补偿。
+
+这样做会显得繁琐, 因为所有阈值的变异函数都必须进行计算和模拟。而且对不同的 $z_s$,
+
+都需要对 $\hat{F}\left(\mathbf{s}_0, z_s\right)$ 独立进行计算, 不能保证其总和等于 1 , 或累积函数单调递增, 或者预测 的概率在 0 到 1 之间。因而需要对结果进行调整来确保, 并保持顺序关系。不过, 可以先得到 经验分布函数然后来使 $z\left(\mathbf{s}_0\right) \leqslant z_c$ 这一条件概率得到精简。
+
+### 6.3 析取克里金法
+
+析取克里金法提供了另外一种对由连续性数据转化得到的指示变量进行预测的方法。尽管 比指示克里金法有更多的假设条件, 但它没有造成信息丢失。最常见的析取克里金法是高斯析 取克里金法 (Gaussian disjunctive kriging)。
+
+高斯析取克里金法要求下面的假设条件。首先, $z(\mathbf{s})$ 是一个平均值为 $\mu$, 方差为 $\sigma^2$, 协 方差为 $C(h)$ 存在, 其变异函数有基台值的; 其次, $n+1$ 个变量, 也就是要预测的目标点以 及其临域内的样点的分布是已知的并在整个研究区上是稳定的。如果 $Z(\mathbf{s})$ 的分布是正态（高 斯的）的且其过程是二阶平稳的, 那么可以假定每个点对的双变量分布也是正态的。每一对变 量有同样的双变量密度, 密度函数由空间自相关系数决定。这些假定使条件期望可以由自相关 系数的形式来表达。
+
+另外, 我们假定变量 $Z(\mathbf{s})$ 是空间连续的, 存在空间连续扩散过程。就是说, 任意两个位 置 $\mathbf{s}_i$ 和 $\mathbf{s}_j$ 上的观测值 $z_i$ 和 $z_j$, 其两值之间的中间任意值总存在于两个位置之间。在实际析取 克里金方法应用中, 高斯扩散过程 (Gaussian diffusion process) 是经常采用的一种模型。
+
+在实践工作中, 尽管许多研究对象的要素数据看上去是近似正态的, 但是还不能完全满足 正态分布的要求。因此, 在析取克里金分析之前往往进行正态分布转换, 这里我们首先介绍厄 密多项式展开方法。
+
+1. 厄密多项式 (Hermite polynomials) 厄密多项式具有与正态分布相关的特性, 它可以 用 Rodrigues 方程定义为:
+
+$$
+H_n(y)=\frac{1}{\sqrt{n !} g(y)} \frac{d^n g(y)}{d y^n}
+$$
+
+式中: $n$ 是多项式的阶, 取 $0,1, \cdots ; 1 / \sqrt{n !}$ 是标准化因子; $g(y)$ 为标准正态分布的概 率密度:
+
+$$
+g(y)=\frac{1}{\sqrt{2 \pi}} e^{-y^2 / 2}
+$$
+
+当 $n=0$ 和 $n=1$ 时, 厄密多项式为:
+
+$$
+\begin{gathered}
+H_0(y)=1 \\
+H_1(y)=-y \\
+H_2(y)=\left(y^2-1\right) / \sqrt{2}
+\end{gathered}
+$$
+
+高阶多项式的表达采用递归关系:
+
+$$
+H_{n+1}(y)=-\frac{1}{\sqrt{n+1}} y H_n(y)-\sqrt{\frac{n}{n+1}} H_{n-1}(y)
+$$
+
+所以对一个标准的正态分布, 该多项式可以计算到任何阶。
+
+
+
+除了 $H_0(y)$ 为常数, 等于 1 以外, 其他多项式的平均值为:
+
+$$
+E\left[H_n(Y(\mathbf{s}))\right]=\int_{-\infty}^{+\infty} H_n(y) g(y) d y=0
+$$
+
+同时, 由于标准化因子, 它们的方差等于:
+
+$$
+\operatorname{var}\left[H_n(Y(\mathbf{s}))\right]=E\left\{\left[H_n(Y(\mathbf{s}))\right]^2\right\}=1
+$$
+
+当 $p \neq n \geqslant 0$ 时, 标准正态变量的厄密多项式为正交:
+
+$$
+\operatorname{cov}\left[H_p(Y(\mathbf{s})), H_n(Y(\mathbf{s}))\right]=E\left[H_p(Y(\mathbf{s})) H_n(Y(\mathbf{s}))\right]=0
+$$
+
+几乎 $Y(\mathbf{s})$ 的任何函数都可以用厄密多项式展开来表示:
+
+$$
+\begin{aligned}
+f[Y(\mathbf{s})] & =f_0+f_1 H_1[Y(\mathbf{s})]+f_2 H_2[Y(\mathbf{s})]+\cdots \\
+& =\sum_{n=0}^{\infty} f_n H_n[Y(\mathbf{s})]
+\end{aligned}
+$$
+
+利用厄密多项式的正交特性, 可以推出:
+
+$$
+\begin{aligned}
+E\left[f(Y(\mathbf{s})) H_n(Y(\mathbf{s}))\right] & =E\left[H_n(Y(\mathbf{s})) \sum_{p=0}^{\infty} f_p H_p(Y(\mathbf{s}))\right] \\
+& =\sum_{p=0}^{\infty} f_p E\left[H_p(Y(\mathbf{s})) H_n(Y(\mathbf{s}))\right] \\
+& =f_n
+\end{aligned}
+$$
+
+这就可以计算厄密多项式中的系数:
+
+$$
+f_n=E\left[f(Y(\mathbf{s})) H_n(Y(\mathbf{s}))\right]=\int_{-\infty}^{+\infty} f(y) H_n(y) g(y) d y
+$$
+
+2. 正态分布转换 将任意数据分布形式的变量 $Z(\mathbf{s})$ 转化为标准正态分布 $Y(\mathbf{s})$, 即有:
+
+$$
+Z(\mathbf{s})=\Phi[Y(\mathbf{s})]
+$$
+
+这可以利用上面介绍的厄密多项式展开来实现:
+
+$$
+Z(\mathbf{s})=\Phi[Y(\mathbf{s})]=\phi_0+\phi_0 H_1[Y(\mathbf{s})]+\phi_2 H_2[Y(\mathbf{s})]+\cdots
+$$
+
+要确定上述的厄密转换系数 $\phi_n$, 可以采用下面的方法 (Rivoirard, 1994)。首先有足够的 样本数据, 将其进行升序排列:
+
+其相对频数可表示:
+
+且有:
+
+其累积频率为:
+
+$$
+\begin{aligned}
+F\left(z_1\right) & =P\left[Z(\mathbf{s})<z_1\right]=0 \\
+F\left(z_2\right) & =P\left[Z(\mathbf{s})<z_2\right]=p_1 \\
+F\left(z_3\right) & =P\left[Z(\mathbf{s})<z_3\right]=p_1+p_2 \\
+& \vdots \\
+F\left(z_i\right) & =P\left[Z(\mathbf{s})<z_i\right]=\sum_{j=1}^{i-1} p_j \\
+& \vdots \\
+F\left(z_l\right) & =P\left[Z(\mathbf{s})<z_l\right]=1-p_l
+\end{aligned}
+$$
+
+这些累积频率相等于对应的标准正态分布：
+
+
+$$
+F\left(z_i\right)=G\left(y_i\right)
+$$
+
+因而有:
+
+
+且:
+
+$$
+F\left(z_{i+1}\right)-F\left(z_i\right)=G\left(y_{i+1}\right)-G\left(y_i\right)
+$$
+
+
+
+
+$$
+\begin{aligned}
+\operatorname{Prob}\left[z_i \leqslant Z(\mathbf{s})<z_{i+1}\right] & =\operatorname{Prob}\left[y_i \leqslant Y(\mathbf{s})<y_{i+1}\right] \\
+\operatorname{Prob}\left[Z(\mathbf{s})=z_i\right] & =\operatorname{Prob}\left[y_i \leqslant Y(\mathbf{s})<y_{+1}\right]
+\end{aligned}
+$$
+
+简单地说, 当 $Y(\mathbf{s})$ 落在 $y_i$ 和 $y_{i+1}$ 之间时, $Z(\mathbf{s})=z_i$ 。然后就可以确定转换系数:
+
+$$
+\begin{aligned}
+& \phi_0=E[\Phi(Y(\mathbf{s}))]=E[Z(\mathbf{s})]=\sum_{i=1}^N p_i z_i \\
+\phi_k= & E\left[Z(\mathbf{s}) H_n(Y(\mathbf{s}))\right]=\int_{-\infty}^{+\infty} \Phi(y) H_n(y) g(y) d y \\
+= & \sum_{i=1}^l \int_{y_i}^{y_{i+1}} z_i H_n(y) g(y) d y \\
+= & \sum_{i=1}^l z_i\left(\frac{1}{\sqrt{n}} H_{n-1}\left(y_{i+1}\right) g\left(y_{i+1}\right)-\frac{1}{\sqrt{n}} H_{n-1}\left(y_i\right) g\left(y_i\right)\right) \\
+= & \sum_{i=1}^l\left(z_{i-1}-z_i\right) \frac{1}{\sqrt{n}} H_{n-1}\left(y_i\right) g\left(y_i\right)
+\end{aligned}
+$$
+
+其中 $g\left(y_0\right)=g(-\infty)=0$, 且 $g\left(y_{l+1}\right)=g(+\infty)=0$ 。
+
+3. 析取克里金法 来自于相关系数为 $\rho$ 的双变量标准正态分布的 $Y(\mathbf{s})$ 和 $Y(\mathbf{s}+h)$ 点对 之间有如下数学期望:
+
+$$
+E\left[H_n(Y(\mathbf{s}+h)) \mid Y(\mathbf{s})\right]=\rho^n(h) H_n(Y(\mathbf{s}))
+$$
+
+$Y$ 在 $\mathbf{s}$ 和 $\mathbf{s}+h$ 处的函数的协方差为:
+
+$$
+\begin{aligned}
+\operatorname{cov}\left[H_p(Y(\mathbf{s})), H_n(Y(\mathbf{s}+h))\right] & =E\left[H_p(Y(\mathbf{s})) H_n(Y(\mathbf{s}+h))\right] \\
+& =E\left[H_p(Y(\mathbf{s})) E\left(H_n(Y(\mathbf{s}+h)) \mid Y(\mathbf{s})\right)\right] \\
+& =\rho^n(h) E\left[H_p(Y(\mathbf{s})) H_n(Y(\mathbf{s}))\right]
+\end{aligned}
+$$
+
+当 $p=n$ 时：
+
+$$
+\operatorname{cov}\left[H_n(Y(\mathbf{s})), H_n(Y(\mathbf{s}+h))\right]=\rho^{\prime \prime}(h)
+$$
+
+$H_n(Y(\mathbf{s}))$ 的空间协方差为 $\rho^n(h)$, 此时 $Y(\mathbf{s})$ 为标准正态变量。相关系数 $\rho(h)(h \neq 0)$ 必 介于 $-1$ 到 $+1$ 之间; 当 $n$ 增加时, $\rho^n(h)$ 迅速接近于 0 , 且 $H_n(Y(\mathbf{s}))$ 逐渐变得没有空间相 关性, 也就是说空间结构趋于纯块金效应。
+
+当 $p \neq n \geqslant 0$ 时, 见公式 (5.3.27), 双变量标准正态点对之间的厄密多项式为正交。不同 阶的多项式之间没有空间相关性。
+
+任何对厄密多项式都是空间独立的, 因此它们是双变量正态模型的独立因子。要对其单独 进行揷值, 有如下析取克里金预测公式:
+
+$$
+\hat{Z}_{[K}=\phi_0+\phi_1 \hat{H}_1^K(Y(\mathbf{s}))+\phi_2 \hat{H}_2^K(Y(\mathbf{s}))+\cdots
+$$
+
+因此, 如果在预测点 $\mathbf{s}_0$ 的临域内有 $m$ 个点来参与揷值计算, 可利用下式来得到厄密多 项式:
+
+$$
+\hat{H}_n^K\left[Y\left(\mathbf{s}_0\right)\right]=\sum_{i=1}^m \lambda_{n i} H_n\left[Y\left(\mathbf{s}_i\right)\right]
+$$
+
+然后将其揷人到上面的公式中。 $\lambda_n$ 是克里金权重, 我们可以假定平均值是已知的, 然后
+
+
+用简单克里金预测公式来计算该权重值;
+
+
+$\sum_{i=1}^m \lambda_{n i} \operatorname{cov}\left[H_n\left\{Y\left(\mathbf{s}_j\right)\right\}, H_n\left\{Y\left(\mathbf{s}_i\right)\right\}\right]=\operatorname{cov}\left[H_n\left\{Y\left(\mathbf{s}_j\right)\right\}, H_n\left\{Y\left(\mathbf{s}_0\right)\right\}\right]$, 对任意 $j$
+
+(5. 3. 43)
+
+或者用下列公式表示:
+
+$$
+\sum_{i=1}^m \lambda_m \rho^n\left(\mathbf{s}_i-\mathbf{s}_j\right)=\rho^{\prime \prime}\left(\mathbf{s}_j-\mathbf{s}_0\right) \te\mathbf{s}t {, 对任意 } j
+$$
+
+当厄密多项式 $H_n(Y(\mathbf{s}))$ 的相关系数 $\rho^n(h)$ 快速趋于纯块金效应, 未知点的克里金估值 也趋于其平均值 0 。尽管公式 (5.3.41) 中系数 $\phi_n$ 是不应该被忽视的, 但是在实际计算析取克 立格预测值时, 往往只考虑前面一部分的多项式, 一般不超过 12 个。
+
+$H_n(Y(\mathbf{s}))$ 的克里金预测方差等于:
+
+$$
+\sigma_n^2\left(\mathbf{s}_0\right)=1-\sum_{i=1}^m \lambda_{n i} \rho^n\left(\mathbf{s}_i-\mathbf{s}_0\right)
+$$
+
+$f[Y(\mathbf{s})]$ 的析取克里金预测结果的方差为:
+
+$$
+\left.\operatorname{var}\left(f[Y(\mathbf{s})]-f_{D K}\left[Y_{(} \mathbf{s}\right)\right]\right)=\sum_{i=1}^{\infty} f_n^2 \sigma_n^2\left(\mathbf{s}_0\right)
+$$
+
+4. 条件摡率 一旦厄密多项式对某一目标点进行了预测, 我们就可以估计该点的真值超 过关键䧕值 $z_c$ 的概率。等式 $Z(\mathbf{s})=\Phi[Y(\mathbf{s})]$ 表示 $z_c$ 在标准正态尺度上有一等价值 $y_c$, 它们的 指示变量是一样的。
+
+$$
+\Omega\left[Z(\mathbf{s}) \leqslant z_c\right]=\Omega\left[Y(\mathbf{s}) \leqslant y_c\right]
+$$
+
+对 $\Omega\left[Y(\mathbf{s})>y_\epsilon\right]$, 它的互补部分是 $\Omega\left[Y(\mathbf{s}) \leqslant y_c\right]$, 因此第 $n$ 阶厄密系数是:
+
+$$
+f_n=\int_{-\infty}^{+\infty} \Omega\left[y \leqslant y_c\right] H_n(y) g(y) d y=\int_{-\infty}^{y_c} H_n(y) g(y) d y
+$$
+
+当 $n=0$ 时, 厄密系数为:
+
+$$
+f_0=G\left(y_c\right)
+$$
+
+当 $n$ 大于零时, 厄密系数为:
+
+$$
+f_n=\frac{1}{\sqrt{n}} H_{n-1}\left(y_c\right) g\left(y_c\right)
+$$
+
+指示变量可以展开表达为:
+
+$$
+\Omega\left[Y(\mathbf{s}) \leqslant y_c\right]=G\left(y_c\right)+\sum_{n=1}^{\infty} \frac{1}{\sqrt{n}} H_{n-1}\left(y_c\right) g\left(y_\epsilon\right) H_n[Y(\mathbf{s})]
+$$
+
+它的析取克里金预测值可以利用下式得到:
+
+$$
+\hat{\Omega}_{D K}\left[Y\left(\mathbf{s}_0\right) \leqslant y_c\right]=G\left(y_c\right)+\sum_{n=1}^m \frac{1}{\sqrt{n}} H_{n-1}\left(y_f\right) g\left(y_c\right) \hat{H}_n^K\left[Y\left(\mathbf{s}_0\right)\right] \te\mathbf{s}t { (5.3.52) }
+$$
+
+是一样的。相反, 若要得到大于 $z_c$ 的概率, 有:
+
+$$
+\begin{aligned}
+\hat{\Omega}_{[K}\left[Z\left(\mathbf{s}_0\right)>z_\epsilon\right] & =\hat{\Omega}_{[K}\left[Y\left(\mathbf{s}_0\right)>y_c\right] \\
+& =1-G\left(y_\epsilon\right)-\sum_{n=1}^m \frac{1}{\sqrt{n}} H_{n-1}\left(y_\epsilon\right) g\left(y_\epsilon\right) \hat{H}_n^K\left[Y\left(\mathbf{s}_0\right)\right]
+\end{aligned}
+$$
+-->
+</div></details>
+
+<h2 id="7-协同克里金法"><a href="#7-协同克里金法" class="headerlink" title="7 协同克里金法"></a>7 协同克里金法</h2><h3 id="7-1-协同区域化特性与相关函数"><a href="#7-1-协同区域化特性与相关函数" class="headerlink" title="7.1 协同区域化特性与相关函数"></a>7.1 协同区域化特性与相关函数</h3><p>自然现象中某一性质 (或变量) 的空间分布常常与其他性质（或变量）密切相关， 因为它们受同样的区域化现象或空间过程影响， 各个变量不但存在着自相关性， 而且与其他变量之间存在着交叉相关性， 这种性质被称为 <code>协同区域化特性 (Co-regionalization)</code>。</p>
+<p>协同克里金法可以利用 “同一变量在不同时空” 或 “不同变量在同一时空” 上的协同区域化性质，“用易于测得的变量来对那些难以测得的属性或变量进行估计”，或者 “用样品多的变量対样品少的变量进行估计”。</p>
+<p>协同克里金法将其中的一个变量作为主变量，其他的作为辅助变量。“主变量的自相关性” 以及 “主变量与其他变量之间的交叉相关性” 可以更好地进行预测。这种利用其他变量来帮助进行预测的想法非常诱人，但也有一定代价。</p>
+<p>协同克里金要比普通克里金进行更多的预测，包括预测每个变量的自相关性和变量之间的交叉相关性。因此理论上，协同克里金法的预测精度总是比普通克里金的预测精度要高，因为它利用了变量间的交叉相关性来帮助进行预测。</p>
+<p>不过，每次对未知自相关参数进行预测，又会引进更多的变异。</p>
+<h4 id="7-1-1-交叉协方差函数"><a href="#7-1-1-交叉协方差函数" class="headerlink" title="7.1.1 交叉协方差函数"></a>7.1.1 交叉协方差函数</h4><p>如果两个区域化变量 $Z_1(\mathbf{s})$ 和 $Z_2(\mathbf{s})$ 是二阶平稳的，且均值分别为 $\mu_1$ 和 $\mu_2$，那么这两者之间的协方差函数分别为:<br>$$<br>\begin{aligned}<br>&amp; C_{11}(h)&#x3D;E\left[\left{Z_1(\mathbf{s})-\mu_1\right}\left{Z_1(\mathbf{s}+h)-\mu_1\right}\right] \<br>&amp; C_{22}(h)&#x3D;E\left[\left{Z_2(\mathbf{s})-\mu_2\right}\left{Z_2(\mathbf{s}+h)-\mu_2\right}\right] \tag{7.1}<br>\end{aligned}<br>$$<br>两者之间的交叉协方差函数为:</p>
+<p>$$<br>C_{12}(h)&#x3D;E\left[\left{Z_1(\mathbf{s})-\mu_1\right}\left{Z_2(\mathbf{s}+h)-\mu_2\right}\right] \tag{7.2}</p>
+<p>$$<br>交叉协方差函数公式还隐含另一特性，即不对称性。也就是说：<br>$$<br>E\left[\left{Z_1(\mathbf{s})-\mu_1\right}\left{Z_2(\mathbf{s}+h)-\mu_2\right}\right] \neq E\left[\left{Z_2(\mathbf{s})-\mu_2\right}\left{Z_1(\mathbf{s}+h)-\mu_1\right}\right] \tag{7.3}</p>
+<p>$$</p>
+<p>换言之， 在某一方向上 $Z_1(\mathbf{s})$ 和 $Z_2(\mathbf{s})$ 之间的交叉协方差不同于其反方向上的交叉协方差，函数不对称:</p>
+<p>$$<br>C_{12}(h) \neq C_{12}(-h)<br>$$</p>
+<!-- 由于 $C_{12}(h)=C_{21}(-h)$， 还存在 $C_{12}(h) \neq C_{21}(h)$ -->
+
+<p>不对称性非常普遍。例如同一剖面上的表土与底土存在着不对称关系。不过，除非不对称性非常明显或者可以用物理公式合理地解释，否则在预测的大多数场景中，可以认为其是由采样所造成的。</p>
+<p>如果两个区域化变量 $Z_1(\mathbf{s})$ 和 $Z_2(\mathbf{s})$ 的实测值分别为 $z_1(\mathbf{s}_i)$ 和 $z_2(\mathbf{s}_i)$， 那么它们之间的经验交叉协方差函数计算如下:</p>
+<p>$$<br>C_{12}^{*}(h)&#x3D;\frac{1}{2 N(h)} \sum_{i&#x3D;1}^{N(h)} {z_1(\mathbf{s}<em>i) z_2(\mathbf{s}<em>i + h) } - m</em>{z</em>{1_{-h}}} \cdot m_{z_{2_{+h}}}   \tag{7.4}<br>$$</p>
+<p>这里 $C_{12}(h)$ 是两个变量的经验交叉协方差值; $N(h)$ 是具有相同间距 $h$ 的变量对（ $Z_1(\mathbf{s}), Z_2(\mathbf{s})$ ）的数目; $m_{z_{1_{-h}}}$ 和 $m_{z_{2_{+h}}}$ 为相同间距 $h$ 内 $z_1\left(\mathbf{s}<em>i\right)$ 和 $z_2\left(\mathbf{s}<em>i\right)$ 的平均值， 分别计算如 下:<br>$$<br>\begin{align*}<br>m</em>{z</em>{1_{-h}}}&#x3D;\frac{1}{2 N(h)} \sum_{i&#x3D;1}^{N(h)} z_1(\mathbf{s}<em>i) \<br>m</em>{z_{2_{+h}}}&#x3D;\frac{1}{2 N(h)} \sum_{i&#x3D;1}^{N(h)} z_2\left(\mathbf{s}_i+h\right)<br>\end{align*}<br>$$</p>
+<h4 id="7-1-2-交叉变异函数-cross-variogram"><a href="#7-1-2-交叉变异函数-cross-variogram" class="headerlink" title="7.1.2 交叉变异函数 (cross variogram)"></a>7.1.2 交叉变异函数 (cross variogram)</h4><p>假设有两个区域化变量 $Z_1(\mathbf{s})$ 和 $Z_2(\mathbf{s})$ 都遵从本征假设。对于变量 $Z_1(\mathbf{s})$ 有:<br>$$<br>E\left[Z_1(\mathbf{s})-Z_1(\mathbf{s}+h)\right]&#x3D;0 \tag{7.5}<br>$$<br>该变量有自身的变异函数，即自变异函数:<br>$$<br>\gamma_{11}(h)&#x3D;\frac{1}{2} E\left[\left{Z_1(\mathbf{s})-Z_1(\mathbf{s}+h)\right}^2\right] \tag{7.6}<br>$$<br>同样对区域化变量 $Z_2(\mathbf{s})$， 它增量的数学期望对任意 $\mathbf{s}$ 和 $h$ 存在且等于零， 同时其增量的方差函数对任意 $\mathbf{s}$ 和 $h$ 存在且平稳，也有一个自变异函数:<br>$$<br>\begin{gather*}<br>E\left[Z_2(\mathbf{s})-Z_2(\mathbf{s}+h)\right]&#x3D;0  \tag{7.7}\<br>\gamma_{22}(h)&#x3D;\frac{1}{2} E\left[\left{Z_2(\mathbf{s})-Z_2(\mathbf{s}+h)\right}^2\right] \tag{7.8}<br>\end{gather*}<br>$$<br>则两个变量的交叉相关性可以用交叉半方差函数 $\gamma_{12}(h)$ 来表示:<br>$$<br>\gamma_{12}(h)&#x3D;\frac{1}{2} E\left[\left{Z_1(\mathbf{s})-Z_1(\mathbf{s}+h)\right}\left{Z_2(\mathbf{s})-Z_2(\mathbf{s}+h)\right}\right]  \tag{7.9}<br>$$<br>两个区域化变量 $Z_1(\mathbf{s})$ 和 $Z_2(\mathbf{s})$ 的实测值分别为 $z_1\left(\mathbf{s}_i\right)$ 和 $z_2\left(\mathbf{s}_i\right)$，它们之间的经验交叉半方差函数可以采用下式计算:</p>
+<p>$$<br>\gamma_{12}^*(h)&#x3D;\frac{1}{2 N(h)} \sum_{i&#x3D;1}^{N(h)}\left{z_1\left(\mathbf{s}_i\right)-z_1\left(\mathbf{s}_i+h\right)\right}\left{z_2\left(\mathbf{s}_i\right)-z_2\left(\mathbf{s}_i+h\right)\right}  \tag{7.10}<br>$$</p>
+<p>其中 $\gamma_{12}^*(h)$ 是两个变量的经验交叉半方差值; $N(h)$ 是具有相同间距 $h$ 的变量对（ $Z_1(\mathbf{s})，Z_2(\mathbf{s})$ ）的数目。如果两个变量正相关，那么变量 $Z_1(\mathbf{s})$ 从 $\mathbf{s}_i$ 到 $\mathbf{s}_i+h$ 的增加 (或减少) 会相应引起 $Z_2(\mathbf{s})$ 的增加（或减少)， 交叉半方差值就是正值。</p>
+<p>交叉变异函数和交叉协方差函数（如果存在的话）有如下关系:<br>$$<br>\gamma_{12}(h)&#x3D;C_{12}(0)-\frac{1}{2}\left{C_{12}(h)+C_{12}(-h)\right} \tag{7.11}<br>$$<br>然而这种转化并没有保留所有的信息，我们通过将交叉协方差函数分为偶数部分和奇数部分来说明：<br>$$<br>C_{12}(h)&#x3D;\frac{1}{2}\left{C_{12}(+h)+C_{12}(-h)\right}+\frac{1}{2}\left{C_{12}(+h)-C_{12}(-h)\right} \tag{7.12}<br>$$<br>从上式可以看出，奇数部分也就是公式右边的第二部分在 <code>式 (7.11)</code> 中并没有出现，因此交叉协方差函数是不对称的函数，而交叉变异函数是对称的偶函数，对任意 $h$ 有:<br>$$<br>\gamma_{12}(h)&#x3D;\gamma_{12}(-h) \text { 或 } \gamma_{12}(h)&#x3D;\gamma_{21}(h)<br>$$<br>由于交叉变异函数无法表达不对称性，因此不能用于那些具有非常明显不对称性（或不对称性非常重要）的现象或领域中。</p>
+<h4 id="7-1-3-交叉相关函数-cross-correlogram"><a href="#7-1-3-交叉相关函数-cross-correlogram" class="headerlink" title="7.1.3 交叉相关函数 (cross correlogram)"></a>7.1.3 交叉相关函数 (cross correlogram)</h4><p>区域化变量 $Z_1(\mathbf{s})$ 和 $Z_2(\mathbf{s})$ 之间的空间交叉相关函数为 $\rho_{12}(h)$， 公式为:</p>
+<p>$$<br>\rho_{12}(h)&#x3D;\frac{C_{12}(h)}{\sqrt{C_{11}(0) C_{22}(0)}}<br>$$</p>
+<p>该公式是变量 $Z_1(\mathbf{s})$ 和 $Z_2(\mathbf{s}+h)$ 在空间域上 Pearson 相关系数的扩展形式。当 $h&#x3D;0$ 时就是 Pearson 相关系数。但需要注意， $\rho_{12}(0)&#x3D;0$ 在通常意义下指没有线性相关性，但并不表示在大于零的滞后距离上没有相关性。</p>
+<p>交叉相关函数与交叉协方差函数一样，也具有不对称性:</p>
+<p>$$<br>\rho_{12}(h) \neq \rho_{12}(-h)<br>$$</p>
+<p>两变量之间的经验交叉相关函数计算如下:</p>
+<p>$$<br>\rho_{12}^*(h)&#x3D;\frac{C_{12}^*(h)}{\sigma_{z_{1_{-h}}} \cdot \sigma_{z_{2_{+h}}}}<br>$$</p>
+<p>式中: $\rho_{12}^*(h)$ 是两个变量的经验交叉协方差值; $C_{12}^*(h)$ 为经验交叉协方差函数， 可以用 <code>式 (7.4)</code> 计算获得; $\sigma_{z_{1_{-h}}}$ 和 $\sigma_{z_{2_{+h}}}$ 为相同间距 $h$ 内 $z_1\left(\mathbf{s}<em>i\right)$ 和 $z_2\left(\mathbf{s}<em>i\right)$ 的标准差值， 分别计算如下:<br>$$<br>\begin{aligned}<br>&amp; s</em>{\mathbf{s}<em>1-h}^2&#x3D;\frac{1}{N(h)} \sum</em>{i&#x3D;1}^{N(h)} z_1^2\left(\mathbf{s}<em>i\right)-m</em>{z_1-h}^2， m</em>{\mathbf{s}<em>1-h}&#x3D;2 \frac{1}{N(h)} \sum</em>{i&#x3D;1}^{N(h)} z_1\left(\mathbf{s}<em>i\right) \<br>&amp; s</em>{z_{2+h}}^2&#x3D;\frac{1}{N(h)} \sum_{i&#x3D;1}^{N(h)} z_2^2\left(\mathbf{s}<em>i\right)-m</em>{z_{++h}}^2， m_{z_{z_{+h}}}&#x3D;\frac{1}{N(h)} \sum_{i&#x3D;1}^{N(h)} z_2\left(\mathbf{s}_i\right)<br>\end{aligned}<br>$$</p>
+<p>其中 $N(h)$ 是具有相同间距 $h$ 的变量对（ $Z_1(\mathbf{s}),Z_2(\mathbf{s})$ ）的数目。</p>
+<p>另外一个表达两个变量之间空间关系的手段是 <code>协离散系数 (codispersion coefficient)</code>， 对任意滞后距离 $h$ 有:</p>
+<p>$$<br>v_{12}(h)&#x3D;\frac{\gamma_{12}(h)}{\sqrt{\gamma_{11}(h) \gamma_{22}(h)}}<br>$$</p>
+<p>该系数可以表达两个变量 $Z_1(\mathbf{s})$ 和 $Z_2(\mathbf{s})$ 的 <code>空间离差（spatial differences）</code> 之间的相关性，它是对称的且优于交叉相关性函数 $\rho_{12}(h)$ 。对二阶平稳性而言，当滞后距离 $h$ 的绝对值趋于无穷大时，$v_{12}(h)$ 接近于 $\rho_{12}(k)$。</p>
+<h3 id="7-2-普通协同克里金法-Ordinary-Cokriging"><a href="#7-2-普通协同克里金法-Ordinary-Cokriging" class="headerlink" title="7.2 普通协同克里金法 (Ordinary Cokriging)"></a>7.2 普通协同克里金法 (Ordinary Cokriging)</h3><p>普通协同克里金预测是权重 $\lambda_a^i$ 的一种线性结合。假设待预测变量为 $Z_u$，通常该变量比其他变量的样品少；有 $V$ 个协变量 $Z_j， j&#x3D;1，2， \cdots， V$。</p>
+<p><strong>（1）预测公式</strong></p>
+<p>利用普通协同克立格法，有下列预测公式:</p>
+<p>$$<br>Z_u^*(B)&#x3D;\sum_{l&#x3D;1}^V \sum_{i&#x3D;1}^{n_{l}} \lambda_{il} \left(z_l\left(\mathbf{s}_i\right)\right) \tag{7.16}<br>$$</p>
+<p>式中 $Z_u^*(B)$ 表示待估点或块段处的预测值; 下标 $l$ 表示第 $l$ 个辅助变量， 共有 $V$ 个。下标 $i$ 表示变量 $l$ 实测的样点数目，共有 $n_l$ 个是实测数据; $\lambda$ 是分配给变量 $l$ 的权重。</p>
+<p><strong>（2）模型求解</strong></p>
+<p>根据无偏性原则，需要满足:</p>
+<p>$$<br>\sum_{i&#x3D;1}^{n_l} \lambda_i&#x3D;\left{\begin{array}{l}<br>1， l&#x3D;u \<br>0， l \neq u<br>\end{array}\right. \tag{7.17}<br>$$</p>
+<p>以两个变量的情况为例。</p>
+<p>若只有两个变量 $Z_u$ 和 $Z_v$，其中待预测的变量 $Z_u$ 为主变量，则普通协同克里金的预测 <code>式 (7.16)</code> 可以简化为:</p>
+<p>$$<br>Z_u^*(B)&#x3D;\sum_{i&#x3D;1}^N \lambda_{u i} z_u\left(\mathbf{s}<em>i\right)+\sum</em>{j&#x3D;1}^p \lambda_{i j} z_v\left(\mathbf{s}_j\right) \tag{7.18}<br>$$</p>
+<p>式中: $Z_u^*(B)$ 是待估点或块段处的预测值; $Z_u\left(\mathbf{s}<em>i\right)$ 和 $Z_v\left(\mathbf{s}<em>j\right)$ 分别是主变量 $Z_u$ 和辅助变量 $Z_v$ 的实测值; $\lambda_i$ 和 $\lambda_j$ 分别是分配给主变量 $Z_u$ 和辅助变量 $Z_v$ 的实测值的权重， 且 $\sum \lambda</em>{ui}&#x3D;1$， $\sum \lambda</em>{vj}&#x3D;0$ ; $n$ 和 $p$ 是参与估值的主变量 $Z_u$ 和辅助变量 $Z_v$ 的实测值数目。</p>
+<p>根据最优无偏的假设条件，建立普通协同克里金的预测方程组：</p>
+<p>$$<br>\begin{aligned}<br>&amp; \sum_{l&#x3D;1}^v \sum_{i&#x3D;1}^{n_i} \lambda_{il} \gamma_{lv}\left(\mathbf{s}<em>i， \mathbf{s}<em>j\right)+\varphi_v&#x3D;\bar{\gamma}</em>{uv}\left(\mathbf{s}<em>j， B\right) \<br>&amp; \sum</em>{i&#x3D;1}^{n_l} \lambda</em>{il}&#x3D;\left{\begin{array}{l}<br>1， l&#x3D;u \<br>0， l \neq u<br>\end{array}\right.<br>\end{aligned}<br>$$</p>
+<p>式中 $\gamma_{lv}(\mathbf{s}_i， \mathbf{s}_j)$ 是变量 $l$ 和 $v$ 在点 $i， j$ 处的交叉半方差值; $\bar{\gamma}_w\left(\mathbf{s}_i， B\right)$ 是点 $i$ 和待预测块段处 $B$ 的交叉半方差值平均值; $\varphi_v$ 是第 $v$ 个变量的拉格朗日乘子。</p>
+<p>根据 <code>式 (7.19)</code> 可以计算出权重 $\lambda$， 将其代人普通协同克里金预测 <code>式 (7.16)</code> 中，可以得到预测值。</p>
+<p><strong>（3）估计方差</strong></p>
+<p>普通协同克里金的预测方差为：</p>
+<p>$$<br>\sigma_u^2(B)&#x3D;\sum_{l&#x3D;1}^v \sum_{j&#x3D;1}^{n_l} \lambda_{jl} \bar{\gamma}_{vl}\left(\mathbf{s}<em>j， B\right)+\varphi_u &#x3D; \bar{\gamma}</em>{uv}(B， B)<br>$$</p>
+<p><strong>（4）向量表达形式</strong></p>
+<p>上述计算可以用矩阵的形式来表达，为了简单起见只考虑两个变量 $u$ 和 $v$，用 $\tau_{uv}$ 表示样点之间的半方差值的矩阵 (包括交叉半方差值，当 $u \neq v$ 时)。假设变量 $u$ 有 $n_u 个点进行了实测，变量 $v$ 在 $n_v$ 个点进行了实测，那么这个矩阵的阶数是 $n_u \times n_v$ :</p>
+<p>$$<br>\tau_{u v}&#x3D;\left[\begin{array}{cccc}<br>\gamma_{uv}\left(\mathbf{s}<em>1， \mathbf{s}<em>1\right) &amp; \gamma</em>{uv}\left(\mathbf{s}<em>1， \mathbf{s}<em>2\right) &amp; \cdots &amp; \gamma</em>{uv}\left(\mathbf{s}<em>1， \mathbf{s}</em>{n_v}\right) \<br>\gamma</em>{uv}\left(\mathbf{s}<em>2， \mathbf{s}<em>1\right) &amp; \gamma</em>{uv}\left(\mathbf{s}<em>2， \mathbf{s}<em>2\right) &amp; \cdots &amp; \gamma</em>{uv}\left(\mathbf{s}<em>2， \mathbf{s}</em>{n_v}\right) \<br>\vdots &amp; \vdots &amp; \cdots &amp; \vdots \<br>\gamma</em>{uv}\left(\mathbf{s}</em>{n_u}， \mathbf{s}<em>1\right) &amp; \gamma</em>{uv}\left(\mathbf{s}</em>{n_u}， \mathbf{s}<em>2\right) &amp; \cdots &amp; \gamma</em>{uv}\left(\mathbf{s}<em>{n_u}， \mathbf{s}</em>{n_v}\right)<br>\end{array}\right]<br>$$</p>
+<p>变量 $u$ 的自相关向量和变量 $u$ 和 $v$ 之间的交叉相关向量分别用 $b_{uv}$ 和 $b_{vu}$ 表示:</p>
+<p>$$<br>b_{vu}&#x3D;\left[\begin{array}{c}<br>\bar{\gamma}<em>{vu}\left(\mathbf{s}<em>1， B\right) \<br>\bar{\gamma}</em>{vu}\left(\mathbf{s}<em>2， B\right) \<br>\vdots \<br>\bar{\gamma}</em>{vu}\left(\mathbf{s}</em>{n_\alpha}， B\right)<br>\end{array}\right]，<br>\quad b_{uv}&#x3D;\left[\begin{array}{c}<br>\bar{\gamma}<em>{uv}\left(\mathbf{s}<em>1， B\right) \<br>\bar{\gamma}</em>{uv}\left(\mathbf{s}<em>2， B\right) \<br>\vdots \<br>\bar{\gamma}</em>{uv}\left(\mathbf{s}</em>{n_v}， B\right)<br>\end{array}\right]<br>$$</p>
+<p>矩阵等式为:</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221203165007-2d25.webp"></p>
+<p>现用 $G$ 表示等式左边的第一部分， 用 $\lambda$ 表示等式左边的第二部分， 用 $b$ 表示右边的部分， 那么等式可以写为:</p>
+<p>$$<br>\lambda&#x3D;G^{-1} b<br>$$</p>
+<p>协同克里金的预测方差为:</p>
+<p>$$<br>\hat{\sigma}_u^2(B)&#x3D;b^T \lambda-\bar{\gamma}_u(B， B)<br>$$</p>
+<p>这里块段 $B$ 可以是任何形状和大小，也可以是一个点 $\mathbf{s}<em>0$ 。这时 $\bar{\gamma}</em>{w v}\left(\mathbf{s}<em>{n_v}， B\right)$ 就变为 $\bar{\gamma}<em>w\left(\mathbf{s}</em>{n_v}， \mathbf{s}<em>0\right)$， 且 $\bar{\gamma}</em>{w t}(B， B)&#x3D;0$ 。上面的 $b</em>{w t}$ 和 $b_{w \omega}$ 向量可表示成:</p>
+<p>$$<br>b_w&#x3D;\left[\begin{array}{c}<br>\gamma_\omega\left(\mathbf{s}_1， \mathbf{s}_0\right) \<br>\gamma_\omega\left(\mathbf{s}_2， \mathbf{s}<em>0\right) \<br>\vdots \<br>\gamma_\omega\left(\mathbf{s}</em>{n_w}， \mathbf{s}_0\right)<br>\end{array}\right]， \quad b_w&#x3D;\left[\begin{array}{c}<br>\gamma_w\left(\mathbf{s}_1， \mathbf{s}_0\right) \<br>\gamma_w\left(\mathbf{s}_2， \mathbf{s}<em>0\right) \<br>\vdots \<br>\gamma_w\left(\mathbf{s}</em>{n_v}， \mathbf{s}_0\right)<br>\end{array}\right]</p>
+<p>$$<br>同时 <code>式 (7.22)</code> 的协同克里金的预测方差可表示为:</p>
+<p>$$<br>f_u^2\left(\mathbf{s}_n\right)&#x3D;b^T \lambda<br>$$</p>
+<h3 id="7-3-简单协同克里金法-Simply-Cokriging"><a href="#7-3-简单协同克里金法-Simply-Cokriging" class="headerlink" title="7.3 简单协同克里金法 (Simply Cokriging)"></a>7.3 简单协同克里金法 (Simply Cokriging)</h3><p>在给定的邻域内，当感兴趣的变量没有样品数据可以用时，普通协同克里金没有均值可用。当情况相反时，可以考虑采用简单协同克里金法。简单协同克里金法要用到变量的经验均值信息，它由感兴趣变量的均值与权重 $\lambda_z$ 的线性结合两个部分组成:</p>
+<p>$$<br>Z_u^*(B)&#x3D;m_u+\sum_{l&#x3D;1}^V \sum_{i&#x3D;1}^{n_l} \lambda_{i l}\left(z_l\left(\mathbf{s}_i\right)-m_l\right)<br>$$</p>
+<p>式中: $Z_u^*(B)$ 表示所预测的块段（或点）处的预测值; $l$ 表示变量，$l&#x3D;1，2，\ldots,V$；$i$ 表示变量 $l$ 的实测点序号，共 $n_1$ 个; $\lambda$ 是权重。</p>
+<p>简单协同克里金预测系统的矩阵形式为:</p>
+<p>$$<br>\left[\begin{array}{ccccc}<br>C_{11} &amp; \cdots &amp; C_{1 j} &amp; \cdots &amp; C_{1 V} \<br>\vdots &amp; \ddots &amp; &amp; &amp; \vdots \<br>C_{l 1} &amp; &amp; C_{l j} &amp; \ddots &amp; C_{l V} \<br>\vdots &amp; &amp; \vdots &amp; \ddots &amp; \vdots \<br>C_{V 1} &amp; \cdots &amp; C_{V j} &amp; \cdots &amp; C_{V V}<br>\end{array}\right]\left[\begin{array}{c}<br>\lambda_1 \<br>\vdots \<br>\lambda_l \<br>\vdots \<br>\lambda_V \<br>\end{array}\right]&#x3D;\left[\begin{array}{c}<br>c_{1 B} \<br>\vdots \<br>c_{l B} \<br>\vdots \<br>c_{V B}<br>\end{array}\right]<br>$$</p>
+<p>$$<br>C_{l j}&#x3D;C_{j l}^T<br>$$</p>
+<p>$C_{l j}$ 包含了一定对的变量间样品点之间的协方差， $c_{l B}$ 包括了所要预测的点（或块段）和实测变量 $l$ 的样品点之间的协方差，$\lambda_l$ 是分配给变量 $l$ 的权重。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/3b1cf105.html">http://xishansnow.github.io/posts/3b1cf105.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E5%AD%A6/">空间统计学</a><a class="post-meta__tags" href="/tags/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/">点参考数据</a><a class="post-meta__tags" href="/tags/%E6%A6%82%E8%BF%B0/">概述</a></div><div class="post-share"><div class="social-share" data-image="/img/coffe_05.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/ddea1113.html" title="近似推断--平均场近似"><img class="cover" src="/img/book_18.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">近似推断--平均场近似</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a><a class="pagination-related" href="/posts/439a27b0.html" title="近似推断--变分推断与信念传播"><img class="cover" src="/img/book_13.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">近似推断--变分推断与信念传播</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/737a759d.html" title="🔥 空间大数据组织管理方法索引帖"><img class="cover" src="/img/008.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-13</div><div class="info-item-2">🔥 空间大数据组织管理方法索引帖</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 个人用于整理时空大数据引擎原理、方法及其实现的汇总帖，大致分为综述、原理方法、工程实践三个板块。 一、 综述 《空间大数据引擎综述文章：大数据时代的空间数据引擎》  二、原理方法 空间索引方法综述：  《基于空间填充曲线的降维方法》: 介绍如何利用 Z 序 Hillbert 曲线等空间填充曲线方法，实现多维空间的降维索引。  《空间填充曲线的聚簇性分析》： 从理论上分析了空间填充曲线的聚簇性，表明空间填充曲线无法做到任意位置的高聚簇性。  《扩展 Z 序曲线（XZ-Ordering）索引》: 德国慕尼黑大学教授提出的一种有缝有叠的剖分和填充曲线方式，可有效解决跨剖分面片的单编码空间覆盖问题。   三、工程实践 《全文数据库中多维数据检索效率的提升方法》: 基于可分布式部署的传统关系型数据库或全文数据库，其实现机制和单机数据库区别不大，并行机制来自于分布式数据库本身。本文主要介绍了全文数据库（关系型数据库类似）的实现机制，以及空间索引在其中的结合方法。典型代表如：Parallel Secondo、Paradise、 Sphinx 等。此外，专门面向科学数据的...</div></div></div></a><a class="pagination-related" href="/posts/82ad5e00.html" title="🔥  点参考数据模型索引帖"><img class="cover" src="/img/book_06.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-10</div><div class="info-item-2">🔥  点参考数据模型索引帖</div></div><div class="info-2"><div class="info-item-1">   1 空间过程及平稳性假设 《随机过程与随机场》 ： 将空间表面（Surface）视为空间随机过程的一次实现，并将点参考数据视为空间表面的一次不完整观测，是研究点参考数据的基本假设。在此假设下，构成空间数据集的 $n$ 个具有地理参考的观测值集合，并不代表大小为 $n$ 的样本，而是代表了对一次随机实验的不完整观测，是一个来自 $n$ 维分布的大小为 $1$ 的样本。这种假设对于理解点参考数据的统计模型非常重要，也同时使传统基于重复观测的统计方法失效。本文介绍了这种假设以及相关的概念和知识。该文中还有部分关于空间连续性和可微性的讨论，之前认为不重要，但后来细品一下可能涉及点参考数据和面元数据之间的转换问题，将来有时间可以配合《随机偏微分方程方法: 高斯场和高斯马尔可夫随机场之间的明确联系》 进一步理解。  2 经典克里金方法 点参考数据及克里金法（2005） : 本文介绍了传统地统计学中的克里金方法。该方法发源于 1940 年代的地统计学领域，主要用于解决插值问题，因 Krige 1960 年的一篇硕士论文而命名。克里金法是一种基于高斯过程假设的经验估计和预测方法，建立在...</div></div></div></a><a class="pagination-related" href="/posts/36f530ea.html" title="空间过程的贝叶斯建模分析方法综述"><img class="cover" src="/img/005.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-11</div><div class="info-item-2">空间过程的贝叶斯建模分析方法综述</div></div><div class="info-2"><div class="info-item-1">   【阅读建议】 本文重点介绍点参考空间数据的贝叶斯建模和分析方法，尤其是贝叶斯分层建模框架。点参考数据（也被称为地统计数据）主要指在固定空间位置观测到的随机变量数据。过去二十年中，此类数据在空间和时间上的收集量已经大大增加，随之而来的是分析此类数据的大量方法。本文尝试对其中的贝叶斯方法进行回顾。此类分析方法的好处是能够进行全面而准确的推断，并对不确定性进行适当评估。地统计建模的测站数据虽然比较复杂，涉及单变量和多变量、连续型和类别型、静态和动态以及大量长时间观测结果等，但在贝叶斯分层模型框架内，可以统一进行描述和阐释。本文另一亮点在于对大规模观测数据的建模问题做了综述，介绍了降秩方法（高斯预测过程模型）和近邻方法（近邻高斯过程模型）两类主要的处理策略。 【引文信息】 A. E. Gelfand and S. Banerjee, “Bayesian Modeling and Analysis of Geostatistical Data,” Annu Rev Stat Appl, vol. 4, pp. 245–266, 2017, doi:...</div></div></div></a><a class="pagination-related" href="/posts/dd354f.html" title="空间数据的贝叶斯分层建模"><img class="cover" src="/img/book_02.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-01</div><div class="info-item-2">空间数据的贝叶斯分层建模</div></div><div class="info-2"><div class="info-item-1">   【摘 要】由于空间数据的复杂性，使其统计建模非常困难。分层建模方法由于能够对模型进行分解，从而使建模和推断变得更具可操作性，因此在空间统计学领域得到快速应用和发展。而本文正是围绕空间数据的分层建模方法展开的。文中涉及通用分层建模方法、地统计中的分层建模、广义线性模型的分层建模等内容，以及相应的推断问题。本文内容摘自 Gelfand 的 《空间统计手册》第七章。  【原 文】  Gelfand, A.E. et al. (2010)， Handbook of spatial statistics (chapter 7). CRC press. 7.1...</div></div></div></a><a class="pagination-related" href="/posts/37a1c275.html" title="基于似然的的方法"><img class="cover" src="/img/007.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-01</div><div class="info-item-2">基于似然的的方法</div></div><div class="info-2"><div class="info-item-1">   【摘 要】在空间统计学中，点参考数据模型通常采用高斯过程（场）建模，而超参数的推断则主要有基于经验的矩量估计法和基于似然的统计推断方法。本文主要介绍基于似然的统计推断方法。文中涉及最大似然估计、受限最大似然估计、组合似然近似估计、渐进特性分析等内容。本文内容摘自 Gelfand 的 《空间统计手册》第四章。  【原 文】  Gelfand, A.E. et al. (2010)， Handbook of spatial statistics (chapter 4). CRC press.  关于似然方法的基础资料见： 参见 普度大学机器人视觉实验室的 《最大似然、最大后验与贝叶斯方法的区别》  参见 Reid 等 2010 年的 《似然函数与基于似然的推断》  参见 Cousineau 等 2016 年 《似然概念的扫盲帖》   对非似然方法感兴趣的同学，可以阅读： 参见 《近似贝叶斯计算（ABC）索引贴》    4.1 概述上一章考虑了结合使用矩量法和最小二乘法来估计地质统计模型的参数（参见  《点参考数据及克里金法》 ）。这些方法统称为  “经典地质统计学” ...</div></div></div></a><a class="pagination-related" href="/posts/a944ff60.html" title="🔥  大规模点参考数据统计分析方法索引帖"><img class="cover" src="/img/book_12.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-10</div><div class="info-item-2">🔥  大规模点参考数据统计分析方法索引帖</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 个人用于整理大规模点参考数据时空统计分析方法的汇总帖，大致分为克里金法和贝叶斯建模、高斯过程及其推断理论、大 n 问题及其对策、并行化策略和方法、与深度学习的结合等部分。目前主要兴趣点在大规模点参考数据的高效计算方法和统计深度学习方面。 1 基础地统计方法（1）克里金法及经验估计 克里金方法发源于 1940 年代的地统计学领域，主要用于解决插值问题，因 Krige 1960 年的一篇硕士论文而命名。在 1990s 年代，克里金法在贝叶斯推断背景下被重新表述，并被称为 高斯过程回归，而相关函数（在克里金法中是半变异函数）的选择，则被视为一个机器学习问题。  自编的《点参考数据及克里金法》 : 介绍了传统地统计学的克里金方法，其本质上就是高斯过程，只是提供了一套以变异函数和克里金预测为核心的独立技术体系。 Gelfand （2017）的 《点参考数据贝叶斯建模综述》 ： 系统地从贝叶斯建模角度重温了地统计方法，除简述克里金法外，还包括贝叶斯分层建模方法、大 N 问题的处理等介绍性文字。  2...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA"><span class="toc-text">2 基础理论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E7%A9%BA%E9%97%B4%E8%BF%87%E7%A8%8B%E3%80%81%E5%8C%BA%E5%9F%9F%E5%8C%96%E5%8F%98%E9%87%8F%E4%B8%8E%E9%9A%8F%E6%9C%BA%E5%87%BD%E6%95%B0"><span class="toc-text">2.1 空间过程、区域化变量与随机函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%B9%B3%E7%A8%B3%E6%80%A7%E5%81%87%E8%AE%BE"><span class="toc-text">2.2 平稳性假设</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E4%B8%A5%E6%A0%BC%E5%B9%B3%E7%A8%B3%E6%80%A7%E5%81%87%E8%AE%BE%EF%BC%88%E5%BC%BA%E5%B9%B3%E7%A8%B3%E6%80%A7%EF%BC%89"><span class="toc-text">（1）严格平稳性假设（强平稳性）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E4%BA%8C%E9%98%B6%E5%B9%B3%E7%A8%B3%E6%80%A7%E5%81%87%E8%AE%BE%EF%BC%88%E5%BC%B1%E5%B9%B3%E7%A8%B3%E6%80%A7%E5%81%87%E8%AE%BE%EF%BC%89"><span class="toc-text">（2）二阶平稳性假设（弱平稳性假设）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%883%EF%BC%89-%E6%9C%AC%E5%BE%81%E5%81%87%E8%AE%BE%E6%80%A7%E5%81%87%E8%AE%BE"><span class="toc-text">（3） 本征假设性假设</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%884%EF%BC%89-%E8%AF%B4%E6%98%8E"><span class="toc-text">（4） 说明</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%8F%98%E5%BC%82%E5%87%BD%E6%95%B0%E5%8F%8A%E5%85%B6%E6%8B%9F%E5%90%88"><span class="toc-text">3 变异函数及其拟合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%B8%8E%E5%8F%98%E5%BC%82%E5%87%BD%E6%95%B0%E7%9B%B8%E5%85%B3%E7%9A%84%E7%BB%9F%E8%AE%A1%E6%A6%82%E5%BF%B5"><span class="toc-text">3.1 与变异函数相关的统计概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%8F%98%E5%BC%82%E5%87%BD%E6%95%B0%E5%8F%8A%E5%85%B6%E7%89%B9%E5%BE%81"><span class="toc-text">3.2 变异函数及其特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%8F%98%E5%BC%82%E5%87%BD%E6%95%B0%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-text">3.3 变异函数的类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E5%8F%98%E5%BC%82%E5%87%BD%E6%95%B0%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-text">3.4 变异函数的选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E5%8F%98%E5%BC%82%E5%87%BD%E6%95%B0%E7%9A%84%E6%8B%9F%E5%90%88"><span class="toc-text">3.5 变异函数的拟合</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%85%8B%E9%87%8C%E9%87%91%E6%B3%95%E7%AE%80%E4%BB%8B"><span class="toc-text">4 克里金法简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%BA%BF%E6%80%A7%E9%A2%84%E6%B5%8B%E5%85%8B%E9%87%8C%E9%87%91%E6%B3%95"><span class="toc-text">5 线性预测克里金法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%99%AE%E9%80%9A%E5%85%8B%E9%87%8C%E9%87%91%E6%B3%95"><span class="toc-text">5.1 普通克里金法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-1-%E7%82%B9%E7%8A%B6%E6%99%AE%E9%80%9A%E5%85%8B%E9%87%8C%E9%87%91%E6%B3%95%EF%BC%88-Punctual-Kriging-%EF%BC%89"><span class="toc-text">5.1.1 点状普通克里金法（ Punctual Kriging ）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-2-%E5%9D%97%E6%AE%B5%E6%99%AE%E9%80%9A%E5%85%8B%E9%87%8C%E9%87%91%E6%B3%95"><span class="toc-text">5.1.2 块段普通克里金法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E7%AE%80%E5%8D%95%E5%85%8B%E9%87%8C%E9%87%91%E6%B3%95"><span class="toc-text">5.2 简单克里金法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%B3%9B%E5%85%8B%E9%87%8C%E9%87%91%E6%B3%95"><span class="toc-text">5.3 泛克里金法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E9%9D%9E%E7%BA%BF%E6%80%A7%E9%A2%84%E6%B5%8B%E5%85%8B%E9%87%8C%E9%87%91%E6%B3%95"><span class="toc-text">6 非线性预测克里金法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%8D%8F%E5%90%8C%E5%85%8B%E9%87%8C%E9%87%91%E6%B3%95"><span class="toc-text">7 协同克里金法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E5%8D%8F%E5%90%8C%E5%8C%BA%E5%9F%9F%E5%8C%96%E7%89%B9%E6%80%A7%E4%B8%8E%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="toc-text">7.1 协同区域化特性与相关函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-1-%E4%BA%A4%E5%8F%89%E5%8D%8F%E6%96%B9%E5%B7%AE%E5%87%BD%E6%95%B0"><span class="toc-text">7.1.1 交叉协方差函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-2-%E4%BA%A4%E5%8F%89%E5%8F%98%E5%BC%82%E5%87%BD%E6%95%B0-cross-variogram"><span class="toc-text">7.1.2 交叉变异函数 (cross variogram)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-3-%E4%BA%A4%E5%8F%89%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0-cross-correlogram"><span class="toc-text">7.1.3 交叉相关函数 (cross correlogram)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-%E6%99%AE%E9%80%9A%E5%8D%8F%E5%90%8C%E5%85%8B%E9%87%8C%E9%87%91%E6%B3%95-Ordinary-Cokriging"><span class="toc-text">7.2 普通协同克里金法 (Ordinary Cokriging)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-%E7%AE%80%E5%8D%95%E5%8D%8F%E5%90%8C%E5%85%8B%E9%87%8C%E9%87%91%E6%B3%95-Simply-Cokriging"><span class="toc-text">7.3 简单协同克里金法 (Simply Cokriging)</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

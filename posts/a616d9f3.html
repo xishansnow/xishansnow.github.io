@@ -1,0 +1,779 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>高斯场和非高斯场的随机偏微分方程方法：10 年回顾 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="高斯场和非高斯场的随机偏微分方程方法：10 年回顾"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/a616d9f3.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '高斯场和非高斯场的随机偏微分方程方法：10 年回顾',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/coffe_13.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">高斯场和非高斯场的随机偏微分方程方法：10 年回顾</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">高斯场和非高斯场的随机偏微分方程方法：10 年回顾</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-07T12:50:00.000Z" title="发表于 2023-02-07 20:50:00">2023-02-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.204Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/">GeoAI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/">大数据专题</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/">点参考数据</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">25k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>103分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>【摘 要】 高斯过程和随机场有着悠久的历史，包含了表示空间和时空相关结构的很多方法，例如：协方差函数、谱表示、再生核希尔伯特空间、基于图的模型等。本文介绍了随机偏微分方程方法（SPDE）如何通过 Hilbert 空间投影，将 Matern 协方差模型与其中几种方法建立起联系，并且每种联系在不同情况下都非常有用。除了主要思想的概述之外，本文还讨论了一些重要的扩展、理论、应用和其他新发展。这些方法包括：马尔可夫模型、非马尔可夫模型、非高斯随机场、非平稳场、任意流形上的时空场等，以及实际计算需要考虑的因素。</p>
+<p>【原 文】 Lindgren, F., Bolin, D. and Rue, H. (2022) ‘The SPDE approach for Gaussian and non-Gaussian fields: 10 years and still running’, Spatial Statistics, 50, p. 100599. Available at: <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.spasta.2022.100599">https://doi.org/10.1016/j.spasta.2022.100599</a>.</p>
+<h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h2><p>关于高斯场的随机偏微分方程 (SPDE) 方法的论文（Lindgren 等，2011 年<sup class="refplus-num"><a href="#ref-Lindgren2011">[91]</a></sup>）发表已经有 $10$ 年了。本文将借这个机会，从表征高斯随机场分布的不同角度来看待该方法，回顾最近的发展，并展示该方法的一些主要应用。本文还将讨论基于 SPDE 方法的非高斯场构造，该方法最初是由 David Bolin 的博士论文中提出的（Bolin，2012 <sup class="refplus-num"><a href="#ref-Bolin2012">[22]</a></sup>），此后从 Bolin (2014 <sup class="refplus-num"><a href="#ref-Bolin2014">[24]</a></sup>) 开始又发表了一系列论文。
+
+本文以下大部分讨论将集中在 SPDE 及其有限维（希尔伯特空间）表示的性质上，但记住该方法与直接实际相关性也非常重要。本研究的一个重要目标是构建具有良好计算特性的模型，以便人们可以实际使用它们。事实证明，由于稀疏精度矩阵形式及其高效的数值计算，这确实是可能的（Rue 和 Held，2005 年 <sup class="refplus-num"><a href="#ref-Rue2005">[119]</a></sup>；Rue 等，2009 年 <sup class="refplus-num"><a href="#ref-Rue2009">[122]</a></sup>；Martins 等，2013 年 <sup class="refplus-num"><a href="#ref-Martins2013">[96]</a></sup>；Rue 等，2017 年 <sup class="refplus-num"><a href="#ref-Rue2017">[123]</a></sup>；van Niekerk 等，2021 年 <sup class="refplus-num"><a href="#ref-vanNiekerk2021">[148]</a></sup>；Rue 和 Martino，2007 年 <sup class="refplus-num"><a href="#ref-Rue2007">[121]</a></sup>；Eidsvik 等，2009 年 <sup class="refplus-num"><a href="#ref-Eidsvik2009">[50]</a></sup>）。 `R-INLA`、`inlabru` 和 `rSPDE` 包（Krainski 等，2018 年 <sup class="refplus-num"><a href="#ref-Krainski2018">[80]</a></sup>；Bakka 等，2018 年 <sup class="refplus-num"><a href="#ref-Bakka2018">[8]</a></sup>；Lindgren 和 Rue，2015 年 <sup class="refplus-num"><a href="#ref-Lindgren2015">[90]</a></sup>；Bachl 等，2019 年 <sup class="refplus-num"><a href="#ref-Bachl2019">[5]</a></sup>；Bolin 和 Kirchner，2020 年 <sup class="refplus-num"><a href="#ref-Bolin2020K">[28]</a></sup>）为本文的许多讨论提供了基于高斯 SPDE 的模型，而 `ngme` 包（Asar 等，2020 年 <sup class="refplus-num"><a href="#ref-Asar2020">[2]</a></sup>）实现了非高斯模型。
+
+### 1.1 协方差矩阵还是精度矩阵？
+
+SPDE 方法的良好计算特性来自于对精度矩阵的稀疏性考虑，而不是传统的的协方差矩阵，更多细节将在 `第 3 节` 中出现。
+
+零均值高斯随机向量传统上可以由协方差矩阵表示，其边缘性质可以直接指定或从协方差矩阵中读取，但条件性质必须计算。该随机向量也可以用其精度矩阵（协方差矩阵的逆）表示，这是一种与概率图模型相关的 “现代” 表示法（Lauritzen，1996 <sup class="refplus-num"><a href="#ref-Lauritzen1996">[83]</a></sup>）。在精度矩阵表示中，可以直接指定条件性质或立即读取条件性质，但必须通过计算获得其边缘性质。
+
+在 SPDE 框架内，我们可以将精度矩阵与 “模型的生成方式” 相关联，而将协方差矩阵与 “模型的性质” 相关联。
+
+作为一个简单例子，让我们考虑一个平稳的一阶自回归过程 $x_t = \phi x_{t−1} + \epsilon_t$，其中 $t = 1，\ldots ,T$ 。
+- 该过程的精度矩阵是三对角矩阵，因为生成 $x_t$ 只需要 $x_{t−1}$
+- 该过程的相关矩阵却是稠密的，其第 $ij$ 个元素为 $\phi^{|i− j|}$，因为 $x_t$ 依赖于 $x_{t−1}$，而 $x_{t−1}$ 又依赖于 $x_{t-2}$ 以此类推。
+- 对于连续时间过程 (Simpson 等, 2012b <sup class="refplus-num"><a href="#ref-Simpson2012b">[135]</a></sup>) 和 Ornstein–Uhlenbeck 过程（$d x_t = −\phi x_t d t + dB_t$，其中 $B_t$ 表示维纳过程），上述密集/稀疏性质依然成立。
+
+对于上述一阶自回归过程，使用三对角的精度矩阵进行推断的计算成本为 $\mathcal{O}(T)$，而基于协方差矩阵的计算成本为 $\mathcal{O}(T^3)$。也正式因为因此，在条件独立观测条件下，保持精度矩阵的稀疏形式是卡尔曼递归/更新的关键，并确保了计算成本在 $T$ 中仍然是线性的（Knorr-Held 和 Rue，2002 年<sup class="refplus-num"><a href="#ref-Knorr-Held2002">[79]</a></sup> 的附录）。
+
+如果我们可以同时使用协方差矩阵和精度矩阵这两种方法，那无疑是非常有好处的，因为：**稠密协方差矩阵对于理解单变量的边缘性质和多变量之间的相关性质非常有用；而稀疏精度矩阵则提供了高效的计算能力**。不过，由于连续空间中的马尔可夫性质比连续时间中的马尔可夫性质涉及更多因素，因此也变得更为复杂 (Simpson 等, 2012b <sup class="refplus-num"><a href="#ref-Simpson2012b">[135]</a></sup>)。 
+
+Lindgren 等 (2011 <sup class="refplus-num"><a href="#ref-Lindgren2011">[91]</a></sup>) 的第一个主要结果表明：通过使用特定函数表征的有限维 Hilbert 空间，并将连续域函数投影到该 Hilbert 空间，可以让具有 Matern 协方差函数的高斯场同时使用精度矩阵和协方差矩阵两种方式的能力。
+
+### 1.2 最近的一些应用
+
+我们在此提供一份不完整的 SPDE 方法近期应用列表：
+- 天文学（Levis 等，2021 年 <sup class="refplus-num"><a href="#ref-Levis2021">[86]</a></sup>）
+- 健康（Mannseth 等，2021 年 <sup class="refplus-num"><a href="#ref-Mannseth2021">[94]</a></sup>；Scott，2021 年 <sup class="refplus-num"><a href="#ref-Scott2021">[130]</a></sup>；Moses 等 ，2021 年 <sup class="refplus-num"><a href="#ref-Moses2021">[106]</a></sup>；Bertozzi-Villa 等，2021 年 <sup class="refplus-num"><a href="#ref-Bertozzi-Villa2021">[14]</a></sup>；Moraga 等，2021 年 <sup class="refplus-num"><a href="#ref-Moraga2021">[104]</a></sup>；Asri 和 Benamirouche，2021 年<sup class="refplus-num"><a href="#ref-Asri2021">[3]</a></sup>）
+- 工程（Zhang 等，2021 年 <sup class="refplus-num"><a href="#ref-Zhang2021">[167]</a></sup>）
+- 理论（Ghattas 和 Willcox，2021 年<sup class="refplus-num"><a href="#ref-Ghattas2021">[62]</a></sup>；Sanz-Alonso 和 Yang， 2021a <sup class="refplus-num"><a href="#ref-Sanz-Alonso2021a">[127]</a></sup>；Lang 和 Pereira，2021 年<sup class="refplus-num"><a href="#ref-Lang2021">[81]</a></sup>；Bolin 和 Wallin，2021 年<sup class="refplus-num"><a href="#ref-Bolin2021W">[31]</a></sup>）
+- 环境计量学（Roksvåg 等，2021 年 <sup class="refplus-num"><a href="#ref-Roksvag2021a">[116]</a></sup>；Roksvåg 等，2021 年 <sup class="refplus-num"><a href="#ref-Roksvag2021b">[117]</a></sup>；Beloconi 等，2021 年<sup class="refplus-num"><a href="#ref-Beloconi2021">[13]</a></sup>；Vandeskog 等，2021a 年<sup class="refplus-num"><a href="#ref-Vandeskog2021a">[150]</a></sup>；Wang 和 Zuo，2021 年<sup class="refplus-num"><a href="#ref-Wang2021">[157]</a></sup>；Wright 等，2021 年<sup class="refplus-num"><a href="#ref-Wright2021">[162]</a></sup>；Gomez-Catas us 等，2021 年<sup class="refplus-num"><a href="#ref-Gomez-Catas2021">[64]</a></sup>；Valente 和 Laurini，2021b <sup class="refplus-num"><a href="#ref-Valente2021b">[147]</a></sup>；Bleuel 等，2021 年 <sup class="refplus-num"><a href="#ref-Bleuel2021">[20]</a></sup>；Florencio 等，2021 年 <sup class="refplus-num"><a href="#ref-Florencio2021">[56]</a></sup>；Valente 和 Laurini，2021a <sup class="refplus-num"><a href="#ref-Valente2021a">[146]</a></sup>；Hough 等, 2021 <sup class="refplus-num"><a href="#ref-Hough2021">[71]</a></sup>)
+- 计量经济学 (Morales and Laurini, 2021 <sup class="refplus-num"><a href="#ref-Morales2021">[105]</a></sup>; Maynou 等, 2021 <sup class="refplus-num"><a href="#ref-Maynou2021">[98]</a></sup>)
+- 农学 (Borges da Silva 等, 2021 <sup class="refplus-num"><a href="#ref-Borges2021">[35]</a></sup>)
+- 生态学 (Martino 等, 2021 <sup class="refplus-num"><a href="#ref-Martino2021">[95]</a></sup>; Sicacha-Parada 等, 2021 <sup class="refplus-num"><a href="#ref-Sicacha-Parada2021">[131]</a></sup>；Williamson 等，2021 <sup class="refplus-num"><a href="#ref-Williamson2021">[161]</a></sup>；Bell 等，2021 <sup class="refplus-num"><a href="#ref-Bell2021">[12]</a></sup>；Humphreys 等,2021 <sup class="refplus-num"><a href="#ref-Humphreys2021">[72]</a></sup>；Xi 等，2021 <sup class="refplus-num"><a href="#ref-Xi2021">[163]</a></sup>；Fecchio 等,2021 <sup class="refplus-num"><a href="#ref-Fecchio2021">[53]</a></sup> ）
+- 城市规划 (Li, 2021 <sup class="refplus-num"><a href="#ref-Li2021">[87]</a></sup>)
+- 成像 (Aquino 等, 2021 <sup class="refplus-num"><a href="#ref-Aquino2021">[1]</a></sup>)
+- 森林火灾建模 (Taylor 等, 2021 <sup class="refplus-num"><a href="#ref-Taylor2021">[144]</a></sup>; Lindenmayer 等, 2021 <sup class="refplus-num"><a href="#ref-Lindenmayer2021">[88]</a></sup>）
+- 渔业（Babyn 等，2021 年 <sup class="refplus-num"><a href="#ref-Babyn2021">[4]</a></sup>；van Woesik 和 Cacciapaglia，2021 年 <sup class="refplus-num"><a href="#ref-vanWoesik2021">[149]</a></sup>；Jarvis 等，2021 年<sup class="refplus-num"><a href="#ref-Jarvis2021">[74]</a></sup>；Cavieres 等，2021 年 <sup class="refplus-num"><a href="#ref-Cavieres2021">[41]</a></sup>；Monnahan 等，2021 年 <sup class="refplus-num"><a href="#ref-Monnahan2021">[103]</a></sup>；Berg 等，2021 年 <sup class="refplus-num"><a href="#ref-Berg2021">[18]</a></sup>；Breivik 等，2021 年 <sup class="refplus-num"><a href="#ref-Breivik2021">[37]</a></sup>；Lee 等，2021 年<sup class="refplus-num"><a href="#ref-Lee2021">[84]</a></sup>；Thorson 等，2021 年 <sup class="refplus-num"><a href="#ref-Thorson2021">[145]</a></sup>；Griffiths 和 Lezama-Ochoa，2021 年 <sup class="refplus-num"><a href="#ref-Griffiths2021">[65]</a></sup>）
+- 障碍处置（Boman 等，2021 年<sup class="refplus-num"><a href="#ref-Boman2021">[32]</a></sup>；Babyn 等，2021 年<sup class="refplus-num"><a href="#ref-Babyn2021">[4]</a></sup>；Martino 等，2021 年<sup class="refplus-num"><a href="#ref-Martino2021">[95]</a></sup>；Vogel 等，2021 年 <sup class="refplus-num"><a href="#ref-Vogel2021">[153]</a></sup>；Cendoya 等，2021 年 <sup class="refplus-num"><a href="#ref-Cendoya2021">[42]</a></sup>）
+- 等等
+
+### 1.3 本文安排
+
+本文其余部分的计划如下：
+- `第 2 节` 概述了主要思想，包括精度运算、马尔可夫性质、本征随机场、流形上的随机场、非平稳场和有限元方法 (FEM)。
+- `第 3 节` 介绍了如何使用 SPDE 方法进行统计推断的主要思想。
+- `第 4 节` 讨论了非高斯场的扩展，以及具有一般平滑指数的非马尔可夫场的扩展，以及空间和时间上可分离和不可分离模型的扩展。
+- `第 5 节` 讨论基于 SPDE 模型的理论特性和相应的计算方法，这些模型和方法现在已经从非常一般的条件下的理论角度得到了很好的理解。
+- `第 6 节` 介绍了一些关键应用，包括疟疾建模、EUSTACE 项目、神经影像学、地震学和生态学中的点过程模型。
+- `第 7 节` 以相关方法的讨论结束。
+- `第 8 节` 以一般性讨论结束。
+
+## 2 主要思想概述
+
+Lindgren 等 (2011 <sup class="refplus-num"><a href="#ref-Lindgren2011">[91]</a></sup>) 的最初动机，旨在解决长期存在的问题，即： **如何为高斯马尔可夫随机场 (GMRF) 构造精度矩阵，使得生成的模型对空间邻接图的几何形态变化保持不变**。
+
+该方法的关键点是： **构造一个函数表征的有限维希尔伯特空间，并将连续域（如时间、空间等）函数投影到该空间上**。Lindgren 等选择了由局部分段线性基函数张成的有限维 Hillbert 空间，并将连续域上的 Matern 场投影到该空间上，其结果是， **连续域上 Matern 场的马尔可夫性会导致新空间中基函数权重的马尔可夫性质。在此情况下， 与基函数对应的（三角）剖分图可以用于确定马尔可夫邻域的空间结构，而该模型精度运算的阶数则确定了邻域直径**。
+
+</p><div class="note info no-icon flat"><p>更为直接的理解： 将连续域上的 Matern 场投影到一个由局部分段基函数构造的 Hillbert 空间中；如果该 Martern 场具有马尔可夫性，则该投影会导致基函数权重系数的马尔可夫性。</p>
+</div>
+
+该方法通过有限元数值方法将 “Matern 协方差模型和 SPDE 模型之间的等价性”（Matern，1960 年<sup class="refplus-num"><a href="#ref-Matern1960">[97]</a></sup>；Whittle，1954 年<sup class="refplus-num"><a href="#ref-Whittle1954">[158]</a></sup>，1963 年<sup class="refplus-num"><a href="#ref-Whittle1963">[159]</a></sup>）、 “高斯马尔可夫随机场理论”（Besag，1974 年<sup class="refplus-num"><a href="#ref-Besag1974">[15]</a></sup>；Besag 和 Kooperberg，1995 年<sup class="refplus-num"><a href="#ref-Besag1995">[16]</a></sup>；Besag 和 Mondal，2005 年 <sup class="refplus-num"><a href="#ref-Besag2005">[17]</a></sup>；Rue 和 Held，2005 年 <sup class="refplus-num"><a href="#ref-Rue2005">[119]</a></sup>）、“希尔伯特空间投影” 三者紧密结合起来。
+
+本节重点关注已取得的成果以及其与不同随机场表示方法之间的联系，有关技术细节的讨论和最近的理论发展，请参见 `第 5 节`。
+
+### 2.1 协方差矩阵和随机偏微分方程
+
+**（1）高斯随机场及其相关特性**
+
+经典的平稳 Matern 协方差族由下式给出
+
+$$
+\varrho_M\left(\mathbf{s}, \mathbf{s}^{\prime}\right)=\frac{\sigma^2}{\Gamma(\nu) 2^{\nu-1}}\left(\kappa\left\|\mathbf{s}-\mathbf{s}^{\prime}\right\|\right)^\nu K_\nu\left(\kappa\left\|\mathbf{s}-\mathbf{s}^{\prime}\right\|\right),
+$$
+其中 $K_ν$ 为第二类修正贝塞尔函数，$ν &gt; 0$ 为平滑指数，$κ &gt; 0$ 控制空间相关的变程，$σ^2$ 为边缘方差。对于具有 Matern 协方差的场 $u(\cdot )$ 中的每个点，有 $\mathbb{E}\{u(\mathbf{s})\} = 0$ 和 $\operatorname{Cov}\left\{u(\mathbf{s}), u\left(\mathbf{s}^{\prime}\right)\right\}=\varrho_M\left(\mathbf{s}, \mathbf{s}^{\prime}\right)$。
+
+高斯随机场中相关性结构的一个特点是：任意线性泛函 $\langle f, u\rangle$ 和 $\langle g, u\rangle$ 之间的协方差可以由下式给出：
+
+$$
+\mathcal{R}_u(f, g)=\operatorname{Cov}(\langle f, u\rangle,\langle g, u\rangle)=\int_{\mathbb{R}^d} \int_{\mathbb{R}^d} f(\mathbf{s}) \varrho\left(\mathbf{s}, \mathbf{s}^{\prime}\right) g\left(\mathbf{s}^{\prime}\right) \mathrm{d} \mathbf{s} \mathrm{d} \mathbf{s}^{\prime}
+$$
+
+其中 $\mathcal{R}_u(f, f)$ 和 $\mathcal{R}_u(g, g)$ 都是有限的；并且 **协方差函数** 或 **核** $\varrho\left(\mathbf{s}, \mathbf{s}^{\prime}\right)$ 非负定，因此 $\mathcal{R}_u(f, f) \geq 0$。
+
+对于域 $\mathcal{D}$，式中的 $\langle f, u\rangle=\int_{\mathcal{D}} f(\mathbf{s}) u(\mathbf{s}) \mathrm{d} \mathbf{s}$ 是在 $L_2(\mathcal{D})$ 上的内积，当 $f$ 和 $u$ 位于不同函数空间中时，两者之间被称为对偶。当 $f$ 和 $g$ 是 Dirac delta 泛函时可以实现逐点计算，而且上述协方差特点还可以扩展到不具有逐点意义的更广义的随机场。
+
+<div class="note info no-icon flat"><p>注： 此处未查到相应出处！待整理。</p>
+</div>
+
+
+如果令 $\mathcal{W}(\cdot)$ 为域 $\mathcal{D}$ 上的高斯白噪声过程，并且有 $\mathbb{E}(\langle f, \mathcal{W}\rangle)=0$， $\mathcal{R}_W(f, g)=\langle f, g\rangle$。对于 $\mathcal{D}=\mathbb{R}$ 来说，可以将白噪声过程 $\mathcal{W}(\cdot)$ 视为布朗运动的形式导数，不过， $\mathcal{W}$ 可以不限于 $\mathbb{R}$，而是可以定义在更一般的流形上。
+
+**（2） 随机场与随机偏微分方程**
+
+根据上述线性泛函协方差的定义，可以采用下式的线性空间随机偏微分方程 (SPDE) 来定义一个随机场 $u(\cdot )$：
+
+$$
+\mathcal{L} u(\cdot)=\mathcal{W}(\cdot) \tag{2}
+$$
+
+其中 $\mathcal{L}$ 是 **微分运算**，对于该运算的选择，会隐式地决定方程解中的协方差结构。
+
+当在 $\mathbb{R}^d$ 上选择如下微分运算时，
+
+$$
+\tau\left(\kappa^2-\Delta\right)^{\alpha / 2} u= \mathcal{W} \tag{3} 
+$$
+
+Whittle (1954 <sup class="refplus-num"><a href="#ref-Whittle1954">[158]</a></sup>) 和 Whittle (1963 <sup class="refplus-num"><a href="#ref-Whittle1963">[159]</a></sup>) 表明，该随机偏微分方程的平稳解是一个具有 Matern 协方差（ `式 (1)` ）的随机场，并且，Matern 的协方差参数 $\nu=\alpha - d/2$， $\sigma^2=\Gamma(\nu)\left\{\Gamma(\alpha)(4 \pi)^{d / 2} \kappa^{2 \nu} \tau^2\right\}^{-1}$。
+
+我们使用术语 Whittle-Matern 场来指代 `式 (3)` 方程解的通用集合，其中包括 $\mathbb{R}^d$ 上的本征平稳场（将在 `第 2.3 节`中讨论）、具边界条件的子域上的场、以及在更具一般性流形上的场。
+
+### 2.2 精度运算和再生核 Hilbert 空间
+
+`式(2)` 解的协方差特征，与某个再生核希尔伯特空间 (RKHS) 的内积密切相关，我们将该内积表示为 $\mathcal{Q}_u(f, g)$。下面概述这种联系的主要要素，更多细节在 `附录 A` 中给出。
+
+令 $\mathcal{L}^*$ 是 $\mathcal{L}$ 的伴随，也就是说，$\mathcal{L}^*$ 是一个能使 $\langle \mathcal{L}^* f, g \rangle=\langle f, \mathcal{L} g \rangle$ 的运算符，并且假设 $\mathcal{L}$ 可逆。根据白噪声过程的协方差积 $\mathcal{R}_{\mathcal{W}}$ 的定义， $\langle f, g\rangle=\mathcal{R}_{\mathcal{W}}(f, g)=\mathcal{R}_{\mathcal{L} u}(f, g)=\mathcal{R}_u\left(\mathcal{L}^* f, \mathcal{L}^* g\right)$，这表明协方差函数 $\varrho\left(\mathbf{s}, \mathbf{s}^{\prime}\right)$ 满足 $\mathcal{L}_{\mathbf{s}} \mathcal{L}_{\mathbf{s}^{\prime}} \varrho\left(\mathbf{s}, \mathbf{s}^{\prime}\right)=\delta_{\mathbf{s}}\left(\mathbf{s}^{\prime}\right)$。对于任意 $\mathbf{s} \in \mathcal{D}$ 和合适的 $g(\cdot)$，这可以用来证明 $\mathcal{Q}_u(f, g)=\langle\mathcal{L} f, \mathcal{L} g\rangle$ 满足 $\mathcal{Q}_u\{\varrho(\mathbf{s}, \cdot), g(\cdot)\}=g(\mathbf{s})$, 这意味着 $\mathcal{Q}_u(\cdot, \cdot)$  是 RKHS 中 $\varrho(\cdot ,\cdot)$ 的内积。
+
+此外，$\langle \mathcal{L}^*\mathcal{L} \varrho(\mathbf{s},\cdot ),g\rangle = g(\mathbf{s})$，这意味着协方差函数是 **精度运算（precision operator）** 的格林函数（此处为 $\mathcal{L}^{*}\mathcal{L}$）。因此，对于 $\mathbb{R}^{d}$ 上的 Whittle-Matern 过程，有：
+
+$$
+\mathcal{Q}_u(f, g) = \tau^2 \langle(\kappa^{2} − \Delta)^{\alpha/2} f, (\kappa^{2} − \Delta)^{\alpha/2} g\rangle \tag{4}
+$$
+
+**精度运算** 为 $\tau^2 (\kappa^{2} − \Delta)^{\alpha}$。
+
+对于高斯场，高阶马尔可夫性质可以通过（由局部微分运算定义的）精度运算来表征 (Rozanov, 1977 <sup class="refplus-num"><a href="#ref-Rozanov1977">[118]</a></sup>)。在 Matern 中的 $α$ 具有整数值的情况下，精度运算扩展为 “负拉普拉斯运算的整数幂之和”，表明相应过程是一个马尔可夫随机场。此外，`式(4)` 中内积本身可以扩展为 “仅涉及拉普拉斯运算整数和半整数幂以及梯度的内积之和”：
+
+$$
+\mathcal{Q}_u(f, g) = \sum^{\alpha}_{\mathrm{k}=0} \binom{\alpha}{\mathrm{k}} \kappa^{2(α−\mathrm{k})} \left\langle(−\Delta)^{\mathrm{k}/2} f,(−\Delta)^{\mathrm{k}/2} g \right \rangle\tag{5} 
+$$
+
+其中半整数拉普拉斯的内积，可以等效地被转换为梯度运算的内积，即 $\langle(−\Delta)^{1/2} f, (−\Delta)^{1/2} g\rangle = \langle \nabla  f, \nabla g \rangle$（Lindgren 等, 2011 <sup class="refplus-num"><a href="#ref-Lindgren2011">[91]</a></sup>, 附录 B)。这表明在内积积分中，Matern 场的马尔可夫子集仅涉及局部微分运算（尽管半拉普拉斯运算是非局部运算）。这在构造精度运算的离散化表示时非常有用；连续域上的全局马尔可夫性质（通过子域的条件独立性以及它们之间的分隔集来表达）被转变成了相似的条件，该性质被传送到（三角）剖分图的高阶邻域拓扑中，并导致精度运算的稀疏矩阵表示（`第 2.7 节`）。
+
+RKHS 构造、样条和随机过程估计之间的联系由来已久，Kimeldorf 和 Wahba (1970 <sup class="refplus-num"><a href="#ref-Kimeldorf1970">[77]</a></sup>) 展示了如何将高斯过程回归中的条件期望转换为惩罚样条。 RKHS 理论的样条和高斯随机场具有一个重要区别：虽然样条是在紧凑域上具有有限精度范数的 RKHS 的成员，但与该 RKHS 相关的随机场实现并没有有限范数。这样做的原因是：随机场的实现很少是平滑的，只有场的条件期望才是 RKHS 的适当成员。
+
+### 2.3 唯一性和本征平稳随机场
+
+精度运算的格林函数不一定是唯一的，例如当 $\mathcal{Q}_u(f,f)$ 只生成一个半范数时。为了避免由此产生的额外解空间，基础 Matern 情况需要对平稳解进行限制，以消除该运算零空间中的函数，例如对于任何 $\mathbf{s}_0 \in  \mathbb{R}^{d}$ 和 $\| \mathbf{s}_0 \| = 1$ 时的函数 $\exp(κ \mathbf{} \cdot \mathbf{s}_0)$。对于紧凑域，此类型的场通常受确定性 Neumann 边界条件的限制，导致域边界附近的非平稳行为（`第 5.1 1 节` 中有更多详细信息）。
+
+当 $\mathcal{Q}_u(\cdot ,\cdot )$ 的零空间未被边界条件或其他条件消除时，通过对场应用某种对比滤波器也能实现平稳性，结果是一系列本征平稳模型，当向对比运算的零空间中添加函数时，模型的概率结构具有不变性。经典的基于网格的本征平稳随机场（Besag 和 Kooperberg，1995 <sup class="refplus-num"><a href="#ref-Besag1995">[16]</a></sup>；Besag 和 Mondal，2005 <sup class="refplus-num"><a href="#ref-Besag2005">[17]</a></sup>）对应于 $κ = 0$ 时的连续域模型，这给出了常量（对于 $α = 1$）和平面（对于 $α = 2$）相加的不变性。不过，当精度内积被推广到（例如）振荡场模型时，可能会出现更复杂类型的零空间。例如，对于 $\mathbb{R}^{d}$ 上的振荡场，Lindgren 等（2011 年 <sup class="refplus-num"><a href="#ref-Lindgren2011">[91]</a></sup>，第 3.3 节）针对其无阻尼极限情况，给出了波数为 $κ$ 时，任意方向正弦和余弦函数的不变性。
+
+### 2.4 谱表示
+
+对于平稳模型的理论处理来说，谱表示必不可少。高斯过程的经典线性滤波器理论可以直接应用，我们推荐参阅 Cramer 和 Leadbetter (2004 <sup class="refplus-num"><a href="#ref-Cramer2004">[46]</a></sup>) 以及 Lindgren (2012 <sup class="refplus-num"><a href="#ref-Lindgren2012">[92]</a></sup>) 的理论基础。
+
+平稳高斯过程的协方差函数可以写成（对称非负）谱测度 $dS(\mathbf{k})，\mathbf{k} \in \mathbb{R}^{d}$ 的傅里叶变换形式：
+
+$$
+\varrho(\mathbf{s},\mathbf{s}^{\prime}) = \int_{\mathbb{R}^d} \exp(i(\mathbf{s}^{\prime} − \mathbf{s}) \cdot  \mathbf{k}) dS(\mathbf{k})
+$$
+
+当测度允许密度时，我们写成 $dS(\mathbf{k}) = S (\mathbf{k}) d \mathbf{k}$，过程本身可以被构造为随机傅里叶积分：
+
+$$
+u(\mathbf{s}) = \int_{\mathbb{R}^d} \exp(i \mathbf{s} \cdot  \mathbf{k}) \sqrt{S(\mathbf{k})} d Z(\mathbf{k})
+$$
+
+式中的 $d Z(\mathbf{k})$ 是以复数值为中心的高斯白噪声测度，$d Z(-\mathbf{k}) = \overline{d Z(\mathbf{k})}$ ，并且协方差 $\operatorname{Cov}\{d Z(\mathbf{k}), d Z(\mathbf{k}^{\prime})\} = \delta (\mathbf{k} - \mathbf{k}^{\prime}) d \mathbf{k}$。
+
+SPDE 和 Matern 协方差之间的一般联系由 Whittle (1963 <sup class="refplus-num"><a href="#ref-Whittle1963">[159]</a></sup>) 给出了证明，通过使用微分运算的谱表示，表明 `式(1)` 的 Matern 协方差是谱密度 $S_M(\mathbf{k})$ 的傅里叶变换，$S_M(\mathbf{k}) = \{\tau^2 (2\pi)^d(\kappa^{2} + \| k \|^2)^α\}^{−1}, \mathbf{k} \in  \mathbb{R}^{d}$，从 `式(3)` 解的精度运算的谱表示的倒数得到。谱密度中出现的因子 $(2\pi)^d$ 来自标准化白噪声定义的谱密度，其中 $\mathcal{R}_W(f,g)=\langle f,g \rangle$，并且 $\|\mathbf{k}\|^2$ 是 $\mathbb{R}^{d}$ 上 $-\Delta$ 的特征值。马尔可夫性质的局部精度运算表征意味着：当且仅当谱密度的倒数为偶数多项式时，$\mathbb{R}^{d}$ 上的平稳过程是马尔可夫的（Rozanov 1977 <sup class="refplus-num"><a href="#ref-Rozanov1977">[118]</a></sup>)。我们可以看到，当 $α$ 为整数时满足该条件。  
+
+### 2.5 流形
+
+Lindgren 等 (2011 <sup class="refplus-num"><a href="#ref-Lindgren2011">[91]</a></sup>) 的一个启发性例子是在球面上构建平稳 MRF 模型，以解决历史气候建模等地球科学问题。有关历史联系，请参阅 Wahba (1981 <sup class="refplus-num"><a href="#ref-Wahba1981">[154]</a></sup>)，其中在对球面数据建模时使用了与 `式 (5)` 内积类似形式的样条惩罚。
+
+与显式的协方差指定相比， **SPDE 方法的优势在于可以轻松地在任何足够平滑的流形上构建范围广泛的有效模型**，Whittle 表征为此类流形的 Matern 场提供了自然泛化。通过令 $\Delta$ 表示球面上的 Laplace-Beltrami 运算（这是 $\mathbb{R}^3$ 的拉普拉斯运算在球面上受到的约束），可以直接使用连续域中精度运算的定义，其中 $\mathcal{D} = \mathbb{S}^2$。有限维 Hilbert 空间表示的基本收敛性证明（参见第 2.7 节）与 $\mathbb{R}^{d}$ 的紧凑扁平子域的证明相同。
+
+在处理非欧几里德流形时，谱理论可能不如 $\mathbb{R}^{d}$ 中直观，但对于任何光滑紧致的流形而言，泛化到流形上的拉普拉斯运算（如球面上的 Laplace-Beltrami 运算）的特征函数集合，形成了一个可数的特征函数基，并可被用于构造类似傅里叶的表示。精度运算、协方差函数和过程本身的谱表示，遵循与 $\mathbb{R}^{d}$ 相同的原则，但具有可数的调和基。该技术被用于证明广义格林恒等式引理（ Lindgren 等 2011 年 <sup class="refplus-num"><a href="#ref-Lindgren2011">[91]</a></sup>，附录 D）。在球面上，平稳高斯场的球谐表示变为
+
+$$
+u(\mathbf{s}) = \sum^{\infty}_{k=0} \sum^{k}_{m=-k} Y_{k,m}(\mathbf{s}) \sqrt{S(k)} Z_{k,m},\qquad \mathbf{s} \in  \mathbf{S}^2
+$$
+
+其中 $\Delta Y_{k,m}(\cdot ) = λ_kY_{k,m}(\cdot )$，特征值 $\lambda_k = −k(k + 1)，k = 0, 1, 2,\ldots$, 内求和次数为 $2k + 1$（ $m = −k,\ldots, k$ ），$Z_{k,m}$ 为独立的 $\mathcal{N}(0, 1)$ 变量。利用勒让德多项式 $P_k(\cdot )$，可以用谱表示来计算协方差：
+
+$$
+\varrho(\mathbf{s},\mathbf{s}^{\prime}) = \sum^{\infty}_{k=0} (2k + 1) S(k)P_k(\mathbf{s}\cdot \mathbf{s}^{\prime}), \qquad \mathbf{s}, \mathbf{s}^{\prime} \in  \mathbf{S}^2 \tag{6}
+$$
+
+其中 $2k + 1$ 的因子来自球谐函数的求和/乘积公式 $\sum^{k}_{m=−k} Y_{k,m}(\mathbf{s}) Y_{k,m}(\mathbf{s}^{\prime}) = (2k+1) P_k(\mathbf{s}\cdot \mathbf{s}^{\prime})$。有关更多理论背景，请参阅 Schoenberg (1942 <sup class="refplus-num"><a href="#ref-Schoenberg1942">[129]</a></sup>) 和 Wahba (1981 <sup class="refplus-num"><a href="#ref-Wahba1981">[154]</a></sup>)。
+
+将线性滤波器理论应用于球面上的 Whittle SPDE，会产生 Whittle-Matern 谱 $S_M(k) = (4\pi)^{−1}τ^{−2} \{\kappa^{2} + k(k + 1)\}^{−α}, k = 0, 1 , 2,\ldots$。协方差矩阵在封闭形式下不可用，但可以通过 `式(6)` 的无限级数进行数值计算，它对于 $α &gt; 1$ 是收敛的，对应的平滑度为 $ν &gt; 0$
+
+请注意，马尔可夫特征取决于局部精度运算 ( Rozanov 1977 <sup class="refplus-num"><a href="#ref-Rozanov1977">[118]</a></sup>) ，因此即使谱的函数形式的倒数不是 $k$ 的偶数多项式，整数的 $α$ 值仍会在球面上生成马尔可夫过程。
+
+域的流形曲率会影响精度运算的格林函数，因此“平稳” 场的概念在很大程度上局限于 $\mathbb{R}^{d}$ 和 $\mathbb{S}^d$ 上的场。对于其他流形而言，除了已经存在的具有边界的紧凑域的边界效应之外，其微分几何结构变得非常重要。
+
+### 2.6 非平稳模型
+
+一旦建立了平稳 Matern 场和随机偏微分方程之间的联系，就可以通过多种方式扩展模型族。除了一般的流形扩展之外，还可以通过修改微分运算来构建非平稳模型。 **广义 Whittle-Matern 模型** 是一个直接的非平稳扩展，该模型让 $κ$ 和 $τ$ 取决于位置，并将拉普拉斯运算扩展到非平稳各向异性版本：
+
+$$
+\{κ(\mathbf{s})^2 − \nabla \cdot \mathbf{H}(\mathbf{s}) \nabla \}^{α/2} u(\mathbf{s}) = \frac{1}{τ(\mathbf{s})} \mathcal{W}(\mathbf{s}) \tag{7}
+$$
+
+由于参数场只有温和的正则条件（参见`第 5.1 2 节`），该模型会产生隐式定义的正定非平稳协方差函数，并且精度运算在封闭形式中可用。 Lindgren 等 (2011) 的温度应用使用此广义模型，其中令 $α = 2$，$\mathbf{H}(\mathbf{s}) \equiv \mathbf{I}$，并 $sin(纬度)$ 中的三段二次 B 样条基函数来表示 $κ$ 和 $τ$ 的对数线性模型。 Ingebrigtsen 等（2014 <sup class="refplus-num"><a href="#ref-Ingebrigtsen2014">[73]</a></sup>）使用了空间地理协变量。Yue 等 (2014 <sup class="refplus-num"><a href="#ref-Yue2014">[165]</a></sup>) 讨论了自适应样条模型的应用，Fuglstad 等 (2015a <sup class="refplus-num"><a href="#ref-Fuglstad2015a">[58]</a></sup>) 探索了实用的各向异性拉普拉斯运算表示。
+
+更一般的非平稳模型的主要挑战在于推断实践，因为在许多情况下，只有单一的噪声场可用，这使得实际可识别性成为一个挑战（参见 Fuglstad 等，2015b <sup class="refplus-num"><a href="#ref-Fuglstad2015b">[59]</a></sup>；Bolin 和 Kirchner，2021 <sup class="refplus-num"><a href="#ref-Bolin2021K">[29]</a></sup>）。但这并不是 SPDE 构造的独有特征，因为任何足够通用的非平稳模型族都是如此。通过利用运算的性质，一种可能的方法是在局部估计运算，避免全局计算。只要强制执行基本的正则条件，结果就会产生一个有效的全局模型，并且可以将更多的精力用于改进局部估计，而不是处理非平稳协方差函数的繁琐的正定性问题。
+
+Bakka 等 (2019 <sup class="refplus-num"><a href="#ref-Bakka2019">[6]</a></sup>) 介绍了这种方法的一个特例。他们以障碍模型的形式，断开跨越物理障碍的过程，阻止虚假依赖在 “欧几里得距离上很近但在测地距离上很远的” 点之间传播。该想法让 $κ$ 在形成障碍的区域接近 $\infty$（这与空间相关变程接近零具有相同的效果），而在感兴趣域中采用恒定 $κ$ 值。与确定性 Neumann 条件相比，由此产生的场几乎没有边界效应，这使其成为许多实际情况的有吸引力的替代方案，例如在岛群中模拟鱼类，此情况下的依赖性不应跨越陆地。
+
+改进 SPDE 运算相当于改变黎曼流形上的计量指标 (Lindgren 等，2011)。这为非平稳随机场的经典变形方法（ Sampson 和 Guttorp, 1992 <sup class="refplus-num"><a href="#ref-Sampson1992">[124]</a></sup> ）提供了一个有启发性的比较。变形方法的工作原理是将目标场的域变形，有选择地将其变形为嵌入更高维度的流形。然后，将平稳协方差模型应用于变形后的流形。当映射回原始空间时，将获得一个非平稳的模型（ Hildeman 等，2021 年 <sup class="refplus-num"><a href="#ref-Hildeman2021">[70]</a></sup>）。相反，如果将 `式(3)` 的基本 Whittle SPDE 模型应用于变形后的流形域，则会获得一个非常不同的非稳态模型，该模型与流形内的测地线距离相关。通过构造流形的计量指标并将表达式转换回原始流形坐标，可以获得类似于 `式（7）` 的非平稳 SPDE 模型。这提供了一种参数化某些类型非平稳性的不同方法。这种解释的一个主要好处是：它提供了几何可解释性，既针对 SPDE 模型本身，也针对其与经典变形方法的不同。对于给定流形，这种方法隐含地遵循了非平稳性，但有时很难找到能够生成特定预定义非平稳行为的流形。 Fuglstad 等 (2019 <sup class="refplus-num"><a href="#ref-Fuglstad2019">[60]</a></sup>) 的补充材料 S7.1 中，童工了后者的示例，其中 $κ(\mathbf{s})$ 的分段线性变化对应于圆柱变形流形。然而，直接设计这种类型的模型具有挑战性，因为嵌入空间可能需要比 $\mathbb{R}^3$ 大得多才能捕获所需的性质。但最大的收获在于，非平稳 SPDE 运算和流形上的计量指标之间密切相关。
+
+### 2.7 局部支持的希尔伯特空间基和离散精度
+
+为了构建 SPDE 解的有限维表示，Lindgren 等 (2011) 使用分段线性基函数在空间三角剖分上实现了局部支持。这种选择保留了连续马尔可夫性质的许多优点，在以地理参考观测为条件时也会导致稀疏矩阵，这与调和基函数和 Karhunen-Loeve 展开式等其他非局部基选择形成了鲜明对比。希尔伯特空间投影理论对所有这些选择的工作原理基本相同，但我们现在将关注其马尔可夫版本，关于非局部基的选择问题，参见`第 7 节`。
+
+令 $\{\psi_j(\mathbf{s}), j = 1,\ldots , N\}$ 表示每个空间位置 $\mathbf{s}$ 处的一组连续分段的线性基函数，其总和为 $1$，且每个都支持连接到某个顶点的三角形。对于平面三角剖分，每个顶点的平均三角形数约为 $6$。然后我们寻找基权重向量 $\mathbf{u} = \{u_1, u_2,\ldots , u_N\}$，以使结果函数 $\widetilde{u}(\mathbf{s})=\sum_{j=1}^{N} \psi_{j}(\mathbf{s}) u_{j}$ 的分布接近于具有连续定义的 SPDE 解的分布。 `式 (2)` SPDE 的解可以用方程左右两侧具有相同联合分布的每个有限维线性泛函来表征:
+
+$$
+\langle f, \mathcal{L} u\rangle = \langle f, \mathcal{W}\rangle \tag{8}
+$$
+
+其中 $f$ 表示测试函数。
+
+对于有限表示 $\tilde{u}$  这对于泛函的任意集合都无法实现，但通过选择特定的 $N$ 维泛函集，可以控制近似特性。对于 `式(3)` 的 Whittle SPDE，Lindgren 等 (2011) 使用的方法是用基函数 $\psi_j$ 作为 $α = 2$ 时的测试函数（一种 Galerkin 有限元方法），用 $\mathcal{L} \psi_j$ 作为 $α = 1$ 时的基函数（一种最小二乘有限元方法），然后对高阶运算符应用迭代的 Galerkin 构造。与完整 SPDE 解的协方差矩阵 $\mathcal{R}$ 和精度矩阵 $\mathcal{Q}$ 乘积中的连接方式类似，这些有限元构造生成了无限维解到有限维基上的投影，使得权重向量的精度矩阵 $\mathbf{Q}$ 在模型参数中具有封闭形式的表达式。对于有限维 Hilbert 空间中权重向量为 $\mathbf{f}$ 和 $\mathbf{g}$ 的函数 $f(\cdot)$ 和 $g(\cdot)$，内积 $\mathcal{Q}_u( f, g)$ 变为 $\mathbf{f^{T}Qg}$，根据构造的细节会存在微小偏差 $\mathbf{Q}$。测试函数和 SPDE 分量之间的内积可以简化为在基函数的积和基函数梯度的积上的积分，对于三角形上的分段线性基函数而言，它只涉及简单的几何。
+
+令 $\mathbf{C}$ 和 $\mathbf{G}$ 分别为具有元素 $\mathbf{C}_{i,j} = \langle \psi_i, \psi_j \rangle$ 和 $\mathbf{G}_{i, j} = \langle \nabla \psi_i, \nabla \psi_j \rangle$ 的矩阵。为了说明 $α = 2$ 和 $τ = 1$ 的构造，我们为 `式(8)` 左侧得到：
+
+$$
+\begin{align*}
+\left [\langle\psi_i, \mathcal{L} \tilde{u} \rangle\right ]_{i=1,\ldots,N} &amp;= \left [\langle\psi_i, \sum^{N}_{j=1}(\kappa^{2} − \Delta) \psi_j(\cdot) u_j \rangle\right ]_{i=1,\ldots ,N}\\
+&amp;= \left [\sum^N_{j=1} \langle\psi_i, (\kappa^{2} − \Delta) \psi_j(\cdot ) \rangle u_j \right ]_{i=1,\ldots ,N}\\ 
+&amp;= (\kappa^{2} \mathbf{C} + \mathbf{G}) \mathbf{u}
+\end{align*}
+$$
+
+`式（8）` 右侧的协方差为：
+
+$$
+\left [\operatorname{Cov} (\langle\psi_i, \mathcal{W} \rangle \langle \psi_j, \mathcal{W}\rangle)\right ]_{i, j=1,\ldots ,N} = \mathbf{C}
+$$
+
+这意味着我们需要 $(\kappa^{2} \mathbf{C} + \mathbf{G}) \mathbf{u} \sim \mathcal{N}(\mathbf{0, C})$。这是当 $\mathbf{u}$ 的精度矩阵由 $(\kappa^{2} \mathbf{C} + \mathbf{G})\mathbf{C}^{-1}(\kappa^{2} \mathbf{C} + \mathbf{G})$ 给出时得到的。
+
+正如 Lindgren 等 (2011) 所讨论的那样，$\mathbf{C}$ 的逆是非稀疏的，但可以用一个包含原始矩阵行和（row-sums）的对角矩阵版本 $\tilde{\mathbf{C}}$ 替换 $\mathbf{C}$，由于基函数之和为 $1$，所以有 $\tilde{C}_{i,i} = \langle\psi_i, 1\rangle$ 。这种 **质量集中** 的技术对于具有局部基函数的有限元方法很常见，但不适用于具有全局支持的基函数方法。Bakka (2019 <sup class="refplus-num"><a href="#ref-Bakka2019">[6]</a></sup>)； Lindgren 和 Rue (2008 <sup class="refplus-num"><a href="#ref-Lindgren2008">[89]</a></sup>) 提供了有关此构造的更多数学细节。
+
+更一般地，为 $α = 1, 2, 3,\ldots$ 和 $τ$ 构造的精度矩阵由下式给出：
+
+$$
+\mathbf{Q} = \tau^2 \mathbf{C}^{1/2}(\kappa^{2} \mathbf{I} + \mathbf{C}^{-1/2} \mathbf{G} \mathbf{C}^{-1/2})^α \mathbf{C}^{1/2} \tag{9}
+$$
+
+其中使用了 $\mathbf{C}$ 的对角线版本。应该注意的是，这种构造适用于任何可以用三角剖分表示的紧凑流形，并且 Green 的第一个恒等式是 $\langle f, −\Delta g \rangle = \langle \nabla f, \nabla g \rangle$ (在合适的边界条件下）适用于多面体流形表面，也适用于一些不可微分的函数（参见 Lindgren 等，2011 年，附录 B.3）。这种希尔伯特空间投影方法的近似特性遵循有限元方法的共同特性，并将在 `第 5 节` 中更详细地讨论。
+
+如 Bolin 和 Lindgren (2013 <sup class="refplus-num"><a href="#ref-Bolin2013">[23]</a></sup>) 所示，通过对规则网格域使用高阶 B 样条基函数或小波，可以减少整体逼近误差，Liu 等 (2016 <sup class="refplus-num"><a href="#ref-Liu2016">[93]</a></sup>) 在三角剖分上实施高阶双变量样条作为基函数。实际上，在需要时增加三角形的分辨率更容易实现，并且避免了质量集中的潜在问题，对于高阶基函数应该避免这种问题。一维域是一个重要的例外，其中分段二次 B 样条基很容易实现，并且可以带来明显的改进，特别是对于每个样条节点间隔内具有不规则间隔观测的问题。分段线性基函数会导致节点和区间中点之间的边缘方差出现明显差异，类似于核卷积方法 (Simpson 等, 2012a <sup class="refplus-num"><a href="#ref-Simpson2012a">[134]</a></sup>) 所表现出的问题，高阶 B 样条平滑了条件确定性区间效应。即使对于 $α = 1$ 的情况，这也是有用的，否则人们可能期望更平滑的基函数不会增加价值。代替质量集中，应该使用完整的五对角 $\mathbf{C}$ 矩阵，并且对于 $α = 2$ 来说，通过表示 2-谐波运算的元素 $\langle \Delta \psi_i, \Delta psi_j \rangle$，可以用二阶矩阵 $\mathbf{G}_2$ 替换 $\mathbf{G} \mathbf{C}^{-1} \mathbf{G}$。
+
+## 3 实用的空间估计和推断
+
+本节讨论为什么高斯过程的精度矩阵表示可以更好地处理观测条件，以及何时将多个组件连接到更大的统计模型中。
+
+### 3.1 含噪声观测下的条件分布
+
+具有加性观测噪声和 Matern 协方差的简单分层高斯过程模型可以写为：
+
+$$
+\begin{align*}
+y_i|u(\cdot ) &amp;\sim \mathcal{N}(u(\mathbf{s}_i), \tau^{-2} e ), i = 1,\ldots , n 
+u(\cdot) &amp;\sim \mathcal{GRF}(\mu_u(\cdot), \varrho_M\cdot, \cdot ))  \\
+\end{align*}
+$$
+
+用 `第 2.7 节` 中的有限维 Hilbert 空间表示替换完整随机场给出：
+
+$$
+\begin{align*}
+\mathbf{u} &amp;\sim \mathcal{N}(\boldsymbol{\mu}_u, \mathbf{Q}^{−1}_u)\\
+y_i|\mathbf{u} &amp;\sim \mathcal{N} \left ( \sum^{N}_{j=1} \psi_j(\mathbf{s}_i) u_j, \tau^{-2}_e\right),\qquad  i = 1,\ldots,n  
+\end{align*}
+$$
+
+引入具有元素 $\mathbf{A}_{i,j} = \psi_j(\mathbf{s}_i)$ 的基函数计算矩阵 $\mathbf{A}$，完整的观测向量模型变为 $\mathbf{y|u} \sim \mathcal{N}(\mathbf{Au}, \mathbf{Q}^{-1}_e)$，其中 $\mathbf{Q}_e = \mathbf{I} \tau^2_e$ 是观测噪声的精度矩阵。通过在多元分布中使用精度矩阵版本的条件（Rue 和 Held，2005 <sup class="refplus-num"><a href="#ref-Rue2005">[119]</a></sup>），在给定观测的情况下，场的基函数权重的条件分布为：
+
+$$
+\begin{align*}
+\mathbf{u} \mid \mathbf{y} &amp; \sim \mathrm{N}\left(\boldsymbol{\mu}_{u \mid y}, \mathbf{Q}_{u \mid y}^{-1}\right), \tag{10}\\
+\mathbf{Q}_{u \mid y} &amp; =\mathbf{Q}_u+\mathbf{A}^{\top} \mathbf{Q}_e \mathbf{A}, \tag{11}\\
+\mu_{u \mid y} &amp; =\boldsymbol{\mu}_u+\mathbf{Q}_{u \mid y}^{-1} \mathbf{A}^{\top} \mathbf{Q}_e\left(\mathbf{y}-\mathbf{A} \boldsymbol{\mu}_u\right) \tag{12} 
+\end{align*}
+$$
+
+这些方程提供了该场的克里金估计的有限希尔伯特空间表示，$\sum^N_{j=1} \psi_j(\mathbf{s}) \left [\boldsymbol{\mu}_{u|y} \right ]_j$。对于局部支持的基函数，条件精度矩阵仍然是稀疏的，计算成本较低，并且条件期望仅涉及对该稀疏矩阵的线性求解。通过由矩阵稀疏模式生成的马尔可夫图的自动重排序，直接的 Cholesky 分解可以保留高度的稀疏性，使其成为理想的直接求解方法。此外，通过对后验精度矩阵的 Cholesky 分解实施 Takahashi 递归（Takahashi 等，1973 年，Erisman 和 Tinney，1975 年、Rue 和 Martino，2007 年、Rue 和 Held，2010 年），可以快速得出后验边缘方差和邻域协方差，例如 `R-INLA` 包中的 `inla.qinv()` 函数实现，整个过程无需计算密集矩阵的逆。
+
+如果我们在这个模型中有未知的（超）参数 $\boldsymbol{\theta}$，例如边缘方差或变程，那么我们可以直接计算后验密度 $\pi (\boldsymbol{\theta}|\mathbf{y})$，比如:
+
+$$
+\pi (\boldsymbol{\theta} | \mathbf{y})  \propto  \frac{\pi(\boldsymbol{\theta}) \pi(\mathbf{u} | \boldsymbol{\theta}) \pi (\mathbf{y} | \mathbf{u}, \boldsymbol{\theta})}{\pi (\mathbf{u} | \mathbf{y}, \boldsymbol{\theta})}
+$$
+
+因为 $\pi(\mathbf{u}| \mathbf{y}, \boldsymbol{\theta})$ 是高斯分布的。除了已计算的条件均值和精度矩阵之外，唯一新进入的项是 $\log |\mathbf{Q}_{u|y}|$，可直接从其 Cholesky 分解中获得。
+
+### 3.2 添加模型组件
+
+我们的目标不仅是处理`第 3.1 节`中讨论的简单模型构造，而且还希望处高斯模型组份之和形成的线性预测 $\boldsymbol{η}$（Rue 等，2009 <sup class="refplus-num"><a href="#ref-Rue2009">[122]</a></sup>）。例如，我们考虑 $\boldsymbol{η} = \mathbf{A}_u \mathbf{u} + \mathbf{A}_v\mathbf{v} + \mathbf{A}_w\mathbf{w}$，其中 $\mathbf{u} \sim \mathcal{N}(\mathbf{0}, \mathbf{Q}^{-1}_u)$, $\mathbf{v} \sim \mathcal{N}(\mathbf{0}, \mathbf{Q}^{-1}_v)$,  $w \sim \mathcal{N}(\mathbf{0}, \mathbf{Q}^{-1}_w)$，$\mathbf{A}_u$、$\mathbf{A}_v$ 和 $\mathbf{A}_w$ 分别是将 $\mathbf{u}$、$\mathbf{v}$ 和 $\mathbf{w}$ 中的（隐）变量连接到线性预测 $\boldsymbol{η}$ 的矩阵。隐模型组件可能包含 “有限维 SPDE 表示”、“固定效应系数”和其他结构化或非结构化随机效应。通过精度矩阵添加模型组件的一个重要性质是 $(\boldsymbol{η},\mathbf{ u, v, w})$ 的联合精度矩阵的结构直接可用。这一点特别重要，因为如果有协方差参数 $\boldsymbol{\theta}$，当 $\boldsymbol{\theta}$ 的某些元素发生变化时，我们不需要重建整个联合精度矩阵，而只需重新计算直接受影响的元素即可。
+
+我们可以通过多种方式进行计算，下面重点讨论其中三种：
+
+**（1）策略一**
+
+第一种策略是直接使用模型组件的联合精度矩阵，并在根据观测调节模型时，确定性地形成线性预测 $\boldsymbol{η}$。此时，联合精度矩阵和预测可以写成：
+
+$$
+\operatorname{Prec}\left[\begin{array}{c}
+\mathbf{u} \\
+\mathbf{v} \\
+\mathbf{w}
+\end{array}\right]=\left[\begin{array}{lll}
+\mathbf{Q}_u &amp; &amp; \\
+&amp; \mathbf{Q}_v &amp; \\
+&amp; &amp; \mathbf{Q}_w
+\end{array}\right], \quad \text { and } \quad \boldsymbol{\eta}=\mathbf{A}\left[\begin{array}{c}
+\mathbf{u} \\
+\mathbf{v} \\
+\mathbf{w}
+\end{array}\right] 
+$$
+
+使用组合矩阵 $\mathbf{A}=\left[\begin{array}{lll}\mathbf{A}_u &amp; \mathbf{A}_v &amp; \mathbf{A}_w\end{array}\right]$。有了这个公式，我们然后将`式（11）`和`式（12）`直接应用于联合组件模型。
+
+**（2）策略二**
+
+第二种策略是通过添加具有高精度 $τ$ 的小噪声项，为线性预测建立近似联合精度。通过 $\boldsymbol{\eta}=\mathbf{u}+\mathbf{v}+\mathbf{w}+\tau^{-1 / 2} \boldsymbol{\epsilon}$ 其中 $\boldsymbol{\epsilon} \sim \mathrm{N}(\mathbf{0}, \mathbf{I})$，我们得到
+
+$$
+\operatorname{Prec}\left[\begin{array}{c}
+\boldsymbol{\eta} \\
+\mathbf{u} \\
+\mathbf{v} \\
+\mathbf{w}
+\end{array}\right]=\left[\begin{array}{llll}
+\mathbf{0} &amp; &amp; &amp; \\
+&amp; \mathbf{Q}_u &amp; &amp; \\
+&amp; &amp; \mathbf{Q}_v &amp; \\
+&amp; &amp; &amp; \mathbf{Q}_w
+\end{array}\right]+\tau\left[\begin{array}{c}
+\mathbf{I} \\
+-\mathbf{A}_u^{\top} \\
+-\mathbf{A}_v^{\top} \\
+-\mathbf{A}_w^{\top}
+\end{array}\right]\left[\begin{array}{llll}
+\mathbf{I} &amp; -\mathbf{A}_u &amp; -\mathbf{A}_v &amp; -\mathbf{A}_w
+\end{array}\right] 
+$$
+请注意，我们需要保留所有模型组件，因为边缘化会破坏马尔可夫特性。
+
+**（3）策略三**
+
+
+第三种策略是使用累积和。这种方法可以应用于 “组合效应能够用通用表示形式编写的” 模型，例如 SPDE 模型在不同空间分辨率下的相等或嵌套三角剖分。假设 $\mathbf{B}_{u v}\mathbf{v}$ 从粗略的 $v$ 基函数转换为更精细的 $u$ 基函数，$\mathbf{B}_{v w}$ 也类似。这使得线性预测可以表示为 $\boldsymbol{\eta}=\mathbf{A}_u\left\{\mathbf{u}+\mathbf{B}_{u v}\left(\mathbf{v} +\mathbf{B}_{v w} \mathbf{w}\right)\right\}$。然后我们可以定义 $\widetilde{\mathbf{v}}=\mathbf{v}+\mathbf{B}_{v w} \mathbf{w}$ 和 $\widetilde{\mathbf{u}}= \mathbf {u}+\mathbf{B}_{u v} \widetilde{\mathbf{v}}$，使得 $\mathbf{w} \sim \mathcal{N}(\mathbf{0} , \mathbf {Q}_w^{-1})$, $\widetilde{\mathbf{v}} \mid \mathbf{w} \sim \mathcal{N}(\mathbf{B}_{ v w} \mathbf {w}, \mathbf{Q}_v^{-1})$ 和 $\widetilde{\mathbf{u}} \mid \widetilde{\mathbf{v}}, \mathbf{w} \sim \mathcal{ N}(\mathbf{B}_{u v} \widetilde{\mathbf{v}}, \mathbf{Q}_u^{-1})$。则联合精度矩阵为：
+
+$$
+\begin{aligned}
+\operatorname{Prec}\left[\begin{array}{c}
+\tilde{\mathbf{u}} \\
+\widetilde{\mathbf{v}} \\
+\mathbf{w}
+\end{array}\right] &amp; =\left[\begin{array}{l}
+\mathbf{0} \\
+\mathbf{0} \\
+\mathbf{I}
+\end{array}\right] \mathbf{Q}_w\left[\begin{array}{lll}
+\mathbf{0} &amp; \mathbf{0} &amp; \mathbf{I}
+\end{array}\right]+\left[\begin{array}{c}
+\mathbf{0} \\
+\mathbf{I} \\
+-\mathbf{B}_{v w}^{\top}
+\end{array}\right] \mathbf{Q}_v\left[\begin{array}{lll}
+\mathbf{0} &amp; \mathbf{I} &amp; -\mathbf{B}_{v w}
+\end{array}\right]+\left[\begin{array}{cc}
+\mathbf{I} \\
+-\mathbf{B}_{u v}^{\top} \\
+\mathbf{0}
+\end{array}\right] \mathbf{Q}_u\left[\begin{array}{lll}
+\mathbf{I} &amp; -\mathbf{B}_{u v} &amp; \mathbf{0}
+\end{array}\right] \\
+&amp; =\left[\begin{array}{ccc}
+\mathbf{Q}_u &amp; -\mathbf{Q}_u \mathbf{B}_{u v} \\
+-\mathbf{B}_{u v}^{\top} \mathbf{Q}_u &amp; \mathbf{Q}_v+\mathbf{B}_u^{\top} \mathbf{Q}_u \mathbf{B}_{u v} &amp; -\mathbf{Q}_v \mathbf{B}_{v w} \\
+&amp; -\mathbf{B}_{v w}^\nu \mathbf{Q}_v &amp; \mathbf{Q}_w+\mathbf{B}_{v w}^{\top} \mathbf{Q}_v \mathbf{B}_{v w}
+\end{array}\right] .
+\end{aligned}
+$$
+
+此构造可以与第一种或第二种策略结合使用，其中 $\boldsymbol{η} = \mathbf{A}_u \tilde{\mathbf{u}} + \mathbf{0} \tilde{\mathbf{v}} + \mathbf{0} \mathbf{w}$，因此线性预测器仅直接连接到 $\tilde{\mathbf{u}}$。累积方法非常优雅和高效，也可以作为迭代求解器的多尺度预处理器的基础。一个潜在的缺点是一些原始模型组件没有明确出现。但当目的是推断 $\boldsymbol{\theta}$ 或模型组件并非直接感兴趣时，这不是问题。
+
+如上所示，联合精度矩阵是直接可用的，不需要在协方差矩阵参数 $\boldsymbol{\theta}$ 的值发生变化时重建。 `R-INLA` (http://www.r-inla.org) 实现目前将所有这三种策略混合用于各种模型组件和联合模型。
+
+### 3.3 贝叶斯推断和非高斯观测
+
+当 SPDE 模型（或多个模型）用于更大的 GLM 模型时，例如泊松计数数据，
+
+$$
+y_i | η_i \sim \mathcal{Poisson}(E_i \exp(η_i))
+$$
+
+其中 $E_i$ 为正常数。条件分布不再以封闭形式提供，就像其在高斯分布观测的情况下一样。确定性推断计算仍然是可能的，但需要一些近似。有了表现良好的类高斯结构模型，我们可以使用集成嵌套拉普拉斯近似 (INLA)，使近似的影响远小于估计本身的不确定性。简而言之，INLA 要求以嵌套方式重复 `第 3.1 节` 中概述的计算，以提供所有模型参数的后验边缘近似，不过，会使用对数似然的二阶泰勒近似，而不是 `式（11）` 的高斯情况下的项 $\mathbf{A}^T \mathbf{Q}_e \mathbf{A}$。因此，计算效率至关重要。Rue 等 (2009 <sup class="refplus-num"><a href="#ref-Rue2009">[122]</a></sup>) 介绍了 INLA 方法，Martins 等 (2013 <sup class="refplus-num"><a href="#ref-Martins2013">[96]</a></sup>) 讨论一些改进，Rue 等 (2017 <sup class="refplus-num"><a href="#ref-Rue2017">[123]</a></sup>) 回顾该方法，但重点关注其中的基本思想，van Niekerk 等 (2021 <sup class="refplus-num"><a href="#ref-vanNiekerk2021">[148]</a></sup>) 描述了 R-INLA 包中的一些最新扩展，而 Krainski 等(2018 <sup class="refplus-num"><a href="#ref-Krainski2018">[80]</a></sup>) 的书提供了使用 SPDE 模型和 R-INLA 包的实用指南（带代码）。
+
+SPDE 模型中 (对数)变程和 (对数)边缘方差的先验设置非常重要，因为这些参数不能在填充渐近下一致地被估计（Zhang，2004 <sup class="refplus-num"><a href="#ref-Zhang2004">[166]</a></sup>）。Fuglstad 等 (2019 <sup class="refplus-num"><a href="#ref-Fuglstad2019">[60]</a></sup>) 为其推导出了带复杂性惩罚的联合先验 (Simpson 等, 2017 <sup class="refplus-num"><a href="#ref-Simpson2017">[136]</a></sup>)，并讨论了如何处理非平稳模型。此先验族是我们推荐的，在实践中效果很好。
+
+## 4 重要扩展
+
+### 4.1 一般分数幂的方法
+
+### 4.2 非高斯模型
+
+### 4.3 时空过程
+
+## 5 理论保证
+
+在介绍了 SPDE 方法及其扩展的主要思想之后，我们现在准备研究基于 SPDE 的模型和相关计算方法的一些更具技术性的理论特性。人们可以很容易地争辩说，无论是从理论还是实践的角度来看，基于 SPDE 的模型都是最容易理解的随机场模型之一。为了支持这一说法，我们现在简要总结一下我们对基于 SPDE 的模型和相应计算方法的了解。在 5.1 小节中，我们介绍了一些已知的关于基于 SPDE 的模型的最重要的理论性质，在 5.2 小节中，我们介绍了有关相应近似方法的当前知识。
+
+### 5.1  SPDE 模型的性质
+
+#### 5.1.1 具有常量参数的模型
+
+自 1960 年代初期（1950 年代的部分结果）以来，人们已经知道 D = \mathbb{R}^{d} 上的 SPDE (3) 的稳态解是具有 Matern 协方差矩阵函数的居中高斯场（Whittle，1954 年，1963 年）。因此，在这种情况下，解的理论性质可以从平稳高斯随机场的标准理论中获得（例如 Cram ´ er 和 Leadbetter，2004）。
+
+由于运算 L 的特征值是根据拉普拉斯运算的特征值明确定义的，因此在球面等流形上考虑 (3) 的解的性质也很容易理解（例如，参见 Lang 和 Schwab，2015 年； Borovitskiy 等，2020 年）。特别是，在 D = \mathbb{R}^{d} 的情况下，指数 α 控制 H ̈ 较旧的解的连续性和可微性。
+
+当在有界域 D ( \mathbb{R}^{d} 上考虑 SPDE (3) 时，必须向运算添加边界条件。通常，在实践中使用 Neumann 或 Dirichlet 边界条件。因此，解将是非平稳的，并且没有不再具有 Mat ́ ern 协方差矩阵。然而，Lindgren 等 (2011) 表明，对于 d = 1 和 Neumann 边界条件，解具有折叠的 Mat ́ ern 协方差矩阵  ̃κ,τ,α，这将类似于相应的域内部的 Mat ́ ern 协方差矩阵 κ,τ,α。因此，有人认为应该使用域 D，该域 D 扩展距离 δ，该距离至少是实际相关变程 ρ = 的两倍√ 8ν/κ 在感兴趣域 D0 之外。Khristenko 等 (2019) 进一步验证了此过程，他们将结果扩展到 d &gt; 1 以及当 D 是 \mathbb{R}^{d} 中的盒子时的 Neumann 和周期性边界条件。他们在特别表明最高范数 \| ̃κ,τ,α − κ,τ,α\|L\infty(D0) 可以用 o 来界定f δ/ρ 并且随着此项的增加，误差呈指数级渐近减小。因此，具有平稳参数的 SPDE 以及这种情况下边界条件的影响是很好理解的。
+
+#### 5.1.2 非平稳 Whittle-Mat 泛化
+
+非平稳情况下的理论涉及更多；然而，在这种情况下，过程的特性也得到了很好的理解。考虑到凸多胞形 D \subset  \mathbb{R}^{d}, d \in  \{1, 2, 3\} 的广义 Whittle–Matern 域 (7)，我们从 Bolin 等那里知道。 (2020); Bolin 和 Kirchner (2020) 给出 α &gt; d/2（对应于 ν &gt; 0 在平稳情况下）的 SPDE 存在唯一解，κ 是一个本质上有界的函数，κ \in  L\infty(D)， H 是一个足够好的（Lipschitz 在 ̄ D 上连续且一致正定）矩阵值函数。赫尔曼等 (2020) 扩展了这一存在性结果，表明它在 $\mathbb{R}^3$ 中的封闭、连通、可定向、光滑、紧凑的 2 曲面上考虑 SPDE (7) 时也成立，假设 κ、H 是光滑的，Harbrecht 等阿尔。 (2021) 在更一般的无边界流形上为模型得出了类似的结果
+
+Cox 和 Kirchner (2020) 通过仅要求域 D 具有 Lipschitz 边界，并放宽对 H 的要求以仅假定本质有界性和一致正定性，进一步推广了 D \subset  \mathbb{R}^{d} 的情况。更重要的是，他们还表征了解 u 及其协方差矩阵函数的 Sobolev 和 H ̈ 旧正则性。因此，基于 SPDE 的模型的规律性在非平稳情况下也是已知的。
+
+#### 5.1.3 归纳高斯测量和克里金法
+
+高斯场理论的关键工具之一是高斯测度的等价性和正交性。例如，这通常用于推导最大似然估计的一致性（Zhang，2004）。 Bolin 和 Kirchner（2020 年）展示了两个具有恒定参数的不同 SPDE 模型 (3) 何时生成等效测量的问题。这也表明，对于固定的 α 值，可以在填充渐近下一致地估计 τ，但不能估计 κ，这与高斯矩阵场的结果一致（Zhang，2004）。
+
+对于统计应用程序，了解在模型中错误指定参数的影响也很重要。例如，Stein (1999) 在克里金法的背景下对稳态高斯随机场进行了彻底研究。对于非平稳广义 Whittle–Matern 场，类似的结果也具有普遍性。例如，Kirchner 和 Bolin (2021) 基于错误指定的参数 α、κ、τ 推导了球面上各向同性 Whittle–Matern 场线性预测的均匀渐近最优性条件。此外，Bolin 和 Kirchner (2021) 基于错误指定的参数 α、κ、H 推导了 \mathbb{R}^{d} 中有界域上广义 Whittle–Matern 场线性预测的均匀渐近最优性的条件。他们进一步推广了 Bolin 和 Kirchner 的结果（ 2020）通过推导两个广义 Whittle–Matern 场引起等效高斯测度的明确条件。据我们所知，广义 Whittle-Matern 是唯一一类已知此类理论结果的非平稳模型。
+
+### 5.2 近似的性质
+
+SPDE 模型的计算方法也很好理解。 Lindgren 等已经。 (2011) 结果表明，随着网格变得更精细，α \in  N 情况下的有限元近似分布收敛于精确解的分布。 Simpson 等扩展了这些结果。 (2016) 谁考虑了基于 SPDE 模型的对数高斯 Cox 过程 (3)
+
+后来，一般的分数案例已经被彻底调查过了。这始于 Bolin 等的结果。 (2020) 导出了第 4.1 节中介绍的 sinc-Galerkin 近似 uh 的强误差 E(\|u − uh\|L2(D)) 的显式收敛率。博林等 (2018) 通过推导弱错误的显式收敛率扩展了这些结果 |E(g(u)) − E(g(uh))|对于足够平滑的泛函 g(\cdot )。 Cox 和 Kirchner (2020) 通过还为近似的协方差矩阵函数的误差提供显式收敛率，进一步扩展了结果。所有这些结果也适用于 Bolin 和 Kirchner（2020 年）的理性 SPDE 方法以及表面模型（Herrmann 等，2020 年）。
+
+最近，SanzAlonso 和 Yang (2021a) 导出了包含在第 3.1 节中的简单分层模型以及二元分类模型中的 FEM 近似的后收缩率。这为如何根据所考虑的数据集的大小选择 FEM 基函数的数量提供了理论依据。
+
+## 6 应用
+
+自 Lindgren 等发表以来。 (2011) 论文中，各种各样的应用程序利用了 R-INLA 包中可用的软件实现，以及使用了 SPDE 结构的专门实现。我们将重点介绍一些关键应用，这些应用展示了这些模型在具有实际复杂观测模型和大型分层随机场结构的应用问题中的实用性。
+
+### 6.1 使用时空 SPDE 进行疟疾建模
+
+GMRF/SPDE 模型的第一个大规模应用是 Bhatt 等 (2015); Bertozzi-Villa 等 (2021)，它模拟了疟疾控制随时间的影响。结果表明，非洲的感染率在 2000 年至 2015 年间减半，估计有 5.42 亿至 7.63 亿（$95\%$ 可信区间）避免的病例归因于预防性干预措施，例如经过杀虫剂处理的蚊帐
+
+与医学数据一样，必须仔细考虑复杂的测量结构，使用时空 SPDE 模型来捕获其余模型组件无法自行处理的空间结构化效应。由于非洲足够大，任何地图投影都会引入变形，因此该模型直接建立在球形流形的子集上。尽管使用了空间静止模型，但通过消除由于任意地图投影引起的虚假非平稳性，结果可以根据地球上的测地线距离进行解释。该实现使用覆盖非洲的三角球形网格，以及来自第 4.3 节的时空 Kronecker 精度矩阵模型。
+
+### 6.2  EUSTACE 项目
+
+在分析过去的天气和气候时，一个挑战是合并来自多个数据源和测量类型的信息。近年来，卫星提供了大量数据，但测量数据与感兴趣的数量之间存在复杂的关系，包括空间和时间相关的噪声和卫星特定偏差。在全球某些地方，气象站数据的时间可以追溯到更早之前，但由于当地天气变化和仪器变化，这些数据在时间上具有持久性和不断变化的偏差。类似的挑战也适用于船舶的空气温度测量。 EUSTACE 大型合作项目（Rayner 等，2020 年）旨在重建全球每日时间尺度和 1/4 × 1/4 度空间分辨率的天气和气候。完整的问题，包括对自 1850 年以来所有 \sim 60, 000 天的每日最高和最低温度进行建模，大约有 1011 个值需要估计。
+
+在高斯过程和克里金法的基本应用中，典型模型将单个随机场与几个协变量相结合，并将它们与具有高斯加性噪声的地理参考观测值联系起来。全球天气场具有在广泛的空间和时间尺度上运行的依赖结构，明确设计天气的协方差矩阵模型是不现实的。 EUSTACE 项目反而构建了一个分层模型，其中每个节点仅对完整行为的一个方面有贡献，例如缓慢变化的气候平均温度场、系统纬度效应和每日天气残差。联合地，这定义了关于连接多个时空图的图的马尔可夫随机场。正如在第 4.1 节中讨论的分数 SPDE 结构一样，得到的场总和不是马尔可夫随机场，但马尔可夫性质的计算优势仍然存在。
+
+该项目通过与 R-INLA 软件中相同的非高斯观测近似技术，探索了处理每日最高和最低温度的非高斯行为的方法。为了使实现和计算时间易于管理，最终实现的方法不包括此，但该工作的各个方面可以在 Vandeskog 等中找到。 (2021b)。相反，实施了完全高斯方法，并使用迭代线性求解器计算所有潜在变量的条件分布，仅通过估计日平均温度将空间分辨率降低到 1.5 \cdot  1010，并将空间分辨率降低到 0.5 度。这些组件分为三类：
+
+• 气候变化（\sim 3.5 \cdot  105 个节点）：2 个月 1 度季节性模式、5 年 5 度尺度气候变化、非线性纬度效应、高度效应、海岸效应和总体平均值 • 大尺度变化（\sim 1.8 \cdot  106 个节点）：3 个月 5 度场和气象站偏差随机效应 • 每日场（\sim 6 \cdot  104 × 2.5 \cdot  105 ≈ 1.5 \cdot  1010 个节点）：当地 0.5 度天气，卫星偏差场在2.5度分辨率
+
+为了计算条件期望，使用了迭代条件方法，其中每个类别都根据其他类别有条件地求解，轮换直到收敛。日常类别将每一天视为条件独立的，这允许大规模并行计算，有 60 000 个单独的服务器任务。因此，最大的个体求解是针对大规模变化类别，计算图大小约为 200 万，使用精度矩阵的直接 Cholesky 分解
+
+### 6.3 神经影像学
+
+在流形上制定类似 Matern 的随机场的能力为应用到基于协方差矩阵的模型非常难以接近的领域开辟了道路。一种这样的应用是神经成像。具体而言，功能磁共振成像 (fMRI) 是一种流行的神经成像技术，用于定位由任务或刺激激活的大脑区域。传统的体积 fMRI 数据包括对大脑中数千个三维体积测量的时间序列的观测。分析 fMRI 数据的常用方法是通过经典的一般线性建模 (GLM) 方法（Friston 等，1994）。
+
+GLM 方法没有任何明确的空间依赖性统计模型，但通过数据的预平滑和多个假设检验的后校正来隐含地考虑空间依赖性，以寻找激活区域，这被认为是有问题的（见，例如 Eklund 等，2016 年）。然而，很少对 fMRI 中的空间依赖性进行显式建模，这主要是因为空间模型的计算成本很高。这个问题最近通过应用 SPDE 方法来定义具有空间先验的全脑 fMRI 分析方法而得到解决（Sid en 等，2021 年）
+
+尽管它很受欢迎，但传统的 fMRI 分析有一些局限性，例如数据包括来自许多不同组织类型的观测结果，而众所周知，神经元活动只发生在灰质中。皮质表面 fMRI (cs-fMRI) 通过将皮质灰质表示为二维流形表面来解决这个问题 (Fischl, 2012)。该方法最近越来越受欢迎，因为它还提供了更好的可视化、降维和改进了受试者皮质区域的对齐。此外，流形表示允许对位置之间的距离进行更具神经生物学意义的测量，这对于分析非常重要。从统计角度分析此类数据的主要困难是需要对皮质表面的空间依赖性进行建模。最近通过使用 SPDE 方法定义 cs-fMRI 数据的第一个贝叶斯 GLM 方法（Mejia 等，2020b）克服了这一困难，与忽略空间依赖性的标准 GLM 方法相比，该方法显示出高度准确（Spencer 等）等，2021 年）。在图 1 中，我们展示了对患者皮质表面的广义 Whittle–Matern 场的模拟。
+
+上面提到的模型可以有效地发现执行特定任务时大脑的哪些区域是活跃的。最近备受关注的另一种研究大脑的方法是采用更全面的方法，在没有特定刺激的情况下观测大脑的功能组织。此任务的常用方法是独立成分分析 (ICA)，它在观测患者组时可靠地工作 (Calhoun 等, 2001)。在主题级别执行估计更具挑战性，并且在主题级别考虑空间依赖性对于减少噪声变得更加重要。这对于 fMRI 和 cs-fMRI 数据来说也很难做到，但 SPDE 方法最近也促进了空间 ICA 方法的开发，用于估计功能性大脑网络（Mejia 等，2020a）。
+
+类似的技术也已应用于其他解剖流形，例如心脏。为了从电图模拟局部激活时间，Coveney 等 (2020) 估计了多种人类心房的概率激活时间。三角流形网格是根据测量的个体估计的，然后进行平滑处理。然后将电极位置投影到最近的网格点，并使用 R-INLA 软件将第 4.3 节中的 Kronecker 乘积精度矩阵模型用于流形上的时空激活过程。
+
+### 6.4 地震学和材料科学
+
+虽然 SPDE 模型在空间统计中最常见的应用是 2 维空间，有时会增加时间，但在地震学中，感兴趣的数据和问题通常是 3 维的。希尔伯特空间构造中使用的有限元方法对四面体化的工作方式与对三角剖分的工作方式相同。这被张等利用了。 (2016)，估计美国西部 700 公里深度的地震速度。在这个复杂的反演问题中，他们将 SPDE 模型应用于地下速度场以及地表的地震源和接收器场。他们还提供了四面体网格的有限元矩阵 C 和 G 的几何推导，此后已在 https\://github.com/finnlindgren/inlamesh3d 的实验性 R 包中实现。
+
+多孔材料的统计建模是另一种应用，在非常不同的空间尺度上，它也需要 3 维空间中的模型。 Barman 和 Bolin（2018 年）使用 SPDE 方法设计了一个模型，用于研究多孔乙基纤维素/羟丙基纤维素聚合物混合物，该混合物用作控制药片药物释放的涂层。该模型后来被用于研究孔隙几何形状如何影响通过聚合物薄膜的扩散传输（Barman 等，2019 年）。
+
+### 6.5 生态学中的点过程
+
+在 SPDE 构造中使用局部基函数的好处之一是与生态学和流行病学中常见的基于图的马尔可夫随机场模型非常相似。这使得从区域聚合计数到连续域点过程模型的步骤非常小。 Simpson 等详细分析了非齐次泊松过程可能性的直接近似。 (2016)，此后作为 inlabru 软件的一部分实现了自动化（Bachl 等，2019 年；Yuan 等，2017 年）。
+
+当 η(\mathbf{s}) 是空间评估的线性预测变量表达式时，非齐次泊松点过程 Y = \{y1,\ldots , yM\}, y_i \in  D, 在域 D 上具有强度 λ(\mathbf{s}) = \exp\{η(\mathbf{s})\} 具有对数似然
+
+l(η; Y) = − ∫ D \exp\{η(\mathbf{s})\} dD(\mathbf{s}) + M sum  i=1 η(y_i)
+
+其中积分是流形域 D 的表面积分。积分通常是难以处理的，但是当 η(\mathbf{s}) 是从第 2.7 节中的局部基函数构建时，有几个选项可用。例如，离散化 sum N j=1 w j \exp\{η(s j)\}，其中 s j 是网格节点，w j = \langle\psi_j, 1\rangle 提供了良好且稳定的近似。生成的似然表达式不是 η 的泊松模型似然，因为这两个和涉及不同的空间位置。然而，它非常相似，很容易在 R-INLA 软件中实施，并使其自动化，就像在 inlabru 中一样。
+
+inlabru 软件的一个关键动机是允许更轻松地指定此类模型以及更复杂的模型，例如横断面调查的距离采样，其中点过程仅沿线观测，例如从一艘穿越海洋的船上。然后表面积分被线积分有效地代替，并且检测到一个点（通常是一个动物或一组动物）的概率也可以被合并。然而，此类模型不一定会产生关于所产生的细化泊松点过程强度参数的对数线性表达式，λ(\mathbf{s})P（在 s 处检测到的点 | 点存在于 s 处）。为了解决这个问题，inlabru 方法迭代地线性化给定的预测表达式，并对线性化版本应用 INLA 方法，直到找到后验模式。
+
+R 包 dsm（Miller 等，2021 年）中提供了距离采样的频率论方法，该方法使用与本征平稳随机场模型密切相关的惩罚样条平滑器。
+
+## 7 相关方法
+
+在这里，我们重点介绍一些相关或对比的技术和方法。进一步的联系、相关和对比方法可以在 Cressie 和 Wikle (2011) 以及 Wikle 等中找到。 (2019)，涵盖分层模型设置中的时空模型，以及各种计算方法，包括模型评估。后者正成为一个越来越重要的话题，因为后验均值（或频率点估计）之间的均方误差等传统基本度量仅提供有限的见解。为了有意义地比较复杂的空间和时空估计技术，必须使用将预测的估计不确定性考虑在内的比较分数，例如对数密度和对数概率分数（分别用于连续和离散结果)、CRPS（连续排名概率得分）或 Dawid-Sebastiani（来自高斯分布的对数密度得分，对于其他分布的期望和方差也是一个合适的得分），参见 Gneiting 和 Raftery (2007) .对于 SPDE 方法生成的稀疏精度矩阵，也可以应用具有此类分数的留一法交叉验证（Vehtari 等，2017 年）（Ferkingstad 等，2017 年）。
+
+### 7.1 过程先验与平滑惩罚
+
+正如 Miller 等最近所讨论的那样，再现核 Hilbert 空间的理论提供了频繁惩罚样条估计器和贝叶斯高斯过程先验之间的密切联系。 （2020）。在开发随机 PDE 方法的同时，基于 PDE 的惩罚的相关开发也在进行，以解决类似的问题，例如复杂形状域和非欧几里得流形（Sangalli 等，2013 年；Sangalli，2021 年）。
+
+正如 2.2 节中提到的，惩罚最小化器（这里通常与条件期望相同或相似）和完全随机过程之间的主要区别在于，惩罚最小化器与随机过程具有相同的 RKHS，从根本上比随机过程更平滑过程实现。这也体现在对于高维高斯分布（其中随机场处于极端无限极限），大部分概率质量远离分布的期望，并且在量化预测不确定性时这种偏差是必不可少的。惩罚方法提供的点估计量或条件期望的方差不应与过程的完整后验分布提供的预测不确定性相混淆。
+
+### 7.2 谱模型构造和广义 Whittle-Matern 场
+
+使用 Whittle SPDE 的一个重要方面是将 Matern 协方差矩阵族推广到流形上的过程，同时保持局部几何解释。 Matern 协方差矩阵模型对平滑流形的 SPDE 泛化保留了原始模型的所有可微性和马尔可夫子集性质，并且对于短程渐近等价。谱表示与拉普拉斯运算及其流形版本的特征函数和特征值相关联。 Lang 和 Pereira（2021 年）以及 Harbrecht 等最近使用高阶数值方法对黎曼流形上的偏微分方程扩展了 4.1 节中讨论的分数运算方法。 (2021)，涉及多项式和小波基展开。在 Porcu 等中可以找到在球面上构建有效模型的其他方法。 (2016)。
+
+在 \mathbb{R}^{d} 上，调和 \exp(is\cdot k) 的拉普拉斯运算的特征值为 −\|k\|2，k \in  \mathbb{R}^{d}，在球面上，\lambda_k = −k(k + 1) 是球谐 Yk 的特征值， k 阶的 m \in  \{0, 1, 2,\ldots \}, m \in  \{−k,\ldots , k\}。在文献中，谱结构通常用于定义新的模型族，例如用于时空模型（Stein，2005）。在使用 Whittle SPDE 表示将 Matern 模型推广到球面和其他非欧几里得流形时，拉普拉斯运算的谱表示起着关键作用。相比之下，Guinness 和 Fuentes（2016 年）以 Legendre-Matern 的名义引入的球形协方差矩阵在频谱定义中使用 k2 而不是 Whittle SPDE 泛化中出现的 k(k + 1)。此外，构造没有考虑对模型本身的频谱表示的影响，导致不同的运算功率，并且在频谱到协方差矩阵转换中缺少第 2.5 节中的 2k + 1 因子。因此，在 Whittle-Mat ́ ern 泛化具有 \{\kappa^{2} + k(k + 1)\}α 的地方，Legendre-Mat ́ ern 版本具有 (2k + 1)(\kappa^{2} + k2)α−1/2，这不能使用拉普拉斯运算的特征值很容易重新表述。这些问题使得 Matern 模型的替代泛化变得不那么自然，因为它失去了泛化 Whittle 表示的所有马尔可夫连接，以及精度运算的简单形式，这不能轻易地通过拉普拉斯运算的幂来表达。当仅考虑正定性的理论上有效的表达式时，很容易错过这些影响，并且在几何局部可解释的微分运算中建立更复杂的模型构造可能会提供对理论的更好的直观理解
+
+### 7.3 全局基函数
+
+在第 2.7 节中，使用局部支持的基函数来生成稀疏精度矩阵并在对测量进行调节时保留这种稀疏性。在另一个极端，可以使用全局基函数，这样选择使得基重的模型精度矩阵是对角线的，但后验精度矩阵通常是密集的。 Karhunen-Lo\` eve (K-L) 展开式使用协方差矩阵运算或等效的精度运算的特征函数。这种类型的有限维谱表示的好处是，它可以为较少数量的基函数生成与真实协方差矩阵的近似值。主要缺点是评估特征函数的计算成本，因为这些取决于模型参数。另一种选择是使用拉普拉斯运算的本征函数，这些函数涉及类傅立叶谱表示。这些仅取决于域的形状，并且可以在分析开始时进行数值计算（参见 Solin 和 S ̈ arkk ̈ a, 2020，其中一种方法）。然而，由于可能需要高频来提供对真实模型的良好近似，因此这种方法对于一般领域来说仍然很昂贵。此外，典型的数值解法是使用与用于计算整个条件期望相同的有限元方法来求解特征值。因此，仅当可以比稀疏精度矩阵本身更有效地使用特征函数时，以数值方式计算特征函数才有用。对于 K-L 和谐波基函数，希尔伯特空间内积产生对角先验精度矩阵。由于 (11) 中 A&gt;\mathbf{Q}_eA 项的结构，当数据结构由于生成的密集精度矩阵而不允许有效的后验分布计算时，就会出现实际应用中的主要问题。这意味着谐波基函数最适用于只需要几个频率的非常平滑的场，或者可以进行快速傅立叶变换的场。
+
+在球面上使用球谐函数时，在选择勒让德多项式实现时必须小心，因为某些实现在阶数高于 \sim 40 时在数值上不稳定。例如，首先显式构造多项式系数，然后评估它们的方法，分解对于 \sim 40 以上的订单，包括 pracma 和 orthopolynom 包中的实现（Borchers，2021；Novomestky，2013）。由于这些不稳定的实现，地球上的空间分辨率被限制在大约 360/40 = 9 度或 \sim 1, 000 公里的波长，使其不适合精细分辨率问题，例如第 6.2 节中讨论的 EUSTACE 项目。然而，GSL 库实现（Galassi，2018 年；Hankin，2006 年）对于更高的阶次似乎是稳定的。
+
+一种数值替代方法是通过广义特征值问题 GV = CVΛ 计算三角剖分上的拉普拉斯特征函数。这非常接近连续域拉普拉斯运算的特征函数，并且也适用于球面以外的其他流形。这将是对 Lee 和 Haran (2021) 使用的直接基于图的特征函数的轻微修改
+
+### 7.4 其他精度矩阵近似方法
+
+空间过程的每一种计算方法都可以（至少）以某种方式来看待；作为给定模型的近似值，或作为其自身专门构建的模型。在文献中，这两种观点都被使用，但由于近似的结构可能非常特定于构造的细节，因此第二种方法无法提供对两种方法之间异同的有用见解。相反，我们发现采用第一种方法更有用，并考虑方法的连续域可解释性。
+
+表示 SPDE 解的有限元希尔伯特空间方法产生的马尔可夫模型与其他几种构造给定连续域模型的计算有效近似的方法有着密切的联系。
+
+正如 Lindgren 等开发 SPDE/GMRF 链接的动机之一。 （2011）是为了弥合离散马尔可夫模型和连续协方差矩阵模型之间的差距，有限元三角剖分图和其他图方法之间有进一步的联系。最近的两个例子是 Sanz-Alonso 和 Yang (2021b) 以及 Dunson 等 (2021)，在同一种图上构造不同的局部拉普拉斯近似。这两篇论文中的第一篇还展示了这些方法之间的广泛联系，以及有限元结构如何在可用的设置中提供对连续域模型更好的近似
+
+另一种方法是 Datta 等(2016)的最近邻高斯过程 (NNGP) 构造。 ，它采用给定的协方差矩阵函数，本质上，为给定的、有序的空间位置序列构造精度矩阵的不完整 Cholesky 分解。通过计算给定先前包含的点的精确条件分布，获得离散化模型。好处是，不是包括出现在马尔可夫精度矩阵的 Cholesky 分解中的 Cholesky 填充，而是只包括以前的邻居。缺点是生成的表示取决于包含空间位置的顺序，这可能导致源协方差矩阵和 NNGP 协方差矩阵之间存在较大差异。相反，对于完整的 Cholesky 分解，节点的排序只影响计算分解的稀疏性（Rue 和 Held，2005）。然而，由于 NNGP 构建的相对速度，潜在的扩展可能是使用 NNGP 模型作为大规模迭代求解器方法中的快速预处理器。这也适用于块状结构，例如 Katzfuss (2017)；基罗斯等 (2021);佩鲁齐等 （2020）。
+
+## 8 讨论
+
+自 Lindgren 等发表 10 年后。 (2011)，用于构建空间和时空高斯随机场的计算高效表示的随机 PDE 方法已在广泛的实际应用中证明了其价值。现在空间统计的计算方法多种多样，但许多缺乏与所需连续域性质相关的保真度的强有力的理论保证，或者仅限于特定应用。相比之下，SPDE 方法利用了高斯过程的不同表示及其依赖结构之间的紧密联系，以及模型构建本身与计算方法的相对分离，提供了强有力的理论保证和高效的实现。这使得高斯随机场模型可以被纳入各种层次模型中，并且该方法继续扩展到新的应用领域和更通用的依赖结构。
+
+在通用性和计算效率之间总是存在权衡。 SPDE 方法的优势在于，可以从已经能够求解大型系统的确定性 PDE 求解器的经过充分研究的方法中改编方法。部分挑战在于，随机场的典型时空精度运算的阶数远高于纯物理驱动的 PDE 中常见的典型普通拉普拉斯运算，这使得迭代求解器的标准预处理方法效率低下。然而，通过利用局部块结构以及多重网格方法和并行求解器，这些方法显示出比当前直接 Cholesky 方法可以解决的更大问题的前景，这些问题可用于多达几百万个元素； EUSTACE 项目中最大的单场求解有近 200 万个节点。
+
+当前活跃的研究领域包括更一般的时空扩展、非平稳性和各向异性模型及其组合。我们预计这将有助于将 SPDE 模型的实际用途扩展到复杂时空数据的现实模型。
+
+虽然与这些方法相关的实际实施和预处理成本仍然是事实，并且所有高级空间和时空建模技术都是如此，但 Lindgren 等的结束语。 (2011) 从软件用户的角度来看，“当需要高效计算时，这种成本是不可避免的”现在不再像 2011 年那样正确。 inlabru等接口能够将所有的内部记账和线性代数封装在内部代码中，让软件用户更专注于构建结构化和几何可解释的模型。
+
+## 参考文献
+
+<ul id="refplus"><li id="ref-Aquino2021" data-num="1">[1]  Aquino, B., Castruccio, S., Gupta, V., Howard, S., 2021. Spatial modeling of mid-infrared spectral data with thermal compensation using integrated nested Laplace approximation. Appl. Opt. 60, 8609–8615. doi:10.1364/AO.435918.</li><li id="ref-Asar2020" data-num="2">[2]  Asar, O., Bolin, D., Diggle, P.J., Wallin, J., 2020. Linear mixed effects models for non-Gaussian continuous repeated measurement data. J. R. Stat. Soc. Ser. C. Appl. Stat. 69, 1015–1065. doi:10.1111/rssc.12405. with discussion and a reply by the authors.</li><li id="ref-Asri2021" data-num="3">[3]  Asri, A., Benamirouche, R., 2021. Using INLA/SPDE approach for estimating a spatial model for lung cancer mortality in Algeria 2016. Revue d  ́ Economie et de Statistique Appliqu ́ ee 18, 261–277.</li><li id="ref-Babyn2021" data-num="4">[4]  Babyn, J., Varkey, D., Regular, P., Ings, D., Mills Flemming, J., 2021. A Gaussian field approach to generating spatial age length keys. Fisheries Research 240, 105956. doi:10.1016/j.fishres.2021.105956.</li><li id="ref-Bachl2019" data-num="5">[5]  Bachl, F.E., Lindgren, F., Borchers, D.L., Illian, J.B., 2019. inlabru: an R package for Bayesian spatial modelling from ecological survey data. Methods Ecol. Evol 10, 760–766. doi:10.1111/2041-210X.13168.</li><li id="ref-Bakka2019" data-num="6">[6]  Bakka, H., 2019. How to solve the stochastic partial differential equation that gives a Mat ́ ern random field using the finite element method. arXiv:1803.03765.</li><li id="ref-Bakka2020" data-num="7">[7]  Bakka, H., Krainski, E., Bolin, D., Rue, H., Lindgren, F., 2020. The diffusion-based extension of the Mat ́ ern field to space-time. arXiv:2006.04917.</li><li id="ref-Bakka2018" data-num="8">[8]  Bakka, H., Rue, H., Fuglstad, G.A., Riebler, A., Bolin, D., Illian, J., Krainski, E., Simpson, D., Lindgren, F., 2018. Spatial modelling with R-INLA: A review. Wiley Interdiscip. Rev. Comput. Stat. 10:e1443. doi:10.1002/wics.1443.</li><li id="ref-Bakka2019V" data-num="9">[9]  Bakka, H., Vanhatalo, J., Illian, J.B., Simpson, D., Rue, H., 2019. Non-stationary Gaussian models with physical barriers. Spat. Stat. 29, 268–288.</li><li id="ref-Barman2018" data-num="10">[10]  Barman, S., Bolin, D., 2018. A three-dimensional statistical model for imaged microstructures of porous polymer films. J. Microsc. 269, 247–258. doi:10.1111/jmi.12623.</li><li id="ref-Barman2019" data-num="11">[11]  Barman, S., Rootz ́ en, H., Bolin, D., 2019. Prediction of diffusive transport through polymer films from characteristics of the pore geometry. AIChE Journal 65, 446–457.</li><li id="ref-Bell2021" data-num="12">[12]  Bell, O., Jones, M.E., Cunningham, C.X., Ruiz-Aravena, M., Hamilton, D.G., Comte, S., Hamede, R.K., Bearhop, S., McDonald, R.A., 2021. Isotopic niche variation in Tasmanian devils Sarcophilus harrisii with progression of devil facial tumor disease. Ecology and Evolution 11, 8038–8053. doi:10.1002/ece3.7636.</li><li id="ref-Beloconi2021" data-num="13">[13]  Beloconi, A., Probst-Hensch, N.M., Vounatsou, P., 2021. Spatio-temporal modelling of changes in air pollution exposure associated to the COVID-19 lockdown measures across Europe. Sci. Total Environ. 787, 147607. doi:10.1016/j. scitotenv.2021.147607.</li><li id="ref-Bertozzi-Villa2021" data-num="14">[14]  Bertozzi-Villa, A., Bever, C.A., Koenker, H., Weiss, D.J., Vargas-Ruiz, C., Nandi, A.K., Gibson, H.S., Harris, J., Battle, K.E., Rumisha, S.F., Keddie, S., Amratia, P., Arambepola, R., Cameron, E., Chestnutt, E.G., Collins, E.L., Millar, J., Mishra, S., Rozier, J., Symons, T., Twohig, K.A., Hollingsworth, T.D., Gething, P.W., Bhatt, S., 2021. Maps and metrics of insecticide-treated net access, use, and nets-per-capita in Africa from 2000-2020. Nat. Commun. 12, 3589. doi:10.1038/s41467-021-23707-7.</li><li id="ref-Besag1974" data-num="15">[15]  Besag, J., 1974. Spatial Interaction and the Statistical Analysis of Lattice Systems. J. R. Stat. Soc. Ser. B Stat. Methodol. 36, 192–225. doi:10.1111/j.2517-6161.1974.tb00999.x.</li><li id="ref-Besag1995" data-num="16">[16]  Besag, J., Kooperberg, C., 1995. On Conditional and Intrinsic Autoregression. Biometrika 82, 733–746. doi:10.2307/ 2337341.</li><li id="ref-Besag2005" data-num="17">[17]  Besag, J., Mondal, D., 2005. First-Order Intrinsic Autoregressions and the De Wijs Process. Biometrika 92, 909–920. URL: https://www.jstor.org/stable/20441244.</li><li id="ref-Berg2021" data-num="18">[18]  Berg, F., Shirajee, S., Folkvord, A., Godiksen, J.A., Skaret, G., Slotte, A., 2021. Early life growth is affecting timing of spawning in the semelparous Barents Sea capelin (Mallotus villosus). Prog. Oceanogr. 196, 102614. doi:10.1016/ j.pocean.2021.102614.</li><li id="ref-Bhatt2015" data-num="19">[19]  Bhatt, S., Weiss, D.J., Cameron, E., Bisanzio, D., Mappin, B., Dalrymple, U., Battle, K.E., Moyes, C.L., Henry, A., Eckhoff, P.A., Wenger, E.A., Bri ̈ et, O., Penny, M.A., Smith, T.A., Bennett, A., Yukich, J., Eisele, T.P., Griffin, J.T., Fergus, C.A., Lynch, M., Lindgren, F., Cohen, J.M., Murray, C.L.J., Smith, D.L., Hay, S.I., Cibulskis, R.E., Gething, P.W., 2015. The effect of malaria control on Plasmodium falciparum in Africa between 2000 and 2015. Nature 526, 207–211. doi:10.1038/nature15535.</li><li id="ref-Bleuel2021" data-num="20">[20]  Bleuel, J., Pennino, M., Longo, G., 2021. Coral distribution and bleaching vulnerability areas in Southwestern Atlantic under ocean warming. Scientific Reports 11, 12833. doi:10.1038/s41598-021-92202-2.</li><li id="ref-Bolin2011" data-num="21">[21]  Bolin, D., Lindgren, F., 2011. Spatial models generated by nested stochastic partial differential equations, with an application to global ozone mapping. Ann. Appl. Stat. 5, 523–550.</li><li id="ref-Bolin2012" data-num="22">[22]  Bolin, D., 2012. Models and Methods for Random Fields in Spatial Statistics with Computational Efficiency from Markov Properties. Ph.D. thesis. Faculty of Engineering, Centre for Mathematical Statistics, Lund University, Sweden.</li><li id="ref-Bolin2013" data-num="23">[23]  Bolin, D., Lindgren, F., 2013. A comparison between Markov approximations and other methods for large spatial data sets. Comput. Statist. Data Anal. 61, 7–21. doi:10.1016/j.csda.2012.11.011.</li><li id="ref-Bolin2014" data-num="24">[24]  Bolin, D., 2014. Spatial Mat ́ ern fields driven by non-Gaussian noise. Scand. J. Stat. 41, 557–579. doi:10.1111/sjos. 12046.</li><li id="ref-Bolin2018" data-num="25">[25]  Bolin, D., Kirchner, K., Kov ́ acs, M., 2018. Weak convergence of Galerkin approximations for fractional elliptic stochastic PDEs with spatial white noise. BIT 58, 881–906.</li><li id="ref-Bolin2020KK" data-num="26">[26]  Bolin, D., Kirchner, K., Kov ́ acs, M., 2020. Numerical solution of fractional elliptic stochastic PDEs with spatial white noise. IMA J. Numer. Anal. 40, 1051–1073.</li><li id="ref-Bolin2020W" data-num="27">[27]  Bolin, D., Wallin, J., 2020. Multivariate type G Mat ́ ern stochastic partial differential equation random fields. J. R. Stat. Soc. Ser. B. Stat. Methodol. 82, 215–239.</li><li id="ref-Bolin2020K" data-num="28">[28]  Bolin, D., Kirchner, K., 2020. The rational SPDE approach for Gaussian random fields with general smoothness. J. Comp. Graph. Stat. 29, 274–285.</li><li id="ref-Bolin2021K" data-num="29">[29]  Bolin, D., Kirchner, K., 2021. Equivalence of measures and asymptotically optimal linear prediction for gaussian random fields with fractional-order covariance operators. Preprint, arXiv:2101.07860.</li><li id="ref-Bolin2021S" data-num="30">[30]  Bolin, D., Simas, A.B., 2021. R-INLA implementation of the covariance-based rational approximation. URL: https: //davidbolin.github.io/rSPDE/articles/rspde_inla.html.</li><li id="ref-Bolin2021W" data-num="31">[31]  Bolin, D., Wallin, J., 2021. Efficient methods for Gaussian Markov random fields under constraints, in: Advances in Neural Information Processing Systems 34, Curran Associates, Inc.. pp. 1–13.</li><li id="ref-Boman2021" data-num="32">[32]  Boman, E.M., de Graaf, M., Kough, A.S., Izioka-Kuramae, A., Zuur, A.F., Smaal, A., Nagelkerke, L., 2021. Spatial dependency in abundance of Queen conch, Aliger gigas, in the Caribbean, indicates the importance of surveying deep-water distributions. Diversity and Distributions doi:10.1111/ddi.13392.</li><li id="ref-Bonito2015" data-num="33">[33]  Bonito, A., Pasciak, J.E., 2015. Numerical approximation of fractional powers of elliptic operators. Math. Comp. 84, 2083–2110.</li><li id="ref-Borchers2021" data-num="34">[34]  Borchers, H.W., 2021. pracma: Practical Numerical Math Functions. URL: https://CRAN.R-project.org/ package=pracma. R package version 2.3.3.</li><li id="ref-Borges2021" data-num="35">[35]  Borges da Silva, E.D., Xavier, A., Faria, M.V., 2021. Joint modeling of genetics and field variation in plant breeding trials using relationship and different spatial methods: A simulation study of accuracy and bias. Agronomy 11. doi:10.3390/agronomy11071397.</li><li id="ref-Borovitskiy2020" data-num="36">[36]  Borovitskiy, V., Terenin, A., Mostowsky, P., Deisenroth, M.P., 2020. Mat ́ ern Gaussian processes on Riemannian manifolds. arXiv:2006.10160.</li><li id="ref-Breivik2021" data-num="37">[37]  Breivik, O.N., Aanes, F., Søvik, G., Aglen, A., Mehl, S., Johnsen, E., 2021. Predicting abundance indices in areas without coverage with a latent spatio-temporal Gaussian model. ICES J. Mar. Sci. doi:10.1093/icesjms/fsab073.</li><li id="ref-Calhoun2001" data-num="38">[38]  Calhoun, V.D., Adali, T., Pearlson, G.D., Pekar, J.J., 2001. A method for making group inferences from functional MRI data using independent component analysis. Human brain mapping 14, 140–151.</li><li id="ref-Cameletti2013" data-num="39">[39]  Cameletti, M., Lindgren, F., Simpson, D., Rue, H., 2013. Spatio-temporal modeling of particulate matter concentration through the SPDE approach. Adv. Stat. Anal. 97, 109–131. doi:10.1007/s10182-012-0196-3.</li><li id="ref-Carrizo2022" data-num="40">[40]  Carrizo Vergara, R., Allard, D., Dessasis, N., 2022. A general framework for SPDE-based stationary random fields. Bernoulli 28, 1–32. doi:10.3150/20-BEJ1317.</li><li id="ref-Cavieres2021" data-num="41">[41]  Cavieres, J., Monnahan, C.C., Vehtari, A., 2021. Accounting for spatial dependence improves relative abundance estimates in a benthic marine species structured as a metapopulation. Fisheries Research 240, 105960. doi:10.1016/j. fishres.2021.105960.</li><li id="ref-Cendoya2021" data-num="42">[42]  Cendoya, M., Hubel, A., Conesa, D., Vicent, A., 2021. Barrier effects on the spatial distribution of Xylella fastidiosa in Alicante, Spain. bioRxiv doi:10.1101/2021.04.01.438042.</li><li id="ref-Chada2021" data-num="43">[43]  Chada, N.K., Roininen, L., Suuronen, J., 2021. Cauchy Markov random field priors for Bayesian inversion. Preprint, arXiv:2105.12488.</li><li id="ref-Coveney2020" data-num="44">[44]  Coveney, S., Corrado, C., Roney, C.H., Wilkinson, R.D., Oakley, J.E., Lindgren, F., Williams, S.E., O’Neill, M.D., Niederer, S.A., Clayton, R.H., 2020. Probabilistic Interpolation of Uncertain Local Activation Times on Human Atrial Manifolds. IEEE Trans. Biomed. Eng. 67, 99–109. doi:10.1109/TBME.2019.2908486.</li><li id="ref-Cox2020" data-num="45">[45]  Cox, S.G., Kirchner, K., 2020. Regularity and convergence analysis in Sobolev and H ̈ older spaces for generalized Whittle–Mat ́ ern fields. Numer. Math. 146, 819–873.</li><li id="ref-Cramer2004" data-num="46">[46]  Cram ́ er, H., Leadbetter, M.R., 2004. Stationary and related stochastic processes. Dover Publications, Inc., Mineola, NY. Sample function properties and their applications, Reprint of the 1967 original.</li><li id="ref-Cressie2011" data-num="47">[47]  Cressie, N., Wikle, C.K., 2011. Statistics for Spatio-Temporal Data. Wiley.</li><li id="ref-Datta2016" data-num="48">[48]  Datta, A., Banerjee, S., Finley, A.O., Gelfand, A.E., 2016. Hierarchical Nearest-Neighbor Gaussian Process Models for Large Geostatistical Datasets. J. Amer. Statist. Assoc. 111, 800–812. doi:10.1080/01621459.2015.1044091.</li><li id="ref-Dunson2021" data-num="49">[49]  Dunson, D.B., Wu, H.T., Wu, N., 2021. Graph based Gaussian processes on restricted domains. arXiv:2010.07242. accepted.</li><li id="ref-Eidsvik2009" data-num="50">[50]  Eidsvik, J., Martino, S., Rue, H., 2009. Approximate Bayesian inference in spatial generalized linear mixed models. Scand. J. Stat. 36, 1–22.</li><li id="ref-Eklund2016" data-num="51">[51]  Eklund, A., Nichols, T.E., Knutsson, H., 2016. Cluster failure: Why fMRI inferences for spatial extent have inflated false-positive rates. Proc. natl. acad. sci. 113, 7900–7905.</li><li id="ref-Erisman1975" data-num="52">[52]  Erisman, A.M., Tinney, W.F., 1975. On computing certain elements of the inverse of a sparse matrix. Commun. ACM 18, 177–179.</li><li id="ref-Fecchio2021" data-num="53">[53]  Fecchio, A., Clark, N.J., Bell, J.A., Skeen, H.R., Lutz, H.L., De La Torre, G.M., Vaughan, J.A., Tkach, V.V., Schunck, F., Ferreira, F.C., Braga, E.M., Lugarini, C., Wamiti, W., Dispoto, J.H., Galen, S.C., Kirchgatter, K., Sagario, M.C., Cueto, V.R., Gonz ́ alez-Acu  ̃ na, D., Inumaru, M., Sato, Y., Schumm, Y.R., Quillfeldt, P., Pellegrino, I., Dharmarajan, G., Gupta, P., Robin, V.V., Ciloglu, A., Yildirim, A., Huang, X., Chapa-Vargas, L.,  ́ Alvarez-Mendiz ́ abal, P., SantiagoAlarcon, D., Drovetski, S.V., Hellgren, O., Voelker, G., Ricklefs, R.E., Hackett, S.J., Collins, M.D., Weckstein, J.D., Wells, K., 2021. Global drivers of avian haemosporidian infections vary across zoogeographical regions. Global Ecology and Biogeography doi:10.1111/geb.13390.</li><li id="ref-Ferkingstad2017" data-num="54">[54]  Ferkingstad, E., Held, L., Rue, H., 2017. Fast and accurate Bayesian model criticism and conflict diagnostics using R-INLA. Stat 6, 331–344. doi:10.1002/sta4.163.</li><li id="ref-Fischl2012" data-num="55">[55]  Fischl, B., 2012. Freesurfer. Neuroimage 62, 774–781.</li><li id="ref-Florencio2021" data-num="56">[56]  Florˆ encio, F.M., Alves, D.C., Lansac-Tˆ oha, F.M., Silveira, M.J., Thomaz, S.M., 2021. The success of the invasive macrophyte Hydrilla verticillata and its interactions with the native Egeria najas in response to environmental factors and plant abundance in a subtropical reservoir. Aquatic Botany 175, 103432. doi:10.1016/j.aquabot.2021. 103432.</li><li id="ref-Friston1994" data-num="57">[57]  Friston, K.J., Holmes, A.P., Worsley, K.J., Poline, J.P., Frith, C.D., Frackowiak, R.S., 1994. Statistical parametric maps in functional imaging: a general linear approach. Human brain mapping 2, 189–210.</li><li id="ref-Fuglstad2015a" data-num="58">[58]  Fuglstad, G.A., Lindgren, F., Simpson, D., Rue, H., 2015a. Exploring a New Class of Non-stationary Spatial {Gaussian} random fields with varying local anisotropy. Stat. Sin. 25, 115–133. URL: https://www.jstor.org/stable/ 24311007.</li><li id="ref-Fuglstad2015b" data-num="59">[59]  Fuglstad, G.A., Simpson, D., Lindgren, F., Rue, H., 2015b. Does non-stationary spatial data always require nonstationary random fields? Spat. Stat. 14, 505–531. doi:10.1016/j.spasta.2015.10.001.</li><li id="ref-Fuglstad2019" data-num="60">[60]  Fuglstad, G.A., Simpson, D., Lindgren, F., Rue, H., 2019. Constructing Priors that Penalize the Complexity of Gaussian Random Fields. J. Amer. Statist. Assoc. 114, 445–452. doi:10.1080/01621459.2017.1415907.</li><li id="ref-Galassi2018" data-num="61">[61]  Galassi, M.e.a., 2018. GNU Scientific Library reference manual. URL: https://www.gnu.org/software/gsl/.</li><li id="ref-Ghattas2021" data-num="62">[62]  Ghattas, O., Willcox, K., 2021. Learning physics-based models from data: perspectives from inverse problems and model reduction. Acta Numerica 30, 445–554. doi:10.1017/S0962492921000064.</li><li id="ref-Gneiting2007" data-num="63">[63]  Gneiting, T., Raftery, A.E., 2007. Strictly Proper Scoring Rules, Prediction, and Estimation. J. Amer. Statist. Assoc. 102, 359–378. doi:10.1198/016214506000001437.</li><li id="ref-Gomez-Catas2021" data-num="64">[64]  G ́ omez-Catas  ́ us, J., Barrero, A., Reverter, M., Bustillo-de la Rosa, D., P ́ erez-Granados, C., Traba, J., 2021. Landscape features associated to wind farms increase mammalian predator abundance and ground-nest predation. Biodivers. Conserv. 30, 2581–2604. doi:10.1007/s10531-021-02212-9.</li><li id="ref-Griffiths2021" data-num="65">[65]  Griffiths, S.P., Lezama-Ochoa, N., 2021. A 40-year chronology of the vulnerability of spinetail devil ray (Mobula mobular) to eastern Pacific tuna fisheries and options for future conservation and management. Aquat. Conserv. doi:10.1002/aqc.3667.</li><li id="ref-Guinness2016" data-num="66">[66]  Guinness, J., Fuentes, M., 2016. Isotropic covariance functions on spheres: Some properties and modeling considerations. J. Multivar. Anal. 143, 143–152. doi:10.1016/j.jmva.2015.08.018.</li><li id="ref-Hankin2006" data-num="67">[67]  Hankin, R.K.S., 2006. Special functions in R: introducing the gsl package. R News 6.</li><li id="ref-Harbrecht2021" data-num="68">[68]  Harbrecht, H., Herrmann, L., Kirchner, K., Schwab, C., 2021. Multilevel approximation of Gaussian random fields: Covariance compression, estimation and spatial prediction. Preprint, arXiv:2103.04424.</li><li id="ref-Herrmann2020" data-num="69">[69]  Herrmann, L., Kirchner, K., Schwab, C., 2020. Multilevel approximation of Gaussian random fields: fast simulation. Math. Models Methods Appl. Sci. 30, 181–223.</li><li id="ref-Hildeman2021" data-num="70">[70]  Hildeman, A., Bolin, D., Rychlik, I., 2021. Deformed SPDE models with an application to spatial modeling of significant wave height. Spat. Stat. 42, 100449.</li><li id="ref-Hough2021" data-num="71">[71]  Hough, I., Sarafian, R., Shtein, A., Zhou, B., Lepeule, J., Kloog, I., 2021. Gaussian Markov random fields improve ensemble predictions of daily 1 km PM2.5 and pM10 across France. Atmos. Environ. 264, 118693. doi:10.1016/j. atmosenv.2021.118693.</li><li id="ref-Humphreys2021" data-num="72">[72]  Humphreys, J.M., Douglas, D.C., Ramey, A.M., Mullinax, J.M., Soos, C., Link, P., Walther, P., Prosser, D.J., 2021. The spatial–temporal relationship of blue-winged teal to domestic poultry: Movement state modelling of a highly mobile avian influenza host. J. Appl. Ecol. doi:10.1111/1365-2664.13963.</li><li id="ref-Ingebrigtsen2014" data-num="73">[73]  Ingebrigtsen, R., Lindgren, F., Steinsland, I., 2014. Spatial models with explanatory variables in the dependence structure. Spat. Stat. 8, 20–38. doi:10.1016/j.spasta.2013.06.002.</li><li id="ref-Jarvis2021" data-num="74">[74]  Jarvis, J.C., McKenna, S.A., Rahseed, M.A., 2021. Seagrass seed bank spatial structure and function following a largescale decline. Mar. Ecol. Prog. Ser. 665, 75–87. doi:10.3354/meps13668.</li><li id="ref-Katzfuss2017" data-num="75">[75]  Katzfuss, M., 2017. A Multi-Resolution Approximation for Massive Spatial Datasets. J. Amer. Statist. Assoc. 112, 201–214. doi:10.1080/01621459.2015.1123632.</li><li id="ref-Khristenko2019" data-num="76">[76]  Khristenko, U., Scarabosio, L., Swierczynski, P., Ullmann, E., Wohlmuth, B., 2019. Analysis of boundary effects on PDE-based sampling of Whittle-Mat ́ ern random fields. SIAM/ASA J. Uncertain. Quantif. 7, 948–974. doi:10.1137/ 18M1215700.</li><li id="ref-Kimeldorf1970" data-num="77">[77]  Kimeldorf, G.S., Wahba, G., 1970. A Correspondence Between Bayesian Estimation on Stochastic Processes and Smoothing by Splines. Ann. Math. Stat. 41, 495–502. URL: https://www.jstor.org/stable/2239347.</li><li id="ref-Kirchner2021" data-num="78">[78]  Kirchner, K., Bolin, D., 2021. Necessary and sufficient conditions for asymptotically optimal linear prediction of random fields on compact metric spaces. Ann. Stat. To appear.</li><li id="ref-Knorr-Held2002" data-num="79">[79]  Knorr-Held, L., Rue, H., 2002. On block updating in Markov random field models for disease mapping. Scand. J. Stat. 29, 597–614.</li><li id="ref-Krainski2018" data-num="80">[80]  Krainski, E.T., G ́ omez-Rubio, V., Bakka, H., Lenzi, A., Castro-Camilio, D., Simpson, D., Lindgren, F., Rue, H., 2018. Advanced Spatial Modeling with Stochastic Partial Differential Equations using R and INLA. CRC press. Gitbook version https://becarioprecario.bitbucket.io/spde-gitbook/.</li><li id="ref-Lang2021" data-num="81">[81]  Lang, A., Pereira, M., 2021. Galerkin–Chebyshev approximation of Gaussian random fields on compact Riemannian manifolds. arXiv:2107.02667.</li><li id="ref-Lang2015" data-num="82">[82]  Lang, A., Schwab, C., 2015. Isotropic Gaussian random fields on the sphere: regularity, fast simulation and stochastic partial differential equations. Ann. Appl. Probab. 25, 3047–3094. doi:10.1214/14-AAP1067.</li><li id="ref-Lauritzen1996" data-num="83">[83]  Lauritzen, S.L., 1996. Graphical Models. volume 17 of Oxford Statistical Science Series. The Clarendon Press Oxford University Press, New York. Oxford Science Publications.</li><li id="ref-Lee2021" data-num="84">[84]  Lee, B., Arkhipkin, A., Randhawa, H.S., 2021. Environmental drivers of Patagonian toothfish (Dissostichus eleginoides) spatial-temporal patterns during an ontogenetic migration on the Patagonian Shelf. Estuar. Coast. Shelf Sci. 259, 107473. doi:10.1016/j.ecss.2021.107473.</li><li id="ref-Lee2021" data-num="85">[85]  Lee, B.S., Haran, M., 2021. PICAR: An efficient extendable approach for fitting hierarchical spatial models. Technometrics 0, 1–12. doi:10.1080/00401706.2021.1933596.</li><li id="ref-Levis2021" data-num="86">[86]  Levis, A., Lee, D., Tropp, J.A., Gammie, C.F., Bouman, K.L., 2021. Inference of black hole fluid-dynamics from sparse interferometric measurements. Proceedings of IEEE International Conference on Computer Vision 2021 To appear.</li><li id="ref-Li2021" data-num="87">[87]  Li, D., 2021. Urban planning image feature enhancement and simulation based on partial differential equation method. Adv. Math. Phys. 2021, 1700287. doi:10.1155/2021/1700287.</li><li id="ref-Lindenmayer2021" data-num="88">[88]  Lindenmayer, D., Taylor, C., Blanchard, W., 2021. Empirical analyses of the factors influencing fire severity in southeastern Australia. Ecosphere 12, e03721. doi:10.1002/ecs2.3721.</li><li id="ref-Lindgren2008" data-num="89">[89]  Lindgren, F., Rue, H., 2008. A note on the second order random walk model for irregular locations. Scand. J. Stat. 35, 691–700.</li><li id="ref-Lindgren2015" data-num="90">[90]  Lindgren, F., Rue, H., 2015. Bayesian spatial modelling with R-INLA. J. Stat. Softw. 63, 1–25.</li><li id="ref-Lindgren2011" data-num="91">[91]  Lindgren, F., Rue, H., Lindstr ̈ om, J., 2011. An explicit link between Gaussian fields and Gaussian Markov random fields: the stochastic partial differential equation approach. J. R. Stat. Soc. Ser. B Stat. Methodol. 73, 423–498. With discussion and a reply by the authors.</li><li id="ref-Lindgren2012" data-num="92">[92]  Lindgren, G., 2012. Stationary Stochastic Processes: Theory and Applications. CRC Press, Chapman and Hall.</li><li id="ref-Liu2016" data-num="93">[93]  Liu, X., Guillas, S., Lai, M.J., 2016. Efficient Spatial Modeling Using the SPDE Approach With Bivariate Splines. J. Comp. Graph. Stat. 25, 1176–1194. doi:10.1080/10618600.2015.1081597.</li><li id="ref-Mannseth2021" data-num="94">[94]  Mannseth, J., Berentsen, G.D., Skaug, H.J., Lie, R.T., Moster, D., 2021. Variation in use of Caesarean section in Norway: An application of spatio-temporal Gaussian random fields. Scand. J. Public Health doi:10.1177/140349482008579.</li><li id="ref-Martino2021" data-num="95">[95]  Martino, S., Pace, D.S., Moro, S., Casoli, E., Ventura, D., Frachea, A., Silvestri, M., Arcangeli, A., Giacomini, G., Ardizzone, G., Lasinio, G.J., 2021. Integration of presence-only data from several sources. a case study on dolphins’ spatial distribution. arXiv:2103.16125.</li><li id="ref-Martins2013" data-num="96">[96]  Martins, T.G., Simpson, D., Lindgren, F., Rue, H., 2013. Bayesian computing with INLA: New features. Comput. Statist. Data Anal. 67, 68–83.</li><li id="ref-Matern1960" data-num="97">[97]  Mat ́ ern, B., 1960. Spatial variation: Stochastic models and their application to some problems in forest surveys and other sampling investigations. Meddelanden Från Statens Skogsforskningsinstitut, Band 49, Nr. 5, Stockholm.</li><li id="ref-Maynou2021" data-num="98">[98]  Maynou, L., Monfort, M., Morley, B., Ord ́ o ̃ nez, J., 2021. Club convergence in European housing prices: The role of macroeconomic and housing market fundamentals. Economic Modelling 103, 105595. doi:10.1016/j.econmod. 2021.105595.</li><li id="ref-Mejia2020a" data-num="99">[99]  Mejia, A.F., Bolin, D., Yue, Y.R., Wang, J., Caffo, B.S., Nebel, M.B., 2020a. A spatial template independent component analysis model for subject-level brain network estimation and inference. arXiv preprint arXiv:2005.13388 .</li><li id="ref-Mejia2020b" data-num="100">[100]  Mejia, A.F., Yue, Y., Bolin, D., Lindgren, F., Lindquist, M.A., 2020b. A Bayesian general linear modeling approach to cortical surface fMRI data analysis. J. Amer. Statist. Assoc. 115, 501–520. doi:10.1080/01621459.2019.1611582.</li><li id="ref-Miller2020" data-num="101">[101]  Miller, D.L., Glennie, R., Seaton, A.E., 2020. Understanding the Stochastic Partial Differential Equation Approach to Smoothing. J. Agric. Biol. Environ. Stat. 25, 1–16. doi:10.1007/s13253-019-00377-z.</li><li id="ref-Miller2021" data-num="102">[102]  Miller, D.L., Rexstad, E., Burt, L., Bravington, M.V., Hedley., S., 2021. dsm: Density Surface Modelling of Distance Sampling Data. URL: https://CRAN.R-project.org/package=dsm. R package version 2.3.1.</li><li id="ref-Monnahan2021" data-num="103">[103]  Monnahan, C.C., Thorson, J.T., Kotwicki, S., Lauffenburger, N., Ianelli, J.N., Punt, A.E., 2021. Incorporating vertical distribution in index standardization accounts for spatiotemporal availability to acoustic and bottom trawl gear for semi-pelagic species. ICES J. Mar. Sci. 78, 1826–1839. doi:10.1093/icesjms/fsab085.</li><li id="ref-Moraga2021" data-num="104">[104]  Moraga, P., Dean, C., Inoue, J., Morawiecki, P., Noureen, S.R., Wang, F., 2021. Bayesian spatial modelling of geostatistical data using INLA and SPDE methods: A case study predicting malaria risk in Mozambique. Spat. Spatio-temporal Epidemiol. 39, 100440. doi:10.1016/j.sste.2021.100440.</li><li id="ref-Morales2021" data-num="105">[105]  Morales, A.B., Laurini, M.P., 2021. Firm location: A spatial point process approach. Appl. Spat. Anal. Policy doi:10. 1007/s12061-021-09419-x.</li><li id="ref-Moses2021" data-num="106">[106]  Moses, J., Aheto, K., Dagne, G.A., 2021. Geostatistical analysis, web-based mapping, and environmental determinants of under-5 stunting: evidence from the 2014 Ghana Demographic and Health Survey. The Lancet Planetary Health 5, e347–e355. doi:10.1016/S2542-5196(21)00080-2.</li><li id="ref-Novomestky2013" data-num="107">[107]  Novomestky, F., 2013. orthopolynom: Collection of functions for orthogonal and orthonormal polynomials. URL: https://CRAN.R-project.org/package=orthopolynom. R package version 1.0-5.</li><li id="ref-Nychka2016" data-num="108">[108]  Nychka, D., Hammerling, D., Sain, S., Lenssen, N., 2016. LatticeKrig: Multiresolution Kriging based on Markov random fields. doi:10.5065/D6HD7T1R. R package version 8.4.</li><li id="ref-Peruzzi2020" data-num="109">[109]  Peruzzi, M., Banerjee, S., Finley, A.O., 2020. Highly Scalable Bayesian Geostatistical Modeling via Meshed Gaussian Processes on Partitioned Domains. J. Amer. Statist. Assoc. 0, 1–14. doi:10.1080/01621459.2020.1833889.</li><li id="ref-Porcu2016" data-num="110">[110]  Porcu, E., Bevilacqua, M., Genton, M.G., 2016. Spatio-Temporal Covariance and Cross-Covariance Functions of the Great Circle Distance on a Sphere. J. Amer. Statist. Assoc. 111, 888–898. doi:10.1080/01621459.2015.1072541.</li><li id="ref-Quiroz2021" data-num="111">[111]  Quiroz, Z.C., Prates, M.O., Dey, D.K., Rue, H., 2021. Fast Bayesian inference of block nearest neighbor Gaussian process for large data. arXiv:1908.06437.</li><li id="ref-Rayner2020" data-num="112">[112]  Rayner, N.A., Auchmann, R., Bessembinder, J., Br ̈ onnimann, S., Brugnara, Y., Capponi, F., Carrea, L., Dodd, E.M.A., Ghent, D., Good, E., Høyer, J.L., Kennedy, J.J., Kent, E.C., Killick, R.E., Linden, P.v.d., Lindgren, F., Madsen, K.S., Merchant, C.J., Mitchelson, J.R., Morice, C.P., Nielsen-Englyst, P., Ortiz, P.F., Remedios, J.J., Schrier, G.v.d., Squintu, A.A., Stephens, A., Thorne, P.W., Tonboe, R.T., Trent, T., Veal, K.L., Waterfall, A.M., Winfield, K., Winn, J., Woolway, R.I., 2020. The EUSTACE Project: Delivering Global, Daily Information on Surface Air Temperature. Bull. Am. Meteorol. Soc. 101, E1924–E1947. doi:10.1175/BAMS-D-19-0095.1.</li><li id="ref-Roininen2019" data-num="113">[113]  Roininen, L., Girolami, M., Lasanen, S., Markkanen, M., 2019. Hyperpriors for Mat ́ ern fields with applications in Bayesian inversion. Inverse Probl. Imaging 13, 1–29. doi:10.3934/ipi.2019001.</li><li id="ref-Roininen2014" data-num="114">[114]  Roininen, L., Huttunen, J.M.J., Lasanen, S., 2014. Whittle-Mat ́ ern priors for Bayesian statistical inversion with applications in electrical impedance tomography. Inverse Probl. Imaging 8, 561–586. doi:10.3934/ipi.2014.8.561.</li><li id="ref-Roininen2018" data-num="115">[115]  Roininen, L., Lasanen, S., Orisp ̈ a ̈ a, M., S ̈ arkk ̈ a, S., 2018. Sparse Approximations of Fractional Mat ́ ern Fields. Scand. J. Stat. 45, 194–216. doi:10.1111/sjos.12297.</li><li id="ref-Roksvag2021a" data-num="116">[116]  Roksvåg, T., Steinsland, I., Engeland, K., 2021. A two-field geostatistical model combining point and areal observationsA case study of annual runoff predictions in the Voss area. J. R. Stat. Soc. Ser. C. Appl. Stat. 70, 934–960. doi:10. 1111/rssc.12492.</li><li id="ref-Roksvag2021b" data-num="117">[117]  Roksvåg, T., Steinsland, I., Engeland, K., 2021. Estimating mean annual runoff by using a geostatistical spatially varying coefficient model that incorporates process-based simulations and short records, in: EGU General Assembly Conference Abstracts, pp. EGU21–4233.</li><li id="ref-Rozanov1977" data-num="118">[118]  Rozanov, J.A., 1977. Markov random fields and stochastic partial differential equations. Sbornik: Mathematics 32, 515–534.</li><li id="ref-Rue2005" data-num="119">[119]  Rue, H., Held, L., 2005. Gaussian Markov Random Fields: Theory and Applications. volume 104 of Monographs on Statistics and Applied Probability. Chapman &amp; Hall, London. doi:10.1201/9780203492024.</li><li id="ref-Rue2010" data-num="120">[120]  Rue, H., Held, L., 2010. Markov random fields, in: Gelfand, A., Diggle, P., Fuentes, M., Guttorp, P. (Eds.), Handbook of Spatial Statistics. CRC/Chapman &amp; Hall, Boca Raton, FL, pp. 171–200.</li><li id="ref-Rue2007" data-num="121">[121]  Rue, H., Martino, S., 2007. Approximate Bayesian inference for hierarchical Gaussian Markov random fields models. J. Stat. Plan. Inference 137, 3177–3192. Special Issue: Bayesian Inference for Stochastic Processes.</li><li id="ref-Rue2009" data-num="122">[122]  Rue, H., Martino, S., Chopin, N., 2009. Approximate Bayesian inference for latent Gaussian models using integrated nested Laplace approximations. J. R. Stat. Soc. Ser. B Stat. Methodol. 71, 319–392. With discussion and a reply by the authors.</li><li id="ref-Rue2017" data-num="123">[123]  Rue, H., Riebler, A., Sørbye, S.H., Illian, J.B., Simpson, D.P., Lindgren, F.K., 2017. Bayesian computing with INLA: A review. Annu. Rev. Stat. Appl. 4, 395–421. doi:10.1146/annurev-statistics-060116-054045.</li><li id="ref-Sampson1992" data-num="124">[124]  Sampson, P.D., Guttorp, P., 1992. Nonparametric Estimation of Nonstationary Spatial Covariance Structure. J. Amer. Statist. Assoc. 87, 108–119. doi:10.2307/2290458.</li><li id="ref-Sangalli2021" data-num="125">[125]  Sangalli, L.M., 2021. Spatial regression with partial differential equation regularisation. Int. Stat. Rev. doi:10.1111/ insr.12444.</li><li id="ref-Sangalli2013" data-num="126">[126]  Sangalli, L.M., Ramsay, J.O., Ramsay, T.O., 2013. Spatial spline regression models. J. R. Stat. Soc. Ser. B. Stat. Methodol. 75, 681–703. doi:10.1111/rssb.12009.</li><li id="ref-Sanz-Alonso2021a" data-num="127">[127]  Sanz-Alonso, D., Yang, R., 2021a. Finite element representations of Gaussian processes: Balancing numerical and statistical accuracy. arXiv:2109.02777.</li><li id="ref-Sanz-Alonso2021b" data-num="128">[128]  Sanz-Alonso, D., Yang, R., 2021b. The SPDE approach to Mat ́ ern fields: Graph representations. Stat. Sci. , 153Accepted.</li><li id="ref-Schoenberg1942" data-num="129">[129]  Schoenberg, I.J., 1942. Positive definite functions on spheres. Duke Math. J. 9, 96–108. doi:10.1215/ S0012-7094-42-00908-6.</li><li id="ref-Scott2021" data-num="130">[130]  Scott, R.P., 2021. Shared streets, park closures and environmental justice during a pandemic emergency in Denver, Colorado. J. Trans. Health 21, 101075. doi:10.1016/j.jth.2021.101075.</li><li id="ref-Sicacha-Parada2021" data-num="131">[131]  Sicacha-Parada, J., Pavon-Jordan, D., Steinsland, I., May, R., Stokke, B., Øien, I.J., 2021. A spatial modeling framework for monitoring surveys with different sampling protocols with a case study for bird populations in mid-Scandinavia. arXiv:2104.05751.</li><li id="ref-Siden2021" data-num="132">[132]  Sid ́ en, P., Lindgren, F., Bolin, D., Eklund, A., Villani, M., 2021. Spatial 3D Mat ́ ern priors for fast whole-brain fMRI analysis. Bayesian Anal. , 1–28doi:10.1214/21-BA1283.</li><li id="ref-Simpson2016" data-num="133">[133]  Simpson, D., Illian, J.B., Lindgren, F., Sørbye, S.H., Rue, H., 2016. Going off grid: computationally efficient inference for log-Gaussian Cox processes. Biometrika 103, 49–70. doi:10.1093/biomet/asv064.</li><li id="ref-Simpson2012a" data-num="134">[134]  Simpson, D., Lindgren, F., Rue, H., 2012a. In order to make spatial statistics computationally feasible, we need to forget about the covariance function. Environmetrics 23, 65–74. doi:10.1002/env.1137.</li><li id="ref-Simpson2012b" data-num="135">[135]  Simpson, D., Lindgren, F., Rue, H., 2012b. Think continuous: Markovian Gaussian models in spatial statistics. Spat. Stat. 1, 16–29. doi:10.1016/j.spasta.2012.02.003.</li><li id="ref-Simpson2017" data-num="136">[136]  Simpson, D.P., Rue, H., Riebler, A., Martins, T.G., Sørbye, S.H., 2017. Penalising model component complexity: A principled, practical approach to constructing priors (with discussion). Stat. Sci. 32, 1–28. 3</li><li id="ref-Solin2020" data-num="137">[137]  Solin, A., S ̈ arkk ̈ a, S., 2020. Hilbert space methods for reduced-rank Gaussian process regression. Stat. Comput. 30, 419–446. doi:10.1007/s11222-019-09886-w.</li><li id="ref-Spencer2021" data-num="138">[138]  Spencer, D., Yue, Y.R., Bolin, D., Ryan, S., Mejia, A.F., 2021. Spatial Bayesian GLM on the cortical surface produces reliable task activations in individuals and groups. arXiv:2106.06669.</li><li id="ref-Stein1999" data-num="139">[139]  Stein, M.L., 1999. Interpolation of Spatial Data: Some Theory for Kriging. Springer Series in Statistics, Springer-Verlag, New York.</li><li id="ref-Stein2005" data-num="140">[140]  Stein, M.L., 2005. Space–time covariance functions. J. Amer. Statist. Assoc. 100, 310–321.</li><li id="ref-Sarkka2013" data-num="141">[141]  S ̈ arkk ̈ a, S., Solin, A., Hartikainen, J., 2013. Spatiotemporal Learning via Infinite-Dimensional Bayesian Filtering and Smoothing: A Look at Gaussian Process Regression Through Kalman Filtering. IEEE Signal Process. Mag. 30, 51–61. doi:10.1109/MSP.2013.2246292.</li><li id="ref-Sorbye2019" data-num="142">[142]  Sørbye, S.H., Myrvoll-Nilsen, E., Rue, H., 2019. An approximate fractional Gaussian noise model with O(n) computational cost. Stat. Comput. 29, 821–833. doi:10.1007/s11222-018-9843-1.</li><li id="ref-Takahashi1973" data-num="143">[143]  Takahashi, K., Fagan, J., Chen, M.S., 1973. Formation of a sparse bus impedance matrix and its application to short circuit study, in: 8th PICA Conference proceedings, IEEE Power Engineering Society. pp. 63–69. Papers presented at the 1973 Power Industry Computer Application Conference in Minneapolis, Minnesota.</li><li id="ref-Taylor2021" data-num="144">[144]  Taylor, C., Blanchard, W., Lindenmayer, D.B., 2021. What are the associations between thinning and fire severity? Austral Ecology 46, 145–1439. doi:10.1111/aec.13096.</li><li id="ref-Thorson2021" data-num="145">[145]  Thorson, J.T., Barbeaux, S.J., Goethel, D.R., Kearney, K.A., Laman, E.A., Nielsen, J.K., Siskey, M.R., Siwicke, K., Thompson, G.G., 2021. Estimating fine-scale movement rates and habitat preferences using multiple data sources. Fish and Fisheries 22, 1359–1376. doi:10.1111/faf.12592.</li><li id="ref-Valente2021a" data-num="146">[146]  Valente, F., Laurini, M., 2021a. Pre-harvest sugarcane burning: A statistical analysis of the environmental impacts of a regulatory change in the energy sector. Cleaner Engineering and Technology 4, 100255. doi:10.1016/j.clet. 2021.100255.</li><li id="ref-Valente2021b" data-num="147">[147]  Valente, F., Laurini, M., 2021b. Spatio-temporal analysis of fire occurrence in Australia. Stochastic Environmental Research and Risk Assessment 35, 1759–1770. doi:10.1007/s00477-021-02043-8.</li><li id="ref-vanNiekerk2021" data-num="148">[148]  van Niekerk, J., Bakka, H., Rue, H., Schenk, O., 2021. New frontiers in Bayesian modeling using the INLA package in R. J. Stat. Softw. 100, 1–28. doi:10.18637/jss.v100.i02.</li><li id="ref-vanWoesik2021" data-num="149">[149]  van Woesik, R., Cacciapaglia, C.W., 2021. Thermal stress jeopardizes carbonate production of coral reefs across the western and central Pacific Ocean. PLOS ONE 16, 1–18. doi:10.1371/journal.pone.0249008.</li><li id="ref-Vandeskog2021a" data-num="150">[150]  Vandeskog, S.M., Martino, S., Castro-Camilo, D., Rue, H., 2021a. Modelling short-term precipitation extremes with the blended generalised extreme value distribution. arXiv:2105.09062.</li><li id="ref-Vandeskog2021b" data-num="151">[151]  Vandeskog, S.M., Thorarinsdottir, T.L., Steinsland, I., Lindgren, F., 2021b. Quantile based modelling of diurnal temperature range with the five-parameter lambda distribution. arXiv:2109.11180.</li><li id="ref-Vehtari2017" data-num="152">[152]  Vehtari, A., Gelman, A., Gabry, J., 2017. Practical Bayesian model evaluation using leave-one-out cross-validation and WAIC. Stat. Comput. 27, 1413–1432. doi:10.1007/s11222-016-9696-4.</li><li id="ref-Vogel2021" data-num="153">[153]  Vogel, E.F., Biuw, M., Blanchet, M.A., Jonsen, I.D., Mul, E., Johnsen, E., Hjøllo, S.S., Olsen, M.T., Dietz, R., Rikardsen, A., 2021. Killer whale movements on the Norwegian shelf are associated with herring density. Marine Ecology Progress Series 665, 217–231. doi:10.3354/meps13685.</li><li id="ref-Wahba1981" data-num="154">[154]  Wahba, G., 1981. Spline Interpolation and Smoothing on the Sphere. SIAM J. Sci. Statist. Comput. 2, 5–16. doi:10. 1137/0902002.</li><li id="ref-Walder2020" data-num="155">[155]  Walder, A., Hanks, E.M., 2020. Bayesian analysis of spatial generalized linear mixed models with Laplace moving average random fields. Comput. Statist. Data Anal. 144, 106861, 13. doi:10.1016/j.csda.2019.106861.</li><li id="ref-Wallin2015" data-num="156">[156]  Wallin, J., Bolin, D., 2015. Geostatistical modelling using non-Gaussian Mat ́ ern fields. Scand. J. Stat. 42, 872–890. doi:10.1111/sjos.12141.</li><li id="ref-Wang2021" data-num="157">[157]  Wang, J., Zuo, R., 2021. Spatial modelling of hydrothermal mineralization-related geochemical patterns using INLA+SPDE and local singularity analysis. Comput. Geosci. 154, 104822. doi:10.1016/j.cageo.2021.104822.</li><li id="ref-Whittle1954" data-num="158">[158]  Whittle, P., 1954. On stationary processes in the plane. Biometrika 41, 434–449. doi:10.1093/biomet/41.3-4.434.</li><li id="ref-Whittle1963" data-num="159">[159]  Whittle, P., 1963. Stochastic processes in several dimensions. Bull. Internat. Statist. Inst. 40, 974–994.</li><li id="ref-Wikle2019" data-num="160">[160]  Wikle, C.K., Zammit-Mangion, A., Cressie, N., 2019. Spatio-Temporal Statistics with R. Chapman &amp; Hall/CRC, Boca Raton, FL.</li><li id="ref-Williamson2021" data-num="161">[161]  Williamson, L.D., Scott, B.E., Laxton, M.R., Bachl, F.E., Illian, J.B., Brookes, K.L., Thompson, P.M., 2021. Spatiotemporal variation in harbor porpoise distribution and foraging across a landscape of fear. Marine Mammal Science , 1–16doi:10.1111/mms.12839.</li><li id="ref-Wright2021" data-num="162">[162]  Wright, N., Newell, K., Lam, K.B.H., Kurmi, O., Chen, Z., Kartsonaki, C., 2021. Estimating ambient air pollutant levels in Suzhou through the SPDE approach with R-INLA. Int. J. Hyg. Environ. Health 235, 113766. doi:10.1016/j. ijheh.2021.113766.</li><li id="ref-Xi2021" data-num="163">[163]  Xi, C., Wu, Z., Qian, T., Liu, L., Wang, J., 2021. A Bayesian model for estimating the effects of human disturbance on wildlife habitats based on nighttime light data and INLA-SPDE. Appl. Spat. Anal. Policy doi:10.1007/ s12061-021-09402-6. 3</li><li id="ref-Yuan2017" data-num="164">[164]  Yuan, Y., Bachl, F.E., Lindgren, F., Borchers, D.L., Illian, J.B., Buckland, S.T., Rue, H., Gerrodette, T., 2017. Point process models for spatio-temporal distance sampling data from a large-scale survey of blue whales. Ann. Appl. Stat. 11, 2270–2297. doi:10.1214/17-AOAS1078.</li><li id="ref-Yue2014" data-num="165">[165]  Yue, Y.R., Simpson, D., Lindgren, F., Rue, H., 2014. Bayesian adaptive smoothing spline using stochastic differential equations. Bayesian Anal. 9, 397–424.</li><li id="ref-Zhang2004" data-num="166">[166]  Zhang, H., 2004. Inconsistent estimation and asymptotically equal interpolations in model-based geostatistics. J. Amer. Statist. Assoc. 99, 250–261.</li><li id="ref-Zhang2021" data-num="167">[167]  Zhang, H., Guilleminot, J., Gomez, L.J., 2021. Stochastic modeling of geometrical uncertainties on complex domains, with application to additive manufacturing and brain interface geometries. Comput. Methods Appl. Mech. Eng. 385, 114014. doi:10.1016/j.cma.2021.114014.</li><li id="ref-Zhang2016" data-num="168">[168]  Zhang, R., Czado, C., Sigloch, K., 2016. Bayesian spatial modelling for high dimensional seismic inverse problems. J. R. Stat. Soc. Ser. C. Appl. Stat. 65, 187–213. URL: https://www.jstor.org/stable/24772417.</li></ul><p></p>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/a616d9f3.html">http://xishansnow.github.io/posts/a616d9f3.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/">点参考数据</a><a class="post-meta__tags" href="/tags/%E7%BB%BC%E8%BF%B0/">综述</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E8%A1%A8%E9%9D%A2/">空间表面</a><a class="post-meta__tags" href="/tags/%E9%AB%98%E6%96%AF%E5%9C%BA/">高斯场</a><a class="post-meta__tags" href="/tags/%E9%AB%98%E6%96%AF%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E9%9A%8F%E6%9C%BA%E5%9C%BA/">高斯马尔可夫随机场</a><a class="post-meta__tags" href="/tags/%E9%9A%8F%E6%9C%BA%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/">随机偏微分方程</a></div><div class="post-share"><div class="social-share" data-image="/img/coffe_13.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/e711d2a8.html" title="🔥  大规模面元数据统计分析方法索引帖"><img class="cover" src="/img/003.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">🔥  大规模面元数据统计分析方法索引帖</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 暂时没有启动阅读工作，待整理。           #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {         let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');         let refel = document.querySelector(refid);         let refnum = refel.dataset.num;         let ref_content = refel.innerText.replace(`[${refnum}]`,'');         tippy(ref, {            ...</div></div></div></a><a class="pagination-related" href="/posts/16665700.html" title="Theorem、Proposition、Lemma 和 Corollary 等的解释与区别"><img class="cover" src="/img/book_17.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Theorem、Proposition、Lemma 和 Corollary 等的解释与区别</div></div><div class="info-2"><div class="info-item-1">    Axiom&#x2F;Postulate：公理。不需要证明的论述，是所有其他 Theorem 的基础。  Theorem：定理。是文章中重要的数学化的论述，一般有严格的数学证明。  Proposition：可以翻译为命题，经过证明且 interesting，但没有 Theorem 重要，比较常用。  Lemma：引理，一种比较小的定理，通常 lemma 的提出是为了来逐步辅助证明 Theorem，有时候可以将 Theorem 拆分成多个小的 Lemma 来逐步证明，以使得证明的思路更加清晰。很少情况下 Lemma 会以其自身的形式 存在。  Corollary：推论，由 Theorem 推出来的结论，通常我们会直接说 this is a corollary of Theorem A。  Property：性质，结果值得一记，但是没有 Theorem 深刻。  Claim：陈述，先论述然后会在后面进行论证，可以看作非正式的 lemma。  Note：就是注解。  Remark：涉及到一些结论，相对而言，Note 像是说明，而 Remark...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/5d008fa3.html" title="SPDE: 高斯场和高斯马尔可夫随机场之间的明确联系"><img class="cover" src="/img/book_09.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-08</div><div class="info-item-2">SPDE: 高斯场和高斯马尔可夫随机场之间的明确联系</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 连续索引的高斯场 (GF) 是空间统计建模和地统计学中最重要的组成部分，通过协方差函数的定义给出了场性质的直观解释。在计算方面，高斯场受到大 $n$ 问题限制，因为密集矩阵的分解计算成本是维度的三次方（$\mathcal{O}(n^3)$）。尽管当前计算能力处于历史最高水平，但这一事实似乎仍然是许多应用中的瓶颈。与高斯场同样中要的，还有一类离散索引的高斯马尔可夫随机场 (GMRF)，其马尔可夫性质导致精度矩阵的稀疏性，从而使我们可以使用稀疏矩阵的数值算法。对于 $\mathbb{R}^2$ 中的场， GMRF 仅使用了一般算法所需时间的平方根（$\mathcal{O}(\sqrt{n^3})$）。 GMRF 由其完整条件分布分布定义，但在这种参数化形势下，其边缘分布性质并不明确。在本文中，我们展示了：对于 Matérn 类型的某些高斯场，（线性）随机偏微分方程的近似随机弱解，可以为 $\mathbb{R}^d$ 上的任何三角形剖分提供在高斯场和 GMRF 之间的显式链接，进而可以将该高斯场表示为基函数的形式。其好处是：我们既能使用高斯场进行建模，又能够利用...</div></div></div></a><a class="pagination-related" href="/posts/75ca3fa4.html" title="固定秩克里金法"><img class="cover" src="/img/book_04.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-08</div><div class="info-item-2">固定秩克里金法</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 非常大的空间数据集的空间统计具有挑战性。数据集的大小 $n$ 会导致计算最优空间预测变量（例如克里金法）出现问题，因为其计算成本为 $n$ 的三次方。此外，大型数据集通常是在大型空间域上定义，因此感兴趣的空间过程通常在该域上表现出非平稳行为。 通过使用一组固定数量的基函数，可以定义一个灵活的非平稳协方差函数族，这产生了我们称为 “固定秩克里金法” 的空间预测方法。具体来说，固定秩克里金法就是此类非平稳协方差函数支撑下的克里金法。当 $n$ 非常大时，它依赖于计算简化，以获得隐空间过程的空间最佳线性无偏预测器及其均方预测误差。基于最小化加权 Frobenius 范数的方法产生协方差函数参数的最佳估计量，然后将其代入固定秩克里金方程。新方法适用于在整个地球上观测到的非常大的臭氧数据集，其中 $n$ 约为数十万。 【原 文】 Cressie, N. and Johannesson, G. (2008) ‘Fixed rank kriging for very large spatial data sets: Fixed Rank Kriging’, Journal...</div></div></div></a><a class="pagination-related" href="/posts/8d107a33.html" title="近似受限似然方法"><img class="cover" src="/img/book_20.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-09</div><div class="info-item-2">近似受限似然方法</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 由于计算负担，似然法通常难以用于大型、位置不规则的空间数据集。即使对于高斯模型，精确计算 $n$ 个观测值的似然也需要  $\mathcal{O}(n^3)$  运算。任何联合密度都可以写成基于某些观测顺序的条件密度之积，因此一种减少计算的方法是在计算上述条件密度时，仅以部分的 “过去” 观测为条件。本文重点探讨了此类方法如何应用于受限似然的近似，特别展示了如何利用 估计方程方法 判断近似的有效性。此外，过前的工作通常建议以当前观测的历史最近邻观测为条件，但我们通过理论、数值和实例表明，以一些远距离的观测为条件，通常也可以带来相当大的好处。 〖原 文〗 Stein, M.L., Chi, Z. and Welty, L.J. (2004) ‘Approximating likelihoods for large spatial data sets’, Journal of the Royal Statistical Society: Series B (Statistical Methodology), 66(2), pp. 275–296....</div></div></div></a><a class="pagination-related" href="/posts/8d107aee.html" title="Vecchia 近似似然法"><img class="cover" src="/img/coffe_04.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-14</div><div class="info-item-2">Vecchia 近似似然法</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 介绍了连续域空间过程的参数估计（指均值函数的参数估计）和模型识别（指残差对应的空间过程模型识别）程序。在本文中，空间过程被假定为具有残差的线性模型，且残差服从二阶平稳高斯随机场，同时假定数据由任意采样位置处空间过程的含噪声观测值组成。本文采用了具有椭圆等值线的二维有理密度函数对空间协方差函数进行建模，文中提出的迭代式估计方法可以减轻非格元数据中常规最大似然估计的许多计算困难。 〖原 文〗 Vecchia, A.V. (1988) ‘Estimation and Model Identification for Continuous Spatial Processes’, Journal of the Royal Statistical Society: Series B (Methodological), 50(2), pp. 297–312. Available at: https://doi.org/10.1111/j.2517-6161.1988.tb01729.x. 1 引言1.1 背景令 ${Z(x, y)}$ 为一个连续域空间过程，其中 $(x,...</div></div></div></a><a class="pagination-related" href="/posts/fe6491e.html" title="Vecchia 近似似然法的通用框架"><img class="cover" src="/img/coffe_12.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-30</div><div class="info-item-2">Vecchia 近似似然法的通用框架</div></div><div class="info-2"><div class="info-item-1">   【摘要】 高斯过程通常用作函数、时间序列和空间场的模型，但它们对大型数据集在计算上不可行。着眼于高斯过程加上加性噪声项的数据建模典型设置，本文提出了 Vecchia (1988) 方法的泛化作为高斯过程近似的框架。我们展示的通用 Vecchia 方法包含了现有许多流行的高斯过程近似特例，并且允许在统一框架内比较不同方法。通过有向无环图模型，我们确定了推断所需矩阵的稀疏性，从而对计算特性有了新的认识。基于这些结果，我们提出了一种新的稀疏通用 Vecchia 近似，它确保了大型空间数据集的计算可行性，但可以产生比原始 Vecchia 方法近似精度更好的结果。文中提供了几个理论结果并进行了数值比较。 【原文】 Katzfuss, M. and Guinness, J. (2021) ‘A general framework for Vecchia approximations of Gaussian processes’, Statistical Science, 36(1). Available at: https://doi.org/10.1214/19-STS755. 1...</div></div></div></a><a class="pagination-related" href="/posts/d5aa7c88.html" title="高斯过程预测的 Vecchia 近似"><img class="cover" src="/img/book_19.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-01</div><div class="info-item-2">高斯过程预测的 Vecchia 近似</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 高斯过程 (GP) 是用于地理空间分析、非参数回归和机器学习的高度灵活的函数估计器，但它们在计算上对大型数据集不可行。 高斯过程的 Vecchia 近似已被用于快速估算参数推断的似然。本文研究了在已观测和未观测位置处进行空间预测时的 Vecchia 近似，包括在大型位置集上获得联合预测分布。我们考虑了用于高斯过程预测的通用 Vecchia 框架，其中包含一些新的和已有的特例。我们从理论和数值上研究了这些方法的准确性和计算特性，并且证明了新方法表现出在空间位置总数上的线性计算复杂性。我们表明，框架内的某些选择会对不确定性量化和计算成本产生强烈影响，从而就哪些方法最适合各种设置提出具体建议。我们还将方法应用于叶绿素荧光卫星数据集，表明新方法比现有方法更快或更准确，并削减了预测结果图中不符合实际的伪影。 〖原 文〗 Katzfuss, M. et al. (2020) ‘Vecchia approximations of Gaussian-process predictions’, Journal of Agricultural, Biological and...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="toc-text">1 简介</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

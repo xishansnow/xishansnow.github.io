@@ -1,0 +1,326 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title> 数值优化算法【1】-- 常用优化算法  | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="   数值优化算法【1】–..."><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/b1232da0.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: ' 数值优化算法【1】-- 常用优化算法 ',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/002.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name"> 数值优化算法【1】-- 常用优化算法 </span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title"> 数值优化算法【1】-- 常用优化算法 </h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-03T04:00:00.000Z" title="发表于 2021-04-03 12:00:00">2021-04-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.214Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/">基础理论知识</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/%E6%9C%80%E4%BC%98%E5%8C%96%E7%90%86%E8%AE%BA/">最优化理论</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">4.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="数值优化算法【1】–-常用优化算法"><a href="#数值优化算法【1】–-常用优化算法" class="headerlink" title="数值优化算法【1】– 常用优化算法"></a>数值优化算法【1】– 常用优化算法</h1><h2 id="一、解析解与数值解的概念"><a href="#一、解析解与数值解的概念" class="headerlink" title="一、解析解与数值解的概念"></a>一、解析解与数值解的概念</h2><p>很多机器学习和深度学习方法，都是在样本的支持下，利用导数或偏微分寻求方程的解，而传统数学方法中，会用到解析和数值两种解法。</p>
+<p><strong>（1）解析解法：</strong></p>
+<ul>
+<li>就是从小到大教科书里讲的，利用严格公式推导获得解的解析表达式，输入自变量的值就可以求出因变量。</li>
+<li>如果一个方程或者方程组存在的某些解，是由有限次常见运算（<strong>如：分式、三角函数、指数、对数甚至无限级数等</strong>）的组合给出的形式，则称该方程存在解析解。</li>
+<li>例如：对于线性回归模型，采用最小二乘法可以直接得出解析解，$x&#x3D;(A^TA)^{-1}A^Tb，\quad 其中A是样本支撑的矩阵，b为观测值$</li>
+</ul>
+<p><strong>（2）数值解法：</strong></p>
+<ul>
+<li>当无法由微积分技巧求得解析解时（特别是复杂函数），利用数值分析方式来求得其数值解是比较好的选择。</li>
+<li>采用某种计算方法（如：有限元方法、数值逼近、插值方法等）得到的解，被称为数值解。</li>
+<li><strong>数值解是在特定条件下通过近似计算得出来的一个数值</strong>。</li>
+<li>例如：同样对于线性回归模型，采用梯度下降法或牛顿迭代法，可以获得近似的数值解</li>
+</ul>
+<p>在机器学习任务中，通过样本集训练求取模型参数，其本质就是求模型参数的解。此类解由于模型复杂可能很难给出解析解的形式，或者由于样本过大解析解法存在计算困难，因此，往往采用数值解法。最典型的案例莫过于深度神经网络，由于隐层层数过多导致模型非常复杂，根本无法获得解析解，只能采用数值解法。</p>
+<h2 id="二、机器学习中的最优化问题"><a href="#二、机器学习中的最优化问题" class="headerlink" title="二、机器学习中的最优化问题"></a>二、机器学习中的最优化问题</h2><p>对于机器学习或深度学习问题，通常首先定义一个损失函数，一旦有了损失函数，就可以使用数值解法来尝试最小化损失。 而在最优化理论中，损失函数通常被称为最优化问题的目标函数。 根据传统和惯例，大多数优化算法都与“最小化”有关。 如果我们需要最大化一个目标，有一个简单的解决方案：只要翻转目标函数前面的符号。</p>
+<p>虽然最优化为机器学习提供了一种最小化损失函数的方法，但从本质上讲，最优化和机器学习的目标是完全不同的。 <strong>前者主要关注训练集上的最小化目标，而后者关注在给定有限数据量的情况下找到合适的模型。</strong> 但是，<strong>最小化训练误差并不能保证我们找到一组最佳的参数来最小化期望误差</strong>。</p>
+<p>例如：对于机器学习来说，训练误差和泛化误差一般是不同的：</p>
+<ul>
+<li>优化算法的目标是减少训练误差 </li>
+<li>机器学习的目标是减少泛化误差。</li>
+</ul>
+<p>因此，为了实现后者，除了使用优化算法来减少训练误差外，还需要注意过拟合问题。 </p>
+<p>机器学习任务中面临许多优化方面的挑战，根据高等数学知识，包括：</p>
+<h3 id="（1）局部最小值问题"><a href="#（1）局部最小值问题" class="headerlink" title="（1）局部最小值问题"></a>（1）局部最小值问题</h3><p>对于目标函数 $f(x)$ ，如果 $x$ 处的 $f(x)$ 值小于 $x$ 附近任何其他点的 $f(x)$ 值，则 $f(x)$ 可以是<em>局部最小值。 如果 $f(x)$ 在 $x$ 处的值是目标函数在整个域上的最小值，则 $f(x)$ 是</em>全局最小值。</p>
+<p>例如，给定函数</p>
+<p>$$<br>f(x) &#x3D; x \cdot \text{cos}(\pi x)\quad \text{ for } -1.0 \leq x \leq 2.0,<br>$$</p>
+<p>可以近似这个函数的局部最小值和全局最小值。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/optimal_20210405173052_26webp"></p>
+<p>机器学习和深度学习模型的目标函数通常具有许多局部最优解。 当优化问题的数值解接近局部最优解时，当目标函数解的梯度下降接近零时，通过最终迭代得到的数值解只可能使目标函数局部最小化，而不是全局最小化。</p>
+<p>只有一定程度的噪声才能使参数跳出局部极小值。 事实上，这是随机梯度下降的一个有利性质，在这种情况下，小批量梯度的自然变化，有利于将参数从局部极小值中跳出。</p>
+<h3 id="（2）鞍部问题"><a href="#（2）鞍部问题" class="headerlink" title="（2）鞍部问题"></a>（2）鞍部问题</h3><p>除了局部极小值，鞍部（鞍点）是梯度消失的另一个原因。按照鞍点的定义，目标函数在各个自变量方向上的偏导数在鞍点处趋近于0，但该点处可能既不是全局最小值也不是局部最小值。 考虑下图所示的函数 $f(x) &#x3D; x^3$，它的一阶导数和二阶导数在 $x&#x3D;0$ 处消失。 优化可能会在某个点停止，但它不是最小值。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/optimal_20210405173133_b6webp"></p>
+<p>更高维度中的鞍点更为隐蔽，如下例所示，考虑函数 $f(x, y) &#x3D; x^2 - y^2$。 它的鞍点在 $(0, 0)$，这是 $y$ 的最大值，$x$ 的最小值。 它看起来像一个马鞍，这就是这个数学性质的由来。</p>
+<img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/optimal_20210405173231_1cwebp" style="zoom:50%;" />
+
+<p>假设一个函数的输入为 $k$ 维向量，输出为标量，那么它的海森矩阵有 $k$ 个特征值。该函数在梯度为0的位置上可能是局部最小值、局部最大值或者鞍点：</p>
+<ul>
+<li>当函数的海森矩阵在梯度为0的位置上的特征值全为正时，该函数得到局部最小值。</li>
+<li>当函数的海森矩阵在梯度为0的位置上的特征值全为负时，该函数得到局部最大值。</li>
+<li>当函数的海森矩阵在梯度为0的位置上的特征值有正有负时，该函数得到鞍点。</li>
+</ul>
+<p>随机矩阵理论告诉我们，对于一个大的高斯随机矩阵来说，任一特征值是正或者是负的概率都是0.5。那么，以上第一种情况的概率为 $0.5^k$ 。由于深度学习模型参数通常都是高维的（$k$ 很大），目标函数的鞍点通常比局部最小值更常见。在深度学习中，虽然找到目标函数的全局最优解很难，但这并非必要。接下来的几节会逐一介绍深度学习中常用的优化算法，它们在很多实际问题中都能够训练出十分有效的深度学习模型。</p>
+<h3 id="（3）高原问题（梯度消失）"><a href="#（3）高原问题（梯度消失）" class="headerlink" title="（3）高原问题（梯度消失）"></a>（3）高原问题（梯度消失）</h3><p>高原（梯度消失）问题可能是我们会遇到的最隐秘的问题。 例如：假设我们想最小化函数 $f(x) &#x3D; \tanh(x)$ ，我们恰好从 $x &#x3D; 4$ 开始。 如图所见，$f$ 的梯度接近于零，更具体地说是 $f’(x) &#x3D; 1 - \tanh^2(x)$ 和 $f’(4) &#x3D; 0.0013$ ，梯度接近于0。 </p>
+<p>高原（梯度消失）问题就好像在内蒙古高原（高损失处）丢一个铁球，它不会因为高海拔而一直滑落，反而会因为出现平原地区而保持静止。平地导致各方向梯度均趋近于0，这种情况也将造成收敛困难。可以认为此时的梯度大小都并没有直接为靠近最优点服务，需要作出优化。这也是在引入ReLU激活函数之前，深度学习模型的训练相当棘手的原因之一。</p>
+<img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/optimal_20210405180651_86webp" style="zoom: 67%;" />
+
+
+
+<h2 id="三、最优化理论及主要数值解法"><a href="#三、最优化理论及主要数值解法" class="headerlink" title="三、最优化理论及主要数值解法"></a>三、最优化理论及主要数值解法</h2><p>计算数值解的主要方法来自于最优化理论，最优化理论将问题域大致分为了线性规划问题、非线性规划问题和动态规划问题。目前我们在机器学习和深度学习中常见的最优化方法主要为<strong>非线性规划问题</strong>，典型优化方法包括常见的<strong>无约束条件的最优化方法，</strong>如梯度下降法、牛顿法和拟牛顿法、共轭梯度法，以及<strong>有约束条件的最优化方法</strong>，如：启发式优化方法、拉格朗日乘子法等。</p>
+<p>深度学习常用的优化方法大多为无约束的最优化方法，尤其以梯度下降法及其各种变种为主（见下图），而根据是否具备自动计算或调整学习率的能力，又可分为自适应和非自适应两种类型。本系列文章将重点围绕下图所示最优化方法展开。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/optimal_20210405112927_1c.webp"></p>
+<h2 id="四、梯度下降法"><a href="#四、梯度下降法" class="headerlink" title="四、梯度下降法"></a>四、梯度下降法</h2><p>梯度下降法是最为常用的数值优化方法。梯度下降法实现简单，当目标函数是凸函数时，梯度下降法的解一定是全局解。但一般情况下，其解不保证是全局最优解，梯度下降法的速度也未必是最快的。<strong>梯度下降法的优化思想是将当前位置负梯度方向作为搜索方向（梯度方向为当前位置的最快下降方向，见梯度的定义），所以也称为是”最速下降法“。</strong></p>
+<p>梯度下降法的搜索迭代示意图如下图所示：</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/gradient_20210403181823_84.webp" alt="img"></p>
+<p><strong>梯度下降法的缺点</strong>：</p>
+<p>（1）靠近极小值时收敛速度减慢，如下图所示；</p>
+<p>（2）直线搜索时可能会产生一些问题；</p>
+<p>（3）可能会“之字形”地下降。</p>
+<img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/gradient_20210403182206_b7.webp" alt="Banana-SteepDesc.gif" style="zoom:50%;" />
+
+<p>　　从上图可看出，梯度下降法在接近最优解时收敛速度变慢，利用梯度下降法求解需要很多次的迭代。　　</p>
+<h2 id="五、牛顿法"><a href="#五、牛顿法" class="headerlink" title="五、牛顿法"></a>五、牛顿法</h2><p>牛顿法是一种在实数域和复数域上近似求解方程的方法。方法使用函数 $f (x)$  的泰勒级数的前面几项来寻找方程 $ f (x) &#x3D; 0$ 的根。牛顿法最大特点就在于它的收敛速度很快。牛顿法的一般步骤如下：</p>
+<p>（1）选择一个接近函数  $ f (x)$ 零点的  $x_0$ ，计算相应  $f (x_0)$  和切线斜率 $f ‘ (x_0)$ 。然后计算穿过点 $(x_0,  f  (x_0)) $ 并且斜率为 $f’(x0)$ 的直线和  $x$ 轴的交点的 $x$ 坐标，也就是求如下方程的解：</p>
+<p>$$<br>x \cdot f^{\prime}\left(x_{0}\right)+f\left(x_{0}\right)-x_{0} \cdot f^{\prime}\left(x_{0}\right)&#x3D;0<br>$$</p>
+<p>（2）将新求得的点的 $x$ 坐标命名为 $x_1$ ，通常 $x_1$ 会比 $x_0$ 更接近方程 $f(x) &#x3D; 0$ 的解。因此可以利用 $x_1$ 开始下一轮迭代。迭代公式可化简为如下所示：<br>$$<br>x_{n}&#x3D;x_{n-1}-\frac{f(x_{n-1})}{f’(x_{n-1})}<br>$$<br>（3）已经证明，如果 $f’$  是连续的，并且待求的零点 $x$ 是孤立的，那么在零点 $x$ 周围存在一个区域，只要初始值 $x_0$ 位于这个邻近区域内，那么牛顿法必定收敛。 并且，如果 $f’(x)$ 不为0, 那么牛顿法将具有平方收敛的性能。 粗略地说，这意味着每迭代一次，牛顿法结果的有效数字将增加一倍。下图为一个牛顿法执行过程的例子。由于牛顿法是基于当前位置的切线来确定下一次的位置，所以牛顿法又被很形象地称为是”切线法”。</p>
+<p>　　牛顿法搜索动态示例图：</p>
+<img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/gradient_20210403183437_b3.webp" style="zoom:67%;" />
+
+<p><strong>牛顿法和梯度下降法的效率对比：</strong></p>
+<ul>
+<li><p>梯度下降法和牛顿法相比，两者都是迭代求解</p>
+</li>
+<li><p>梯度下降法是梯度求解，而牛顿法是用二阶的海森矩阵的逆矩阵求解</p>
+</li>
+<li><p>相对而言，使用牛顿法收敛更快（迭代更少次数），但是每次迭代的时间比梯度下降法长。</p>
+</li>
+<li><p>梯度下降法：$x^{(k+1)}&#x3D;x^{(k)}-\lambda \nabla f\left(x^{k}\right)$</p>
+</li>
+<li><p>牛顿法：$x^{(k+1)}&#x3D;x^{(k)}-\lambda\left(H^{(k)}\right)^{-1} \nabla f\left(x^{k}\right)$</p>
+</li>
+</ul>
+<p>通俗地说：如果想找一条最短路径走到一个盆地的谷底，梯度下降法每次只从当前位置选一个坡度最大的方向走一步，而牛顿法在选择方向时，不仅会考虑当前坡度是否够大，还会考虑走一步之后，坡度是否会变得更大。所以，牛顿法比梯度下降法看得更远一点，能更快地走到最底部。</p>
+<p>根据wiki上的解释，几何上牛顿法就是用一个二次曲面去拟合当前所处位置的局部曲面，而梯度下降法是用一个平面去拟合当前位置的局部曲面，通常情况下，二次曲面的拟合会比平面更好，所以牛顿法选择的下降路径会更符合真实的最优下降路径。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/gradient_20210403202620_e3.webp" alt="img"></p>
+<center>注：红色的牛顿法的迭代路径，绿色的是梯度下降法的迭代路径。</center>
+
+<p><strong>牛顿法的优缺点总结：</strong></p>
+<ul>
+<li>优点：二阶收敛，收敛速度快；</li>
+<li>缺点：每一步都需要求解目标函数的Hessian矩阵的逆矩阵，计算比较复杂。</li>
+</ul>
+<h2 id="六、拟牛顿法"><a href="#六、拟牛顿法" class="headerlink" title="六、拟牛顿法"></a>六、拟牛顿法</h2><p><strong>拟牛顿法的基本想法</strong>：牛顿迭代法中需要计算海森矩阵的逆矩阵 $H^{-1}$ ，该计算复杂度高。因此考虑使用一个正定矩阵来近似Hessian矩阵的逆，从而简化了运算的复杂度。即考虑用一个 $n$  阶正定矩阵 $G_k&#x3D;G(x^{(k)})$  来近似代替     $H_k^{-1}&#x3D;H^{-1}(x^{(k)})$ 。</p>
+<p>拟牛顿法只要求每一步知道目标函数的梯度即可迭代，通过测量梯度的变化，构造一个目标函数的模型使之足以产生超线性收敛性。因为拟牛顿法不需要二阶导数的信息，所以比牛顿法计算效率更高，但又较梯度下降法收敛速度更快。因此，目前优化软件中包含了大量的拟牛顿算法用来解决无约束、约束和大规模数据集的优化问题。</p>
+<p>要找到近似的替代矩阵，必定要和 $H_k$ 有类似的性质。先看下牛顿法迭代中海森矩阵 $H_k$  满足的条件。</p>
+<p>首先 $H_k$   满足以下关系：</p>
+<p>取 $x&#x3D;x^{k-1}$  ，由  $ \nabla f(x) &#x3D; g_k + H_k(x-x^{(k)})$ ，得  $ g_{k-1}-g_k&#x3D;H_k(x^{(k-1)}-x^{(k)}) $  。<br>        记 $ y_k&#x3D;g_k-g_{k-1} $ ,  $ \delta_k&#x3D;x^{(k)}-x^{(k-1)} $  ，则:<br>$$<br>y_{k-1}&#x3D;H_k\delta_{k-1}\\<br>H_k^{-1}y_{k-1}&#x3D;\delta _{k-1}<br>$$<br>称为拟牛顿条件(Secant equation)。</p>
+<p>如果 $H_k$  是正定的（$H_k^{-1}$ 也是正定的），那么保证牛顿法的搜索方向 $p_k$ 是下降方向。这是因为搜索方向是  $p_k&#x3D; -H_k^{-1}g_k$ 。由 $x^{(k+1)} &#x3D; x^{(k)} - H_k^{-1}g_k $  ，有 $x&#x3D;x^{(k)}-\lambda H_k^{-1}g_k&#x3D;x^{(k)}+\lambda p_k$ 。</p>
+<p>则 $f(x)$   在  $x^{(k)}$ 的泰勒展开可近似为 $f(x)&#x3D;f(x^{(k)})-\lambda g_k^TH_k^{-1}g_k$ 。</p>
+<p>由于  $H_k^{-1}$  正定，故  $g_k^TH_k^{-1}g_k&gt;0$   。当 $\lambda$ 为一个充分小的正数时，有  $f(x)&lt;f(x^{(x)})$  ，即搜索方向 $p_k$ 是下降方向。因此拟牛顿法将  $G_k$  作为 $H_k^{-1}$ 近似。要求 $G_k$ 满足同样的条件:</p>
+<ul>
+<li>首先，每次迭代矩阵 $G_k$ 是正定的。</li>
+<li>同时， $G_k$  满足下面的拟牛顿条件： $G_{k+1}y_k&#x3D;\delta_k$</li>
+</ul>
+<p>按照拟牛顿条件，在每次迭代中可以选择更新矩阵  $G_{k+1}$  ： $ G_{k+1}&#x3D;G_k+ \Delta G_k$ </p>
+<p>这种选择有一定的灵活性，因此有很多具体的实现方法，进而发展出 <strong>DFP算法</strong>、<strong>BFGS算法</strong>、<strong>Broyden算法</strong> 等拟牛顿法。</p>
+<h2 id="七、共轭梯度法"><a href="#七、共轭梯度法" class="headerlink" title="七、共轭梯度法"></a>七、共轭梯度法</h2><p>共轭梯度法是介于梯度下降法与牛顿法之间的一种方法，它仅需利用一阶导数信息，同时克服了梯度下降法收敛慢的缺点，又避免了牛顿法需要存储和计算Hesse矩阵并求逆的缺点。</p>
+<p>共轭梯度法不仅是解决大型线性方程组最有用的方法之一，也是解大型非线性最优化问题最有效的算法之一。 在各种优化算法中，共轭梯度法是非常重要的一种。其优点是所需存储量小，具有步收敛性，稳定性高，而且不需要任何外来参数。具体的实现步骤请参加 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Conjugate_gradient_method#Example_code_in_MATLAB">wiki百科共轭梯度法</a>（此处暂略）。</p>
+<p>　　下图为共轭梯度法和梯度下降法搜索最优解的路径对比示意图：</p>
+<p><img src="https://images2017.cnblogs.com/blog/1022856/201709/1022856-20170916202934203-1179802638.png" alt="img"> </p>
+<p>注：绿色为梯度下降法，红色代表共轭梯度法</p>
+<h2 id="八、-启发式方法"><a href="#八、-启发式方法" class="headerlink" title="八、 启发式方法"></a>八、 启发式方法</h2><p>启发式方法指人在解决问题时所采取的一种根据经验规则进行发现的方法。其特点是在解决问题时，利用过去的经验，选择已经行之有效的方法，而不是系统地、以确定的步骤去寻求答案。启发式优化方法种类繁多，包括经典的模拟退火方法、遗传算法、蚁群算法以及粒子群算法等。针对多目标优化问题，还有NSGAII算法、MOEA&#x2F;D算法以及人工免疫算法等。</p>
+<h2 id="九、-拉格朗日乘数法"><a href="#九、-拉格朗日乘数法" class="headerlink" title="九、 拉格朗日乘数法"></a>九、 拉格朗日乘数法</h2><p>拉格朗日乘数法主要用于解决约束优化问题，其基本思想是通过引入拉格朗日乘子来将含有 $n$ 个变量和 $k$ 个约束条件的约束优化问题转化为含有 $(n+k)$ 个变量的无约束优化问题。拉格朗日乘数法从数学意义入手，通过引入拉格朗日乘子建立极值条件，对 $n$ 个变量分别求偏导对应了 $n$ 个方程，然后加上 $k$ 个约束条件（对应 $k$ 个拉格朗日乘子）一起构成包含了 $(n+k)$ 个变量的 $(n+k)$ 个方程的方程组问题，这样就能根据求方程组的方法对其进行求解。（此处暂略）</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/b1232da0.html">http://xishansnow.github.io/posts/b1232da0.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%80%BC%E4%BC%98%E5%8C%96/">数值优化</a><a class="post-meta__tags" href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95/">梯度下降法</a><a class="post-meta__tags" href="/tags/%E7%89%9B%E9%A1%BF%E6%B3%95/">牛顿法</a><a class="post-meta__tags" href="/tags/%E6%8B%9F%E7%89%9B%E9%A1%BF%E6%B3%95/">拟牛顿法</a><a class="post-meta__tags" href="/tags/%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%B3%95/">共轭梯度法</a></div><div class="post-share"><div class="social-share" data-image="/img/002.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/9ac6c476.html" title="④  线性回归模型：岭回归"><img class="cover" src="/img/coffe_07.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">④  线性回归模型：岭回归</div></div><div class="info-2"><div class="info-item-1">   其中是一个函数，我们将调用反向链接函数。有许多反向链接函数可供选择；可能最简单的是恒等函数。这是一个返回与其参数相同的值的函数。第3章“线性回归建模”中的所有模型都使用了单位函数，为简单起见，我们只是省略了它。身份功能本身可能不是很有用，但它允许我们以更统一的方式考虑几种不同的模型。 岭回归          #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {         let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');         let refel = document.querySelector(refid);         let refnum =...</div></div></div></a><a class="pagination-related" href="/posts/4e7b5c8f.html" title="④  线性回归模型：最小二乘线性回归"><img class="cover" src="/img/coffe_11.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">④  线性回归模型：最小二乘线性回归</div></div><div class="info-2"><div class="info-item-1">   其中是一个函数，我们将调用反向链接函数。有许多反向链接函数可供选择；可能最简单的是恒等函数。这是一个返回与其参数相同的值的函数。第3章“线性回归建模”中的所有模型都使用了单位函数，为简单起见，我们只是省略了它。身份功能本身可能不是很有用，但它允许我们以更统一的方式考虑几种不同的模型。 样条回归          #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {         let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');         let refel = document.querySelector(refid);         let refnum =...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/2be23f20.html" title=" 数值优化算法【2】-- 梯度下降算法 "><img class="cover" src="/img/coffe_10.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-04</div><div class="info-item-2"> 数值优化算法【2】-- 梯度下降算法 </div></div><div class="info-2"><div class="info-item-1">   数值优化算法【2】– 梯度下降算法本节介绍梯度下降（gradient descent）的工作原理。虽然梯度下降在深度学习中很少被直接使用，但理解梯度的意义，以及沿着梯度反方向更新模型参数以降低目标函数值的原理，是后面各种优化方法的基础。 梯度下降法又被称为最速下降法，是获得数值解的一种常用算法，主要分为批量梯度下降（Batch  Gradient  Descent）、随机梯度下降（Stochastic Gradient  Descent）以及小批量梯度下降（Mini-Batch Gradient Descent）三种不同的形式。 一、理解梯度下降（1）一维梯度下降先以简单的一维梯度下降为例，解释梯度下降算法可能降低目标函数值的原因。 假设连续可导的函数     $  J: \mathbb{R} \rightarrow \mathbb{R}   $    的输入和输出都是标量。给定绝对值足够小的数    $  \epsilon   $   ，根据泰勒展开公式，得到以下的近似：$$J(x + \epsilon) \approx J(x) + \epsilon J’(x)...</div></div></div></a><a class="pagination-related" href="/posts/5a3fa79b.html" title=" 数值优化算法【3】-- 动量法及其变种 "><img class="cover" src="/img/001.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-04</div><div class="info-item-2"> 数值优化算法【3】-- 动量法及其变种 </div></div><div class="info-2"><div class="info-item-1">   数值优化算法【3】– 动量法及其变种一、问题的提出上节提到的批量梯度下降(BGD)、随机梯度下降(SGD)和小批量梯度下降法(MBGD)，基础完全一致，区别仅在于批大小（batch size）的不同。虽然由于批大小不同带来了很多不同的特性，但它们均避免不了一个问题，即模型参数的更新方向依赖于当前batch计算出的梯度，这可能会带来一些问题。 让我们考虑一个输入为二维向量 $\boldsymbol{x} &#x3D; [x_1, x_2]^\top$ 、输出为标量的目标函数$f(\boldsymbol{x})&#x3D;0.1x_1^2+2x_2^2$。 下图为基于该目标函数的梯度下降，学习率为 $0.4$...</div></div></div></a><a class="pagination-related" href="/posts/fdc38729.html" title=" 数值优化算法【4】--   Adam 方法 "><img class="cover" src="/img/book_03.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-08</div><div class="info-item-2"> 数值优化算法【4】--   Adam 方法 </div></div><div class="info-2"><div class="info-item-1">   数值优化算法【4】–   Adam 方法 RMSProp 和 AdaDelta 均采用加权移动平均的方法，对二阶动量做了窗口限制，使得学习效率得到明显提升； AdaDelta 方法进一步对学习率的分子项做了自动累积计算，无需人工指定全局学习率超参数（实际情况表明， AdaDelta 容易陷入局部最优解的陷阱）。  Adam 算法则采用了另外一种思路，其没有将思路放在自动计算学习率上，而是考虑将一阶动量引入学习率的更新，使学习过程更优。 1、 算法介绍  Adam  算法使用了一阶动量变量 $\boldsymbol{v}_t$ 和 RMSProp  算法中的二阶动量变量 $\boldsymbol{G}_t$  ，并在时间步0将其初值置为0。 给定超参数 $0 \leq \beta_1 &lt; 1$ （算法作者建议设为 $0.9$ ），时间步 $t$ 的一阶动量变量 $\boldsymbol{v}_t$ 为梯度 $\boldsymbol{g}t$ 与 $v{t-1}$ 加权移动平均：$$\boldsymbol{v}t \leftarrow \beta_1...</div></div></div></a><a class="pagination-related" href="/posts/64381b5c.html" title="最大似然、最大后验与贝叶斯推断"><img class="cover" src="/img/book_03.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-09</div><div class="info-item-2">最大似然、最大后验与贝叶斯推断</div></div><div class="info-2"><div class="info-item-1">   【摘 要】在机器学习和统计学习领域，最大似然、最大后验和贝叶斯推断是参数估计和预测最为常见的三种方法，堪称三座圣杯。本文从掌握证据（观测数据）出发，分别讨论了三种方法的原理、特点以及区别，而且内容极为简明易懂，是了解上述三个概念不可多得的好教材。该文是普渡大学机器人视觉实验室的自编教程，值得收藏。 【原 文】  （1）Kak, A. (2014) ‘ML, MAP, and Bayesian—the holy trinity of parameter estimation and data prediction’, An RVL Tutorial Presentation at Purdue University. （2）Kak, A. (2014) ‘Monte Carlo integration in bayesian estimation’. </div></div></div></a><a class="pagination-related" href="/posts/3b152876.html" title="随机变量的变换"><img class="cover" src="/img/book_08.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-15</div><div class="info-item-2">随机变量的变换</div></div><div class="info-2"><div class="info-item-1">   【摘 要】概率论的主要研究对象是随机变量及其分布，当随机变量经过某些变换或若干随机变量进行某种组合后，产生的新随机变量会具有什么性质是一个迷人的话题，本文介绍了变量变化法、累积分布函数法、矩生成函数法三种基础推导方法，其中变量变化法（也称变量变换法）是归一化流方法的支撑理论，累积分布函数法根据其名称显然只适用于连续型随机变量，矩生成法适用于多个独立随机变量的线性组合。 【原 文】https://bookdown.org/pkaldunn/DistTheory/Transformations.html 完成本模块后，您应该能够：  在给定原始变量分布的情况下，使用分布函数法、变量变换法和矩生成函数法推导目标变量的分布。 找到双变量情况下两个目标变量的联合分布。  1 引言在本章中，我们考虑在给定一个分布已知的随机变量 $X$ 和一个函数 $u(\cdot)$ 的情况下，某个随机变量 $Y &#x3D; u(X)$...</div></div></div></a><a class="pagination-related" href="/posts/e010e478.html" title="可扩展性--分布式机器学习算法"><img class="cover" src="/img/book_07.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-20</div><div class="info-item-2">可扩展性--分布式机器学习算法</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95%E3%80%901%E3%80%91%E2%80%93-%E5%B8%B8%E7%94%A8%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95"><span class="toc-text">数值优化算法【1】– 常用优化算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%A7%A3%E6%9E%90%E8%A7%A3%E4%B8%8E%E6%95%B0%E5%80%BC%E8%A7%A3%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-text">一、解析解与数值解的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E6%9C%80%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98"><span class="toc-text">二、机器学习中的最优化问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%B1%80%E9%83%A8%E6%9C%80%E5%B0%8F%E5%80%BC%E9%97%AE%E9%A2%98"><span class="toc-text">（1）局部最小值问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E9%9E%8D%E9%83%A8%E9%97%AE%E9%A2%98"><span class="toc-text">（2）鞍部问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E9%AB%98%E5%8E%9F%E9%97%AE%E9%A2%98%EF%BC%88%E6%A2%AF%E5%BA%A6%E6%B6%88%E5%A4%B1%EF%BC%89"><span class="toc-text">（3）高原问题（梯度消失）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%9C%80%E4%BC%98%E5%8C%96%E7%90%86%E8%AE%BA%E5%8F%8A%E4%B8%BB%E8%A6%81%E6%95%B0%E5%80%BC%E8%A7%A3%E6%B3%95"><span class="toc-text">三、最优化理论及主要数值解法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="toc-text">四、梯度下降法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E7%89%9B%E9%A1%BF%E6%B3%95"><span class="toc-text">五、牛顿法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%8B%9F%E7%89%9B%E9%A1%BF%E6%B3%95"><span class="toc-text">六、拟牛顿法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%B3%95"><span class="toc-text">七、共轭梯度法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81-%E5%90%AF%E5%8F%91%E5%BC%8F%E6%96%B9%E6%B3%95"><span class="toc-text">八、 启发式方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81-%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E6%95%B0%E6%B3%95"><span class="toc-text">九、 拉格朗日乘数法</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

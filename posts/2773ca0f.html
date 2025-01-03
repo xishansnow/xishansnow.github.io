@@ -1,0 +1,769 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>基于空间滤波的大型数据集空间变系数建模 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="大型数据集的空间变系数建模：从空间回归中消除 N"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/2773ca0f.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '基于空间滤波的大型数据集空间变系数建模',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/009.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">基于空间滤波的大型数据集空间变系数建模</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">基于空间滤波的大型数据集空间变系数建模</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-16T12:50:00.000Z" title="发表于 2022-12-16 20:50:00">2022-12-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.208Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/">GeoAI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/">空间变系数模型</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">11.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>50分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>〖摘 要〗 虽然空间变系数 (SVC) 建模在应用科学中很流行，但其计算负担很大。如果考虑空间变系数的多尺度属性，则尤其如此。鉴于此背景，本研究开发了一种基于 Moran 特征向量的空间变系数 (M-SVC) 建模方法，可有效地估计多尺度空间变系数模型。该估计通过 (1) 秩降低、(2) 预压缩和 (3) 顺序似然最大化来加速。步骤 (1) 和 (2) 从似然函数中消除样本大小 N；在这些步骤之后，似然最大化成本与 N 无关。步骤 (3) 进一步加速似然最大化，因此即使空间变系数的数量 K 很大，也可以估计多尺度空间变系数模型。通过蒙特卡罗模拟实验将 M-SVC 方法与地理加权回归 (GWR) 进行比较。这些模拟结果表明，当 N 很大时，本文方法比地理加权回归快得多，尽管数值估计了 2K 个参数，而地理加权回归仅数值估计了 1 个参数。然后，将所提出的方法应用于土地价格分析作为说明。开发的空间变系数估计方法在 R 包 “spmoran” 中实现</p>
+<p>〖原 文〗 Murakami, D. and Griffith, D.A. (2019) ‘Spatially varying coefficient modeling for large datasets: Eliminating N from spatial regressions’, Spatial Statistics, 30, pp. 39–64. Available at: <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.spasta.2019.02.003">https://doi.org/10.1016/j.spasta.2019.02.003</a>.</p>
+<h2 id="1-导言"><a href="#1-导言" class="headerlink" title="1. 导言"></a>1. 导言</h2><p>在地统计学（例如，Cressie，1993 <sup class="refplus-num"><a href="#ref-Cressie1993">[8]</a></sup>）和空间计量经济学（例如，LeSage 和 Pace，2009<sup class="refplus-num"><a href="#ref-LeSage2009">[36]</a></sup>）中提出的空间统计方法，通常需要计算复杂度为 $\mathcal{O}(N^3)$ 的密集协方差矩阵的逆，其中 $N$ 是样本量。这些方法不适用于大样本。
+
+为了克服这一局限性，大空间数据建模得到了迅速发展。
+
+地统计学家主要针对空间插值问题研究大数据建模。稀疏方法和低秩方法是其中的典型代表（参见 Heaton 等 2017 年的评论<sup class="refplus-num"><a href="#ref-Heaton2017">[32]</a></sup>）：
+- 稀疏方法包括
+    - 协方差锥化（Furrer 等，2006 年<sup class="refplus-num"><a href="#ref-Furrer2006">[20]</a></sup>）
+    - 使用随机偏微分方程（Lindgren 等，2011 年 <sup class="refplus-num"><a href="#ref-Lindgren2011">[38]</a></sup>）
+    - 最近邻高斯过程（Datta 等，2016 年<sup class="refplus-num"><a href="#ref-Datta2016">[10]</a></sup>）
+- 低秩方法包括
+    - 固定秩克里金法（Cressie 和 Johannesson，2008 年<sup class="refplus-num"><a href="#ref-Cressie2008">[9]</a></sup>）
+    - 预测过程建模（Banerjee 等，2008 年<sup class="refplus-num"><a href="#ref-Banerjee2008">[3]</a></sup>）
+    - 多分辨率近似（Nychka 等，2015 年<sup class="refplus-num"><a href="#ref-Nychka2015">[49]</a></sup>）。
+
+
+空间计量学家主要针对存在空间依赖性的回归问题研究大数据建模。例如：
+- 基于多项式的近似（Smirnov 和 Anselin，2001 <sup class="refplus-num"><a href="#ref-Smirnov2001">[53]</a></sup>；Griffith，2004 <sup class="refplus-num"><a href="#ref-Griffith2004">[26]</a></sup>）
+- 组合似然近似（Arbia，2014 <sup class="refplus-num"><a href="#ref-Arbia2014">[2]</a></sup>）
+- 其他似然近似（例如，LeSage 和 Pace，2007 <sup class="refplus-num"><a href="#ref-LeSage2007">[35]</a></sup>）。
+- Burden 等 (2015) <sup class="refplus-num"><a href="#ref-Burden2015">[5]</a></sup> 提出了一种低秩方法。
+- 空间两阶段最小二乘法（Kelejian 和 Prucha，1998 <sup class="refplus-num"><a href="#ref-Kelejian1998">[34]</a></sup>）被认为是一种计算效率高的方法。
+
+虽然空间依赖性和空间异质性是空间数据的两个普遍性质（Tobler, 1970 <sup class="refplus-num"><a href="#ref-Tobler1970">[56]</a></sup>; Goodchild, 2004 <sup class="refplus-num"><a href="#ref-Goodchild2004">[23]</a></sup>; Anselin, 2010 <sup class="refplus-num"><a href="#ref-Anselin2010">[1]</a></sup>），但之前的这些研究都更关注前者，却忽视了后者。尽管如此，空间异质性对进行恰当地空间数据建模至关重要（参见 Fotheringham 等，2002 <sup class="refplus-num"><a href="#ref-Fotheringham2002">[18]</a></sup>；Geniaux 和 Martinetti，2018 <sup class="refplus-num"><a href="#ref-Geniaux2018">[22]</a></sup>；Debarsy 和 Yang，2018 <sup class="refplus-num"><a href="#ref-Debarsy2018">[11]</a></sup>）。
+
+鉴于此背景，本研究重点关注空间变系数 (SVC) 建模，这是空间异质性建模的代表性方法。大量研究面向空间变系数建模（ 见 `第 2 节`）。最近，Fotheringham 等 (2017)<sup class="refplus-num"><a href="#ref-Fotheringham2017">[19]</a></sup> 和 Murakami 等 (2018)<sup class="refplus-num"><a href="#ref-Murakami2018">[43]</a></sup> 揭示了考虑空间变系数的多尺度特性，在准确估计它们时的重要性；例如，第一个空间变系数可能具有比其他空间变系数更大比例的地图模式。然而， **如果考虑多尺度性质，计算成本会进一步迅速增加，不仅取决于 $N$，还取决于空间变系数的数量，如何在计算上高效估计多尺度空间变系数尚不明确**。
+
+本研究的目的正是针对此局限性。具体来说，我们开发了一种方法，通过扩展 Moran 的特征向量空间过滤方法（Griffith 2003 <sup class="refplus-num"><a href="#ref-Griffith2003">[25]</a></sup>；Murakami 等，2017 年 <sup class="refplus-num"><a href="#ref-Murakami2017">[45]</a></sup>），能够以计算有效的方式估计多尺度空间变系数模型。
+
+随后的部分组织如下。
+- `第 2 节` 简要回顾现有空间变系数建模方法，并比较了其计算特性。
+- `第 3 节` 介绍了我们的空间变系数模型。
+- `第 4 节` 开发了一种快速空间变系数估计方法。
+- `第 5 节` 将所提出方法的计算时间与现有方法进行比较。
+- `第 6 节` 介绍了一个实证应用。
+- `第 7 节` 总结了我们的讨论。
+
+## 2. SVC 建模方法
+
+假设响应变量 $y(\mathbf{s}_i)$ 在分布在研究区域 $D ⊂ \mathbb{R}^2$ 中的 $N$ 个样本点 $\mathbf{s}_i \mid i \in  \{1,\ldots ,N\}$ 处被采样。线性空间变系数模型的公式如下：
+
+$$
+\begin{align*}
+&amp;y(\mathbf{s}_i) = \sum^K_{k=1} x_k(\mathbf{s}_i) \beta_k(\mathbf{s}_i) + \varepsilon(\mathbf{s}_i) \tag{1}\\
+&amp;\mathbb{E}[\varepsilon(\mathbf{s}_i)] = 0\\
+&amp;\mathbb{V}ar[\varepsilon(\mathbf{s}_i)] = \sigma^2
+\end{align*}
+$$
+
+其中，$x_k(\mathbf{s}_i)$ 表示第 $k$ 个解释变量，$\beta_k(\mathbf{s}_i)$ 表示第 $k$ 个变系数，$\sigma^2$ 为方差参数。空间变系数建模旨在估计和推断 $\beta_k(\mathbf{s}_i)$。
+
+**（1）地理加权回归**
+
+地理加权回归 (GWR; Brunsdon 等, 1996 <sup class="refplus-num"><a href="#ref-Brunsdon1996">[6]</a></sup>) 是空间变系数建模的代表性方法。地理加权回归通过为附近样本分配比远处测点 $\mathbf{s}_i$ 的样本更多的权重来估计 $\beta_k(\mathbf{s}_i)$。估计 $\boldsymbol{\beta}(\mathbf{s}_i) = [\beta_1(\mathbf{s}_i), \ldots, \beta_k(\mathbf{s}_i)]^T$ 由下式给出（其中 `T` 表示转置算子）：
+
+$$
+\hat{\boldsymbol{\beta}}(\mathbf{s}_i) = [\mathbf{X}^T \mathbf{G}(\mathbf{s}_i)\mathbf{X}]^{-1} \mathbf{X}^T \mathbf{G}(\mathbf{s}_i) \mathbf{y}
+$$
+
+其中 $\mathbf{X}$ 是解释变量的 $N × K$ 矩阵，$\mathbf{y}$ 是响应变量的 $N × 1$ 向量，$\mathbf{G}(\mathbf{s}_i)$ 是 $N × N$ 对角矩阵，其第 $j$ 个元素 $g(\mathbf{s}_i, \mathbf{s}_j)$ 表示分配到第 $j$ 个样本的权重。$g(\mathbf{s}_i, \mathbf{s}_j)$ 由距离衰减核给出。例如，Wheeler 和 Calder (2007) <sup class="refplus-num"><a href="#ref-Wheeler2007">[58]</a></sup> 以及 Wheeler 和 Waller (2009) <sup class="refplus-num"><a href="#ref-Wheeler2009">[60]</a></sup> 使用指数核 $g(\mathbf{s}_i, \mathbf{s}_j) = \exp(−d(\mathbf{s}_i, \mathbf{s}_j)/b)$，其中 $b$ 是确定尺度的带宽变系数；当 $b$ 大时，$\hat{\boldsymbol{\beta}}(\mathbf{s}_i)$ 为大尺度地图模式，$b$ 小时为小尺度地图模式。通过最小化修正后的 Akaike 信息准则 (AIC) 或最小化交叉验证 (CV) 的预测误差，我们可以估计带宽 $b$。地理加权回归已广泛应用于环境研究（例如，Harris 等，2010a <sup class="refplus-num"><a href="#ref-Harris2010a">[30]</a></sup>；Dong 等，2018 <sup class="refplus-num"><a href="#ref-Dong2018">[12]</a></sup>）、犯罪学（例如，Cahill 和 Mulligan，2007 <sup class="refplus-num"><a href="#ref-Cahill2007">[7]</a></sup>）、流行病学（例如，Nakaya 等，2005 <sup class="refplus-num"><a href="#ref-Nakaya2005">[48]</a></sup>），以及许多其他领域。
+
+单一带宽隐含地强加了一个强有力的假设，即所有空间变系数具有相同的空间变化尺度。但是，一些系数可能比其他系数具有更大的尺度模式。为了考虑这种多尺度属性，Yang (2014) <sup class="refplus-num"><a href="#ref-Yang2014">[61]</a></sup>和 Fotheringham 等（2017）<sup class="refplus-num"><a href="#ref-Fotheringham2017">[19]</a></sup> 提出了灵活带宽地理加权回归（FB-GWR，也称为多尺度地理加权回归），它用空间变系数特定带宽 $b_k$ 代替了常见的 $b$。多尺度地理加权回归通过反向拟合算法估算，该算法顺序迭代每个 $b_k$ 的 AIC 最大化（或 CV）直到收敛。最近，Lu 等 (2018)<sup class="refplus-num"><a href="#ref-Lu2018">[41]</a></sup> 提出了一种计算效率高的多尺度地理加权回归模型估计算法，计算时间减少了 $60\%$ 以上。但是，原始多尺度地理加权回归即便在 $N ≤ 5,000$ 时也很慢，因此对于更大的样本量可能需要更快的算法。
+
+**（2）贝叶斯空间变系数模型**
+
+`贝叶斯空间变系数模型（ B-SVC ） ` 提供了另一种可用方法，参见 Gelfand 等，2003 年<sup class="refplus-num"><a href="#ref-Gelfand2003">[21]</a></sup>。该模型假设第 $k$ 个空间变系数 $\boldsymbol{\beta}_k = [\beta_k(\mathbf{s}_1)，\ldots, \beta_k(\mathbf{s}_N)]^T$ 服从以下多元高斯过程：
+
+$$
+\beta_k \sim \mathcal{N}(b_k \mathbf{1}, \tau_k \mathbf{C}(r_k))  \tag{3}
+$$
+
+其中 $b_k$、$\tau_k$  和 $r_k$ 是参数，$\mathbf{1}$  是一个 $N × 1$ 向量。 $\mathbf{C}(r_k)$ 是一个 $N × N$ 相关矩阵，其第 $(i, j)$ 个元素 $c_{ij}(r_k)$ 由距离衰减核给出，以捕获空间相关性，例如指数核 $c_{ij}(r_k) =\exp[-d(\mathbf{s}_i, \mathbf{s}_j)/r_k]$，其中 $d(\mathbf{s}_i, \mathbf{s}_j)$ 是测点 $\mathbf{s}_i$ 和 $\mathbf{s}_j$ 之间的欧氏距离。`式 (1)` 和 `式 (2)` 的贝叶斯空间变系数模型通过马尔可夫链蒙特卡罗 (MCMC) 技术估计。 Wheeler 和 Waller (2009)<sup class="refplus-num"><a href="#ref-Wheeler2009">[60]</a></sup>，以及 Finley 等 (2011a)<sup class="refplus-num"><a href="#ref-Finley2011a">[16]</a></sup> 将贝叶斯空间变系数建模与地理加权回归进行了比较，并展示了贝叶斯空间变系数方法的稳健性。
+
+不幸的是，当 $N$ 和/或 $K$ 很大时，贝叶斯空间变系数建模的计算成本令人失望（Finley 等，2011a <sup class="refplus-num"><a href="#ref-Finley2011a">[16]</a></sup>）。因为 MCMC 模拟需要在每次迭代中求密集矩阵 $\mathbf{C}(r_1),\ldots, \mathbf{C}(r_k)$ 的逆。为了减轻这种成本，Finley 等 (2011b)<sup class="refplus-num"><a href="#ref-Finley2011b">[17]</a></sup> 对贝叶斯空间变系数模型应用了降阶。然而，当 $N = 8,774$ 、$K = 5$ 时，其 MCMC 模拟具有 $50,000$ 次迭代，仍然需要大约 72 小时。在实际工作中，即便更大的 $N$ 和 $K$ ，如果能够在几分钟内完成工作仍然大家愿意看到的。
+
+**（3）莫兰特征向量空间滤波法**
+
+`Moran 特征向量空间变系数(M-SVC)` 建模方法（Griffith，2008）<sup class="refplus-num"><a href="#ref-Griffith2008">[27]</a></sup> 是 `Moran 特征向量空间滤波方法` 的扩展（参见 Griffith 2003 <sup class="refplus-num"><a href="#ref-Griffith2003">[25]</a></sup>；Griffith 和 Chun，2014 <sup class="refplus-num"><a href="#ref-Griffith2014">[29]</a></sup>），为多尺度空间变系数建模提供了第三种选择。虽然 Helbich 和 Griffith（2016 年）<sup class="refplus-num"><a href="#ref-Helbich2016">[33]</a></sup> 以及 Oshan 和 Fotheringham（2018 年）<sup class="refplus-num"><a href="#ref-Oshan2018">[50]</a></sup> 提到了这种方法的不稳定性，但 Murakami 等 (2017) <sup class="refplus-num"><a href="#ref-Murakami2017">[45]</a></sup> 将其扩展为近似贝叶斯空间变系数模型，Murakami 等 (2017 <sup class="refplus-num"><a href="#ref-Murakami2017">[45]</a></sup>; 2018 <sup class="refplus-num"><a href="#ref-Murakami2018">[43]</a></sup>) 通过蒙特卡罗实验证明了其估计准确性。
+
+与贝叶斯空间变系数建模方法不同，该空间滤波方法不需要 MCMC 迭代，但当 $N$ 很大时仍然很慢，因为它需要特征分解（复杂度为 $\mathcal{O}(N^3)$ ）和 $2K$ 个参数的数值估计。
+
+综上所述，如何在计算上有效地估计多尺度空间变系数仍然难以捉摸。但鉴于变系数模型的适用领域非常广泛且方法很流行，因此 **不依赖高性能计算环境实现快速计算** 仍然是大众所需的。
+
+## 3  莫兰特征向量空间变系数(M-SVC) 建模
+
+### 3.1 模型
+
+该方法基于 Moran 系数（MC；Moran，1950 年）<sup class="refplus-num"><a href="#ref-Moran1950">[42]</a></sup>，它是空间依赖性的诊断统计量。$\mathbf{y} = [y(\mathbf{s}_1), \ldots, y(\mathbf{s}_N)]^T$ 的莫兰系数形式化为：
+
+$$
+MC[\mathbf{y}] = \frac{N}{\mathbf{1}^T \mathbf{C} \mathbf{1}} \cdot \frac{\mathbf{y}^T (\mathbf{I} − \mathbf{1}\mathbf{1}^T/N) \mathbf{C}(\mathbf{I} − \mathbf{1}\mathbf{1}^T /N)\mathbf{y}}{ \mathbf{y}^T (\mathbf{I} − \mathbf{1}\mathbf{1}^T /N)\mathbf{y}} \tag{4}
+$$
+
+其中 $\mathbf{C}$ 是对角线为零的对称空间邻接矩阵，$(\mathbf{I} − \mathbf{1}\mathbf{1}^T/N)$ 是实现居中化的矩阵。如果 $y(\mathbf{s}_1), \ldots, y(\mathbf{s}_N)$ 空间正相关时，$MC[\mathbf{y}] &gt; −\frac{ 1 }{N−1}$，如果它们负相关，则 $MC[\mathbf{y}] &lt; − \frac{1}{N−1}$ (Griffith, 2003)<sup class="refplus-num"><a href="#ref-Griffith2003">[25]</a></sup>。可见邻接矩阵 $\mathbf{C}$ 对莫兰系数影响非常大。根据 Dray 等(2006) <sup class="refplus-num"><a href="#ref-Dray2006">[13]</a></sup> 以及 Murakami 和 Griffith (2015) <sup class="refplus-num"><a href="#ref-Murakami2015">[44]</a></sup>，我们可以采用如下方法定义矩阵 $\mathbf{C}$：其第 $(i, j)$ 个元素为 $\exp(−d(\mathbf{s}_i, \mathbf{s}_j)/r)$，其中变程参数 $r$ 由所有样本点连接（或样本点对）之间的最小生成树中那个最大距离给出。与传统方法不同，本文中变程 $r$ 并不固定，我们引入了另一个参数来控制空间依赖性的 “尺度/变程” 比。这种替换是快速计算所必需的。
+
+假设矩阵 $(\mathbf{I} − \mathbf{1}\mathbf{1}^T/N) \mathbf{C}(\mathbf{I} − \mathbf{1}\mathbf{1}^T /N)$ 的特征值为 $\boldsymbol{\lambda}=\lambda_1,\ldots,\lambda_N$ ，相应的特征向量为 $\mathbf{e}=\mathbf{e}_1,\ldots,\mathbf{e}_N$，令 $\mathbf{E} = [\mathbf{e}_1,  \ldots , \mathbf{e}_L]$ 是由其中 $L (&lt; N)$ 个特征向量构成的 $N × L$ 矩阵，而 $\boldsymbol{\Lambda}$ 是对角元素由相应的 $L$ 个特征值组成的 $L \times L$ 对角矩阵。那么下面的等式成立：
+
+$$
+MC[\mathbf{e}_l] = \frac{N}{\mathbf{1}^T\mathbf{C} \mathbf{1}}λ_l
+$$
+
+这意味着: **较大的正特征值对应的特征向量解释了较强的空间依赖性，而负空间依赖性则相反**。也就是说， **特征向量提供了潜在空间依赖性的正交映射模式描述**，其每一个量级都可以由莫兰系数值索引（Griffith，2003 年<sup class="refplus-num"><a href="#ref-Griffith2003">[25]</a></sup>；Tiefelsdorf 和 Griffith，2007 年 <sup class="refplus-num"><a href="#ref-Tiefelsdorf2007">[55]</a></sup>）。在现有空间变系数研究（例如，Fotheringham 等，2002 年<sup class="refplus-num"><a href="#ref-Fotheringham2002">[18]</a></sup>）中，一般都隐含地假设了正空间依赖性（现实世界中负空间依赖性比较少见，一般出现在两个区域之间存在某种竞争的情况），因此本研究仅使用了其中 $L$ 个正特征值对应的 $(\mathbf{E}, \boldsymbol{\Lambda})$ 特征对。
+
+Murakami 等 (2017) 的 M-SVC 模型指定如下：
+
+$$
+\begin{align*}
+\mathbf{y} &amp;= b_1 \mathbf{1} + \sum^K_{k=2}{\mathbf{x}_k} \circ \boldsymbol{\beta}_k + \mathbf{E} \boldsymbol{\gamma}_1 + \boldsymbol{\varepsilon} \tag{5}\\
+\boldsymbol{\gamma}_1 &amp;\sim \mathcal{N}(0, τ_1^2 \boldsymbol{\Lambda}^{α_1})\\
+\varepsilon &amp;\sim \mathcal{N}(0, \sigma^2I)
+\end{align*}
+$$
+
+其中 “$\circ$” 表示列乘积运算符，$\mathbf{y}$ 是响应变量的 $N × 1$ 向量，$\mathbf{x}_k$  是第 $k$ 个协变量的 $N × 1$ 向量。 $\mathbf{E} \boldsymbol{\gamma}_1$ 是捕获残差空间依赖性的项。 Murakami 和 Griffith (2018)<sup class="refplus-num"><a href="#ref-Murakami2018">[43]</a></sup> 表明，$L = 200$ 的 $\mathbf{E} \boldsymbol{\gamma}_1$ 项可以大大降低残差的空间依赖性（意即可以捕获大部分残差的空间依赖性）。
+
+第 $k$ 个变系数可以参数化如下：
+
+$$
+\boldsymbol{\beta}_k = b_k \mathbf{1} + \mathbf{E} \boldsymbol{\gamma}_k,\, \boldsymbol{\gamma}_k \sim \mathcal{N}(0, \tau_k^2 \boldsymbol{\Lambda}^{α_k}) \tag{6}
+$$
+
+其中 $b_k$ 是一个系数。空间变系数由常数项 $b_k \mathbf{1}$ 和空间变化项 $\mathbf{E} \boldsymbol{\gamma}_k$ 组成。$\mathbf{E} \boldsymbol{\gamma}_k$ 项具有以下性质：
+- **性质（1）**：可以根据莫兰系数进行解释；
+- **性质（2）**：特征向量均值为零。
+
+`性质(1)` 对于准确建模空间依赖性的变化很重要，而 `性质(2)` 能使均值项 $b_k \mathbf{1}$ 与变化项 $\mathbf{E} \boldsymbol{\gamma}_k$ 之间可识别（参见 Gelfand 等，2003 年 <sup class="refplus-num"><a href="#ref-Gelfand2003">[21]</a></sup>）。
+
+向量 $\boldsymbol{\gamma}_k$ 中包含受收缩参数 $\tau_k^2$ 和 $α_k$ 控制的随机系数。
+- 参数 $\tau_k^2$ 控制空间变系数 $\boldsymbol{\beta}_k$ 的方差
+- 参数 $\alpha_k$ 控制空间尺度
+  - 较大的 $\alpha_k$ 值会收缩具有小特征值的次要特征对上的系数，由此产生具有大尺度映射模式的空间变系数。
+  - 较小的 $\alpha_k$ 则相反。
+
+采用变化的 $\alpha$ 值可以极大地加速模型估计，同时保持估计尺度的灵活性。 Murakami 和 Griffith (2018)<sup class="refplus-num"><a href="#ref-Murakami2018">[43]</a></sup> 表明，当估计 $\alpha_k$ 而不是 $r$ 时，所产生的估计误差非常小。
+
+给定 $\mathbf{x}_1 = \mathbf{1}$ 和  $\widetilde{\mathbf{E}}_1 = (\mathbf{x}_1 \circ \mathbf{E}) = \mathbf{E}$，M-SVC 模型表示为:
+
+$$
+\begin{align*}
+\mathbf{y} &amp;= \mathbf{Xb} + \sum^{K}_{k=1} \widetilde{\mathbf{E}}_k \mathbf{V}(\boldsymbol{\theta}_k) \mathbf{u}_k + \boldsymbol{\varepsilon} \tag{7}\\ 
+\mathbf{u}_k &amp;\sim \mathcal{N}(0, \sigma^2 \mathbf{I}) \\
+\boldsymbol{\varepsilon} &amp;\sim \mathcal{N}(0, \sigma^2 \mathbf{I})
+\end{align*}
+$$
+
+其中 $\mathbf{X}=[\mathbf{x}_1, \ldots, \mathbf{x}_k]$, $\mathbf{b}=[b_1, \ldots, b_k]^T$, $\boldsymbol{\theta}_k \in  \{ \tau_k , \alpha_k \}$, $\mathbf{V}(\boldsymbol{\theta}_k) = (\tau_k / \sigma) \boldsymbol{\Lambda}^{\alpha_k/2}$。`式 (7)` 表明 M-SVC 模型与线性混合效应模型相同（例如，Bates，2010）<sup class="refplus-num"><a href="#ref-Bates2010">[4]</a></sup>。
+
+### 3.2.参数估计
+
+</p><details class="toggle"><summary class="toggle-button">第一类最大似然和第二类最大似然准则</summary><div class="toggle-content"><p><strong>（1）第一类最大似然</strong></p>
+<p>在统计与概率论中，估计统计模型参数的一个常用方法是使用最大似然估计，具体定义如下</p>
+<p>$$<br>\hat{\theta} \triangleq \mathop{\arg\max}\limits_{\theta}log \ p(\mathcal D |\theta)<br>$$</p>
+<p>上述最大似然估计对应的似然通常称之为第一类最大似然。</p>
+<p><strong>（2）第二类最大似然</strong></p>
+<p>当使用贝叶斯方法时，可以通过数值优化方法先获得超参数的经验最优值，具体如下：</p>
+<p>$$<br>\lambda^{*}=\mathop{\arg\max} \limits_{\lambda}p(D| \lambda)<br>$$</p>
+<p>其中 $\lambda$ 是超参数，此类方法也被称为 <code>经验贝叶斯方法</code> 或者 <code>第二类最大似然估计方法</code>，与交叉验证法评估不同超参数的方法相比，此方法更有效。</p>
+</div></details>
+
+M-SVC 模型通过最大化第二类似然（经验贝叶斯）方法进行估计，即最大化 
+
+$$
+\text{loglik}_R(\boldsymbol{\Theta})=\int \text{loglik} (\mathbf{y} \mid \mathbf{b},\boldsymbol{\Theta}) d \mathbf{b}
+$$
+
+其中 $\boldsymbol{\Theta} \in \{ \boldsymbol{\theta}_1, \ldots,\boldsymbol{\theta}_K \}$， $\text{loglik} (\mathbf{y} \mid \mathbf{b}, \boldsymbol{\Theta}) = \int \ldots  \int p(\mathbf{y}, \mathbf{u}_1, \ldots,  \mathbf{u}_K \mid \mathbf{b},\boldsymbol{\Theta}) p(\mathbf{u}_1, \ldots,  \mathbf{u}_K)d \mathbf{u}_1, \ldots, d \mathbf{u}_K$ 。
+
+如果将 $p(\mathbf{y}, \mathbf{u}_1, \ldots,  \mathbf{u}_K \mid \mathbf{b}, \boldsymbol{\Theta})$ 和 $p(\mathbf{u}_1, \ldots,  \mathbf{u}_K)$ 定义为高斯密度函数，则此似然具有解析表达式。使用此性质，可以推导出 `式 (7)` 的对数似然为（参见 Bates，2010 <sup class="refplus-num"><a href="#ref-Bates2010">[4]</a></sup>；Murakami 等，2017 <sup class="refplus-num"><a href="#ref-Murakami2017">[45]</a></sup>）：
+
+$$
+\text{loglik}_R(\boldsymbol{\Theta}) = − \frac{1}{2} \ln |P| − \frac{N-K}{2} \left(1 + \ln \left( \frac{2πd(\boldsymbol{\Theta})}{N − K} \right)\right) \tag{8}
+$$
+$$
+\mathbf{P}=\left[\begin{array}{cccc}
+\mathbf{X}^{T} \mathbf{X} &amp; \mathbf{X}^{T} \widetilde{\mathbf{E}}_1 \mathbf{V}\left(\boldsymbol{\theta}_1\right) &amp; \cdots &amp; \mathbf{X}^{T} \widetilde{\mathbf{E}}_K \mathbf{V}\left(\boldsymbol{\theta}_K\right) \\
+\mathbf{V}\left(\boldsymbol{\theta}_1\right) \widetilde{\mathbf{E}}_1^{T} \mathbf{X} &amp; \mathbf{V}\left(\boldsymbol{\theta}_1\right) \widetilde{\mathbf{E}}_1^{T} \widetilde{\mathbf{E}}_1 \mathbf{V}\left(\boldsymbol{\theta}_1\right)+\mathbf{I} &amp; \cdots &amp; \mathbf{V}\left(\boldsymbol{\theta}_1\right) \widetilde{\mathbf{E}}_1^{T} \widetilde{\mathbf{E}}_K \mathbf{V}\left(\boldsymbol{\theta}_K\right) \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\mathbf{V}\left(\boldsymbol{\theta}_K\right) \widetilde{\mathbf{E}}_K^{T} \mathbf{X} &amp; \mathbf{V}\left(\boldsymbol{\theta}_K\right) \widetilde{\mathbf{E}}_K^{T} \widetilde{\mathbf{E}}_1 \mathbf{V}\left(\boldsymbol{\theta}_1\right) &amp; \cdots &amp; \mathbf{V}\left(\boldsymbol{\theta}_K\right) \widetilde{\mathbf{E}}_K^{T} \widetilde{\mathbf{E}}_K \mathbf{V}\left(\boldsymbol{\theta}_K\right)+\mathbf{I}
+\end{array}\right] \tag{9} 
+$$
+
+导数 $d(\boldsymbol{\Theta})$  等于:
+
+$$
+\boldsymbol{d}(\boldsymbol{\theta})=\left\|\mathbf{y}-\mathbf{X} \hat{\mathbf{b}}-\sum_{k=1}^K \widetilde{\mathbf{E}}_k \mathbf{V}\left(\boldsymbol{\theta}_k\right) \widehat{\mathbf{u}}_k\right\|^2+\sum_{k=1}^K\left\|\widehat{\mathbf{u}}_k\right\|^2  \tag{10}
+$$
+
+其中
+
+$$
+\left[\begin{array}{c}
+\hat{\mathbf{b}} \\
+\widehat{\mathbf{u}}_1 \\
+\vdots \\
+\widehat{\mathbf{u}}_K
+\end{array}\right]=\mathbf{P}^{-1}\left[\begin{array}{c}
+\mathbf{X}^{T} \mathbf{y} \\
+\mathbf{V}\left(\boldsymbol{\theta}_1\right) \widetilde{\mathbf{E}}_1^{T} \mathbf{y} \\
+\vdots \\
+\mathbf{V}\left(\boldsymbol{\theta}_K\right) \widetilde{\mathbf{E}}^{T}{ }_K \mathbf{y}
+\end{array}\right]  \tag{11}
+$$
+
+
+`式 (10)` 平衡了模型准确性和复杂性之间的权衡。可以通过以下步骤估计参数：
+
+- 步骤(1)： 通过最大化 `式（8）` 估计 $\boldsymbol{\Theta} \in \{ \boldsymbol{\theta}_1, \ldots, \boldsymbol{\theta}_K \}$ 
+- 步骤(2)： 通过 `式（11）` 估计 $\{\mathbf{b}, \mathbf{u}_1, \ldots, \mathbf{u}_K \}$
+- 步骤(3)： 通过$\hat{\beta}_k =\mathbf{b}_k \mathbf{1} + \mathbf{E} \hat{\boldsymbol{\gamma}}_k =\hat{b}_k \mathbf{1} + \mathbf{EV}(\hat{\boldsymbol{\theta}}_k) \hat{\mathbf{u}}_k$ 估计空间变系数。
+
+## 4. 快速 M-SVC 建模
+
+不幸的是，Moran 特征向量方法在建模和估计方面的计算效率都很低，在本节中将讨论加速的方法。`第 4.1 节` 介绍了如何降低建模成本，而 `第 4.2 节` 介绍了如何降低估计成本。
+
+### 4.1 建模
+
+$(\mathbf{I} − \mathbf{1}\mathbf{1}^T/N) \mathbf{C}(\mathbf{I} − \mathbf{1}\mathbf{1}^T /N)$ 的特征分解成本为  $\mathcal{O}(N^3)$ ，这对于大 N 来说是难以处理的。此外，如果使用距离核给出 $\mathbf{C}$，则必须在分解之前存储 $N × N$ 的矩阵。就计算复杂性和内存使用而言，效率过低。
+
+为了解决此问题，我们使用了基于 `Nystrom 扩展`（Drineas 和 Mahoney，2005 年 <sup class="refplus-num"><a href="#ref-Drineas2005">[14]</a></sup>）的近似特征分解方法，求得 Moran 特征向量和特征值的近似（Murakami 和 Griffith 2018 <sup class="refplus-num"><a href="#ref-Murakami2018">[43]</a></sup>），公式如下：
+
+$$
+\hat{\mathbf{E}}=\left[\mathbf{C}_{N L}-\mathbf{1} \otimes \frac{\mathbf{1}_L^{\prime}\left(\mathbf{C}_L+\mathbf{I}_L\right)}{L}\right] \mathbf{E}_L\left(\boldsymbol{\Lambda}_L+\mathbf{I}_L\right)^{-1} \tag{12}
+$$
+
+$$
+\hat{\boldsymbol{\Lambda}}=\frac{L+N}{L}\left(\boldsymbol{\Lambda}_L+\mathbf{I}_L\right)-\mathbf{I}_L \tag{13}
+$$
+
+其中 “$\otimes$” 表示 Kronecker 积运算符。$\mathbf{C}_L$ 是一个 $L × L$ 空间邻接矩阵 ($L \ll N$) ，其中 $L$ 个结点分布在整个研究区域。
+
+结点的坐标由 `k 均值聚类` 的簇中心坐标定义，可以簇内样本的空间坐标计算得出（参见 Zhang 和 Kwok，2010 <sup class="refplus-num"><a href="#ref-Zhang2010">[62]</a></sup>）。 $\mathbf{C}_{NL}$ 是 $L$ 个结点和 $N$ 个样本点之间的 $N × L$ 邻近矩阵。集合 $\{ \mathbf{E}_L, \boldsymbol{\Lambda}_L, \mathbf{I}_L, \mathbf{1}_L\}$ 的定义就像是所有结点的 $\{ \mathbf{E}, \boldsymbol{\Lambda}, \mathbf{I}, \mathbf{1} \}$ 集合。
+
+根据继 Murakami 和 Griffith (2018) <sup class="refplus-num"><a href="#ref-Murakami2018">[43]</a></sup> ，采用 $200$ 个特征对足以模拟空间依赖性。为此，如果 $L$ 低于 $200$ 时，则 $L$ 固定为 $\hat{\boldsymbol{\Gamma}}$ 中正特征值的数量；否则将 $L = 200$。不管哪种情况，$L$ 都是固定的，特征近似的计算复杂度减少为 $\mathcal{O}(N)$，而内存使用量为 $N × L$。关于空间变系数的数量，考虑到识别难度较大（参见 Wheeler 和 Tiefelsdorf，2005 年<sup class="refplus-num"><a href="#ref-Wheeler2005">[59]</a></sup>；Farber 和 Páez，2007 年<sup class="refplus-num"><a href="#ref-Farber2007">[15]</a></sup>；Helbich 和 Griffith，2016 年<sup class="refplus-num"><a href="#ref-Helbich2016">[33]</a></sup>），通常至多设置 $10$ 个空间变系数可能是合理的。
+
+根据上述内容，我们假设 $L$ 是固定的且 $K \ll N$。当必须考虑大量解释变量时，只能针对某些重点选定的解释变量给出空间变系数，而其他变量仍然假定为常数系数。此时，第 $k$ 个系数通过用 $b_k \mathbf{1}$ 替换掉 $\beta_k = b_k \mathbf{1} + \mathbf{E}\boldsymbol{\gamma}_k$ 来转换成常数系数。此性质有助于避免增加 $K$ 并确保空间变系数的可识别性。
+
+我们的近似 M-SVC 模型是使用 `式(14)` 和 `式 (15)`：
+
+$$
+\begin{align*}
+\mathbf{y} &amp;=b_1 \mathbf{1}+\sum_{k=2}^K \mathbf{x}_k \circ \boldsymbol{\beta}_k + \hat{\mathbf{E}} \boldsymbol{y}_1+\boldsymbol{\varepsilon} \tag{14}\\
+\boldsymbol{\gamma}_1 &amp;\sim N\left(\mathbf{0}, \tau_1^2 \widehat{\boldsymbol{\Lambda}}^{\alpha_1}\right)\\
+\boldsymbol{\varepsilon} &amp;\sim N\left(\mathbf{0}, \sigma^2 \mathbf{I}\right)
+\end{align*}
+$$
+
+$$
+\begin{align*}
+\boldsymbol{\beta}_k  &amp;= b_k \mathbf{1}+\hat{\mathbf{E}} \boldsymbol{\gamma}_k \tag{15}\\
+\quad \boldsymbol{\gamma}_k &amp;\sim N\left(\mathbf{0}, \tau_k^2 \widehat{\boldsymbol{\Lambda}}^{\alpha_k}\right)
+\end{align*}
+$$
+下一节将解释如何计算有效地对模型进行估计。
+
+### 4.2 估计
+
+似然最大化的计算过程可能非常慢，因为在 $\boldsymbol{\Theta} \in \{ \boldsymbol{\theta}_1, \ldots, \boldsymbol{\theta}_K \}$ 中包含 $2K$ 个收缩参数，其中 $\boldsymbol{\theta}_k \in \{ \tau_k , \alpha_k \}$ 没有封闭形式解。例如，如果假设有 $10$ 个空间变系数，则必须对 $20$ 个收缩参数进行数值估计。 M-SVC 模型的数值估计比地理加权回归困难很多，因为地理加权回归只有一个带宽参数或 $K$ 个不同尺度下的带宽参数。
+
+本节表明，通过采用选定的矩阵技巧，M-SVC 模型估计的计算成本大大降低。`第 4.2.1 节` 从似然函数中消除了 $N$，`第 4.2.2 节` 推导出一种顺序方法来最大化似然。
+
+#### 4.2.1 从似然函数中消除“N”
+
+要估计 $\boldsymbol{\Theta} \in \{\boldsymbol{\theta}_1, \ldots,\boldsymbol{\theta}_K\}$，必须重复计算受限对数似然。为了减轻这种负担，本研究在估计之前，消去了那些大小取决于 $N$ 的矩阵和向量。具体来说，似然的计算有以下几个步骤：
+
+反复。为了减轻这种负担，本研究在估计之前消除了大小取决于 N 的矩阵和向量。具体来说，似然度的评估有以下几个步骤：
+
+- **步骤 1**: 计算 $\mathbf{M}_{0,0}=\mathbf{X}^TX$、$\mathbf{M}_{0,k} = \mathbf{X}^T (\mathbf{x}_k \circ \mathbf{E})$, $\mathbf{M}_{k,\widetilde{i}} = (\mathbf{x}_k \circ \mathbf{E})^T (\mathbf{x}_{\widetilde{k}} \circ \mathbf{E})$、 $m_0=\mathbf{X}^T \mathbf{y}$、 $\mathbf{m}_k = ( \mathbf{x}_k \circ \mathbf{E})^T \mathbf{y}$ 和 $\mathbf{m}_{y,y} = \mathbf{y}^T \mathbf{y}$；
+
+- **步骤 2**: 将矩阵和向量代入 `式(8)` 来重写受限对数似然，如下所示：
+
+$$
+\log \operatorname{lik}_R(\boldsymbol{\Theta})=-\frac{1}{2} \ln |\mathbf{P}|-\frac{N-K}{2}\left(1+\ln \left(\frac{2 \pi}{N-K} \boldsymbol{d}(\boldsymbol{\Theta})\right)\right) \tag{16}
+$$
+
+其中
+
+$$
+\mathbf{P}=\left[\begin{array}{cccc}
+\mathbf{M}_{0,0} &amp; \mathbf{M}_{0,1} \mathbf{V}\left(\boldsymbol{\theta}_1\right) &amp; \cdots &amp; \mathbf{M}_{0, K} \mathbf{V}\left(\boldsymbol{\theta}_K\right) \\
+\mathbf{V}\left(\boldsymbol{\theta}_1\right) \mathbf{M}_{1,0} &amp; \mathbf{V}\left(\boldsymbol{\theta}_1\right) \mathbf{M}_{1,1} \mathbf{V}\left(\boldsymbol{\theta}_1\right)+\mathbf{I} &amp; \cdots &amp; \mathbf{V}\left(\boldsymbol{\theta}_1\right) \mathbf{M}_{1, K} \mathbf{V}\left(\boldsymbol{\theta}_K\right) \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\mathbf{V}\left(\boldsymbol{\theta}_K\right) \mathbf{M}_{K, 0} &amp; \mathbf{V}\left(\boldsymbol{\theta}_K\right) \mathbf{M}_{K, 1} \mathbf{V}\left(\boldsymbol{\theta}_1\right) &amp; \cdots &amp; \mathbf{V}\left(\boldsymbol{\theta}_K\right) \mathbf{M}_{K, K} \mathbf{V}\left(\boldsymbol{\theta}_K\right)+\mathbf{I}
+\end{array}\right] \tag{17}
+$$
+
+
+并且 $\boldsymbol{d}(\boldsymbol{\Theta})=\|\hat{\boldsymbol{\varepsilon}}\|^2+\sum_{k=1}^K\left\|\hat{\mathbf{u}}_k\right\|^2$，其中： 
+
+$$
+\|\hat{\boldsymbol{\varepsilon}}\|^2=m_{y y}-2\left[\hat{\mathbf{b}}^{T}, \widehat{\mathbf{u}}_1^{T}, \cdots \widehat{\mathbf{u}}_K^{T}\right]\left[\begin{array}{c}
+\mathbf{m}_0 \\
+\mathbf{V}\left(\boldsymbol{\theta}_1\right) \mathbf{m}_1 \\
+\vdots \\
+\mathbf{V}\left(\boldsymbol{\theta}_K\right) \mathbf{m}_K
+\end{array}\right]+\left[\hat{\mathbf{b}}^{T}, \widehat{\mathbf{u}}_1^{T}, \cdots \widehat{\mathbf{u}}_K^{T}\right] \mathbf{P}_0\left[\begin{array}{c}
+\hat{\mathbf{b}} \\
+\widehat{\mathbf{u}}_1 \\
+\vdots \\
+\widehat{\mathbf{u}}_K
+\end{array}\right]  \tag{18}
+$$
+
+$$
+\left[\begin{array}{c}
+\hat{\mathbf{b}}\\
+\hat{\mathbf{u}}_1 \\
+\vdots \\
+\widehat{\mathbf{u}}_K
+\end{array}\right]=\mathbf{P}^{-1}\left[\begin{array}{c}
+\mathbf{m}_0 \\
+\mathbf{V}\left(\boldsymbol{\theta}_1\right) \mathbf{m}_1 \\
+\vdots \\
+\mathbf{V}\left(\boldsymbol{\theta}_K\right) \mathbf{m}_K
+\end{array}\right] \tag{19}
+$$
+
+
+$\mathbf{P}_0=\mathbf{P}$, 其中 $\mathbf{V}\left(\boldsymbol{\theta}_k\right) \mathbf{M}_{k, k} \mathbf{V}\left(\boldsymbol{\theta}_k\right)+\mathbf{I}$ 被替换为 $\mathbf{V}\left(\boldsymbol{\theta}_k\right) \mathbf{M}_{k, k} \mathbf{V}\left(\boldsymbol{\theta}_k\right)$。
+
+- **步骤 3**: 通过最大化 `式 (16)` 来估计$\boldsymbol{\Theta}$ 
+
+因为 `式(16)` 不包括任何大小取决于 $N$ 的矩阵，用于估计 $\boldsymbol{\Theta}$ 的计算复杂度与 $N$ 无关。然而，如果 $K$ 很大，则 `步骤 (c)` 中的最大化速度太慢。为了减少这种计算成本，下一节开发了一种方法来按顺序估计每个 $\boldsymbol{\theta}_k$。
+
+#### 4.2.2 顺序似然最大化
+
+本节讨论通过对每个 $k$ 依次求解 `式(20)` 直到收敛使得似然值 $\text{loglike}_R(\boldsymbol{\Theta})$ 最大化：
+
+$$
+\boldsymbol{\theta}_k = \arg \max_{\boldsymbol{\theta}_k}  \text{loglike}_R(\boldsymbol{\theta}_k \mid \boldsymbol{\Theta}_{−k})  \tag{20}
+$$
+
+其中 $\boldsymbol{\Theta}_{-k} \in \{\boldsymbol{\theta}_1, \ldots,  \boldsymbol{\theta}_{k-1}, \boldsymbol{\theta}_{k+1}, \ldots  \boldsymbol{\theta}_K \}$。
+
+这种最大化需要评估 $\mathbf{P}^{-1}$ 和 $|\mathbf{P} |$，它们的复杂度都是 $\mathcal{O}((K + KL)^3)$；随着 $K$ 的增长，复杂性迅速增加，而 $L$ 被限制为最多 $200$。由于必须多次评估 $\text{loglike}_R(\boldsymbol{\theta}_k \mid \boldsymbol{\Theta}^{−k})$ 以使其最大化，因此计算负担不可忽略。
+
+为了降低计算成本，`第 4.2.2.1 节` 和 `第 4.2.2.2 节` 分别介绍了计算 $\mathbf{P}^{-1}$ 和 $|\mathbf{P}|$ 的快速方法。尽管此部分假设以估计 $\boldsymbol{\theta}_K$ 为例，但同样的方法也可用于估计 $\{\boldsymbol{\theta}_1,  \ldots,  \boldsymbol{\theta}_{K-1}\}$。
+
+**（1）快速计算包含 $\mathbf{P}^{-1}$ 的项**
+
+假设 $\mathbf{m}_{-K}=\left[\begin{array}{llll}\mathbf{m}_0^{T} &amp; \mathbf{m}_1^{T} &amp; \cdots &amp; \mathbf{m}_{K-1}^{T}\end{array}\right]^{T}$ 。根据附录 1，包括逆 $\mathbf{P}^{-1}$ 的 `式（9）` 可以表示为：
+
+$$
+\begin{aligned}
+&amp; {\left[\begin{array}{c}
+\widehat{\mathbf{b}} \\
+\widehat{\mathbf{u}}_1 \\
+\vdots \\
+\widehat{\mathbf{u}}_K
+\end{array}\right]=\left[\begin{array}{cc}
+\widetilde{\mathbf{v}}_{-K}^{-1} &amp; \mathbf{0} \\
+\mathbf{0} &amp; \mathbf{V}\left(\boldsymbol{\theta}_K\right)^{-1}
+\end{array}\right] \mathbf{Q}^{-1}\left[\begin{array}{c}
+\mathbf{m}_{-K} \\
+\mathbf{m}_K
+\end{array}\right]} \\
+&amp; -\left[\begin{array}{c}
+\widetilde{\mathbf{V}}_{-K}^{-1} \mathbf{Q}_{-K, K}^* \\
+\mathbf{V}\left(\boldsymbol{\theta}_K\right)^{-1} \mathbf{Q}_{K, K}^*
+\end{array}\right]\left(\mathbf{V}\left(\boldsymbol{\theta}_K\right)^2+\mathbf{Q}_{K, K}^*\right)^{-1}\left[\mathbf{Q}_{K,-K}^* \mathbf{m}_{-K}+\mathbf{Q}_{K, K}^* \mathbf{m}_K\right] \tag{21} \\
+\end{aligned}
+$$
+
+其中:
+
+$$
+\widetilde{\mathbf{V}}_{-K}=\left[\begin{array}{llll}\mathbf{I} &amp; &amp; &amp; \\ &amp; \mathbf{V}_1 &amp; &amp; \\ &amp; &amp; \ddots &amp; \\ &amp; &amp; &amp; \mathbf{V}_{K-1}\end{array}\right]
+$$
+
+$$
+\mathbf{Q}=\left[\begin{array}{cc}\widetilde{\mathbf{M}}_{-K,-K}+\widetilde{\mathbf{V}}_{-K}^{-2} &amp; \widetilde{\mathbf{M}}_{-K, K} \\ \widetilde{\mathbf{M}}_{K,-K} &amp; \mathbf{M}_{K, K}\end{array}\right]
+$$
+
+并且：
+
+$$
+\widetilde{\mathbf{M}}_{-K,-K}= \left[\begin{array}{ccccc}\mathbf{M}_{0,0} &amp; \mathbf{M}_{0,1} &amp; &amp; \cdots &amp; \mathbf{M}_{0, K-1} \\ \mathbf{M}_{1,0} &amp; \mathbf{M}_{1,1}+\mathbf{V}_1^{-2} &amp; &amp; \cdots &amp; \mathbf{M}_{1, K-1} \\ \vdots &amp; \vdots &amp; \ddots &amp; &amp; \vdots \\ \mathbf{M}_{K-1,0} &amp; \mathbf{M}_{K-1,1} &amp; \cdots &amp; \mathbf{M}_{K-1, K-1}+\mathbf{V}_{K-1}^{-2}\end{array}\right]
+$$ 
+
+$$
+\widetilde{\mathbf{M}}_{-K, K}=\left[\begin{array}{llll}\mathbf{M}_{K, 0} &amp; \mathbf{M}_{K, 1} &amp; \cdots &amp; \mathbf{M}_{K, K-1}\end{array}\right]^{\prime}
+$$
+
+$$
+\left[\begin{array}{cc}\mathbf{Q}_{-K,-K}^* &amp; \mathbf{Q}_{-K, K}^* \\ \mathbf{Q}_{K,-K}^* &amp; \mathbf{Q}_{K, K}^*\end{array}\right]=\mathbf{Q}^{-1}
+$$
+
+不同于 `式（19）`，`式(21)` 不包含对大矩阵 $\boldsymbol{\theta}_K$ 的求逆运算。`式(21)` 依然有 $\mathbf{Q}^{-1}$，但其复杂度为 $\mathcal{O}((K+KL)^3)$。由于 $\mathbf{Q}$ 矩阵不包含$\boldsymbol{\theta}_K$，如果只对 $\mathbf{Q}^{-1}$ 进行一次求值，则可以在迭代计算中将其固定，使 $\text{loglike}_R(\boldsymbol{\theta}_k \mid \boldsymbol{\Theta}_{−k})$ 最大化。迭代计算中计算量最大的部分是 $(\mathbf{V}(\boldsymbol{\theta}_K)^2 + \mathbf{Q}^*_{K,K})^{−1}$， 其计算成本为 $\mathcal{O}(L^3)$，在 $L ≤ 200$ 约束下这是微不足道的。
+
+**（2）快速计算 $|\mathbf{P}|$**
+
+如 `附录 2` 所示，$|\mathbf{P}|$ 可以扩展如下：
+
+$$
+\begin{gathered}
+|\mathbf{P}|=\left|\widetilde{\mathbf{V}}_{-K}\right|^2\left|\mathbf{V}\left(\boldsymbol{\theta}_K\right)\right|^2\left|\widetilde{\mathbf{M}}_{-K,-K}+\widetilde{\mathbf{V}}_{-K}^{-2}\right| \mid \mathbf{V}\left(\boldsymbol{\theta}_K\right)^{-2}+\mathbf{M}_{K, K} \\
+-\widetilde{\mathbf{M}}_{K,-K}\left(\widetilde{\mathbf{M}}_{-K,-K}+\widetilde{\mathbf{V}}_{-K}^{-2}\right)^{-1} \widetilde{\mathbf{M}}_{-K, K} \mid .
+\end{gathered} \tag{22}
+$$
+
+
+$|\widetilde{\mathbf{V}}_{-K}|^2$ 和 $|\mathbf{V}\left(\boldsymbol{\theta}_K\right)|^2$ 的计算是即时的，因为 $\widetilde{\mathbf{V}}_{-K}$ 和 $\mathbf{V}\left(\boldsymbol{\theta}_K\right)$  是对角矩阵。计算 $\left|\widetilde{\mathbf{M}}_{-K,-K}+\widetilde{\mathbf{V}}_{-K}^{-2}\right|$ 和 $\left(\widetilde{\mathbf{M}}_{-K,-K}+\widetilde{\mathbf{V}}_{-K}^{-2}\right)^{-1}$ 的复杂度是 $\mathcal{O}\left((K+(K-1) L)^3\right)$， 比较大。然而，由于这些矩阵不包括 $\boldsymbol{\theta}_K$，因此可以在参数估计之前对其进行评估。毕竟似然最大化中必须迭代的最苛刻的计算是 $|\mathbf{V}(\boldsymbol{\theta}_K)^{−2} + \widetilde{\mathbf{M}}_{K,K}|$, 其中 $\widetilde{\mathbf{M}}_{K,K} = \mathbf{M}_{K,K} − \widetilde{\mathbf{M}}_{K,-K}(\widetilde{\mathbf{M}}_{-K,-K} + \widetilde{\mathbf{V}}_{−K}^{−2})^{−1} \widetilde{\mathbf{M}}_{-K,K}$ 提前给出。此行列式的计算复杂度为 $O(L^3)$。
+
+总之，如果提前处理不包含 $\boldsymbol{\theta}_K$ 的矩阵和向量，则包含在函数 $\text{loglike}_R(\boldsymbol{\theta}_k\mid\boldsymbol{\Theta}_{−k})$ 中的 $\left|\widetilde{\mathbf{M}}_{-K,-K}+\widetilde{\mathbf{V}}_{-K}^{-2}\right|$ 和 $\left(\widetilde{\mathbf{M}}_{-K,-K}+\widetilde{\mathbf{V}}_{-K}^{-2}\right)^{-1}$ 的计算复杂度都会变为 $O(L^3)$。
+
+### 4.3 总结
+
+本文方法总结在 `图 1` 中。在建模步骤中，我们应用 
+- (1) 降阶，每个空间变系数表示为 $L$ 个近似特征向量 $\hat{\mathbf{E}}$ （$N × L$）的线性组合。在估计步骤中，我们首先应用 
+- (2) 预压缩，空间变系数模型被压缩成 $K^2(L + 1)^2 + K +1$ 个内积，见 `第 4.2.1 节` 的步骤 (1) 中。由于这一步，似然评估的计算成本与 $N$ 无关。
+- (3) 顺序估计加速了似然最大化。 `步骤 (3)` 中的估计迭代处理 $\mathcal{O}(L^3)$ 。因为成本与 $N$ 无关，所以即使 $N$ 非常大，估计也很快。
+
+  然而，计算成本随着 $K$ 的增长而增加。这个结果是因为大 $K$ 增加了迭代次数来依次估计 $\boldsymbol{\theta}_1, \ldots, \boldsymbol{\theta}_K$。如前所述，可以通过仅将空间变系数应用于某些重点解释变量来降低计算成本。
+
+![Figure01](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221215164653-75e3.webp)
+
+&gt; 图 1：本文所提出方法的概述
+
+## 5  蒙特卡洛模拟实验
+
+本节将本文方法与现有方法在计算时间和估计精度方面进行比较。我们部署了三个模拟实验。第一个实验将本文方法与假设 N ≤ 4,000 的原始 M-SVC、地理加权回归和 FBGWR 方法进行比较。第二个模拟比较（相对）快速方法，包括地理加权回归和 M-SVC，假设 6,000 ≤ N ≤ 12,000。第三个实验检查本文方法在更大样本（20,000 ≤ N ≤ 100,000）下的性能。在本节中，我们使用 Mac Pro（3.5 GHz、6 核 Intel Xeon E5 处理器和 64 GB 内存）。 R（版本 3.6.2；https://cran.r-project.org/）用于模型估计。 GWmodel 包（版本 2-0.5；参见 Lu et al., 2014）用于估计地理加权回归和多尺度地理加权回归模型。
+
+### 5.1 使用相对较小的样本进行模拟 (N ≤ 4,000)
+
+<!--
+#### 5.1.1 大纲
+
+合成数据 {y, x1, \ldots  x_k} 是从
+
+y = \sum x_k \circ \beta_k K k=1 + \varepsilon, x_k\sim \mathcal{N}(0, I), \varepsilon\sim \mathcal{N}(0, \sigma^2I),
+
+其中 \beta_k 是使用以下空间移动平均规范生成的：
+
+\beta_k = 1 + C̃\varepsilonk, \varepsilonk\sim \mathcal{N}(0, I),
+
+其中 C̃ 是邻近矩阵的行标准化版本，其第 (i, j) 个元素等于 \exp(-d(\mathbf{s}_i, \mathbf{s}_j))。空间坐标取自两个独立的正态随机变量。2 残差方差 \sigma^2 由 0.3\mathbb{V}ar[\sum x_k \circ \beta_k kK=1 ] 给出；在这种情况下，该模型的 R 平方始终为 \mathbb{V}ar[\sum x_k \circ \beta_k kK=1 ]/1.3\mathbb{V}ar[\sum x_k \circ \beta_k kK=1 ] = 1/1.3 ≈ 0.77。由于我们初步分析表明、sigma^2 对估计精度的影响较小，故此后固定。
+
+本节比较了 32 个案例的空间变系数建模方法，包括 N \in  {500, 1,000, 1,500, 2,000, 2,500, 3,000, 3,500, 4,000} 和 K \in  {2, 4, 6, 8}。在每种情况下，估计都涉及 200 次迭代。
+
+估计精度使用均方根误差 (RMSE) 和偏差进行评估，其公式由下式给出
+
+RMS\mathbb{E}[β̂k(\mathbf{s}_i)] = √ 1 NP \sum \sum (\beta_k(\mathbf{s}_i) − β̂k(\mathbf{s}_i))2
+
+偏差[β̂k(\mathbf{s}_i)] = 1 NP \sum \sum (\beta_k(\mathbf{s}_i) − β̂k(\mathbf{s}_i)) 200 p=1 N i=1 。
+
+#### 5.1.2 结果
+
+本节首先量化以下三个近似的影响：（i）本征近似，（ii）预压缩，和（iii）顺序估计。
+
+关于 (i)，比较了原始 M-SVC 模型 (M-SVC) 和我们的具有特征近似的 M-SVC (M-SVC(i))。图 2 描绘了 RMSE 和偏差。实线和虚线分别表示 M-SVC(i) 和原始 M-SVC 的结果。这些数字表明它们的 RMSE 和偏差几乎相同。图 3 显示了用两种方法估计的空间变系数之间的平均相关系数。最小值 0.985 出现在 N = 500 和 K = 8 时。相关系数随着 N 的增加而增加，并且在 N = 4,000 时所有情况下的值都大于 0.997。这些结果证实，由于 (i) Moran 特征向量近似引起的误差非常小。
+
+近似的计算增益是巨大的。因为特征分解的计算成本快速增加——它是 N3 的量级——原始的 M-SVC 方法对于大样本是不可行的，比如 N &gt; 10,000。我们基于 Nystrom 扩展（参见 Murakami 和 Griffith，2018）的本征近似的成本仅相对于 N 线性增加；它可用于大样本。总之，本征近似以小的近似误差大大加速了计算。
+
+关于 (ii)，预压缩，和 (iii)，顺序估计，我们比较 M-SVC(i)，M-SVC(ii) 使用 (i)-(ii)，和 M-SVC (iii)使用 (i)-(iii)。由于此处的计算负担，模拟仅使用 20 次迭代。
+
+图 4 和图 5 比较了 M-SVC(i)/M-SVC(ii) 和 MSVC(iii) 之间的偏差和 RMSE。3 每种方法都表明相似的偏差和 RMSE 值。个案间的偏差很小。 RMSE 随着 N 的增加和 K 的减少而减少。图 6 绘制了 M-SVC(i)/M-SVC(ii) 和 M-SVC(iii) 的空间变系数估计之间的最小（即最差）相关系数。当 N = 500 且 K = 8 时，最小值为 0.958。当 1,000 ≤ N 时，该值始终大于 0.990。经验证，（iii）引入的错误，即顺序估计，是相当小的，而（ii）不会产生任何错误。
+
+此外，图 3 和图 6 中总结的相关系数表明，用原始 M-SVC 和我们的 M-SVC (iii) 估计的空间变系数几乎相同。这一结果表明 M-SVC 方法的准确性优于标准地理加权回归且与多尺度地理加权回归相同，适用于 M-SVC(iii)（参见 Murakami 等，2018 年）。
+
+图 7 比较了 M-SVC(i)、M-SVC(ii)、M-SVC(iii)、地理加权回归和多尺度地理加权回归的计算时间。当 K ≥ 6 时，M-SVC(i) 最慢，而当 K ≤ 4 时，多尺度地理加权回归最慢。虽然 M-SVC(ii) 比 M-SVC(i) 快，但它仍然很慢。例如，当 N = 4,000 且 K = 8 时，M-SVC(ii) 耗时 2,903 秒，M-SVC(i) 耗时 5,270 秒。这些结果表明 (i) 本征近似和 (ii) 预压缩不足以进行快速空间变系数估计。然而，M-SVC(iii) 比 M-SVC(i) 或 M-SVC(ii) 快得多。当 N = 4,000 且 K = 8 时，其估计平均耗时 453.6 秒。然而，它比地理加权回归慢，后者在相同情况下平均仅花费 195.1 秒。
+
+### 5.2 大样本模拟（5,000 ≤ N ≤ 100,000）
+
+#### 5.2.1 大纲
+
+本节比较了 MSVC(iii) 的估计精度和计算时间，当 N 较小时，MSVC(iii) 被发现准确且相对较快，而地理加权回归使用大样本。没有比较多尺度地理加权回归，因为它对于大 N 在计算上太昂贵了。大的合成数据是用 Eqs 生成的。 (27) 和 (28)：
+
+y = \sum x_k \circ \beta_k K k=1 + \varepsilon, \varepsilon\sim \mathcal{N}(0, \sigma^2I),
+
+\beta_k = 1 + Ê+γk, γk\sim \mathcal{N}(0, ̂ Λ+ \alpha_k )。
+
+其中，如果 k &gt; 1，x_k 是从 N(0, I) 中随机生成的，如果 k = 1，则 x_k = 1。为了在合理的时间范围内生成空间变系数模型，\beta_k 是从 Ê+γk 生成的，其中 Ê+ 是 N ×正特征值对应的莫兰特征向量的 L+ 矩阵， ̂ Λ+ 是正特征值的 L+ × L+ 对角矩阵（即 λ̂l &gt; 0）。 Ê+ 和 ̂ Λ+ 生成如下：(a) L 结点的特征对由方程式生成。 (12) 和 (13) 使用 CL，它是 2,000 × 2,000 矩阵，其第 (i, j) 个元素等于 \exp(-d(\mathbf{s}_i, \mathbf{s}_j))； (b) 对应于 λ̂ ≤ 0 的特征对被消除。因此，\beta_k 由最多使用 2,000 个对应于 λ̂l &gt; 0 的特征向量的正相关空间过程给出。我们的初步分析表明，即使当 N = 100,000 时，满足 λ̂ &gt; 0 的特征值的数量几乎总是小于 2,000。更糟糕的是，考虑到计算成本，最多 2,000 个特征向量的假设是合理的。请注意，2,000 个特征向量仅用于数据生成；与之前一样，最多使用 200 个特征向量进行 M-SVC 模型估计。
+
+\alpha_k 参数决定了 \beta_k 的空间尺度。为了检验尺度对估计精度的影响，假设前 K/2 个 SVCs 的\alpha_k=2 代表大尺度，剩下的 K/2 个 SVCs\alpha_k=0.5 代表小尺度。此后，第 5.2.2 节比较了 M-SVC(iii) 和地理加权回归，假设 N ≤ 12,000。第 5.2.3 节将 M-SVC(iii) 应用于更大的样本。在这两个部分中，估计在每种情况下都涉及 200 次迭代。
+
+#### 5.2.2 结果（N≤12,000）
+
+本节将 M-SVC(iii) 与地理加权回归进行比较，假设 N \in  {6,000, 9,000, 12,000} 和 K \in  {2, 4, 6, 8}。
+
+图 8 描绘了大型空间变系数模型（左）和小型空间变系数模型（右）的平均偏差。该结果表明，无论规模如何，偏差都非常小。图 9 显示了平均 RMSE。该结果表明，如果空间变系数具有大比例尺地图模式，则 M-SVC(iii) 的 RMSE 比地理加权回归的 RMSE 小得多。实际上，如图 10 所示，M-SVC(iii) 几乎完美地估计了大规模空间变系数模型，而地理加权回归估计相对于真实值有一些噪声模式。结果是合理的，因为 M-SVC(iii) 使用前 L 个特征向量来描述由 Moran 系数解释的 L 个最大比例尺地图模式（参见 Griffith，2003）。
+
+尽管 M-SVC(iii) 仅考虑 L 个大尺度特征向量，但 M-SVC(iii) 对小尺度 \beta_k 估计的准确性仍然优于地理加权回归的估计。这可能是因为 M-SVC(iii) 估计每个 \beta_k 的尺度 \alpha_k，而地理加权回归估计所有 \beta_k 的共同尺度/带宽。一个发现是 M-SVC(iii) 的准确性随着 N 的增加而下降。这是因为 M-SVC(iii) 将 L 限制在不超过 200（见第 4.1 节），而这 200 个特征向量解释了大规模变化。克服这一局限性是未来的一项重要任务。尽管如此，真正的小规模空间变系数和 M-SVC(iii) 估计的那些在视觉上非常相似（图 10），而地理加权回归估计往往比真实分布更模糊，这可能是由于它假设 \beta_ks 之间的规模相同。
+
+因此，至少当 N ≤ 12,000 时，M-SVC(iii) 的准确性得到验证。下一小节总结了计算时间的比较。
+
+#### 5.2.3 结果（N≤100,000）
+
+上一节表明，随着 N 的增加，小规模 \beta_k 的 M-SVC(iii) 精度降低。为了阐明 M-SVC(iii) 估计对于更大的样本是否仍然准确且在计算上易于处理，我们使用 N \in  {20,000, 40,000, 70,000, 100,000} 和 K \in  {2, 4, 6, 8} 进行了另一次模拟，假设用于第 5.2.2 节的相同数据生成过程。
+
+绘制偏差的图 11（左）显示偏差很小，尤其是当 20,000 ≤ N 时。图 11（右）总结了 RMSE，表明 \alpha_k = 2.0 的大规模空间变系数的 RMSE 随着 N 的增加而下降，拥有到大样本，使空间变系数的识别变得容易。如图 12 所示，大规模空间变系数估计与真实值之间的相关系数非常接近 1.00，这证实了估计的准确性。实际上，如图 13 所示，真正的大规模空间变系数和估计值在视觉上无法区分。
+
+对于 \alpha_k = 0.5 的小规模空间变系数模型，由于 L 固定，估计精度随着 N 的增加而降低，如前所述。然而，当 40,000 ≤ N 时，RMSE 增加非常小。因此，即使当 N = 100,000 时，真实和估计空间变系数之间的平均相关系数约为 0.83。由于 N 较大，即使空间变系数的数量 K 增加到 8，估计精度几乎相同。图 13 直观地表明 M-SVC 成功地估计了与真实值相似的小规模模式.这些结果证实，即使 N 很大，本文方法也可以合理准确地估计大型和小型空间变系数模型。然而，估计的空间变系数比真实值稍微模糊。在节省计算时间的同时缓解这个问题是重要的下一步。
+
+最后，图 14 总结了地理加权回归和 M-SVC(iii) 的计算时间。尽管地理加权回归对于小样本来说速度很快，如第 5.1.2 节所示，但由于涉及带宽优化，其计算时间会随着 N 的增长而迅速增加。相比之下，在以下情况下，计算时间的增加出奇地慢
+
+相反，在 M-SVC(iii) 的情况下，计算时间的增加出奇地慢。例如，当 K = 8 时，如果 N 从 9,000 增加到 100,000，则平均计算时间从 534 秒增加到 835 秒。这种计算效率是因为本文方法在（i）特征近似和（ii）预压缩步骤中处理 N 个样本，但这些步骤只需要一次，并且它们的计算成本都是 O(N ).这就是计算时间增长呈线性且缓慢的原因。尽管这些线性增加解释了 (i) 和 (ii) 的成本，但独立于 N 所需的计算时间解释了 (iii) 的成本，即顺序估计。根据图 14，在 K = 8 的情况下，(iii) 的计算时间约为 500 秒。因此，尽管此步骤需要对 16 个参数进行数值估计，但 (iii) 的计算成本（估计）也非常小 { \boldsymbol{\theta}_1, \ldots θ8}，而地理加权回归在数值上仅优化 1 个带宽参数
+
+因此，发现 M-SVC(iii) 足够准确且速度极快。
+
+-->
+
+## 6 实证研究
+
+作为说明，地理加权回归和 M-SVC(3) 应用于 2010 年东京都市区官方评估的住宅地价数据（$N = 7,679$）。响应变量是对数土地价格 [JPY/m2]。协变量是到最近的火车站的距离 (`Station_d`) [km]、到东京火车站的距离 (`Tokyo_d`) [km]、1 公里网格中的绿地份额 (`Green`) 和预期的洪水深度 (`Flood`) [m]。这些数据来自日本 MLIT 提供的国家土地数值信息下载服务 (http://nlftp.mlit.go.jp/ksj-e/index.html)。
+
+`图 15` 绘制了估计的系数（空间变化截距除外）。地理加权回归的估计用了 $721$ 秒，而 M-SVC 方法用了 $241$ 秒。使用地理加权回归估计的空间变系数具有相似的空间模式尺度。相比之下，使用 M-SVC 方法估计的空间变系数的空间模式具有相当不同的尺度；具体而言，`Tokyo_d` 的空间变系数具有大尺度空间格局，`Forest` 的空间变系数具有中等尺度的格局，`Station_d` 和 `Flood` 的空间变系数具有小尺度的格局。 `Tokyo_d` 的空间变系数在东京市中心和大都市区北部有很大的负值；这表明东京的可达性促进了城市化，尤其是在北部。 `Station_d` 的系数表明，车站可达性与郊区住宅区的土地价格具有更强的负相关关系。由于 `Tokyo_d` 和 `Station_d` 可被视为可访问性的全局和局部度量，因此这些空间变系数估计中的大尺度和小尺度空间模式在直觉上是合理的。森林的空间变系数表明绿地在郊区非城市地区具有很强的负相关关系。最后，洪水的空间变系数在荒川河周围有更强的负相关关系，荒川河是该地区的主要河流。这表明洪水风险已适当反映在荒川沿海地区的土地价格中。相比之下，地理加权回归估计似乎更难解释，因为它们在空间变系数中的规模相同。
+
+总之，M-SVC 方法提供了多尺度空间变系数的合理估计。
+
+![Figure15](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221215165725-09d3.webp)
+
+&gt; 图 15：估计的 SVC。洪水子图中显示了主要河道。
+
+
+## 7 总结
+
+虽然大空间数据建模是近期的热门话题，但涉及变系数建模的相关讨论却相当有限。鉴于此背景，本研究开发了一种快速 M-SVC 方法来估计多尺度空间变系数模型。我们使用 (1) 降阶、(2) 预压缩和 (3) 顺序估计来实现计算效率。蒙特卡洛模拟实验证实了我们方法的估计精度和计算效率。本文方法在相对较短的时间内估计空间变系数模型，无需应用任何并行计算。换句话说，本文方法不需要高性能计算环境。
+
+**（1）可并行性**
+
+然而，`步骤 (1)` 很容易并行化，类似于其他基于 Nystrom 扩展的特征近似方法（参见 Li 等，2015 <sup class="refplus-num"><a href="#ref-Li2015">[37]</a></sup>）。`步骤（2）` 也是如此，它只是简单地计算内积。尽管并行化顺序估计 `步骤 (3)` 可能比较困难，但其计算成本已经与 $N$ 无关。因此，我们方法的并行化允许更快地估计多尺度空间变系数模型，并将此处总结的结果扩展到数百万个样本。
+
+**（2）缺点**
+
+本文方法的一个缺点是它无法对精细尺度的空间变化进行建模，如 `图 13` 所示；我们最多只考虑了 `200` 个对应于大特征值的特征向量，这意味着忽略了其他解释小尺度变化的特征向量。地统计学中报告了低秩空间建模的这种局限性（Stein，2014 <sup class="refplus-num"><a href="#ref-Stein2014">[54]</a></sup>）。解决该问题是未来一个重要的研究课题。幸运的是，已经针对这个问题提出了许多多尺度方法（例如，Sang 和 Huang，2012 年<sup class="refplus-num"><a href="#ref-Sang2012">[51]</a></sup>；Nychika 等，2015 年 <sup class="refplus-num"><a href="#ref-Nychka2015">[49]</a></sup>）。
+
+局部方法比降秩方法（包括本文方法）更适合捕获精细尺度的变化（Stein，2014 <sup class="refplus-num"><a href="#ref-Stein2014">[54]</a></sup>）。在这方面，加速的地理加权回归是估计具有大样本的精细尺度空间变系数的明智方法。考虑到 M-SVC 和多尺度地理加权回归方法的相似估计精度（参见 Murakami 等，2018 年<sup class="refplus-num"><a href="#ref-Murakami2018">[43]</a></sup>），加速多尺度地理加权回归、具有参数特定距离矩阵的地理加权回归（PSDMGWR；Lu 等，2017 年 <sup class="refplus-num"><a href="#ref-Lu2017">[40]</a></sup>），以及其他扩展的地理加权回归，也是开发快速灵活的空间变系数建模方法的有前途的方法。关于快速地理加权回归的研究包括 Harris (2010b) 等<sup class="refplus-num"><a href="#ref-Harris2010b">[31]</a></sup>，Tran 等 (2016) <sup class="refplus-num"><a href="#ref-Tran2016">[57]</a></sup>，和 Lu 等 （2017 年 <sup class="refplus-num"><a href="#ref-Lu2017">[40]</a></sup>；2018 年 <sup class="refplus-num"><a href="#ref-Lu2018">[41]</a></sup>）。
+
+虽然我们开发了一种快速的空间变系数估计方法，但通过写成 `式 (7)`，同样的方法可能适用于其他混合效应模型，如空间（或非空间）加性模型和多级模型等。将我们的快速估计框架扩展到各种空间回归模型在大空间数据时代将很有价值。
+
+M-SVC 建模方法在 R 包“spmoran”中实现（https://cran.r-project.org/web/packages/spmoran/index.html；参见 Murakami，2018 <sup class="refplus-num"><a href="#ref-Murakami2018">[43]</a></sup>）
+
+## 参考文献
+
+<ul id="refplus"><li id="ref-Anselin2010" data-num="1">[1]  Anselin, L., 2010. Thirty years of spatial econometrics. Pap. Reg. Sci. 89(1), 3–25.</li><li id="ref-Arbia2014" data-num="2">[2]  Arbia, G., 2014. Pairwise likelihood inference for spatial regressions estimated on very large datasets. Spat. Stat. 7, 21–39.</li><li id="ref-Banerjee2008" data-num="3">[3]  Banerjee, S., Gelfand, A. E., Finley, A. O., Sang, H., 2008. Gaussian predictive process models for large spatial data sets. J. R. Stat. Soc. Series B Stat. Methodol. 70 (4), 825–848.</li><li id="ref-Bates2010" data-num="4">[4]  Bates, D. M., 2010. lme4: Mixed-effects modeling with R. http://lme4.r-forge.rproject.org/book.</li><li id="ref-Burden2015" data-num="5">[5]  Burden, S., Cressie, N., Steel, D.G., 2015. The SAR model for very large datasets: a reduced rank approach. Econom. 3 (2), 317–338.</li><li id="ref-Brunsdon1996" data-num="6">[6]  Brunsdon, C., Fotheringham, A.S., Charlton, M.E., 1996. Geographically weighted regression: a method for exploring spatial nonstationarity. Geogr. Anal. 28 (4), 281298.</li><li id="ref-Cahill2007" data-num="7">[7]  Cahill, M., Mulligan, G., 2007. Using geographically weighted regression to explore local crime patterns. Soc. Sci. Comput. Rev. 25 (2), 174–193.</li><li id="ref-Cressie1993" data-num="8">[8]  Cressie, N., 1993. Statistics for Spatial Data. John Wiley &amp; Sons, New York.</li><li id="ref-Cressie2008" data-num="9">[9]  Cressie, N., Johannesson, G., 2008. Fixed rank kriging for very large spatial data sets. J. R. Stat. Soc. Series B Stat. Methodol. 70 (1), 209–226.</li><li id="ref-Datta2016" data-num="10">[10]  Datta, A., Banerjee, S., Finley, A.O., Gelfand, A.E., 2016. Hierarchical nearestneighbor Gaussian process models for large geostatistical datasets. J. Am. Stat. Assoc. 111 (514), 800–812.</li><li id="ref-Debarsy2018" data-num="11">[11]  Debarsy. N. Yang, Y., 2018. Editorial for the special issue entitled: New advances in spatial econometrics: Interactions matter. Reg. Sci. Urban Econ. DOI: 10.1016/j.regsciurbeco.2018.02.004.</li><li id="ref-Dong2018" data-num="12">[12]  Dong, G., Nakaya, T., Brunsdon, C., 2018. Geographically weighted regression models for ordinal categorical response variables: An application to geo-referenced life satisfaction data. Comput. Environ. Urban Syst. 70, 35–42.</li><li id="ref-Dray2006" data-num="13">[13]  Dray, S., Legendre, P., PeresNeto, P.R., 2006. Spatial modelling: a comprehensive framework for principal coordinate analysis of neighbour matrices (PCNM). Ecol. Model. 196 (3–4), 483–493.</li><li id="ref-Drineas2005" data-num="14">[14]  Drineas, P., Mahoney, M.W., 2005. On the Nyström method for approximating a Gram matrix for improved kernel-based learning. J. Mach. Learn. Res. 6, 2153–2175.</li><li id="ref-Farber2007" data-num="15">[15]  Farber, S., Páez, A., 2007. A systematic investigation of cross-validation in GWR model estimation: empirical analysis and Monte Carlo simulations. J. Geog. Sci. 9 (4), 371–396.</li><li id="ref-Finley2011a" data-num="16">[16]  Finley, A.O., 2011. Comparing spatially-varying coefficients models for analysis of ecological data with non–stationary and anisotropic residual dependence. Methods Ecol. Evol. 2 (2), 143–154.</li><li id="ref-Finley2011b" data-num="17">[17]  Finley, A.O., Banerjee, S., MacFarlane, D.W., 2011. A hierarchical model for quantifying forest variables over large heterogeneous landscapes with uncertain forest areas. J. Am. Stat. Assoc. 106 (493), 31–48.</li><li id="ref-Fotheringham2002" data-num="18">[18]  Fotheringham, A.S., Brunsdon, C., Charlton, M., 2002. Geographically Weighted Regression: The Analysis of Spatially Varying Relationships. John Wiley &amp; Sons Chichester, UK.</li><li id="ref-Fotheringham2017" data-num="19">[19]  Fotheringham, A.S., Yang, W., Kang, W., 2017. Multiscale Geographically Weighted Regression (MGWR). Ann. Am. Assoc. Geogr. 107 (6), 1247–1265.</li><li id="ref-Furrer2006" data-num="20">[20]  Furrer, R., Genton, M.G., Nychka, D., 2006. Covariance tapering for interpolation of large spatial datasets. J. Comput. Graph. Stat. 15 (3), 502–523.</li><li id="ref-Gelfand2003" data-num="21">[21]  Gelfand, A.E., Kim, H.J., Sirmans, C.F., Banerjee, S., 2003. Spatial modeling with spatially varying coefficient processes. J. Am. Stat. Assoc. 98 (462), 378–396.</li><li id="ref-Geniaux2018" data-num="22">[22]  Geniaux, G., Martinetti, D., 2018. A new method for dealing simultaneously with spatial autocorrelation and spatial heterogeneity in regression models. Reg Sci Urban Econ. DOI: 10.1016/j.regsciurbeco.2017.04.001.</li><li id="ref-Goodchild2004" data-num="23">[23]  Goodchild, M.F., 2004. The validity and usefulness of laws in geographic information science and geography. Ann. Assoc. Am. Geogr. 94 (2), 300–303.</li><li id="ref-Griffith2000" data-num="24">[24]  Griffith, D.A., 2000. Eigenfunction properties and approximations of selected incidence matrices employed in spatial analyses. Linear Algebra Appl. 321 (1-3), 95112.</li><li id="ref-Griffith2003" data-num="25">[25]  Griffith, D.A., 2003. Spatial Autocorrelation and Spatial Filtering: Gaining Understanding through Theory and Scientific Visualization. Springer, Berlin.</li><li id="ref-Griffith2004" data-num="26">[26]  Griffith, D.A., 2004. Extreme eigenfunctions of adjacency matrices for planar graph employed in spatial analyses. Linear Algebra Appl. 388, 201–219.</li><li id="ref-Griffith2008" data-num="27">[27]  Griffith, D.A., 2008. Spatial-filtering-based contributions to a critique of geographically weighted regression (GWR). Environ. Plann. A 40 (11), 2751–2769.</li><li id="ref-Griffith2015" data-num="28">[28]  Griffith, D.A., 2015. Approximation of Gaussian spatial autoregressive models for massive regular square tessellation data. Int. J. Geogr. Inf. Sci. 29 (12), 2143–2173.</li><li id="ref-Griffith2014" data-num="29">[29]  Griffith, D.A., Chun, Y., 2014. Spatial autocorrelation and spatial filtering. In: Fischer, M.M. and Nijkamp, N (eds). Handbook of Regional Science. Springer, Berlin, Heidelberg, pp. 1477–1507.</li><li id="ref-Harris2010a" data-num="30">[30]  Harris, P., Fotheringham, A. S., Juggins, S., 2010a. Robust geographically weighted regression: a technique for quantifying spatial relationships between freshwater acidification critical loads and catchment attributes. Ann. Assoc. Am. Geogr. 100 (2), 286–306.</li><li id="ref-Harris2010b" data-num="31">[31]  Harris, R., Singleton, A., Grose, D., Brunsdon, C., Longley, P., 2010B. Grid enabling geographically weighted regression: A case study of participation in higher education in England. Tran. GIS, 14(1), 43–61.</li><li id="ref-Heaton2017" data-num="32">[32]  Heaton, M.J., Datta, A., Finley, A., Furrer, R., Guhaniyogi, R., Gerber, F., Gramacy, R.B., Hammerling, D., Katzfuss, M., Lindgren F., Nychka, D.W., Sun, F., ZammitMangion, A., 2017. A case study competition among methods for analyzing larg spatial data. Arxiv, 1710.05013.</li><li id="ref-Helbich2016" data-num="33">[33]  Helbich, M., Griffith, D.A., 2016. Spatially varying coefficient models in real estate: Eigenvector spatial filtering and alternative approaches. Comput. Environ. Urban Syst. 57, 1–11.</li><li id="ref-Kelejian1998" data-num="34">[34]  Kelejian, H.H., Prucha, I.R., 1998. A generalized spatial two-stage least squares procedure for estimating a spatial autoregressive model with autoregressive disturbances. J. Real Estate Finance Econ. 17 (1), 99–121.</li><li id="ref-LeSage2007" data-num="35">[35]  LeSage, J.P., Pace, R.K., 2007. A matrix exponential spatial specification. J. Econom. 140 (1), 190–214.</li><li id="ref-LeSage2009" data-num="36">[36]  LeSage, J.P., Pace, R.K., 2009. Introduction to Spatial Econometrics. Chapman and Hall/CRC, New York.</li><li id="ref-Li2015" data-num="37">[37]  Li, M., Bi, W., Kwok, J.T., Lu, B.L., 2015. Large-scale Nyström kernel matrix approximation using randomized SVD. IEEE Trans Neural Netw. Learn. 26 (1), 152164.</li><li id="ref-Lindgren2011" data-num="38">[38]  Lindgren, F., Rue, H., Lindström, J., 2011. An explicit link between Gaussian fields and Gaussian Markov random fields: the stochastic partial differential equation approach. J. R. Stat. Soc. Series B Stat. Methodol. 73 (4), 423–498.</li><li id="ref-Lu2014" data-num="39">[39]  Lu, B., Harris, P., Charlton, M., Brunsdon, C., 2014. The GWmodel R package further topics for exploring spatial heterogeneity using geographically weighted models. Geo-spatial Inform. Sci. 17 (2), 85–101.</li><li id="ref-Lu2017" data-num="40">[40]  Lu, B., Brunsdon, C., Charlton, M., Harris, P., 2017. Geographically weighted regression with parameter-specific distance metrics. Int. J. Geogr. Inf. Sci. 31 (5), 982–998.</li><li id="ref-Lu2018" data-num="41">[41]  Lu, B., Yang, W., Ge, Y., Harris, P., 2018. Improvements to the calibration of a geographically weighted regression with parameter-specific distance metrics and bandwidths. Comput. Environ. Urban Syst, DOI: 10.1016/j.compenvurbsys.2018.03.012.</li><li id="ref-Moran1950" data-num="42">[42]  Moran, P. A., 1950. Notes on continuous stochastic phenomena. Biometrika 37 (1/2), 17–23.</li><li id="ref-Murakami2018" data-num="43">[43]  Murakami, D., 2018. spmoran: An R package for Moran's eigenvector-based spatial regression analysis. Arxiv, 1703.04467.</li><li id="ref-Murakami2015" data-num="44">[44]  Murakami, D., Griffith, D.A., 2015. Random effects specifications in eigenvector spatial filtering: a simulation study. J. Geog. Sci. 17 (4), 311–331.</li><li id="ref-Murakami2017" data-num="45">[45]  Murakami, D., Lu, B., Harris, P., Brunsdon, C., Charlton, M., Nakaya, T., Griffith, D.A., 2017. The importance of scale in spatially varying coefficient modeling. Arxiv, 1709.08764</li><li id="ref-Murakami2018a" data-num="46">[46]  Murakami, D., Griffith, D.A., 2018. Eigenvector spatial filtering for large data sets: fixed and random effects approaches. Geogr. Anal. DIO: 10.1111/gean.12156.</li><li id="ref-Murakami2017a" data-num="47">[47]  Murakami, D., Yoshida, T., Seya, H., Griffith, D.A., Yamagata, Y., 2017. A Moran coefficient-based mixed effects approach to investigate spatially varying relationships. Spat. Stat. 19, 68–89.</li><li id="ref-Nakaya2005" data-num="48">[48]  Nakaya, T., Fotheringham, A.S., Charlton, M., Brunsdon, C., 2005. Geographically weighted Poisson regression for disease associative mapping. Stat. Med. 24 (16), 2695–2717.</li><li id="ref-Nychka2015" data-num="49">[49]  Nychka, D., Bandyopadhyay, S., Hammerling, D., Lindgren, F., Sain, S., 2015. A multiresolution Gaussian process model for the analysis of large spatial datasets. J. Comput. Graph. Stat. 24 (2), 579–599.</li><li id="ref-Oshan2018" data-num="50">[50]  Oshan, T.M., Fotheringham, A.S., 2018. A comparison of spatially varying regression coefficient estimates using geographically weighted and spatial‐filter‐based techniques. Geogr. Anal. 50 (1), 53–75.</li><li id="ref-Sang2012" data-num="51">[51]  Sang, H., Huang, J. Z., 2012. A full scale approximation of covariance functions for large spatial data sets. J. R. Stat. Soc. Series B Stat. Methodol. 74 (1), 111–132.</li><li id="ref-Silvester2000" data-num="52">[52]  Silvester, J.R., 2000. Determinants of block matrices. Math. Gazette 84 (501), 460467</li><li id="ref-Smirnov2001" data-num="53">[53]  Smirnov, O., Anselin, L., 2001. Fast maximum likelihood estimation of very large spatial autoregressive models: a characteristic polynomial approach. Comput. Stat. Data Anal. 35 (3), 301–319.</li><li id="ref-Stein2014" data-num="54">[54]  Stein, M.L., 2014. Limitations on low rank approximations for covariance matrices of spatial data. Spat. Stat. 8, 1–19.</li><li id="ref-Tiefelsdorf2007" data-num="55">[55]  Tiefelsdorf, M., Griffith, D.A., 2007. Semiparametric filtering of spatial autocorrelation: the eigenvector approach. Environ. Plann. A 39 (5), 1193.</li><li id="ref-Tobler1970" data-num="56">[56]  Tobler, W.R., 1970. A computer movie simulating urban growth in the Detroit region. Econ. Geogr. 46, 234–240.</li><li id="ref-Tran2016" data-num="57">[57]  Tran, H.T., Nguyen, H.T., Tran, V.T., 2016. Large-scale geographically weighted regression on Spark. Proceedings of the 2016 International Conference on Knowledge and Systems Engineering (KSE), 127–132.</li><li id="ref-Wheeler2007" data-num="58">[58]  Wheeler, D.C., Calder, C.A., 2007. An assessment of coefficient accuracy in linear regression models with spatially varying coefficients. J. Geog. Sci. 9 (2), 145–166.</li><li id="ref-Wheeler2005" data-num="59">[59]  Wheeler, D.C., Tiefelsdorf, M., 2005. Multicollinearity and correlation among local regression coefficients in geographically weighted regression. J. Geog. Sci. 7 (2), 161–187.</li><li id="ref-Wheeler2009" data-num="60">[60]  Wheeler, D.C., Waller, L., 2009. Comparing spatially varying coefficient models: case study examining violent crime rates and their relationships to alcohol outlets and illegal drug arrests. J. Geog. Sci. 11 (1), 1–22.</li><li id="ref-Yang2014" data-num="61">[61]  Yang, W., 2014. An extension of geographically weighted regression with flexible bandwidths. PhD Thesis. University of St Andrews.</li><li id="ref-Zhang2010" data-num="62">[62]  Zhang, K., Kwok, J.T., 2010. Clustered Nyström method for large scale manifold learning and dimension reduction. IEEE Trans. Neural Netw. 21 (10), 1576–1587.</li></ul><p></p>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/2773ca0f.html">http://xishansnow.github.io/posts/2773ca0f.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BB%BC%E8%BF%B0/">综述</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/">空间变系数模型</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E6%BB%A4%E6%B3%A2%E6%96%B9%E6%B3%95/">空间滤波方法</a></div><div class="post-share"><div class="social-share" data-image="/img/009.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/1aa0965f.html" title="🔥 稀疏高斯过程及其变分推断"><img class="cover" src="/img/coffe_09.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">🔥 稀疏高斯过程及其变分推断</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 高斯过程 （Gaussian Processes,高斯过程） 为贝叶斯推断提供了一个数学上优雅的框架，可以为大量问题提供原则性的不确定性估计。例如，对于某些具有高斯似然的回归问题，高斯过程模型具有封闭形式的后验。然而，后验高斯过程（高斯过程的后验依然是一个高斯过程分布，此处将之简称为后验高斯过程）的计算复杂度与训练样本数量成立方关系，并且所有训练样本均需要在内存中存储。为克服这些问题，已经提出了使用伪训练样本（也称为或）来获取近似后验高斯过程的方法 – 稀疏高斯过程（Sparse Gaussian Processes）。用户可以自己定义伪训练样本的数量，进而控制计算和内存复杂度。在一般情况下，稀疏高斯过程无法得到封闭解，必须求助于近似推断。在此情况下，变分推断是近似推断的一种选择。变分方法将贝叶斯推断问题转化为优化问题，通过最大化对数边缘似然下界（ $\mathbb{ELBO}$...</div></div></div></a><a class="pagination-related" href="/posts/b6cef99d.html" title="艺术、地理信息和数学之间存在惊人的接口"><img class="cover" src="/img/book_03.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">艺术、地理信息和数学之间存在惊人的接口</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 地理与艺术或数学与艺术之间是否存在任何已知的协同作用，将所有这三个学科联系起来？地理人文和数学人文文献只描述了这两个单独的协同作用。一种新的定量地理学方法利用复杂的数学概念来分析遥感卫星图像，当扩展到艺术绘画时，它确实跨越了所有三个学科。组织概念是空间自相关，或者不相似/相似的颜色及其强度在绘画中聚集的趋势。本文总结了这一论点的论证，并具体应用于达芬奇、莫奈和伦勃朗的画作。它的主要贡献是，对于绘画的高地理分辨率数字版本，通过明智选择和组合的空间自相关分量构建的复制品与其原始来源的数字副本非常接近，进一步概括了文献中报道的某些近期发现。 【原 文】 Griffith, D.A. (2022) ‘Art, Geography/GIScience, and mathematics: A surprising interface’, Annals of the American Association of Geographers, 0(0), pp. 1–12. Available at:...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/d99f4eaf.html" title="空间滤波方法"><img class="cover" src="/img/book_05.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-01</div><div class="info-item-2">空间滤波方法</div></div><div class="info-2"><div class="info-item-1">   【摘要】 本文关注的重点是特征向量空间滤波方法(Eigenvectors Spatial Filtering, 特征向量空间滤波)。这是一种方法已广泛应用于地理学、区域科学、城市研究、经济学、生态学和流行病学等诸多领域的局部空间异质性建模方法。与地理加权回归方法探求回归系数背后的空间模式不同，空间滤波方法旨在检测空间数据中残差的空间模式。本文将介绍特征向量空间滤波方法的基础理论和扩展方法，并且讨论应用此方法时需要考虑和避免的问题。 【原文】 Y. Yamagata and H. Seya, Eds., Chapter 6, Spatial analysis using big data: methods and urban applications. London, United Kingdom ; San Diego, CA: Academic Press, an imprint of Elsevier, 2020. 1 简介本文关注的重点是空间变系数模型的发展，尤其是其中的特征向量空间滤波方法(Eigenvectors Spatial Filtering,...</div></div></div></a><a class="pagination-related" href="/posts/d83929a0.html" title="基于空间滤波方法的机器学习模型"><img class="cover" src="/img/book_17.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-08</div><div class="info-item-2">基于空间滤波方法的机器学习模型</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 空间统计模型对于地理空间数据建模非常有效，因为它们考虑了地理空间和其他非空间协变量的空间信息，使它们能够通过解决空间依赖性来最小化空间自相关。相比之下，机器学习模型在预测非空间数据方面非常有效，但由于空间自相关问题，它们在建模和预测地理空间数据方面效果不佳。在用于地理空间数据建模的机器学习模型中，经常出现的局限性之一是没有将地理空间的空间信息融合到模型中的标准方法，因此机器学习模型中无法最小化空间自相关。 在本研究中，我们提出了一种局部空间信息嵌入的机器学习方法，该方法能够在预测地理空间现象的同时，通过解决空间依赖性来最小化空间自相关。 我们的研究应用 特征向量空间滤波方法 从空间坐标中提取近似特征向量，并将它们作为一组向量与选定的非空间协变量一起嵌入到机器学习模型中。我们比较了传统空间统计模型和基于机器学习的模型之间的相对预测性能。实验表明，在机器学习模型规范中结合空间过滤的特征向量来表示空间信息可显著提高预测性能。 【原 文】 M. D. Islam, B. Li, C. Lee, and X. Wang, “Incorporating spatial...</div></div></div></a><a class="pagination-related" href="/posts/d603dce7.html" title="空间异质性类型及检验方法"><img class="cover" src="/img/book_11.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-07</div><div class="info-item-2">空间异质性类型及检验方法</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 本文关注的重点是空间异质性问题。空间异质性是统计学中使用的一个术语，表示一个或多个感兴趣的统计特征在总体的所有子集中不相同。空间异质性的存在与独立同分布假设相冲突，即观测值之间并不是同分布的，这使很多基于独立同分布假设的方法出现问题。如果我们的研究区域很大并且物理或社会经济多样化，或者研究区域在高空间分辨率下被观测到，那么作出数据子集都具有相同统计特征的假设大概率是无效的，因此这个问题值得重视。本文概述了三种基本的空间异质性：空间均值异质性、空间自相关结构（含异方差）异质性、空间分层异质性，其中前两者相对比较成熟，文中给除了相关连接；因此本文重点是空间分层异质性的定义、检验和建模。 【参 考】   J. Wang, R. Haining, T. Zhang, C. Xu, and M. Hu, “Statistics for spatially stratified heterogeneous data,” arXiv preprint arXiv:2211.16918, 2022. R. P. Haining and G. Li, Modelling...</div></div></div></a><a class="pagination-related" href="/posts/2c6ed7d4.html" title="空间局部化思维对于统计和社会的重要性"><img class="cover" src="/img/coffe_08.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-28</div><div class="info-item-2">空间局部化思维对于统计和社会的重要性</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 在过去的二十年里，越来越多的注意力集中在局部形式的空间分析上，无论是在描述性统计还是空间建模方面，我们称之为 “局部化思维”。局部化思维的基础在于：全局空间分析方法可能不适用，并且待测量的条件关系存在随空间变化的情况。本文不仅研究了局部化思维对空间过程建模的影响，而且更广泛地考察了人们对空间行为的理解。我们首先简要调查了局部统计建模的原因；然后描述一种局部建模框架（多尺度地理加权回归），以展示局部模型中的基本概念和此类模型的输出类型；之后，我们研究了局部方法对统计分析的影响，重点是局部模型与空间回归模型相比的作用、局部模型的诊断、局部方法如何与困扰空间分析数十年的空间尺度问题相关联等问题；最后，我们将注意力转向空间局部建模方法对社会的影响，讨论了可复制性以及如何使用空间局部模型来测量以前无法测量的基于地点的效应。文中通过一个房价影响因素的实例来证明在整篇论文中提出的问题。 【原 文】 A. S. Fotheringham and M. Sachdeva,  Spatial Statistics, vol. 50, p. 100601, 2022, doi:...</div></div></div></a><a class="pagination-related" href="/posts/42cfdcdb.html" title="空间变系数过程模型"><img class="cover" src="/img/009.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-20</div><div class="info-item-2">空间变系数过程模型</div></div><div class="info-2"><div class="info-item-1">   【摘 要】许多应用的目标是建立一套回归模型，以便在空间相关性假设下对感兴趣区域上的响应变量作出解释。在几乎所有这些工作中，回归系数都假定为在该区域内恒定。但在某些应用中，预测系数会在局部或子区域水平上有所不同，而这种情形正是本文的重点。尽管空间表面（ Surface ）的参数化建模是可能的（如多项式表面建模、样条建模等），但我们认为将其视为空间随机过程的一次实现更为自然和灵活。在本文中，我们展示了在高斯响应背景下，如何对这种建模方法进行形式化，使其能够在随机效应和残差分析方面提供更有吸引力的解释。我们还提供了广义线性模型和时空场景的扩展。文中将在单户住宅售价数据集上展示静态和动态建模和解释能力。 【参 考】  Gelfand, A. E., Kim, H.-J., Sirmans, C. F., &amp; Banerjee, S. (2003). Spatial modeling with spatially varying coefficient processes. Journal of the American Statistical Association,...</div></div></div></a><a class="pagination-related" href="/posts/91b7308b.html" title="spBayes--贝叶斯空间变系数模型的 R 软件包"><img class="cover" src="/img/coffe_10.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-08</div><div class="info-item-2">spBayes--贝叶斯空间变系数模型的 R 软件包</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 本文描述并说明了在 spBayes（版本 0.4-2）R 包中拟合空间变系数模型的新功能。新的 spSVC 函数使用计算效率高的马尔可夫链蒙特卡罗算法，并扩展了当前仅适用于空间变化截距回归模型的 spBayes 函数，以适用于回归设计矩阵中任何一组列的独立或多元高斯过程随机效应。讨论和说明了新添加的用于 spSVC 的 OpenMP 并行化选项，以及用于联合和逐点预测和模型拟合诊断的辅助函数。使用中欧的 PM10 分析说明了所提出模型的效用。 【原 文】 A. O. Finley and S. Banerjee, “Bayesian spatially Varying coefficient models in the spBayes R package,” Environmental Modelling &amp; Software, vol. 125, p. 104608, 2020, doi: 10.1016/j.envsoft.2019.104608. 1 简介在本文中，我们描述并说明了 spBayes（Finley、Banerjee 和...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AF%BC%E8%A8%80"><span class="toc-text">1. 导言</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

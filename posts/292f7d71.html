@@ -1,0 +1,321 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>地理加权回归模型 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="地理加权回归模型"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/292f7d71.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '地理加权回归模型',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/book_20.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">地理加权回归模型</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">地理加权回归模型</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-11-10T02:00:00.000Z" title="发表于 2022-11-10 10:00:00">2022-11-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.204Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/">GeoAI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/">空间变系数模型</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">5.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>20分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>〖摘 要〗 空间异质性是地理学第二定律的核心。从地理信息科学角度，空间异质性主要包含两种类型，一是随空间变化，空间某些变量之间的关系发生了明显变化；二是随空间变化，空间某些变量的统计量（如：均值、方差）会出现平稳或者不平稳的变化。地理加权回归是空间计量学、地理空间统计学中为研究第一种空间异质性<u><strong>（即变量间关系的空间异质性）</strong></u>而提出的工具，在多元变量的空间插值或预测等方面具有重要作用。本文为相关原理的基本介绍。</p>
+<p>〖原 文〗 Yamagata, Y. and Seya, H. (eds) (2020) Spatial analysis using big data: methods and urban applications. London, United Kingdom ; San Diego, CA: Academic Press, an imprint of Elsevier (Spatial econometrics and spatial statistics). Chapter 6</p>
+<h2 id="1-引言"><a href="#1-引言" class="headerlink" title="1 引言"></a>1 引言</h2><h3 id="1-1-全局空间最小二乘回归的问题"><a href="#1-1-全局空间最小二乘回归的问题" class="headerlink" title="1.1 全局空间最小二乘回归的问题"></a>1.1 全局空间最小二乘回归的问题</h3><p>在地学空间分析中，$n$ 组观测数据通常是在 $n$ 个不同地理位置上获取的样本数据，全局空间回归模型就是假定回归参数与样本数据的地理位置无关，或者说在整个空间研究区域内保持稳定一致，那么在 $n$ 个不同地理位置上获取的样本数据，就等同于在同一地理位置上获取的 $n$ 个样本数据，其回归模型就是最小二乘法回归模型，采用最小二乘估计得到的回归参数户既是该点的最优无偏估计，也是研究区域内所有点上的最优无偏估计。</p>
+<p>而在实际问题研究中我们发现：<strong>回归参数在不同地理位置上往往表现为不同，也就是说回归参数随地理位置变化而变化，存在空间非平稳性</strong>，此时如果仍采用全局空间回归模型，得到的回归参数将是在整个研究区域内的参数平均值，无法反映回归参数的真实空间特征。</p>
+<h3 id="1-2-一些分析空间非平稳性的方法"><a href="#1-2-一些分析空间非平稳性的方法" class="headerlink" title="1.2 一些分析空间非平稳性的方法"></a>1.2 一些分析空间非平稳性的方法</h3><p>目前，空间非平稳性的分析方法已经有了很多。其中：</p>
+<p>针对某些变量之间关系的空间异质性问题，有：</p>
+<ul>
+<li><p>广义最小二乘法。该方法把回归模型的参数转化成地理空间位置的线性函数，利用模型参数的线性函数得到模型的参数估计，模型参数随空间位置的变化而变化。该方法在参数变化十分复杂的情况下的应用受到一定限制。</p>
+</li>
+<li><p>空间滤波方法。该方法借鉴时间序列分析中利用“预测–修正”原理来补偿参数漂移的思路，将其应用到空间数据中来分析回归参数的漂移，用迭代计算来估计参数。该方法局限性是其参数估计不能够做统计检验。</p>
+</li>
+<li><p>随机系数模型。假设回归模型的系数为随机变量，相互独立且为有限混合分布，基于贝叶斯原理和最大似然法来估计参数的概率。</p>
+</li>
+<li><p>多层次模型。假设回归模型的系数为随机变量，相互独立且呈正态分布，基于贝叶斯原理和最大似然法来估计参数的概率。</p>
+</li>
+</ul>
+<h3 id="1-3-地理加权回归模型的提出"><a href="#1-3-地理加权回归模型的提出" class="headerlink" title="1.3 地理加权回归模型的提出"></a>1.3 地理加权回归模型的提出</h3><p>为解决该问题，国外有学者提出了空间变参数回归模型（Spatially Varying-Coefficient  Regression Model） （Fosterand Gorr，1986； Gorrand Olligschlaeger，1994），将数据的空间结构嵌入回归模型中，使回归参数变成观测点地理位置的函数。</p>
+<p>Fortheringham 等（Brunsdon 等，1996；Fortheringham 等，1997；Brunsdon 等，1998）在空间变系数回归模型基础上利用局部光滑思想，提出了地理加权回归模型（Geographieally Weighted Regression Model， GWR）。</p>
+<h2 id="2-基础模型"><a href="#2-基础模型" class="headerlink" title="2 基础模型"></a>2 基础模型</h2><p>地理加权回归模型（GWR）是对全局线性回归模型的扩展。该模型将样本点的地理位置嵌入到回归参数之中，即：</p>
+<p>$$<br>\mathbf{y}<em>{i}=\beta</em>{0}\left(u_{i}, v_{i}\right)+\sum_{k=1}^{p} \beta_{k}\left(u_{i}, v_{i}\right)\mathrm{x}<em>{i k}+\varepsilon</em>{i} \quad i=1,2, \ldots, n<br>$$</p>
+<p>式中： $(u_i,v_i)$ 为第 $i$ 个样本点的坐标；$\mathbf{y}<em>i$ 为第 $i$ 个样本点的因变量观测值；$\mathbf{x}</em>{ik}$ 为第 $k$ 个自变量，$\beta_k(u_i,v_i)$ 是在第 $i$ 个样本处第 $k$ 个自变量的权重（即模型参数）；$p$ 为自变量个数； $n$ 为样本总数；$\epsilon_i$ 为第 $i$ 个样本点的随机误差。为表述方便，将上式简写为：</p>
+<p>$$<br>\mathbf{y}<em>{\mathrm{i}}=\beta</em>{0}+\sum_{k=1}^{p} \beta_{i k} \mathbf{x}<em>{i k}+\varepsilon</em>{i} \quad i=1,2, \ldots, n<br>$$</p>
+<p>该式意味着：对于样本集合中的每个样本点，地理加权回归模型都将利用所有样本为其构建一个线性回归模型，所以 $GWR$ 模型的参数总量将是全局加权回归模型的 $n$ 倍 。若全局加权回归的模型参数为 $(p+1)$ 个，则 $GWR$ 模型的参数为 $n*(p+1)$ 个。</p>
+<p>当所有样本点的模型参数一致时（ $\beta_{1k}=\beta_{2k}=\ldots=\beta_{nk}$ ），地理加权回归模型就退化为全局加权回归模型。</p>
+<h2 id="3-空间自相关性和异质性的体现"><a href="#3-空间自相关性和异质性的体现" class="headerlink" title="3 空间自相关性和异质性的体现"></a>3 空间自相关性和异质性的体现</h2><p>依据地理加权回归模型的基本原理，使用所有样本来为每一个样本点生成一套权重系数，而根据地理学第一定律，距离目标点越远的样本，对目标因变量的影响越小，因此可以在每个样本点的地理加权回归模型参数中嵌入空间结构要素，来体现该空间自相关性。而不同样本点具有不同的回归模型参数，则体现了地理学第二定律的空间异质性原则。</p>
+<p>由此可见，地理加权回归模型的关键是如何将空间结构要素嵌入到回归模型的参数中。Fotheringham 等（1996）在传统最小二乘法基础上，通过加入空间权重矩阵 $W$ 的方式，实现空间结构要素的嵌入。每个目标点的 $W$ 不同，体现了空间异质性，而矩阵内权重的大小（根据地理学第一定律，通常受距离影响），体现了自相关程度。</p>
+<p>$$<br>\begin{equation}<br>\begin{aligned}<br>传统最小二乘：\hat\beta(u_{i} , v_{i})&amp;=(X^TX ) ^ { - 1 } X ^ { T } Y\<br>\downarrow\<br>地理加权最小二乘：\hat\beta(u_{i} , v_{i})&amp;=(X^TW(u_i,v_i) X ) ^ { - 1 } X ^ { T } W ( u _ { i } , v _ { i } ) Y<br>\end{aligned}<br>\end{equation}<br>$$</p>
+<p>式中：</p>
+<p>$$ X=\left[\begin{array}{cccc}1 &amp; x_{11} &amp; \ldots &amp; X_{1 k} \ 1 &amp; x_{21} &amp; \ldots &amp; X_{2 k} \ \ldots &amp; \ldots &amp; \ldots &amp; \ldots \ 1 &amp; X_{n 1} &amp; \ldots &amp; X_{n k}\end{array}\right]<br>$$</p>
+<p>$$<br>W\left(u*{i}, v*{i}\right)=W(i)=\left[\begin{array}{cccc}W_{i 1} &amp; 0 &amp; \ldots &amp; 0 \ 0 &amp; W_{i 2} &amp; \ldots &amp; 0 \ \ldots &amp; \ldots &amp; \ldots &amp; \ldots \ 0 &amp; 0 &amp; \ldots &amp; W_{i n}\end{array}\right]<br>$$</p>
+<p>$$<br>\beta=\left[\begin{array}{cccc}\beta_{0}\left(u_{1}, v_{1}\right) &amp; \beta_{1}\left(u_{1}, v_{1}\right) &amp; \ldots &amp; \beta_{p}\left(u_{1}, v_{1}\right) \ \beta_{0}\left(u_{2}, v_{2}\right) &amp; \beta_{1}\left(u_{2}, v_{2}\right) &amp; \ldots &amp; \beta_{p}\left(u_{2}, v_{2}\right) \ \ldots &amp; \ldots &amp; \ldots &amp; \ldots \ \beta_{0}\left(u_{n}, v_{n}\right) &amp; \beta_{1}\left(u_{n}, v_{n}\right) &amp; \ldots &amp; \beta_{p}\left(u_{n}, v_{n}\right)\end{array}\right]<br>$$</p>
+<p>$$<br>Y=\left[\begin{array}{c}y_{1} \ y_{2} \ \cdots \ y_{n}\end{array}\right]<br>$$</p>
+<p>其中：$\hat{\beta}$ 是模型参数 $β$ 的估计值，$n$ 是空间样本点数，$p$ 是自变量个数，$W_{ik}$ 是对位置 $i$ 刻画模型时赋予第 $k$ 个样本的权重。由此可见，对于地理加权回归模型来说，关键是如何计算空间权重矩阵 $W$ （空间权重矩阵量化描述了 $n$ 个空间位置之间相互的关系，可百度）。</p>
+<p>由于地理加权回归模型中的回归参数在各采样点上均不同，因此其未知参数的个数为 $n×（p + 1）$，远大于观测样本个数 $n$ ，采用传统参数估计方法同时计算未知参数比较困难，因此有学者提出了一些方法来拟合该模型。</p>
+<p>Foste &amp; Gorr（1986）和 Gorr &amp; Olligsehiaeger（1994）利用广义阻尼负反馈（generalized damped negative feedback）方法估计未知参数在各地理位置的值，该估计方法只是在很直观的意义上考虑数据的空间结构，加之估计方法较为复杂，很难对估计量作深入的统计推断方面的研究。</p>
+<p>Brunsdon 等（1996）在局部多项式光滑思想上提出了偏差和方差折衷（Bias-Variance Trade-off）的解决思路：假设回归参数为一连续表面，位置相邻则回归参数非常相似，在估计采样点 $i$ 的回归参数时，以采样点 $i$ 及其邻域采样点上的观测值构成局域子样本，建立全局线性回归模型，然后采用最小二乘方法得到回归参数估计 $\hat\beta_{ik}（k=0，1，2，…，p）$ 。对于另一个采样点 $i+1$ ，采用另一个相应的局域子样来估计，以此类推。由于在回归过程中，由其它样点上的观测值来估计 $i$ 点上的模型参数，因此 $i$ 点上的参数估计不可避免存在偏差，为有偏估计。而且，参与回归估计的子样规模越大，参数估计的偏差就越大，反之，参与回归估计的子样规模越小，参数估计的偏差就越小。从降低偏差角度考虑应当尽量减少子样规模，但子样规模的减少必然导致回归参数估计值的方差增加，精度降低。</p>
+<h2 id="4-空间权函数的选择"><a href="#4-空间权函数的选择" class="headerlink" title="4 空间权函数的选择"></a>4 空间权函数的选择</h2><p>空间权重矩阵是地理加权回归模型（$GWR$）的核心（Brunsdonetal， 2000），而权重是由空间坐标的某种函数（即空间权函数）形式体现的，因此，如何选取空间权函数对地理加权回归模型（$GWR$）的参数估计影响很大。常见方法有：</p>
+<h3 id="（1）距离阈值法"><a href="#（1）距离阈值法" class="headerlink" title="（1）距离阈值法"></a>（1）距离阈值法</h3><p>距离阈值法是最简单的空间权函数，它的关键是选取合适的距离阈值 $D$ ，然后与每一个数据点 $j$ 与回归点 $i$ 之间的距离 $d_{ij}$ 进行比较，若 $d_{ij}$ 大于该阈值则权重为 0 ，否则为 1 ，即</p>
+<p>$$<br>w_{i j}=\left{\begin{array}{ll}1 &amp; d_{i j} \leq D \ 0 &amp; d_{i j}&gt;D\end{array}\right.<br>$$</p>
+<p>该权重函数实质就是滑动窗口，计算简单但函数不连续，因此较少采用。</p>
+<h3 id="（2）距离反比法"><a href="#（2）距离反比法" class="headerlink" title="（2）距离反比法"></a>（2）距离反比法</h3><p>Tobler（1970）地理学第一定律认为空间相近的地物比相远的地物具有更强的相关性，因此在估计回归点 $i$ 的参数时，应对回归点的邻域给予更多的关注。根据该思路，人们自然想到用距离来衡量该空间关系：</p>
+<p>$$<br>w_ { i j } = 1 / d _ { i j } ^ { \alpha }<br>$$</p>
+<p>这里 $a$ 为合适的常数，当 $a$ 取值为 1 或 2 时，对应的是距离倒数和距离倒数的平方。该方法简洁明了，但对于回归点本身也是样本数据点的情况，就会出现回归点观测值权重无穷大的情况，若从样本中剔除自身又会降低参数估计精度，所以直接采用距离反比法的模型也不多，需要对其修正。</p>
+<h3 id="（3）高斯（高斯）函数法"><a href="#（3）高斯（高斯）函数法" class="headerlink" title="（3）高斯（高斯）函数法"></a>（3）高斯（高斯）函数法</h3><p>高斯（高斯）函数法就是表示 $w_{ij}$ 与 $d_{ij}$ 之间的连续单调递减函数，可以克服上述空间权函数不连续的缺点。其函数形式如下：</p>
+<p>$$<br>w_{i j}=\frac {1}{\exp \left(0.5*\left(d_{i j} / b\right)^{2}\right)}<br>$$</p>
+<img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/ml_20210413103255_b7.webp" style="zoom:50%;">
+
+<center>图 1 高斯空间权函数</center>
+
+<p>式中 $b$ 是描述权重与距离之间函数关系的非负衰减参数，称之为带宽（Bandwidth）。带宽越大，权重随距离的增加而衰减越慢，带宽越小，权重随距离增加而衰减越快。</p>
+<h3 id="（3）-bi-square-函数法"><a href="#（3）-bi-square-函数法" class="headerlink" title="（3） bi-square 函数法"></a>（3） bi-square 函数法</h3><p>实际应用中往往会将对回归参数估计几乎没有影响的样点截掉，不参与计算，从而形成以有限高斯函数来代替高斯函数的模型，最常采用的便是 bi-square 函数（Bmndonetal，1997； Fotheringham et al， 1998）：</p>
+<p>$$<br>w_{i j}=\left{\begin{array}{cl}{\left[1-\left(d_{i j} / b\right)^{2}\right]^{2}} &amp; d_{i j} \leq b \ 0 &amp; d_{i j}&gt;b\end{array}\right.<br>$$</p>
+ <img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/ml_20210413103222_34.webp" style="zoom:50%;">
+
+<center>图 2 bi-square 空间权函数</center>
+
+<p>从上式可以看出，bi-square 函数法可以看成是距离阈值法和高斯（高斯）函数法的结合。带宽范围内的回归点，可以通过有限高斯函数来计算数据点的权重，而带宽之外的数据点权重为 0。</p>
+<h2 id="5-带宽的确定与优化"><a href="#5-带宽的确定与优化" class="headerlink" title="5 带宽的确定与优化"></a>5 带宽的确定与优化</h2><p>在实际应用中发现，地理加权回归分析对高斯权函数和 bi-Square 权函数的选择并不是很敏感，但对特定权函数的带宽却很敏感（如图 3），带宽过大回归参数估计的偏差过大，带宽过小又会导致回归参数估计的方差过大。最小二乘平方和是最常采用的优化原则之一，但对于地理加权回归分析中的带宽选择却失去了作用，这是因为对于 $ \sum*{i=1}^{n}\left[y*{i}-\hat{y}<em>{i}(b)\right]^{2}=\min $ 而言，带宽 $b$ 越小，参与回归分析的数据点权重越小，预测值 $\hat y_i(b)$ 越接近实际观测值 $y_i$ ，从而 $ \sum</em>{i=1}^{n}\left[y_{i}-\hat{y}_{i}(b)\right]^{2} \approx 0 $ ，也就是说最优带宽是只包含一个样本点的狭小区域。为此，科学家给出了多种确定或者优化带宽的方法。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/ml_20210413103813_39.webp" alt="image-20210413103811062"></p>
+<center> 图 3 不同权函数与带宽选择对参数估计的影响</center>
+
+<h3 id="（1）交叉验证方法"><a href="#（1）交叉验证方法" class="headerlink" title="（1）交叉验证方法"></a>（1）交叉验证方法</h3><p>Cleveland （1979）、Bowman （1984）建议采用用于局域回归分析的交叉验证（cross-validation, CV）方法，其公式表达为：</p>
+<p>$$<br>\mathrm{CV}=\sum_{i=1}^{n}\left[y_{i}-\hat{y}_{\neq \mathrm{i}}(b)\right]^2<br>$$</p>
+<p>其中，$\hat y_{\neq i}(b)$ 是 $y_i$ 的估计值。该方法在生成 $\hat y$ 时排除了点 $i$ 的观测值。这样当 $b$ 变得很小时，模型仅仅刻画点 $i$ 附近样点而没有包括 $i$ 本身。把不同的带宽 $b$ 和相应的 $CV$ 绘制成趋势线，那么就可以找出 $CV$ 值最小时，对应的最佳带宽 $b$ 。</p>
+<p>在实际应用中为减少计算量，Loader 于 1999 年提出了一种近似交叉验证统计量的方法，称为广义交叉验证方法（generalized cross validation，GCV）：</p>
+<p>$$<br>G C V=\frac{1}{n} \frac{\sum_{i=1}^{n}\left(y_{i}-\hat{y}<em>{i}(b)\right)^{2}}{(1-\operatorname{tr}(\boldsymbol{S}(b) / n))^{2}}=\frac{n \sum</em>{i=1}^{n}\left(y_{i}-\hat{y}_{i}(b)\right)^{2}}{\left(n-\operatorname{tr}(\boldsymbol{S}(b))^{2}\right.}<br>$$</p>
+<p>由 $KT$ 变换矩阵 $S$ 的构成可知，当带宽很小时，地理加权回归分析的有效参数个数趋近样本数量 $n$ ，上式中的分母趋于零，这样即便预测值 $\hat y_i(b)$ 趋向 $y_i$ ，GCV 也不会等于 0。</p>
+<h3 id="（2）-AIC-准则"><a href="#（2）-AIC-准则" class="headerlink" title="（2） AIC 准则"></a>（2） AIC 准则</h3><p>Akaike 通过对基于极大似然原理的参数估计方法加以修正，提出了一种较为通用的模型选择准则，称为 Akaike 信息量准则（Akaike Information Criterion，AIC）。AIC 定义为（Akaike，1974）：</p>
+<p>$$<br>A I C = - 2 \ln L ( \hat\theta _ { L } , x ) + 2 q<br>$$</p>
+<p>其中， $\hat \theta_L$ 为 $\theta$ 的极大似然估计，$q$ 为参数的个数。</p>
+<p>AIC 准则应用比较广泛，Hurvich et al 将 AIC 准则扩展到非参数回归分析中的光滑参数选择（Hurvich et al， 1998），Brunsdon 和 Fotheringham 则在 Hurvich 等研究基础上将其进一步用于地理加权回归分析中的权函数带宽选择（Brunsdon et al，2002； Fotheringham et al， 2002），其公式为：</p>
+<p>$$<br>AIC_c=2 n \ln (\hat{\sigma})+n \ln (2 \pi)+n \frac{n+\operatorname{tr}(S)}{n-2-\operatorname{tr}(S)}<br>$$</p>
+<p>其中，下标 $c$ 表示“修正后的” AIC 估计值，$n$ 是样点大小，$\hat \sigma$ 是误差项估计的标准差，$tr(S)$ 是$GWR$ 的 K-T 变换矩阵 S 的迹，它是带宽的函数。AIC 有利于评价 $GWR$ 模型是否比传统最小二乘模型更好地模拟数据。</p>
+<p>其简单形式表示为：</p>
+<p>$$<br>AIC=2 n \ln (\hat{\sigma})+n \ln (2 \pi)+n+\operatorname{tr}(S)<br>$$</p>
+<h3 id="（3）-贝叶斯信息准则"><a href="#（3）-贝叶斯信息准则" class="headerlink" title="（3） 贝叶斯信息准则"></a>（3） 贝叶斯信息准则</h3><p>1978 年 SehwartZ 提出了贝叶斯信息准则（Bayesian Information Criterion，BIC），该准则可以使自回归模型的阶数适中，故常被用来确定回归模型中的最优阶数，2002 年 Nakaya 将其用于地理加权回归分析中的权函数带宽选择。BIC 准则与 AIC 准则非常相似，只是惩罚因子不同，其公式为</p>
+<p>$$<br>BIC= -2 \ln L\left(\hat{\theta}_{L}, x\right)+q \ln n<br>$$</p>
+<p>式中 $\hat \theta_L$ 为 $\theta$ 的极大似然估计，$q$ 为参数的个数，$n$ 为样本个数，使 BIC 最小的模型为“最优”模型。式中可以看出，BIC 准则对于具有相同未知参数个数的模型，样本数越多，惩罚度越大，对于具有相同样本的情况，则趋于选择具有更少参数的模型为最优。</p>
+<p>与 AIC 不同的是，BIC 准则要求模型为 Bayesian 模型，即每个候选模型都必须具有相同的先验概率，而实际上模型参数的先验分布通常是不知道的，另外如何将 BIC 准则扩展到可变带宽的非参数模型，用有效参数个数来代替全局参数个数还不是很清楚。</p>
+<h2 id="6-空间非平稳性的显著性检验"><a href="#6-空间非平稳性的显著性检验" class="headerlink" title="6 空间非平稳性的显著性检验"></a>6 空间非平稳性的显著性检验</h2><h2 id="7-大-N-问题"><a href="#7-大-N-问题" class="headerlink" title="7 大 N 问题"></a>7 大 N 问题</h2><p>有一些 GWR 方法适用于大样本。</p>
+<p>一种方法是使用样本进行基于 CV 的带宽优化，这是 GWR 中最重的部分。例如，Yu（2007）在确定样本量的 68606 个样本中随机抽取 3437 个样本，使估计误差在 2% 的范围内。 Feuillet 等 (2018) 将他们的研究区域分成更小的单元，并在每个单元中应用 GWR。</p>
+<p><strong>Sachdeva</strong> 2022 年的 <a href="7bc2e597.html">《采用 “空间变化过程建模” 还是 “非线性建模” ？》</a>:  在各种类型的局部统计模型的校准中获得的空间变化参数估计的研究是司空见惯的。这种估计的变化通常用空间变化过程来解释。本文强调，在将这种变化与空间变化过程相关联之前，应先检查非线性方面的空间变化参数估计的另一种解释。这可以通过描述和演示的简单筛选程序来实现，并且可以轻松应用于任何局部模型的结果。突出显示问题并展示解决方案，使用一组模拟数据，然后使用真实世界的数据集。该论文还强调了相反的情况，即当实际关系是线性但空间变化时，GAM 的不当应用会产生虚假的非线性结果。</p>
+<h2 id="8-应用案例"><a href="#8-应用案例" class="headerlink" title="8 应用案例"></a>8 应用案例</h2><h2 id="9-总结"><a href="#9-总结" class="headerlink" title="9 总结"></a>9 总结</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul id="refplus"><li id="ref-Brunsdon1998" data-num="1">[1]  Brunsdon, C., Fotheringham, S., Charlton, M., 1998. Geographically weighted regression. Journal of the Royal Statistical Society: Series D (The Statistician) 47 (3), 431e443.</li><li id="ref-Brunsdon2012" data-num="2">[2]  Brunsdon, C., Charlton, M., Harris, P., 2012. Living with collinearity in local regression models. In: 10th International Symposium on Spatial Accuracy Assessment in Natural Resources and Environmental Sciences, Florianopolis, Brazil.</li><li id="ref-Da2016" data-num="3">[3]  da Silva, A.R., Fotheringham, A.S., 2016. The multiple testing issue in geographically weighted regression. Geographical Analysis 48 (3), 233e247.</li><li id="ref-Feuillet2018" data-num="4">[4]  Feuillet, T., Commenges, H., Menai, M., Salze, P., Perchoux, C., Reuillon, R., Kesse-Guyot, E., Enaux, C., Nazare, J.-A., Hercberg, S., Simon, C., Charreire, H., Oppert, J.M., 2018. A massive geographically weighted regression model of walking-environment relationships. Journal of transport geography 68, 118e129.</li><li id="ref-Fotheringham2002" data-num="5">[5]  Fotheringham, A.S., Brunsdon, C., Charlton, M., 2002. Geographically Weighted Regression: The Analysis of Spatially Varying Relationships. Wiley, New York.</li><li id="ref-Fotheringham2017" data-num="6">[6]  Fotheringham, A.S., Yang, W., Kang, W., 2017. Multiscale geographically weighted regression (mgwr). Annals of the Association of American Geographers 107 (6), 1247e1265.</li><li id="ref-Getis2008" data-num="7">[7]  Getis, A., 2008. A history of the concept of spatial autocorrelation: A geographer’s perspective. Geographical Analysis 40 (3), 297e309.</li><li id="ref-Getis2002" data-num="8">[8]  Getis, A., Griffith, D.A., 2002. Comparative spatial filtering in regression analysis. Geographical Analysis 34 (2), 130e140.</li><li id="ref-Harris2010" data-num="9">[9]  Harris, R., Singleton, A., Grose, D., Brunsdon, C., Longley, P., 2010. Grid-enabling geographically weighted regression: a case study of participation in higher education in England. Transactions in GIS 14 (1), 43e61.</li><li id="ref-Leong2017" data-num="10">[10]  Leong, Y.Y., Yue, J.C., 2017. A modification to geographically weighted regression. International Journal of Health Geographics 16 (1), 11. Li, Z., Fotheringham, A.S.,</li><li id="ref-Li2019" data-num="11">[11]  Li, W., Oshan, T., 2019. Fast Geographically Weighted Regression (FastGWR): a scalable algorithm to investigate spatial process heterogeneity in millions of observations. International Journal of Geographical. Information Science 33 (1), 155e175.</li><li id="ref-Lu2017" data-num="12">[12]  Lu, B., Brunsdon, C., Charlton, M., Harris, P., 2017. Geographically weighted regression with parameter-specific distance metrics. International Journal of Geographical Information Science 31 (5), 982e998.</li><li id="ref-Lu2018" data-num="13">[13]  Lu, B., Yang, W., Ge, Y., Harris, P., 2018. Improvements to the calibration of a geographically weighted regression with parameter-specific distance metrics and bandwidths. Computers, Environment and Urban Systems 71, 41e57.</li><li id="ref-Mei2004" data-num="14">[14]  Mei, C.L., He, S.Y., Fang, K.T., 2004. A note on the mixed geographically weighted regression model. Journal of Regional Science 44 (1), 143e157.</li><li id="ref-Nakaya2005" data-num="15">[15]  Nakaya, T., Fotheringham, A.S., Brunsdon, C., Charlton, M., 2005. Geographically weighted Poisson regression for disease association mapping. Statistics in Medicine 24 (17), 2695e2717.</li><li id="ref-Tran2016" data-num="16">[16]  Tran, H.T., Nguyen, H.T., Tran, V.T., 2016, October. Large-scale geographically weighted regression on Spark. In: 2016 Eighth International Conference on Knowledge and Systems Engineering (KSE), pp. 127e132. IEEE.</li><li id="ref-Wheeler2005" data-num="17">[17]  Wheeler, D., Tiefelsdorf, M., 2005. Multicollinearity and correlation among local regression coefficients in geographically weighted regression. Journal of Geographical Systems 7 (2), 161e187.</li><li id="ref-Yang2014" data-num="18">[18]  Yang, W., 2014. An Extension of Geographically Weighted Regression with Flexible Bandwidths. Doctoral dissertation. University of St Andrews.</li><li id="ref-Yu2007" data-num="19">[19]  Yu, D., 2007. Modeling owner-occupied single-family house values in the city of Milwaukee: a geographically weighted regression approach. GIScience &amp; Remote Sensing 44 (3), 267e282.</li></ul>
+
+
+
+
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/292f7d71.html">http://xishansnow.github.io/posts/292f7d71.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/GeoAI/">GeoAI</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E6%98%BE%E5%BC%8F%E6%A8%A1%E5%9E%8B/">空间显式模型</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E5%BC%82%E8%B4%A8%E6%80%A7/">空间异质性</a><a class="post-meta__tags" href="/tags/%E9%9D%A2%E5%85%83%E6%95%B0%E6%8D%AE/">面元数据</a><a class="post-meta__tags" href="/tags/%E5%9C%B0%E7%90%86%E5%8A%A0%E6%9D%83%E5%9B%9E%E5%BD%92/">地理加权回归</a><a class="post-meta__tags" href="/tags/%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%85%B3%E7%B3%BB/">非线性关系</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E9%A2%84%E6%B5%8B/">空间预测</a></div><div class="post-share"><div class="social-share" data-image="/img/book_20.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/ae7bb62d.html" title="空间数据贝叶斯建模方法索引帖"><img class="cover" src="/img/006.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">空间数据贝叶斯建模方法索引帖</div></div><div class="info-2"><div class="info-item-1">   基础点参考数据面元数据点模式数据</div></div></div></a><a class="pagination-related" href="/posts/226aff16.html" title="多视图表示学习概览"><img class="cover" src="/img/coffe_04.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">多视图表示学习概览</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 表示学习是一种训练机器学习模型的特殊类型，它学着将原始的输入数据变换为对实现未来任务更有用的新形式。近年关于表示学习的研风头日胜，因为在很多实际工作中，增加预训练以学习有用的表示，确实提升了很多下游任务的性能。本文主要对表示学习的门类和方法做一概述，文章内容主要来自 Murphy 的《Machine Learning: Advanced Topics》第 32 章。 【参 考】 李沐老师讲论文系列 自监督学习有生成式学习和对比学习，对比学习需要从无标注的数据中学习特征表示，并用于下游任务中。指导原则是: 通过构造相似实例和不相似实例，学习一个表示学习模型，使得相似的实例在投影空间中较接近，不相似的实例在投影空间中距离较远。 对比学习有三个关键问题:   正负样本的构造  编码器的设计  Loss函数的选取。  过去几年，尤其是2018年开始到现在，对比学习在计算机视觉领域的发展可以划成四个阶段:    2018~2019年中，Inst Disc、CPC、CMC等方法和模型都还没有统一，目标函数和代理任务也还没有统一; ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/d5638628.html" title="一种地理加权人工神经网络 --  GWANN  "><img class="cover" src="/img/009.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-14</div><div class="info-item-2">一种地理加权人工神经网络 --  GWANN  </div></div><div class="info-2"><div class="info-item-1">   一种地理加权人工神经网络【摘 要】 虽然最近的发展在许多方向上扩展了地理加权回归( GWR )，但通常假设因变量和自变量之间的关系是线性的。然而，在实践中，变量往往是非线性关联的。为解决该问题，荷兰乌特勒支大学 Hagenauer 等提出了一种地理加权人工神经网络( $GWANN$ )。 $GWANN$ 将地理加权与人工神经网络相结合，能够在无假设情况下以数据驱动方式学习复杂的非线性关系。通过已知空间特征的合成数据和真实世界案例研究，作者将 $GWANN$ 和 GWR 进行了比较。合成数据的结果表明，当数据之间关系是非线性且空间方差较大时， $GWANN$ 算法的性能要好于 GWR 算法，而基于真实数据的结果表明， $GWANN$ 算法在实际应用中也可以取得更好的性能。 【原 文】 Hagenauer, J. and M. Helbich ( 2021 ). “A geographically weighted artificial neural network.” International Journal of Geographical Information...</div></div></div></a><a class="pagination-related" href="/posts/ae7bb62d.html" title="空间统计学概论"><img class="cover" src="/img/coffe_07.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-20</div><div class="info-item-2">空间统计学概论</div></div><div class="info-2"><div class="info-item-1">   空间统计学概论1 统计学的两大流派（1）频率学派认为模型的待估计参数是一个未知的常数，而样本是随机的，通过对随机样本的分析，可以计算获得参数的值。  基本思想（对事件建模）  「随机事件本身具有某种客观的随机性」，需要研究一系列工具来刻画「事件」本身 事件A在独立重复试验中发生的频率趋于极限 $p$ ，那么极限 $p$...</div></div></div></a><a class="pagination-related" href="/posts/1e4b7e74.html" title="地理知识发现中的空间显式人工智能技术"><img class="cover" src="/img/coffe_10.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-09</div><div class="info-item-2">地理知识发现中的空间显式人工智能技术</div></div><div class="info-2"><div class="info-item-1">   GeoAI：地理知识发现中的空间显式人工智能技术【摘要】 近年随着深度学习技术的突飞猛进，相关技术在地理信息科学领域也得到大量研究和应用。但随着大家对问题的深入理解，逐步意识到这些机器学习方法在解决地学问题上有些捉襟见肘，特别是很多机器学习模型几乎不考虑地理位置的作用，把很多地学问题转变成了计算机科学问题，引起了业内很多专家的质疑。本文为加州大学 Krzysztof Janowicz 教授 2017 年在地理信息科学杂志 GeoAI 专刊上发表的一篇评论文章，明确提出在地理空间人工智能领域中，空间显示模型需要得到重视和发展。 【原文摘要】无。 【原文】Janowicz, K., et al. （2019）. “GeoAI: spatially explicit artificial intelligence techniques for geographic knowledge discovery and beyond.” International Journal of Geographical Information Science 34（4）:...</div></div></div></a><a class="pagination-related" href="/posts/176d3170.html" title="空间随机场及其建模方法"><img class="cover" src="/img/coffe_03.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-18</div><div class="info-item-2">空间随机场及其建模方法</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 空间数据集通常被分为三种类型：点参考数据、面元数据和点模式数据，本文重点介绍点参考数据的建模基础–空间随机场，讨论了空间随机场的一些基本假设和性质，及其形式化定义。 【原 文】 O. Schabenberger and C. A. Gotway, Chapter 2，Statistical methods for spatial data analysis. Boca Raton: Chapman &amp; Hall&#x2F;CRC, 2005. 1 随机过程与随机场（1）随机过程与随机场 随机过程是随机变量族或集合，其成员可以根据某种度量来识别或索引。例如：  时间序列 $Y (t)，t &#x3D; t_1,\ldots,t_n$ 由观测该序列的时间点 $t_1,\ldots,t_n$ 索引。 空间过程也是随机变量的集合，只是其中的随机变量由包含空间坐标 $\mathbf{s} &#x3D;[s_1,s_2, ···,s_d]^\prime$ 的某个集合 $D \subset \mathbb{R}^d$ 索引。对于平面内的一个过程，即...</div></div></div></a><a class="pagination-related" href="/posts/625b667d.html" title="Cressie 的最新空间统计论述"><img class="cover" src="/img/book_09.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-23</div><div class="info-item-2">Cressie 的最新空间统计论述</div></div><div class="info-2"><div class="info-item-1">   【阅读建议】 本文是 Cressie 在 2021 年新撰写的一篇综述类文章，其主要看点包括：（1）用统一的形式化框架实现了点参考数据、面元数据、点模式数据的建模；（2）对多变量空间统计建模的统一形式化；（3）大数据的空间离散化处理方法（此处尚未理解其优势所在，需要进一步阅读引用的论文）； 【摘 要】 空间统计是一个致力于与空间标签相关数据统计分析的研究领域。地理学家通常将 “位置信息” 与 “属性信息” 联系起来，并且定义了一个被称为 “空间分析” 的研究领域。许多操作空间数据的方法都是由算法驱动的，缺少与之相关的不确定性量化。如果空间分析是统计的（即结合了不确定性量化），则它属于空间统计的研究范畴。空间统计模型的主要特征是邻近的属性值比远处的属性值在统计上更相关，这也被称为地理学第一定律。 【原 文】 N. Cressie and M. T. Moores, “Spatial Statistics,” 2021, doi: 10.48550&#x2F;ARXIV.2105.07216. 【参 考】  1...</div></div></div></a><a class="pagination-related" href="/posts/b9f71b0a.html" title="贝叶斯分层模型"><img class="cover" src="/img/book_13.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-13</div><div class="info-item-2">贝叶斯分层模型</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 本文简要介绍了贝叶斯分层建模方法的概念、优势和局限性。 【原 文】 N. Cressie, chapter 2, Statistics for spatio-temporal data. 2011.  核心内容快速浏览（1）贝叶斯全概率公式 贝叶斯全概率公式允许将随机变量的联合分布分解为一系列条件分布： $$[A, B, C] &#x3D; [A | B, C][B | C][C]$$ 其中 “$[ \cdot ]$” 用于表示概率分布；例如，$[A, B, C]$ 是随机变量 $A$、$B$ 和 $C$ 的联合分布，而 $[A | B, C]$ 是给定 $B$ 和 $C$ 时 $A$ 的条件分布。 （2）Berlinear 的贝叶斯分层模型 (BHM) 范式 Mark Berliner （Berliner，1996）是最早使用贝叶斯全概率公式分解来为复杂过程建模的人。也就是说，联合分布 $[\text{data}, \text{process},\text{parameters}]$，可以自顶向下分解为三个层次: 数据模型：在假设下层的 “真实”...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1 引言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%85%A8%E5%B1%80%E7%A9%BA%E9%97%B4%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E5%9B%9E%E5%BD%92%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">1.1 全局空间最小二乘回归的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E4%B8%80%E4%BA%9B%E5%88%86%E6%9E%90%E7%A9%BA%E9%97%B4%E9%9D%9E%E5%B9%B3%E7%A8%B3%E6%80%A7%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">1.2 一些分析空间非平稳性的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%9C%B0%E7%90%86%E5%8A%A0%E6%9D%83%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8F%90%E5%87%BA"><span class="toc-text">1.3 地理加权回归模型的提出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9F%BA%E7%A1%80%E6%A8%A1%E5%9E%8B"><span class="toc-text">2 基础模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%A9%BA%E9%97%B4%E8%87%AA%E7%9B%B8%E5%85%B3%E6%80%A7%E5%92%8C%E5%BC%82%E8%B4%A8%E6%80%A7%E7%9A%84%E4%BD%93%E7%8E%B0"><span class="toc-text">3 空间自相关性和异质性的体现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%A9%BA%E9%97%B4%E6%9D%83%E5%87%BD%E6%95%B0%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-text">4 空间权函数的选择</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E8%B7%9D%E7%A6%BB%E9%98%88%E5%80%BC%E6%B3%95"><span class="toc-text">（1）距离阈值法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E8%B7%9D%E7%A6%BB%E5%8F%8D%E6%AF%94%E6%B3%95"><span class="toc-text">（2）距离反比法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E9%AB%98%E6%96%AF%EF%BC%88%E9%AB%98%E6%96%AF%EF%BC%89%E5%87%BD%E6%95%B0%E6%B3%95"><span class="toc-text">（3）高斯（高斯）函数法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89-bi-square-%E5%87%BD%E6%95%B0%E6%B3%95"><span class="toc-text">（3） bi-square 函数法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%B8%A6%E5%AE%BD%E7%9A%84%E7%A1%AE%E5%AE%9A%E4%B8%8E%E4%BC%98%E5%8C%96"><span class="toc-text">5 带宽的确定与优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81%E6%96%B9%E6%B3%95"><span class="toc-text">（1）交叉验证方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89-AIC-%E5%87%86%E5%88%99"><span class="toc-text">（2） AIC 准则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89-%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BF%A1%E6%81%AF%E5%87%86%E5%88%99"><span class="toc-text">（3） 贝叶斯信息准则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%A9%BA%E9%97%B4%E9%9D%9E%E5%B9%B3%E7%A8%B3%E6%80%A7%E7%9A%84%E6%98%BE%E8%91%97%E6%80%A7%E6%A3%80%E9%AA%8C"><span class="toc-text">6 空间非平稳性的显著性检验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%A4%A7-N-%E9%97%AE%E9%A2%98"><span class="toc-text">7 大 N 问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="toc-text">8 应用案例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E6%80%BB%E7%BB%93"><span class="toc-text">9 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

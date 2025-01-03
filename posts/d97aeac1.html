@@ -1,0 +1,330 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>1️⃣  有向概率图模型概述   | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="  有向概率图模型概述  "><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/d97aeac1.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '1️⃣  有向概率图模型概述  ',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/coffe_08.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">1️⃣  有向概率图模型概述  </span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">1️⃣  有向概率图模型概述  </h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-10-17T06:00:00.000Z" title="发表于 2021-10-17 14:00:00">2021-10-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.181Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/">贝叶斯统计</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/">概率图模型</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">4.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>〖摘要〗 有向概率图模型又称贝叶斯网络，</p>
+<p>〖原文〗<a target="_blank" rel="noopener" href="https://ermongroup.github.io/cs228-notes/representation/directed/">ccs228-notes</a></p>
+<p>〖参考〗<a target="_blank" rel="noopener" href="http://www.cs.cmu.edu/~epxing/Class/10708-17/slides/lecture2-BNrepresentation.pdf">CMU 10-708 Slides</a> &#x2F; <a target="_blank" rel="noopener" href="http://www.cs.cmu.edu/~epxing/Class/10708-17/notes-17/10708-scribe-lecture2.pdf">CMU 10-708 Lecture Notes</a> &#x2F; <a target="_blank" rel="noopener" href="http://www.cs.cmu.edu/~epxing/Class/10708-17/reading/graphical_model_Jordan.pdf">Jordan TextBook, Ch.2(section 2.1)</a> &#x2F; <a target="_blank" rel="noopener" href="http://www.cs.cmu.edu/~epxing/Class/10708-17/readings/Ch%203.pdf">Koller’s Textbook,Ch. 3</a></p>
+<h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h2><p>我们从 “表示” 的主题开始：如何选择概率分布来模拟世界的某些有趣的方面？</p>
+<p>想出一个好的模型并不总是那么容易：在前面已经看到，一个简单的垃圾邮件分类模型需要我们指定一些参数，这些参数与英语单词的数量成指数关系！</p>
+<p>在本章中，我们将学习一种避免这些症状的方法。我们准备：</p>
+<ul>
+<li>学习一种有效且通用的技术，仅使用几个参数来参数化概率分布。</li>
+<li>了解如何通过有向无环图 (DAG) 优雅地描述生成模型。</li>
+<li>研究 DAG 的结构与其所描述的分布以及建模假设之间的联系；这不仅会使这些建模假设更加明确，而且还将帮助我们设计更有效的推断算法。</li>
+</ul>
+<p>本文中的各种模型都是有向图，也被称为『贝叶斯网络』。我们在后面还会看到另外一种方法：无向图，也称为马尔可夫随机场 (MRF)。 贝叶斯网络能够有效地展示因果关系，而马尔可夫随机场不能。因此，对于随机变量之间没有明确因果关系的问题，马尔可夫随机场更可取。</p>
+<div class="note info no-icon flat"><ul>
+<li>有向图模型：有向边给出了随机变量之间的因果关系。</li>
+<li>无向图模型：无向边给出随机变量之间的相关性。</li>
+</ul>
+</div>
+<p>@QI2AVC7W#Gal_Ghahramani_2015</p>
+<h2 id="2-基本符号"><a href="#2-基本符号" class="headerlink" title="2 基本符号"></a>2 基本符号</h2><p>为了表示概率图模型，我们为每个重要概念指定了某些符号：</p>
+<ul>
+<li><strong>变量</strong>：$X$，作为一种概念符号，为已实现的值 $(x)$ 提供占位符。</li>
+<li><strong>值</strong>：$x$，变量的一次实现，例如 $x \in [0,1]$ 。</li>
+<li><strong>索引</strong>：可以对变量进行索引 $X^{(i)}_i$ 。通常，下标为维度索引，上标为数据索引（即第几个观测）。</li>
+<li><strong>随机变量</strong>：$X$</li>
+<li><strong>随机向量</strong>：$\boldsymbol{X}$</li>
+<li><strong>随机矩阵</strong>：$\boldsymbol{X}&#x3D; {X_{i,j}}$</li>
+<li><strong>参数</strong>：通常使用希腊字母，例如 $\alpha,\beta,\theta$ ，参数也可以如变量一样被索引。</li>
+</ul>
+<h2 id="2-有向图模型"><a href="#2-有向图模型" class="headerlink" title="2 有向图模型"></a>2 有向图模型</h2><p>贝叶斯网络是一个有向无环图 (DAG)，其节点对应于随机变量，边对应于父变量对子变量的直接影响。贝叶斯网络能够以因子分解方式表示随机变量的联合概率，从而实现一组关于分布的条件独立假设的紧凑表示。贝叶斯网络中的每个变量（节点）都可以被视为其父项的随机函数。</p>
+<p>有向图模型（贝叶斯网络）指一个概率分布族，该分布族允许紧凑的参数化，并可以使用有向图自然地进行描述。 这种参数化背后的总体思路非常简单。</p>
+<p>回想一下，通过链式法则，我们可以将任何概率 $p$ 写为：</p>
+<p>$$<br>p(x_1, x_2, \dotsc, x_n) &#x3D; p(x_1) p(x_2 \mid x_1) \cdots p(x_n \mid x_{n-1}, \dotsc, x_2, x_1)。<br>$$</p>
+<p>紧凑的贝叶斯网络是一个分布，其中右侧的每个因子仅取决于少数 <strong>祖先变量</strong> $x_{A_i}$：</p>
+<p>$$<br>p(x_i \mid x_{i-1}, \dotsc, x_1) &#x3D; p(x_i \mid x_{A_i})<br>$$</p>
+<p>例如，在一个有五个变量的模型中，我们可以选择用 $p(x_5 \mid x_4, x_3)$ 来近似因子 $p(x_5 \mid x_4, x_3, x_2, x_1)$。在这种情况下，我们写成 $x_{A_5} &#x3D; {x_4, x_3}$。</p>
+<p>当变量是离散型时（现实问题中经常出现），我们可以将因子 $p(x_i\mid x_{A_i})$ 视为一个 <strong>概率表</strong>，其中行对应于 $x_{A_i}$ 而列对应于 $x_i$ 的可选值；这些条目包含了实际概率 $p(x_i\mid x_{A_i})$。如果每个变量可以取 $d$ 个值并且最多有 $k$ 个祖先，那么整个表将最多包含 $O(d^{k+1})$ 个条目。由于每个变量都有一个表，因此整个概率分布只需要最多 $O(nd^{k+1})$ 个参数来紧凑地描述（与朴素的 $O(d^n)$ 相比）。</p>
+<h3 id="2-1-有向图表示"><a href="#2-1-有向图表示" class="headerlink" title="2.1 有向图表示"></a>2.1 有向图表示</h3><p>这种形式的分布可以自然地表示为 <strong>有向无环图（Directed Acyclic Graphics, DAG）</strong>，其中顶点对应于随机变量 $x_i$，边表示随机变量之间的依赖关系。特别地，我们将每个节点 $x_i$ 的父节点设置为其祖先 $x_{A_i}$。</p>
+<p>例如，考虑一个学生在考试中的成绩 $g$ 的模型。</p>
+<p>该成绩取决于考试的难度 $d$ 和学生智力 $i$；同时它会影响该课程教师的推荐信质量 $l$。学生智力 $i$ 也会影响 SAT 分数 $s$。上述变量中，除了 $g$ 可以取 3 个可能值，其他变量都是二值的。下图为该模型的有向概率图：</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221008202316-4d41.webp" alt="成绩有向概率图"></p>
+<figcaption>图 1：描述学生考试成绩的贝叶斯网络模型。该图代表的（联合概率）分布可以表示为一系列条件概率分布（由表格指定）的乘积。这些条件概率分布在图中由边来描述。</figcaption>
+
+<p>图中 5 个变量的联合概率分布自然地可以分解为：</p>
+<p>$$<br>p(l, g, i, d, s) &#x3D; p(l \mid g), p(g \mid i, d), p(i), p(d), p(s \mid i)<br>$$</p>
+<p>此分布的概率图表示显然是一个有向无环图，它直观地指定随机变量之间的相互依赖关系。该图清楚地表明：推荐信取决于成绩等级，而成绩等级又取决于学生智力和考试难度。</p>
+<p>另一种解释有向图的方法是描述数据的生成方式。在上例中，为了确定推荐信的质量，我们首先对智力水平和考试难度进行采样；得到这些参数后，对学生成绩等级进行采样；最后，根据该成绩生成推荐信。</p>
+<p>回顾前面的垃圾邮件分类示例，我们隐含地假设了电子邮件是根据两步过程生成的：</p>
+<ul>
+<li>首先，我们选择垃圾邮件&#x2F;非垃圾邮件标签 $y$；</li>
+<li>然后，我们以该标签为条件，独立地为每个单词采样是否存在。</li>
+</ul>
+<h3 id="2-2-形式定义"><a href="#2-2-形式定义" class="headerlink" title="2.2 形式定义"></a>2.2 形式定义</h3><p>形式上，贝叶斯网络是一个有向图 $G &#x3D; (V,E)$，该图中</p>
+<ul>
+<li>每个节点 $i \in V$ 对应于随机变量 $x_i$。</li>
+<li>每个节点都有一个条件概率分布 (CPD) $p(x_i \mid x_{A_i})$，指明了以 $x_i$ 的父节点取值为条件的节点概率。</li>
+</ul>
+<p>因此，贝叶斯网络定义了一个概率分布 $p$。我们可以说，如果概率分布 $p$ 能够被分解为一组由有向无环图 $G$ 指定的因子乘积，则可以称概率 $p$ 被 <strong>因子分解</strong> 在图 $G$ 上。</p>
+<p>不难看出，由贝叶斯网络表示的概率是有效的：显然，它将是非负的，并且可以使用归纳法（使用 CPD 是有效概率的事实）证明图中所有变量的所有可能赋值概率之和都为 “1”。相反，我们也可以通过反例证明，当 $G$ 包含环路时，其相应的概率之和可能不等于 “1”。</p>
+<h2 id="3-贝叶斯网络的依赖关系"><a href="#3-贝叶斯网络的依赖关系" class="headerlink" title="3 贝叶斯网络的依赖关系"></a>3 贝叶斯网络的依赖关系</h2><p>总而言之，贝叶斯网络表示了一个 “可以通过较小的局部条件概率分布（每个变量一个）的乘积形成” 的概率分布。通过这种表达概率的形式，我们能够在模型中引入一些变量独立性假设。</p>
+<p>这同时也提出了一个问题：通过使用由指定结构的 $G$ 描述的贝叶斯网络模型，我们究竟做出了哪些独立性假设？这个问题非常重要，有两个原因：</p>
+<ul>
+<li>我们应当也必须准确地知道正在做出何种模型假设（以及它们是否正确）</li>
+<li>这些信息将直接影响后面的统计推断任务，帮助我们设计更有效的推断算法。</li>
+</ul>
+<p>让我们使用符号 $I(p)$ 来表示在联合分布 $p$ 中成立的所有独立性的集合。例如，如果 $p(x,y) &#x3D; p(x) p(y)$，那么我们说 $x \perp y \in I(p)$。</p>
+<h3 id="3-1-有向图描述的独立性"><a href="#3-1-有向图描述的独立性" class="headerlink" title="3.1 有向图描述的独立性"></a>3.1 有向图描述的独立性</h3><p>事实证明，贝叶斯网络 $p$ 非常优雅地描述了 $I(p)$ 中的许多独立性；通过查看三种类型的结构，可以从贝叶斯网络中恢复这些独立性。</p>
+<p>为简单起见，让我们首先查看具有 $A，B，C$ 三个节点的贝叶斯网络 $G$。在这种情况下，$G$ 本质上只有三种可能的结构，每一种都导致不同的独立性假设。感兴趣的读者可以使用一些代数轻松证明这些结果。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221008205816-a3b3.webp" alt="三个节点构成的贝叶斯网络"></p>
+<figcaption>图 2 ： 三个节点构成的贝叶斯网络。上图分别表示了三种依赖关系：级联（a，b）、共同父亲（c）和 v 结构（d）</figcaption>
+
+<ul>
+<li><p><strong>共同父亲</strong>：如果 $G$ 的形式为 $A \leftarrow B \rightarrow C$，并且观测到 $B$，则有 $A \perp C \mid B$ 。但如果未观测到 $B$ ，则有 $A \not\perp C$。直观地说，这源于 $B$ 包含决定 $A$ 和 $C$ 结果的所有信息；一旦被观测到，就没有其他因素会影响这些变量的结果。</p>
+</li>
+<li><p><strong>级联</strong>：如果 $G$ 的形式为 $A \rightarrow B \rightarrow C$，并且观测到 $B$，则 $A \perp C \mid B$。但是，如果 $B$ 未被观测到，则 $A \not\perp C$。在这里，直觉再次是 $B$ 持有决定 $C$ 结果的所有信息；因此，$A$ 取什么值并不重要。</p>
+</li>
+<li><p><strong>V-结构</strong>（也称为 <strong>explaining away</strong>）：如果 $G$ 的形式为 $A \rightarrow C \leftarrow B$，则知道 $C$ 将耦合 $A$ 和 $B$。换句话说，如果 $C$ 未被观测到，则 $A \perp B$，但如果 $C$ 被观测到，则 $A \not\perp B \mid C$。这种情况需要额外的解释。假设 $C$ 是一个布尔变量，表示我们的草坪是否在一天早上潮湿； $A$ 和 $B$ 是它潮湿的两种解释：要么下雨（以 $A$ 表示），要么洒水器打开（以 $B$ 表示）。如果知道草是湿的（$C$ 为真）并且洒水器没有开（$B$ 为假），那么 $A$ 为真的概率必须为 $1$，因为这是唯一可能的解释。因此，在给定 $C$ 的情况下，$A$ 和 $B$ 之间并不是独立的。</p>
+</li>
+</ul>
+<p>上述三种结构清楚地描述了由三变量贝叶斯网络编码的各种独立性。我们可以在任何更大的概率图上递归地使用它们，以扩展到更一般的贝叶斯网络上。这导致了一个称为 <strong>$d$-分离（$d$-separation）</strong> 的新概念（其中 $d$ 代表有向）。</p>
+<p>假设 $Q$、$W$ 和 $O$ 是贝叶斯网络 $G$ 中的三组节点。我们称 $Q$ 和 $W$ 之间在给定 $O$ （即观测到 $O$）时是 $d$ -分离的，如果 $Q$ 和$W$ 之间没有其他 <strong>活动路径</strong> 连接。</p>
+<p>这涉及活跃路径的定义，$G$ 中的无向路径在给定观测变量 $O$ 的情况下被称为 <strong>活跃的</strong>，如果对于路径上每个连续的变量 $X,Y,Z$ 三元组，以下其中一项成立：</p>
+<ul>
+<li>$X \leftarrow Y \leftarrow Z$，并且 $Y$ 未被观测到 $Y \not\in O$</li>
+<li>$X \rightarrow Y \rightarrow Z$，$Y$ 未被观测到 $Y \not\in O$</li>
+<li>$X \leftarrow Y \rightarrow Z$，$Y$ 未被观测到 $Y \not\in O$</li>
+<li>$X \rightarrow Y \leftarrow Z$，并观测到$Y$ 或其任何后代。</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221008212204-7e8e.webp" alt="d 分离示例 1"></p>
+<figcaption>图 3：给定 $X_2，X_3$，$X_1$ 和 $X_6$ 是 $d$ -分离的。</figcaption>
+
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221008212358-f9fc.webp" alt="d 分离示例 2"></p>
+<figcaption>图 4：然而，给定 $X_1， X_6$，$X_2, X_3$ 之间不是 $d$-分隔，因为当观测到 $X_6$ 时，有一个通过 V 结构的活跃路径。</figcaption>
+
+<p>例如，在上图中，给定 $X_2、X_3$，$X_1$ 和 $X_6$ 是 $d$ -分隔的。但是，给定 $X_1, X_6$ 时，$X_2, X_3$ 之间不是 $d$ -分离的，因为可以找到一条活动路径 $(X_2, X_6, X_5, X_3)$</p>
+<div class="note info no-icon flat"><p>🪐  备注：</p>
+<p>一位前 CS228 课程的学生创建了一个 <a target="_blank" rel="noopener" href="http://pgmlearning.herokuapp.com/dSepApp">交互式网络模拟网页</a> 来测试 $d$-separation。</p>
+</div>
+
+<p>$d$ -分离的概念很有用，因为它让我们能够描述模型中的大块依赖项。设 $I(G) &#x3D; {(X \perp Y \mid Z) : \text{X,Y are d-sep given Z}}$ 是 $G$ 中一组 $d$ -分离的变量。</p>
+<p><strong>事实</strong> ：如果 $p$ 对 $G$ 上做因子分解，则 $I(G) \subseteq I(p)$。在这种情况下，我们说 $G$ 是 $p$ 的 $I$ -映射（独立映射的意思）。</p>
+<p>换句话说，在 $G$ 中编码的所有独立性都是正确的：在 $G$ 中 $d$ 分隔的变量在 $p$ 中也是真正独立的。然而，反之则不成立：一个分布可能会在 $G$ 上因子分解，但可能具有 $G$ 中未捕获的独立性。</p>
+<p>在某种程度上，这几乎是一个微不足道的陈述。如果 $p(x,y) &#x3D; p(x)p(y)$，那么这个分布仍然在图 $y \rightarrow x$ 上进行因子分解，因为我们总是可以把它写成 $p(x ,y) &#x3D; p(x\mid y)p(y)$ 带一个 CPD $p(x\mid y)$ ，其中 $x$ 的概率实际上不随 $y$ 变化。但是，我们可以通过简单地删除不必要的边来构造一个与 $p$ 结构匹配的图。</p>
+<h3 id="3-2-有向图的表示能力"><a href="#3-2-有向图的表示能力" class="headerlink" title="3.2 有向图的表示能力"></a>3.2 有向图的表示能力</h3><p>这提出了我们最后一个或许也是最重要的问题：有向图能否表达任何分布 $p$ 的所有独立性？更正式地说，给定一个分布 $p$，我们可以构造一个图 $G$ 使得 $I(G) &#x3D; I(p)$ 吗？</p>
+<p>首先，注意很容易构造一个 $G$ 使得 $I(G) \subseteq I(p)$。一个完全连接的有向无环图 $G$ 对于任何分布都是一个 $I$-映射，因为 $I(G) &#x3D; \emptyset$。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221008214503-c3dc.webp" alt="全连接贝叶斯网络"></p>
+<figcaption>四个变量的全连接贝叶斯网络。这个模型没有独立性，是一个$I$-map 用于任何分布。</figcaption>
+
+<p>一个更有趣的问题是，我们是否可以为 $p$ 找到一个最小的 $I$ -映射 $G$，也就是说，找到一个 $I$ -映射 $G$，使得即使从 $G$ 中删除一条边也会导致它不再是 $I$-映射。这很简单：我们可以从一个完全连接的 $G$ 开始并删除边，直到 $G$ 不再是 $I$-映射为止。一种方法是遵循图的自然拓扑排序，并删除节点祖先，直到不再可能为止；在进行结构学习时，我们将在课程结束时重新审视这种修剪方法。</p>
+<p>然而，我们真正感兴趣的是确定任何概率分布 $p$ 是否总是承认一个 <strong>完美</strong> 映射 $G$，其中 $I(p)&#x3D;I(G)$。不幸的是，答案是否定的。例如，考虑以下三个变量 $X,Y,Z$ 上的分布 $p$：我们从伯努利分布中采样 $X,Y \sim \text{Ber}(0.5)$，并且设置 $Z &#x3D; X \text{ xor } Y$（我们称之为 “含嘈异或” ）。可以使用一些代数 ${X \perp Y, Z \perp Y, X \perp Z} \in I(p), \text{but}, Z \perp {Y,X} \not\in I(p)$ 来验证。因此，$X \rightarrow Z \leftarrow Y$ 是 $p$ 的 $I$ -映射，但是我们之前讨论的 3 节点图结构都无法完美描述 $I(p)$，因此这个分布没有完美映射。</p>
+<p>一个相关的问题是完美映射在存在时是否是唯一的。同样，情况并非如此，因为 $X \rightarrow Y$ 和 $X \leftarrow Y$ 编码相同的独立性，但会形成不同的图。更一般地说，如果两个贝叶斯网络 $G_1、G_2$ 编码相同的依赖关系 $I(G_1) &#x3D; I(G_2)$，则它们是 $I$-等价的。</p>
+<p>两个贝叶斯网络何时 $I$ -等效呢？为了回答这个问题，让我们回到包含三个变量的简单示例（图 2）。图中的所有有向图都有具有相同的 <strong>框架</strong>，意味着如果放弃箭头的方向性，我们在所有情况下都会获得相同的无向图。</p>
+<div class="note info no-icon flat"><p>备注：</p>
+<p>级联型结构（a，b）明显对称，箭头的方向性无关紧要。事实上，(a,b,c) 编码完全相同的依赖关系。我们可以改变箭头的方向，只要我们不把它们变成 V-结构（d）。然而，当我们确实有一个 V 结构时，我们不能更改任何箭头：结构 (d) 是唯一描述依赖关系 $X \not\perp Y \mid Z$ 的结构。这些示例为 $I$-等价的以下一般结果提供了直觉。</p>
+</div>
+
+<p><strong>事实：</strong> 如果 $G,G’$ 具有相同的骨架和相同的 $v$ 结构，则 $I(G) &#x3D; I(G’)$</p>
+<p>同样，很容易直观地理解为什么成立。如果变量之间的 $d$ -分离相同，则两个图是 $I$ -等价的。我们可以翻转任何边的方向性，除非它形成一个 $v$ -结构，并且图的 $d$-连接性将保持不变。我们请读者参考 Koller 和 Friedman 的教科书，以获得定理 3.7（第 77 页）的完整证明。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/d97aeac1.html">http://xishansnow.github.io/posts/d97aeac1.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/">贝叶斯统计</a><a class="post-meta__tags" href="/tags/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/">概率图模型</a><a class="post-meta__tags" href="/tags/%E8%A1%A8%E7%A4%BA/">表示</a><a class="post-meta__tags" href="/tags/%E6%9C%89%E5%90%91%E5%9B%BE/">有向图</a><a class="post-meta__tags" href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C/">贝叶斯网络</a></div><div class="post-share"><div class="social-share" data-image="/img/coffe_08.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/9ac9764c.html" title="2️⃣  概率图表示--马尔可夫随机场"><img class="cover" src="/img/book_01.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">2️⃣  概率图表示--马尔可夫随机场</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a><a class="pagination-related" href="/posts/e892b070.html" title="高斯过程精简版教程"><img class="cover" src="/img/coffe_09.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">高斯过程精简版教程</div></div><div class="info-2"><div class="info-item-1">   【摘要】 高斯过程 Gaussian Processes 是概率论和数理统计中随机过程的一种，是多元高斯分布的扩展，被应用于机器学习、信号处理等领域。本文对高斯过程进行公式推导、原理阐述、可视化以及代码实现，介绍了以高斯过程为基础的高斯过程回归 基本原理、超参优化、高维输入等问题。 1 一元高斯分布我们从最简单最常见的一元高斯分布开始，其概率密度函数为 $$p(x) &#x3D; \frac{1}{\sigma\sqrt{2\pi}}\exp (-\frac{(x-\mu)^2}{2\sigma^2}) \tag{1}$$ 其中 $\mu$ 和 $\sigma$ 分别表示均值和方差，这个概率密度函数曲线画出来就是我们熟悉的钟形曲线，均值和方差唯一地决定了曲线的形状。   2 多元高斯分布从一元高斯分布推广到多元高斯分布，假设各维度之间相互独立，则有联合分布： $$p(\mathbf{x})&#x3D;p(x_1, x_2, …, x_n) &#x3D;...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/cc6501c0.html" title="高级模型--高斯过程与核学习"><img class="cover" src="/img/010.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-05</div><div class="info-item-2">高级模型--高斯过程与核学习</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a><a class="pagination-related" href="/posts/5600cedb.html" title="6️⃣  概率图推断--部分可观测马尔可夫随机场及 EM 算法"><img class="cover" src="/img/002.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-10</div><div class="info-item-2">6️⃣  概率图推断--部分可观测马尔可夫随机场及 EM 算法</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a><a class="pagination-related" href="/posts/ddea1113.html" title="近似推断--平均场近似"><img class="cover" src="/img/009.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-10</div><div class="info-item-2">近似推断--平均场近似</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a><a class="pagination-related" href="/posts/9ac9764c.html" title="2️⃣  概率图表示--马尔可夫随机场"><img class="cover" src="/img/book_01.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-18</div><div class="info-item-2">2️⃣  概率图表示--马尔可夫随机场</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a><a class="pagination-related" href="/posts/79afccf5.html" title="5️⃣  概率图推断--完全可观测贝叶斯网络及其推断"><img class="cover" src="/img/coffe_12.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-20</div><div class="info-item-2">5️⃣  概率图推断--完全可观测贝叶斯网络及其推断</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a><a class="pagination-related" href="/posts/d21ffbd6.html" title="高级模型--非参数模型的贝叶斯网络"><img class="cover" src="/img/book_16.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-30</div><div class="info-item-2">高级模型--非参数模型的贝叶斯网络</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="toc-text">1 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9F%BA%E6%9C%AC%E7%AC%A6%E5%8F%B7"><span class="toc-text">2 基本符号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%9C%89%E5%90%91%E5%9B%BE%E6%A8%A1%E5%9E%8B"><span class="toc-text">2 有向图模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%9C%89%E5%90%91%E5%9B%BE%E8%A1%A8%E7%A4%BA"><span class="toc-text">2.1 有向图表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%BD%A2%E5%BC%8F%E5%AE%9A%E4%B9%89"><span class="toc-text">2.2 形式定义</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91%E7%BB%9C%E7%9A%84%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB"><span class="toc-text">3 贝叶斯网络的依赖关系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%9C%89%E5%90%91%E5%9B%BE%E6%8F%8F%E8%BF%B0%E7%9A%84%E7%8B%AC%E7%AB%8B%E6%80%A7"><span class="toc-text">3.1 有向图描述的独立性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%9C%89%E5%90%91%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA%E8%83%BD%E5%8A%9B"><span class="toc-text">3.2 有向图的表示能力</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

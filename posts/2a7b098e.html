@@ -1,0 +1,299 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>雅可比矩阵与海森矩阵 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="   p{text-indent:2em}  1 泰勒展开式先回顾一下泰勒展开式，因为雅可比矩阵和海森矩阵，都和泰勒展开式有关系。 泰勒公式是将一个在 $x&amp;#x3D;x_{0}$ ​处具有 $n$ 阶导数的函数 $f(x)$ 利用关于 $(x-x_{0})$ 的 $n$..."><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/2a7b098e.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '雅可比矩阵与海森矩阵',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/coffe_11.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">雅可比矩阵与海森矩阵</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">雅可比矩阵与海森矩阵</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-04-13T12:00:00.000Z" title="发表于 2022-04-13 20:00:00">2022-04-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.214Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/">基础理论知识</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%8E%E7%9F%A9%E9%98%B5%E8%AE%BA/">线性代数与矩阵论</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><style>p{text-indent:2em}</style>
+
+<h2 id="1-泰勒展开式"><a href="#1-泰勒展开式" class="headerlink" title="1 泰勒展开式"></a>1 泰勒展开式</h2><p>先回顾一下泰勒展开式，因为雅可比矩阵和海森矩阵，都和泰勒展开式有关系。</p>
+<p>泰勒公式是将一个在 $x&#x3D;x_{0}$ ​处具有 $n$ 阶导数的函数 $f(x)$ 利用关于 $(x-x_{0})$ 的 $n$ 次多项式来逼近函数的方法。</p>
+<ul>
+<li>若函数 $f(x)$ 在包含 $x_{0}$ ​的某个闭区间 $[a，b]$ 上具有 $n$ 阶导数，且在开区间 $(a，b)$ 上具有 $(n+1)$ 阶导数，则对闭区间 $[a，b]$ 上任意一点 $x$ ，下式成立：</li>
+</ul>
+<p>$$<br>f(x)&#x3D;\frac{f\left(x_{0}\right)}{0 !}+\frac{f^{\prime}\left(x_{0}\right)}{1 !}\left(x-x_{0}\right)+\frac{f^{\prime \prime}\left(x_{0}\right)}{2 !}\left(x-x_{0}\right)^{2}+\ldots+\frac{f^{(n)}\left(x_{0}\right)}{n !}\left(x-x_{0}\right)^{n}+R_{n}(x)\tag{5}<br>$$</p>
+<ul>
+<li><p>其中：$f^{(n)}(x)$ 表示 $f(x)$ 的 $n$ 阶导数；等号后的多项式称为函数 $f(x)$ 在 $x_{0}$ ​处的泰勒展开式，剩余的 $R_{n}(x)$ 是泰勒公式的余项，是 $\left(x-x_{0}\right)^{n}$ 的高阶无穷小。</p>
+</li>
+<li><p>佩亚诺 (Peano）余项（普遍）：</p>
+</li>
+</ul>
+<p>$$<br>R_{n}(x)&#x3D;\mathrm{o}\left[\left(x ;-x_{0}\right)^{n}\right]\tag{6}<br>$$</p>
+<ul>
+<li>拉格朗日（Lagrange）余项：</li>
+</ul>
+<p>$$<br>R_{n}(x)&#x3D;f^{(n+1)}\left[x_{0}+\theta\left(x-x_{0}\right)\right] \frac{\left(x-x_{0}\right)^{n+1}}{(n+1) !}\tag{7}<br>$$</p>
+<h2 id="2-雅可比矩阵与作用"><a href="#2-雅可比矩阵与作用" class="headerlink" title="2 雅可比矩阵与作用"></a>2 雅可比矩阵与作用</h2><h3 id="2-1-雅可比矩阵"><a href="#2-1-雅可比矩阵" class="headerlink" title="2.1 雅可比矩阵"></a>2.1 雅可比矩阵</h3><p>在向量分析中，<code>雅可比矩阵是一阶偏导数以一定方式排列成的矩阵</code>，其行列式称为<code>雅可比行列式</code>。在代数几何中，代数曲线的雅可比量表示雅可比簇：伴随该曲线的一个代数群，曲线可以嵌入其中。 它们全部都以数学家卡尔·雅可比命名。</p>
+<p>雅可比矩阵的重要性在于它体现了一个可微方程与给出点的最优线性逼近。因此，雅可比矩阵类似于 <code>向量输出型函数</code> 的偏导数。</p>
+<p>假设 $F : \mathbb{R}<em>{n} \rightarrow \mathbb{R}</em>{m}$ 是一个从欧式 $n$ 维空间转换到欧式 $m$ 维空间的函数。这个函数由 $m$ 个实值函数组成：$\mathrm{y_{1}}(\mathrm{x_{1}} ，\ldots，\mathrm{x_{n}})，\ldots，\mathrm{y_{m}}(\mathrm{x_{1}} ，\ldots，\mathrm{x_{n}})$；则这些实值函数的偏导数（如果存在）可以组成一个 $m$ 行 $n$ 列的矩阵，就是所谓的<strong>雅可比矩阵</strong>： </p>
+<p>$$<br>\left[<br>\begin{array}{ccc}<br>{\frac{\partial y_{1}}{\partial x_{1}}} &amp; {\cdots} &amp; {\frac{\partial y_{1}}{\partial x_{n}}} \<br>{\vdots} &amp; {\ddots} &amp; {\vdots} \<br>{\frac{\partial y_{m}}{\partial x_{1}}} &amp; {\cdots} &amp; {\frac{\partial y_{m}}{\partial x_{n}}}<br>\end{array}<br>\right] \tag{1}<br>$$</p>
+<p>此矩阵通常被表示为：$J_{F}\left(x_{1}，\ldots，x_{n}\right)$ 或者$\frac{\partial \left(y_{1}，\ldots，y_{m}\right)}{\partial\left( x_{1}，\ldots，x_{n}\right)}$ 。其第 $i$ 行是函数 $y_i(i&#x3D;1，…，m)$ 关于 $X$ 的梯度向量的转置。</p>
+<p>如果 $p$ 是 $\mathbb{\mathbb{R}}^{n}$ ​中的一点，且 $F$ 在 $p$ 点可微分，则在 $p$ 点处的导数由 $J_{F}(\mathbf{p})$ 给出（一次性获得多个实值函数的偏导数表示）。</p>
+<p>在此情况下，根据泰勒一阶展开式，$\mathbb{R}^n$ 中的任意一点 $\mathbf{x}$ 的值 $F(\mathbf{x})$，可以由 $p$ 点的函数 $F(\mathbf{p})$ 和一阶导数 $J_F(\mathbf{p})$ 近似求得: </p>
+<p>$$<br>F(\mathbf{x}) \approx F(\mathbf{p})+J_{F}(\mathbf{p}) \cdot(\mathbf{x}-\mathbf{p})\tag{2}<br>$$</p>
+<p>也就是说，雅可比矩阵是用矩阵形式来表示<code>向量型函数</code>的<code>多元一阶偏微分</code> 的方法，可以有效简化公式推导和理解，并指导算法的矩阵化实现。</p>
+<h3 id="2-2-雅可比行列式"><a href="#2-2-雅可比行列式" class="headerlink" title="2.2 雅可比行列式"></a>2.2 雅可比行列式</h3><p>当 $m &#x3D; n$ 时，$F$ 是从 $n$ 维空间到 $n$ 维空间的向量型函数，其 <code>雅可比矩阵</code> 是一个方阵。 于是可以取其行列式，被称为<code>雅可比行列式</code>。</p>
+<p>在某个给定点的雅可比行列式，提供了<code>在接近该点时的表现</code>的重要信息。例如：</p>
+<ul>
+<li>如果连续可微函数 $F$ 在 $p$ 点的<code>雅可比行列式不为零</code>，则其在该点附近有逆函数。 </li>
+<li>如果 $p$ 点的 <code>雅可比行列式是正数</code>，则 $F$ 在 $p$ 点的取向不变；</li>
+<li>如果是负数，则 $F$ 的取向相反。</li>
+<li>雅可比行列式的绝对值，代表了函数 $F$ 在 $p$ 点的缩放因子。</li>
+</ul>
+<h2 id="3-海森矩阵与作用"><a href="#3-海森矩阵与作用" class="headerlink" title="3 海森矩阵与作用"></a>3 海森矩阵与作用</h2><ul>
+<li><code>海森矩阵 (Hessian matrix 或 Hessian)</code> 是一个<code>自变量为向量的实值函数的二阶偏微分组成的方阵</code>，该实值函数表示为：</li>
+</ul>
+<p>$$<br>f\left(x_{1}，x_{2} \ldots，x_{n}\right)\tag{3}<br>$$</p>
+<ul>
+<li>如果 $f$ 的所有二阶导数都存在，那么 $f$ 的海森矩阵可抽象表示为：</li>
+</ul>
+<p>$$<br>H(f)<em>{i j}(x)&#x3D;D</em>{i} D_{j} f(x)\tag{4}<br>$$</p>
+<p>其中 $x&#x3D;\left(x_{1}，x_{2} \dots，x_{n}\right)$</p>
+<p>也就是说，海森矩阵 $H(f)$ 为：</p>
+<p>$$<br>\left[<br>\begin{array}{cccc}<br>{\frac{\partial^{2} f}{\partial x_{1}^{2}}} &amp; {\frac{\partial^{2} f}{\partial x_{1} \partial x_{2}}} &amp; {\cdots} &amp; {\frac{\partial^{2} f}{\partial x_{1} \partial x_{n}}} \<br>{\frac{\partial^{2} f}{\partial x_{2} \partial x_{1}}} &amp; {\frac{\partial^{2} f}{\partial x_{2}^{2}}} &amp; {\cdots} &amp; {\frac{\partial^{2} f}{\partial x_{2} \partial x_{n}}} \<br>{\vdots} &amp; {\vdots} &amp; {\ddots} &amp; {\vdots} \<br>{\frac{\partial^{2} f}{\partial x_{n} \partial x_{1}}} &amp; {\frac{\partial^{2} f}{\partial x_{n} \partial x_{2}}} &amp; {\cdots} &amp; {\frac{\partial^{2} f}{\partial x_{n}^{2}}}<br>\end{array}<br>\right]\tag{5}<br>$$</p>
+<ul>
+<li>海森矩阵常被应用于牛顿法，利用二阶导数加速解决的大规模优化问题。</li>
+</ul>
+<h3 id="3-1-海森矩阵的正定性与函数凹凸性的关系"><a href="#3-1-海森矩阵的正定性与函数凹凸性的关系" class="headerlink" title="3.1 海森矩阵的正定性与函数凹凸性的关系"></a>3.1 海森矩阵的正定性与函数凹凸性的关系</h3><p><code>Hessian 矩阵</code>的正定性在判断优化算法可行性时非常有用，海森矩阵正定，则：</p>
+<ul>
+<li>函数的二阶偏导数恒大于 $0$</li>
+<li>函数的一阶导数始终处于递增状态</li>
+<li>函数为凸</li>
+</ul>
+<p>因此，在诸如 <code>牛顿法</code> 等梯度方法中，使用海森矩阵的正定性，可以非常便捷的判断函数是否有凸性，也就是是否可收敛到局部或全局最优解。</p>
+<p>正定性的判定方法有很多种，其中最方便也是常用的方法为特征值法：</p>
+<ul>
+<li>若所有特征值均不小于零，则称为<strong>半正定</strong>。</li>
+<li>若所有特征值均大于零，则称为<strong>正定</strong>。详细的判断方法可以参考博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/abc13526222160/article/details/88562191#12_16">奇异值分解 SVD</a></li>
+<li><code>多元函数</code>的海森矩阵半正定，类似于<code>一元函数</code>的二阶导数非负；因此，与根据二阶导数来判断一元函数的凹凸性类似，<code>多元函数为凸函数的充要条件为其海森矩阵半正定</code>。</li>
+</ul>
+<h3 id="4-2-海森矩阵及其在牛顿法中的作用"><a href="#4-2-海森矩阵及其在牛顿法中的作用" class="headerlink" title="4.2 海森矩阵及其在牛顿法中的作用"></a>4.2 海森矩阵及其在牛顿法中的作用</h3><p>牛顿法主要应用于方程求解和最优化。</p>
+<h4 id="4-2-1-一元自变量的牛顿法解方程"><a href="#4-2-1-一元自变量的牛顿法解方程" class="headerlink" title="4.2.1 一元自变量的牛顿法解方程"></a>4.2.1 一元自变量的牛顿法解方程</h4><p>并非所有的方程都有封闭形式解，或者有些封闭形式解很复杂，导致求解困难。 利用牛顿法，可以迭代获得近似的数值解。原理是利用泰勒公式，在 $x_{0}$ ​处展开，展开到一阶，如下： </p>
+<p>$$<br>f(x)&#x3D;f\left(x_{0}\right)+\left(x-x_{0}\right) f^{\prime}\left(x_{0}\right)\tag{8}<br>$$</p>
+<p>则求解方程  $f(x)&#x3D;0$，转变为求解 </p>
+<p>$$<br>f(x_{0})+(x–x_{0})f^\prime(x_{0})&#x3D;0<br>$$</p>
+<p>得到近似解为：  $x&#x3D;x_{1} &#x3D; x_{0}–f(x_{0})&#x2F;f^\prime(x_{0})$ 。</p>
+<p>这里 $x_{1}$　并不能真正让 $f(x)&#x3D;0$，只能说 $f(x_{1})$ 比 $f(x_{0})$ 更接近 $0$ ，于是迭代求解的想法就很自然了，可以进而推出:</p>
+<p>$$<br>x_{n+1}&#x3D;x_{n}–\frac{f(x_{n})}{f^\prime(x_{n})}<br>$$</p>
+<p>通过迭代，会逐步在某点 $x^{<em>}$ 处收敛到 $f\left(x^{</em>}\right)&#x3D;0$ 。整个过程如下图：</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20220415101109-8eac.webp"></p>
+<h4 id="4-2-2-一元自变量的牛顿法最优化"><a href="#4-2-2-一元自变量的牛顿法最优化" class="headerlink" title="4.2.2 一元自变量的牛顿法最优化"></a>4.2.2 一元自变量的牛顿法最优化</h4><p>在最优化的问题中，<strong>线性最优化</strong>至少可以使用单纯形法（或称不动点算法）求解，但对于<strong>非线性优化问题</strong>，牛顿法提供了一种求解的办法。 </p>
+<p>假设任务是优化一个目标函数 $f$ ，求函数 $f$ 的极大极小问题。根据极值求解的方法，该问题可以转化为解方程问题，即一阶导数 $f^\prime&#x3D;0$ 。解方程可以使用上一节中的牛顿法。 </p>
+<p>首先对 $f(x)$ 建模，将其在探索点 $x_{n}$ ​处做泰勒展开，展开到 $2$ 阶形式（ 因为求一阶导数等于 $0$ 的解，根据上一节知识，需要用到二阶导数 ），得到 $f(x)$ 一阶导数和二阶导数形式： </p>
+<p>$$<br>f(x)&#x3D;f\left(x_{n}\right)+f^{\prime}\left(x_{n}\right)\left(x-x_{n}\right)+\frac{f^{\prime \prime}\left(x_{n}\right)}{2}\left(x-x_{n}\right)^{2}\tag{9}<br>$$</p>
+<p>极值点出现在一阶导数为 $0$ 的点，因此最优化问题转变成了方程 $f^\prime(x)&#x3D;0$ 的求解问题，结合上一节牛顿法，可以转换为： </p>
+<p>$$<br>f^{\prime}(x)&#x3D;f^{\prime}\left(x_{n}\right)+f^{\prime \prime}\left(x_{n}\right)\left(x-x_{n}\right)&#x3D;0\tag{10}<br>$$</p>
+<p>直接使用牛顿法，得到如下迭代式： </p>
+<p>$$<br>x_{n+1}&#x3D;x_{n}-\frac{f^{\prime}\left(x_{n}\right)}{f^{\prime\prime}\left(x_{n}\right)}，n&#x3D;0，1，\ldots\tag{11}<br>$$</p>
+<p>一般认为牛顿法利用了曲线本身的信息，因此比梯度下降法更容易收敛（迭代更少次数），如下图是一个最小化一个目标方程的例子，红色曲线是利用牛顿法迭代求解，绿色曲线是利用梯度下降法求解。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20220415101632-ecf8.webp"></p>
+<h4 id="4-2-3-多元自变量的牛顿法最优化与海森矩阵"><a href="#4-2-3-多元自变量的牛顿法最优化与海森矩阵" class="headerlink" title="4.2.3 多元自变量的牛顿法最优化与海森矩阵"></a>4.2.3 多元自变量的牛顿法最优化与海森矩阵</h4><p>上面讨论的是一元自变量的情况，对于高维情况（如神经网络的权重），牛顿迭代公式中的二阶导数就要用海森矩阵来代替： </p>
+<p>$$<br>x_{n+1}&#x3D;x_{n}-\left[H_{f\left(x_{n}\right)}\right]^{-1} \nabla f\left(x_{n}\right)，n \geq 0\tag{12}<br>$$</p>
+<p>其中　$H$ 是海森矩阵。 高维情况依然可以用牛顿迭代求解，但是问题是海森矩阵引入的复杂性，使牛顿迭代求解难度大大增加，但是已经有了解决这个问题的办法，那就是 <code>拟牛顿法（Quasi-Newton method）</code>。该方法不再直接计算海森矩阵，而是每一步使用梯度向量更新海森矩阵的近似。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/2a7b098e.html">http://xishansnow.github.io/posts/2a7b098e.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a><a class="post-meta__tags" href="/tags/%E7%9F%A9%E9%98%B5%E8%B7%AF/">矩阵路</a><a class="post-meta__tags" href="/tags/%E9%9B%85%E5%8F%AF%E6%AF%94%E7%9F%A9%E9%98%B5/">雅可比矩阵</a><a class="post-meta__tags" href="/tags/%E6%B5%B7%E6%A3%AE%E7%9F%A9%E9%98%B5/">海森矩阵</a></div><div class="post-share"><div class="social-share" data-image="/img/coffe_11.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/214ef86a.html" title="高级模型--正则化贝叶斯图模型"><img class="cover" src="/img/book_14.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">高级模型--正则化贝叶斯图模型</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a><a class="pagination-related" href="/posts/1dc4d60c.html" title="中心差分近似"><img class="cover" src="/img/005.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">中心差分近似</div></div><div class="info-2"><div class="info-item-1">   p{text-indent:2em}  什么是中心差分近似？对于具有多阶导数的连续函数 $f(x)$， 根据泰勒展开公式有： $$f(t)&#x3D;f(t_0) + f^\prime(t_0)(t-t_0)+\frac{1}{2!}f^{\prime\prime}(t_0)(t-t_0)^2 + \frac{1}{3!}f^{\prime\prime\prime}(t_0)(t-t_0)^3 + \ldots$$ 示意图如下：  令 $h&#x3D;t-t_0$, $t_0&#x3D;x$，则有： $$f(x+h)&#x3D;f(x) + hf^\prime(x)+\frac{h^2}{2!}f^{\prime\prime}(x) + \frac{h^3}{3!}f^{\prime\prime\prime}(x) + \ldots\f(x-h)&#x3D;f(x) - hf^\prime(x)+\frac{h^2}{2!}f^{\prime\prime}(x) - \frac{h^3}{3!}f^{\prime\prime\prime}(x) +...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%B3%B0%E5%8B%92%E5%B1%95%E5%BC%80%E5%BC%8F"><span class="toc-text">1 泰勒展开式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%9B%85%E5%8F%AF%E6%AF%94%E7%9F%A9%E9%98%B5%E4%B8%8E%E4%BD%9C%E7%94%A8"><span class="toc-text">2 雅可比矩阵与作用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E9%9B%85%E5%8F%AF%E6%AF%94%E7%9F%A9%E9%98%B5"><span class="toc-text">2.1 雅可比矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E9%9B%85%E5%8F%AF%E6%AF%94%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="toc-text">2.2 雅可比行列式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%B5%B7%E6%A3%AE%E7%9F%A9%E9%98%B5%E4%B8%8E%E4%BD%9C%E7%94%A8"><span class="toc-text">3 海森矩阵与作用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%B5%B7%E6%A3%AE%E7%9F%A9%E9%98%B5%E7%9A%84%E6%AD%A3%E5%AE%9A%E6%80%A7%E4%B8%8E%E5%87%BD%E6%95%B0%E5%87%B9%E5%87%B8%E6%80%A7%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-text">3.1 海森矩阵的正定性与函数凹凸性的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E6%B5%B7%E6%A3%AE%E7%9F%A9%E9%98%B5%E5%8F%8A%E5%85%B6%E5%9C%A8%E7%89%9B%E9%A1%BF%E6%B3%95%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">4.2 海森矩阵及其在牛顿法中的作用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-1-%E4%B8%80%E5%85%83%E8%87%AA%E5%8F%98%E9%87%8F%E7%9A%84%E7%89%9B%E9%A1%BF%E6%B3%95%E8%A7%A3%E6%96%B9%E7%A8%8B"><span class="toc-text">4.2.1 一元自变量的牛顿法解方程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-2-%E4%B8%80%E5%85%83%E8%87%AA%E5%8F%98%E9%87%8F%E7%9A%84%E7%89%9B%E9%A1%BF%E6%B3%95%E6%9C%80%E4%BC%98%E5%8C%96"><span class="toc-text">4.2.2 一元自变量的牛顿法最优化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-3-%E5%A4%9A%E5%85%83%E8%87%AA%E5%8F%98%E9%87%8F%E7%9A%84%E7%89%9B%E9%A1%BF%E6%B3%95%E6%9C%80%E4%BC%98%E5%8C%96%E4%B8%8E%E6%B5%B7%E6%A3%AE%E7%9F%A9%E9%98%B5"><span class="toc-text">4.2.3 多元自变量的牛顿法最优化与海森矩阵</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

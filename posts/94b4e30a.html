@@ -1,0 +1,514 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>神经常微分方程 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="神经常微分方程"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/94b4e30a.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '神经常微分方程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/book_08.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">神经常微分方程</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">神经常微分方程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-15T02:00:00.000Z" title="发表于 2023-02-15 10:00:00">2023-02-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.211Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%94%9F%E6%88%90%E4%BB%BB%E5%8A%A1/">生成任务</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%94%9F%E6%88%90%E4%BB%BB%E5%8A%A1/%E5%BD%92%E4%B8%80%E5%8C%96%E6%B5%81/">归一化流</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>【摘 要】 我们介绍了一个新的深度神经网络模型家族。在该模型中，我们并没有定义隐藏层的离散序列，而是使用神经网络对隐状态的导数进行了参数化，并使用黑盒微分方程求解器计算神经网络的输出。这些“连续深度” 的模型具有恒定的内存成本，这使其计算策略适应每个输入，并且可以明确地以数值精度换取速度。我们在“连续深度” 的残差网络和“连续时间”的隐变量模型中展示了这些性质。我们还构建了连续的归一化流，这是一种可以通过最大似然进行训练、且无需对数据维度进行分区或排序的生成式模型。对于训练，我们展示了在不访问内部计算的情况下，任意常微分方程求解的反向传播方法，这使大型模型能够对常微分方程进行端到端训练。</p>
+<p>【原 文】 Chen, R.T.Q. et al. (2019) ‘Neural Ordinary Differential Equations’. arXiv. Available at: <a target="_blank" rel="noopener" href="http://arxiv.org/abs/1806.07366">http://arxiv.org/abs/1806.07366</a> (Accessed: 15 November 2022).</p>
+<h2 id="1-常微分方程及其数值解"><a href="#1-常微分方程及其数值解" class="headerlink" title="1 常微分方程及其数值解"></a>1 常微分方程及其数值解</h2><h3 id="1-1-常微分方程问题"><a href="#1-1-常微分方程问题" class="headerlink" title="1.1 常微分方程问题"></a>1.1 常微分方程问题</h3><p>常微分方程是只包含单个自变量 $x$、未知函数 $h(x)$ 和未知函数导数 $h’(x)$ 的等式，例如 $h’(x) &#x3D; 2x$ 就是一个常微分方程。但更常见的可以表示为 $dh(x)&#x2F;dx &#x3D; f(h(x), x)$，其中 $f(h(x), x)$ 表示由 $h(x)$ 和 $x$ 组成的表达式。对于常微分方程，一般的理解是希望得出 $h(x)$ 的解析表达式，例如 $h’(x) &#x3D; 2x$ 的通解为 $h(x)&#x3D;x^2 +C$，其中 $C$ 表示任意常数。但在工程中更常用的是数值解，即给定一个初值 $h(x_0)$，我们希望解出末值 $h(x_1)$，这样并不需要得出 $h(x)$ 的解析形式，只需要一步步逼近它就行了。</p>
+<p>我们可以对初值为 $h(0)$ 的常微分方程作出如下形式化描述：</p>
+<p>$$<br>\frac{dh(t)}{dt} &#x3D; f(t, h(t))<br>$$</p>
+<p>对 ODE 进行积分有</p>
+<p>$$<br>h(t) &#x3D; h(s) + \int_s^t f(x, h(x)) dx<br>$$</p>
+<p>根据积分中值定理，可近似为</p>
+<p>$$<br>h(t) &#x3D; h(s) + (t - s) \cdot f(x, h(x)), x \in [s, t]<br>$$</p>
+<p>进而可以写成递推式：</p>
+<p>$$<br>h(t + \Delta t) &#x3D; h(t) + \Delta t \cdot f(x, h(x))<br>$$</p>
+<p>如果能估计出各步的 $f(x, h(x))$，由 $h(0)$ 开始就可以逐步推出 $h(T)$</p>
+<p>此外，如果步长为负则得到反向的递推公式</p>
+<p>$$<br>h(t - \Delta t) &#x3D; h(t) - \Delta t \cdot f(x, h(x))<br>$$</p>
+<p>可由 $h(T)$ 逐步推出 $h(0)$。</p>
+<h3 id="1-2-传统求解器举例"><a href="#1-2-传统求解器举例" class="headerlink" title="1.2 传统求解器举例"></a>1.2 传统求解器举例</h3><p>现有各种 ODE Solver 对 $f(x, h(x))$ 进行了不同的估计：</p>
+<ol>
+<li>Euler 法：$f(x, h(x)) \approx f(s, h(s))$</li>
+<li>中点法（RK2）：$f(x, h(x)) \approx \frac{1}{2} \cdot (f(s, h(s)) + f(t, h(s) + (t - s) \cdot f(s, h(s))))$</li>
+</ol>
+<p>此外还有 Runge-Kutta (RK4) 和 Adams-Bashforth 等（参见计算数学相关文献）。</p>
+<p>以 Euler 法为例，当步长 $\Delta t$ 较小时，可以用</p>
+<p>$$<br>h(t + \Delta t) \approx h(t) + \Delta t \cdot f(t, h(t))<br>$$</p>
+<p>从 $h(t)$ 的初值开始一步步估算出终值。</p>
+<p>伪码如下（步长不必固定）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> dt <span class="keyword">in</span> dts:</span><br><span class="line">    h += dt * f(t, h)</span><br><span class="line">    t += dt</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-问题的提出"><a href="#2-问题的提出" class="headerlink" title="2 问题的提出"></a>2 问题的提出</h2><p>现在回过头来讨论神经网络，本质上不论是全连接、循环还是卷积网络，它们都类似于一个非常复杂的复合函数，复合次数就等于层级的深度。例如两层全连接网络可以表示为 $Y&#x3D;g(g(X, θ_1), θ_2)$，因此每一个神经网络层级都类似于万能函数逼近器。因为整体是复合函数，所以很容易接受复合函数的求导方法：链式法则，并将梯度从最外一层的函数一点点先向里面层级的函数传递，并且每传到一层函数，就可以更新该层的参数 $θ$。现在问题是，在前向传播过后需要保留所有层的激活值，并在沿计算路径反传梯度时利用这些激活值。这对内存的占用非常大，因此也就限制了深度模型的训练过程。</p>
+<p>注意到残差网络、RNN 网络的 decoder、归一化流的模型与上述 Euler 法有类似的形式：</p>
+<p>$$<br>h_{t+1} &#x3D; h_{t} + f(h_t \thet\mathbf{a}_t)<br>$$</p>
+<div style="margin: 0 0 20px;">
+                    <div style=" margin: 0 auto;">
+                    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: %0 Pages: 1 -->
+<svg 
+ viewBox="0.00 0.00 682.89 121.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 117)">
+<title>ODE Solver</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-117 678.8906,-117 678.8906,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_ode</title>
+<polygon fill="none" stroke="#000000" points="83,-8 83,-105 409.8906,-105 409.8906,-8 83,-8"/>
+<text text-anchor="middle" x="246.4453" y="-88.4" font-family="Times,serif" font-size="14.00" fill="#000000">t=0</text>
+</g>
+<!-- h0 -->
+<g id="node1" class="node">
+<title>h0</title>
+<text text-anchor="middle" x="27" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">h(0)</text>
+</g>
+<!-- dot -->
+<g id="node3" class="node">
+<title>dot</title>
+<text text-anchor="middle" x="118" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">.</text>
+</g>
+<!-- h0&#45;&gt;dot -->
+<g id="edge4" class="edge">
+<title>h0&#45;&gt;dot</title>
+<path fill="none" stroke="#000000" d="M54.303,-34C62.5813,-34 71.8217,-34 80.6405,-34"/>
+<polygon fill="#000000" stroke="#000000" points="80.7163,-37.5001 90.7163,-34 80.7162,-30.5001 80.7163,-37.5001"/>
+</g>
+<!-- ht -->
+<g id="node2" class="node">
+<title>ht</title>
+<text text-anchor="middle" x="647.8906" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">h(T)</text>
+</g>
+<!-- f -->
+<g id="node4" class="node">
+<title>f</title>
+<polygon fill="none" stroke="#000000" points="290.8906,-52 236.8906,-52 236.8906,-16 290.8906,-16 290.8906,-52"/>
+<text text-anchor="middle" x="263.8906" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">f * dt</text>
+</g>
+<!-- dot&#45;&gt;f -->
+<g id="edge1" class="edge">
+<title>dot&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M145.099,-34C167.9852,-34 200.9968,-34 226.4145,-34"/>
+<polygon fill="#000000" stroke="#000000" points="226.4417,-37.5001 236.4417,-34 226.4416,-30.5001 226.4417,-37.5001"/>
+<text text-anchor="middle" x="190.9453" y="-38.2" font-family="Times,serif" font-size="14.00" fill="#000000">h, t</text>
+</g>
+<!-- plus -->
+<g id="node5" class="node">
+<title>plus</title>
+<ellipse fill="none" stroke="#000000" cx="383.8906" cy="-34" rx="18" ry="18"/>
+<text text-anchor="middle" x="383.8906" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">+</text>
+</g>
+<!-- dot&#45;&gt;plus -->
+<g id="edge3" class="edge">
+<title>dot&#45;&gt;plus</title>
+<path fill="none" stroke="#000000" d="M145.0616,-44.2644C156.3364,-48.176 169.6558,-52.3306 182,-55 229.3742,-65.2444 242.9043,-67.8249 290.8906,-61 313.9231,-57.7242 339.228,-50.1011 357.6193,-43.7875"/>
+<polygon fill="#000000" stroke="#000000" points="358.8036,-47.0812 367.0671,-40.4506 356.4723,-40.4808 358.8036,-47.0812"/>
+</g>
+<!-- f&#45;&gt;plus -->
+<g id="edge2" class="edge">
+<title>f&#45;&gt;plus</title>
+<path fill="none" stroke="#000000" d="M291.1205,-34C310.3745,-34 336.1232,-34 355.6083,-34"/>
+<polygon fill="#000000" stroke="#000000" points="355.708,-37.5001 365.708,-34 355.7079,-30.5001 355.708,-37.5001"/>
+</g>
+<!-- t1 -->
+<g id="node6" class="node">
+<title>t1</title>
+<text text-anchor="middle" x="465.8906" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">...</text>
+</g>
+<!-- plus&#45;&gt;t1 -->
+<g id="edge5" class="edge">
+<title>plus&#45;&gt;t1</title>
+<path fill="none" stroke="#000000" d="M402.0891,-34C409.9053,-34 419.3426,-34 428.5338,-34"/>
+<polygon fill="#000000" stroke="#000000" points="428.7068,-37.5001 438.7068,-34 428.7068,-30.5001 428.7068,-37.5001"/>
+</g>
+<!-- tt -->
+<g id="node7" class="node">
+<title>tt</title>
+<polygon fill="none" stroke="#000000" points="583.8906,-52 529.8906,-52 529.8906,-16 583.8906,-16 583.8906,-52"/>
+<text text-anchor="middle" x="556.8906" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">t=T</text>
+</g>
+<!-- t1&#45;&gt;tt -->
+<g id="edge6" class="edge">
+<title>t1&#45;&gt;tt</title>
+<path fill="none" stroke="#000000" d="M493.1936,-34C501.4719,-34 510.7123,-34 519.5311,-34"/>
+<polygon fill="#000000" stroke="#000000" points="519.6069,-37.5001 529.6069,-34 519.6068,-30.5001 519.6069,-37.5001"/>
+</g>
+<!-- tt&#45;&gt;ht -->
+<g id="edge7" class="edge">
+<title>tt&#45;&gt;ht</title>
+<path fill="none" stroke="#000000" d="M584.1936,-34C592.4719,-34 601.7123,-34 610.5311,-34"/>
+<polygon fill="#000000" stroke="#000000" points="610.6069,-37.5001 620.6069,-34 610.6068,-30.5001 610.6069,-37.5001"/>
+</g>
+</g>
+</svg>
+
+                    <div style="text-align: center;margin: -8px 0 10px;color: #858585;">ODE Solver</div>
+                    </div>
+                    
+                </div>
+
+
+<div style="margin: 0 0 20px;">
+                    <div style=" margin: 0 auto;">
+                    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: %0 Pages: 1 -->
+<svg 
+ viewBox="0.00 0.00 615.85 121.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 117)">
+<title>两层 ResNet 的前向计算</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-117 611.85,-117 611.85,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_l1</title>
+<polygon fill="none" stroke="#000000" points="82,-8 82,-105 386,-105 386,-8 82,-8"/>
+<text text-anchor="middle" x="234" y="-88.4" font-family="Times,serif" font-size="14.00" fill="#000000">ResNet Layer 1</text>
+</g>
+<!-- x -->
+<g id="node1" class="node">
+<title>x</title>
+<text text-anchor="middle" x="27" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">x</text>
+</g>
+<!-- dot1 -->
+<g id="node3" class="node">
+<title>dot1</title>
+<text text-anchor="middle" x="117" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">.</text>
+</g>
+<!-- x&#45;&gt;dot1 -->
+<g id="edge5" class="edge">
+<title>x&#45;&gt;dot1</title>
+<path fill="none" stroke="#000000" d="M54.003,-34C62.0277,-34 70.9665,-34 79.5309,-34"/>
+<polygon fill="#000000" stroke="#000000" points="79.7051,-37.5001 89.705,-34 79.705,-30.5001 79.7051,-37.5001"/>
+</g>
+<!-- y -->
+<g id="node2" class="node">
+<title>y</title>
+<text text-anchor="middle" x="580.85" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">y</text>
+</g>
+<!-- conv1 -->
+<g id="node4" class="node">
+<title>conv1</title>
+<polygon fill="none" stroke="#000000" points="234,-52 180,-52 180,-16 234,-16 234,-52"/>
+<text text-anchor="middle" x="207" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">conv</text>
+</g>
+<!-- dot1&#45;&gt;conv1 -->
+<g id="edge1" class="edge">
+<title>dot1&#45;&gt;conv1</title>
+<path fill="none" stroke="#000000" d="M144.003,-34C152.0277,-34 160.9665,-34 169.5309,-34"/>
+<polygon fill="#000000" stroke="#000000" points="169.7051,-37.5001 179.705,-34 169.705,-30.5001 169.7051,-37.5001"/>
+</g>
+<!-- plus1 -->
+<g id="node5" class="node">
+<title>plus1</title>
+<ellipse fill="none" stroke="#000000" cx="288" cy="-34" rx="18" ry="18"/>
+<text text-anchor="middle" x="288" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">+</text>
+</g>
+<!-- dot1&#45;&gt;plus1 -->
+<g id="edge4" class="edge">
+<title>dot1&#45;&gt;plus1</title>
+<path fill="none" stroke="#000000" d="M144.124,-48.4774C154.9629,-53.4942 167.7605,-58.4878 180,-61 203.5099,-65.8256 210.642,-66.5141 234,-61 244.2968,-58.5693 254.8688,-53.8578 263.8982,-49.0421"/>
+<polygon fill="#000000" stroke="#000000" points="265.6933,-52.0479 272.6731,-44.0771 262.2461,-45.9555 265.6933,-52.0479"/>
+</g>
+<!-- conv1&#45;&gt;plus1 -->
+<g id="edge2" class="edge">
+<title>conv1&#45;&gt;plus1</title>
+<path fill="none" stroke="#000000" d="M234.4229,-34C242.4647,-34 251.2772,-34 259.3909,-34"/>
+<polygon fill="#000000" stroke="#000000" points="259.5312,-37.5001 269.5312,-34 259.5311,-30.5001 259.5312,-37.5001"/>
+</g>
+<!-- relu1 -->
+<g id="node6" class="node">
+<title>relu1</title>
+<ellipse fill="none" stroke="#000000" cx="360" cy="-34" rx="18" ry="18"/>
+<text text-anchor="middle" x="360" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">σ</text>
+</g>
+<!-- plus1&#45;&gt;relu1 -->
+<g id="edge3" class="edge">
+<title>plus1&#45;&gt;relu1</title>
+<path fill="none" stroke="#000000" d="M306.1686,-34C313.869,-34 323.0257,-34 331.5834,-34"/>
+<polygon fill="#000000" stroke="#000000" points="331.5868,-37.5001 341.5867,-34 331.5867,-30.5001 331.5868,-37.5001"/>
+</g>
+<!-- l2 -->
+<g id="node7" class="node">
+<title>l2</title>
+<polygon fill="none" stroke="#000000" points="517.7751,-52 414.0749,-52 414.0749,-16 517.7751,-16 517.7751,-52"/>
+<text text-anchor="middle" x="465.925" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">ResNet Layer 2</text>
+</g>
+<!-- relu1&#45;&gt;l2 -->
+<g id="edge6" class="edge">
+<title>relu1&#45;&gt;l2</title>
+<path fill="none" stroke="#000000" d="M378.4507,-34C385.7636,-34 394.6314,-34 403.8801,-34"/>
+<polygon fill="#000000" stroke="#000000" points="404.0098,-37.5001 414.0098,-34 404.0098,-30.5001 404.0098,-37.5001"/>
+</g>
+<!-- l2&#45;&gt;y -->
+<g id="edge7" class="edge">
+<title>l2&#45;&gt;y</title>
+<path fill="none" stroke="#000000" d="M518.0074,-34C526.6932,-34 535.5444,-34 543.7578,-34"/>
+<polygon fill="#000000" stroke="#000000" points="543.7599,-37.5001 553.7599,-34 543.7599,-30.5001 543.7599,-37.5001"/>
+</g>
+</g>
+</svg>
+
+                    <div style="text-align: center;margin: -8px 0 10px;color: #858585;">两层 ResNet 的前向计算</div>
+                    </div>
+                    
+                </div>
+
+<p>如果假设这些离散的神经网络层（$\Delta t&#x3D;1$）之间还存在无穷多层，使得步长 $\Delta t$ 无穷小，以至于 $t$ 连续，则这些模型可写成 ODE 的形式：</p>
+<p>$$<br>\frac{dh(t)}{dt} &#x3D; f(h(t), t, \theta)<br>$$</p>
+<p>其输入层是这个 ODE 的初值 $h(0)$，输出层就是解 $h(t)$ 在 $t&#x3D;T$ 时的值 $h(T)$，模型本身可以被视为对初值为 $h(0)$ 的常微分方程定义的某个连续函数 $h(t)$ 的离散化。或者反过来理解，当我们添加更多层并采取更小的步骤时，可以使用神经网络定义的常微分方程 (ODE) 来参数化隐单元的连续动态：</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230215103846-8c1c.webp" alt="ResNet and Neural ODE"></p>
+<p>将神经网络建模为 ODE 的好处：</p>
+<ul>
+<li><strong>内存效率</strong>： 可以不对求解器的运算进行反向传播计算梯度，进而不用存储前向传递的任何中间量，解决了神经网络训练内存限制的瓶颈。</li>
+<li><strong>计算的自适应</strong>： 高效准确的 ODE 求解器已经发展了 120 多年，并且现代 ODE 求解器会提供关于误差增长的保证、监测误差水平、动态调整计算策略以达到所要求的精度水平，这使得网络深度是自适应的，通过数值误差的阈值进行控制，可在精度与速度之间权衡。</li>
+<li><strong>可扩展和可逆的归一化流</strong>： 连续转换的好处是变量变化公式更容易计算了，可以用它来构建新的可逆密度模型，进而避免了归一化流的瓶颈，并且可以直接通过最大似然进行训练。 </li>
+<li><strong>连续时间序列</strong>： 与需要离散化观测和发射间隔的递归神经网络不同，连续定义的动态可以自然地获得中间任意时刻的隐状态。</li>
+</ul>
+<h2 id="2-偏微分方程的反向自动微分"><a href="#2-偏微分方程的反向自动微分" class="headerlink" title="2 偏微分方程的反向自动微分"></a>2 偏微分方程的反向自动微分</h2><p>训练连续深度网络的主要技术难点是通过 ODE 求解器执行反向模式微分（也称为反向传播）。人们可以利用前向传播的运算进行微分，但会导致高内存成本并引入额外数值误差。 为此，我们将 ODE 求解器视为黑盒，并使用 <strong>伴随灵敏度方法</strong> 计算梯度（Pontryagin 等人，1962 年）。该方法通过 <em>及时地</em> 反向求解第二个 <em>增广常微分方程</em> 来计算梯度，适用于所有 ODE 求解器。这种方法与问题大小成线性关系，内存成本低，并明确控制数值误差。</p>
+<p>考虑优化一个标量值的损失函数 $L(\cdot)$，其输入是某个 ODE 求解器的结果：</p>
+<p>$$<br>L(\mathbf{z}(t_1)) &#x3D; L \left( \mathbf{z}(t_0) + \int^{t_1}_{t_0} f(\mathbf{z}(t), t, θ)dt \right) &#x3D; L( \text{ODESolve}(\mathbf{z}(t_0), f, t_0, t_1, θ))<br>$$</p>
+<p>为了优化 $L$，我们需要关于 $θ$ 的梯度。第一步是确定损失对每个时刻的隐藏状态 $\mathbf{z}(t)$ 的梯度。这个量被称为伴随 $\mathbf{a}(t) &#x3D; \partial L&#x2F;\partial  \mathbf{z}(t)$，其动态可以由另一个可以被视为链式法则瞬态模拟的 ODE 给出：</p>
+<p>$$<br>\frac{d\mathbf{a}_{\mathbf{z}}(t)}{dt} &#x3D; - \mathbf{a}(t)^T \frac{\partial f(\mathbf{z}(t),t,\theta)}{\partial \mathbf{z}}<br>$$</p>
+<p>我们可以通过再次调用 ODE 求解器来计算 $\partial L&#x2F;\partial \mathbf{z}(t_0)$。该求解器必须从 $\partial L&#x2F;\partial \mathbf{z}(t_1)$ 的初始值开始反向运行。一个复杂问题是：求解此 ODE 需要知道 $\mathbf{z}(t)$ 沿其整个轨迹的值。不过，我们可以简单地从其终值 $\mathbf{z}(t_1)$ 开始重新计算 $\mathbf{z}(t)$ 及其伴随值。</p>
+<p>计算关于参数 $θ$ 的梯度需要评估第三个积分，它取决于 $\mathbf{z}(t)$ 和 $\mathbf{a}(t)$：</p>
+<p>$$<br>\frac{dL }{dθ} &#x3D; − \int^{t_0}_{t1} \mathbf{a}(t)^T  \frac{\partial f \left(\mathbf{z}(t), t, θ \right) }{\partial θ} dt<br>$$</p>
+<p>在式 (4) 和式 (5) 中的 “向量-雅可比积” $\mathbf{a}(t)^T \frac{\partial f }{\partial z}$ 和 $\mathbf{a}(t)^T \frac{\partial f }{\partial θ}$ 可以通过自动微分有效地计算，其时间成本类似于计算 $f$。用于求解 $z$、$a$ 和 $\frac{\partial L }{\partial θ}$ 的所有积分都可以在对 ODE 求解器的一次调用中计算，它将原始状态、伴随和其他偏导数连接成一个向量。<code>算法 1</code> 展示了如何构建必要的动态，并调用 ODE 求解器一次计算所有梯度。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230215133124-a1ac.webp" alt="Algorithm01"></p>
+<p>大多数 ODE 求解器都可以选择多次输出状态 $\mathbf{z}(t)$。当损失取决于这些中间状态时，反向模式导数必须分解为一系列单独的求解，在每对连续的输出时间之间存在一个（<code>图 2</code>）。在每次观测时，必须在相应的偏导数 $\frac{\partial L}{\partial \mathbf{z}(t_i)}$ 的方向上调整伴随。</p>
+<p>上述结果扩展了 Stapor 等（2018 年，第 2.4.2 节）的结果。<code>算法 1</code> 的扩展版本，包括相对于 $t_0$ 和 $t_1$ 的导数可以在 <code>附录 C</code> 中找到。详细的推导在 <code>附录 B</code> 中提供。<code>附录 D</code> 提供了 Python 代码，它通过扩展 <code>autograd</code> 自动微分包来计算 <code>scipy.integrate.odeint</code> 的所有导数。此代码还支持所有高阶导数。我们已经在 <a target="_blank" rel="noopener" href="http://github.com/rtqichen/torchdiffeq">http://github.com/rtqichen/torchdiffeq</a> 上发布了 PyTorch 实现（Paszke 等，2017 年），包括几个标准 ODE 求解器的基于 GPU 的实现。</p>
+<details class="toggle" ><summary class="toggle-button" style="">title</summary><div class="toggle-content"><p>$$<br>\begin{align*}<br>\frac{d \mathbf{a}_{\mathbf{z}}(t)}{dt}<br>&amp;&#x3D; - (\mathbf{a}_h(t), \mathbf{a}_\theta(t), \mathbf{a}_t(t)) \cdot \begin{pmatrix}<br>\frac{\partial {h’(t)}}{\partial {h(t)}} &amp; \frac{\partial{h’(t)}}{\partial{\theta}} &amp; \frac{\partial{h’(t)}}{\partial{t}} \\<br>0 &amp; 0 &amp; 0 \\<br>0 &amp; 0 &amp; 0<br>\end{pmatrix} \\<br>&amp;&#x3D; -( \mathbf{a}_h(t) \cdot \frac{\partial{h’(t)}}{\partial{h(t)}}, \mathbf{a}_h(t) \cdot \frac{\partial{h’(t)}}{\partial{\theta}}, \mathbf{a}_h(t) \cdot \frac{\partial{h’(t)}}{\partial{t}} )<br>\end{align*}<br>$$</p>
+<p>于是得到了三个 ODE（原文构造了一个增广矩阵按一个 ODE 一起算，这里便于说明拆成了三个 ODE）<br>$$\begin{cases}<br>\frac{d\mathbf{a}_h(t)}{dt} &#x3D; - \mathbf{a}_h(t) \cdot \frac{\partial{f(h(t), t, \theta)}}{\partial{h(t)}} \\<br>\frac{d\mathbf{a}_\thet\mathbf{a}(t)}{dt} &#x3D; - \mathbf{a}_h(t) \cdot \frac{\partial{f(h(t), t, \theta)}}{\partial{\theta}} \\<br>\frac{d\mathbf{a}_t(t)}{dt} &#x3D; - \mathbf{a}_h(t) \cdot \frac{\partial{f(h(t), t, \theta)}}{\partial{t}}<br>\end{cases}$$</p>
+<p>对应的最终时刻的值</p>
+<ol>
+<li>$\mathbf{a}_h(T) &#x3D; \frac{\partial{L}}{\partial{h(T)}} $ 可由损失函数的定义计算出</li>
+<li>作者说“setting $\mathbf{a}_\thet\mathbf{a}(T) &#x3D; 0$”没说为什么，我猜是因为优化问题最终就是要让损失函数相对参数的梯度为0</li>
+<li>$\mathbf{a}_t(T) &#x3D; \frac{\partial{L}}{\partial{t}} |_T &#x3D; \frac{\partial{L}}{\partial{h}} \cdot \frac{\partial{h}}{\partial{t}} |_T &#x3D; \mathbf{a}_t(T) \cdot f(h(T), T, \theta)$</li>
+</ol>
+<p>于是反向递推可得到损失函数相对于初始时刻的状态、模型参数和时间 t 的梯度 $\mathbf{a}_h(0), \mathbf{a}_\thet\mathbf{a}(0), \mathbf{a}_t(0)$。</p>
+<p>以优化$\theta$为例，记$\alpha &#x3D; \frac{\partial{L}}{\partial{h(t_N)}}$，$\beta$为学习率，因为<br>$$\frac{\partial{L}}{\partial{\thet\mathbf{a}(t_0)}} &#x3D; \frac{\partial{L}}{\partial{\thet\mathbf{a}(t_N)}} - \int_{t_N}^{t_0} \alpha \cdot \frac{\partial{f(\theta)}}{\partial{\thet\mathbf{a}(t)}} dt$$<br>其中第一项按前面设置是0，$\alpha \cdot \frac{\partial{f(\theta)}}{\partial{\thet\mathbf{a}(t)}}$可以在使用<code>f(*args).backward(alpha)</code>后通过<code>theta.grad</code>得到，而且很多时候神经网络里的参数都是可以让输出值随便线性调整的（最后一层不是非线性），所以时间间隔具体是多少也不重要，省略了也可以。</p>
+</div></details>
+
+<h2 id="3-在监督学习任务中用-ODE-取代残差网络"><a href="#3-在监督学习任务中用-ODE-取代残差网络" class="headerlink" title="3 在监督学习任务中用 ODE 取代残差网络"></a>3 在监督学习任务中用 ODE 取代残差网络</h2><p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230215103854-38fa.webp" alt="Neural ODE on MNIST"></p>
+<ul>
+<li>用更少参数达到了 ResNet 相似的准确度</li>
+<li>达到了常数级的空间复杂度<ul>
+<li>RK-Net 是用 Runge-Kutta 前向估算 ODE，但优化时仍用的 BP 算法，所以内存还是高</li>
+</ul>
+</li>
+<li>时间复杂度都跟网络深度一致，但 ODE-Net 的深度是自适应的，无法直接比较（但后面实验表明 ODE-Net 更快）</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230215103859-1e7a.webp" alt="Error Control in ODE-Nets"></p>
+<ol>
+<li>a 表明 ODE 的数值解的误差阈值与计算量成反比，而计算量与运行时间成正比（b），所以可以训练时减小误差阈值以提高精度，测试时放松阈值以提升速度；</li>
+<li>反向计算梯度时计算量比前向计算还少一半，作者认为是反向传播时评估节点可能更少</li>
+</ol>
+<h2 id="4-连续型归一化流"><a href="#4-连续型归一化流" class="headerlink" title="4 连续型归一化流"></a>4 连续型归一化流</h2><h2 id="5-生成时间序列模型"><a href="#5-生成时间序列模型" class="headerlink" title="5 生成时间序列模型"></a>5 生成时间序列模型</h2><p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230215103903-7198.webp" alt="ODE Time-Series Model"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/rtqichen/torchdiffeq">作者代码</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/e/2PACX-1vQSh--YqRiXKjkydmoawYOk5e09eCCJvwzrmCLltMIdxDX7r20XEdZUmY6Y-wb1435EtdKYJMR5kKaT/pub?start=false&loop=false&delayms=3000&slide=id.g5284a8f4fd_0_106">他人解读的 PPT</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kmkolasinski/deep-learning-notes/tree/master/seminars/2019-03-Neural-Ordinary-Differential-Equations">他人复现代码</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ZEIsyV-0aTvYn6K8GyANPA">机器之心的解读</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/94b4e30a.html">http://xishansnow.github.io/posts/94b4e30a.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a><a class="post-meta__tags" href="/tags/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/">生成模型</a><a class="post-meta__tags" href="/tags/%E7%94%9F%E6%88%90%E4%BB%BB%E5%8A%A1/">生成任务</a><a class="post-meta__tags" href="/tags/%E5%BD%92%E4%B8%80%E5%8C%96%E6%B5%81/">归一化流</a><a class="post-meta__tags" href="/tags/%E5%B8%B8%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B/">常微分方程</a></div><div class="post-share"><div class="social-share" data-image="/img/book_08.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/3b152876.html" title="随机变量的变换"><img class="cover" src="/img/book_08.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">随机变量的变换</div></div><div class="info-2"><div class="info-item-1">   【摘 要】概率论的主要研究对象是随机变量及其分布，当随机变量经过某些变换或若干随机变量进行某种组合后，产生的新随机变量会具有什么性质是一个迷人的话题，本文介绍了变量变化法、累积分布函数法、矩生成函数法三种基础推导方法，其中变量变化法（也称变量变换法）是归一化流方法的支撑理论，累积分布函数法根据其名称显然只适用于连续型随机变量，矩生成法适用于多个独立随机变量的线性组合。 【原 文】https://bookdown.org/pkaldunn/DistTheory/Transformations.html 完成本模块后，您应该能够：  在给定原始变量分布的情况下，使用分布函数法、变量变换法和矩生成函数法推导目标变量的分布。 找到双变量情况下两个目标变量的联合分布。  1 引言在本章中，我们考虑在给定一个分布已知的随机变量 $X$ 和一个函数 $u(\cdot)$ 的情况下，某个随机变量 $Y &#x3D; u(X)$...</div></div></div></a><a class="pagination-related" href="/posts/737a759d.html" title="🔥 空间大数据组织管理方法索引帖"><img class="cover" src="/img/008.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">🔥 空间大数据组织管理方法索引帖</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 个人用于整理时空大数据引擎原理、方法及其实现的汇总帖，大致分为综述、原理方法、工程实践三个板块。 一、 综述 《空间大数据引擎综述文章：大数据时代的空间数据引擎》  二、原理方法 空间索引方法综述：  《基于空间填充曲线的降维方法》: 介绍如何利用 Z 序 Hillbert 曲线等空间填充曲线方法，实现多维空间的降维索引。  《空间填充曲线的聚簇性分析》： 从理论上分析了空间填充曲线的聚簇性，表明空间填充曲线无法做到任意位置的高聚簇性。  《扩展 Z 序曲线（XZ-Ordering）索引》: 德国慕尼黑大学教授提出的一种有缝有叠的剖分和填充曲线方式，可有效解决跨剖分面片的单编码空间覆盖问题。   三、工程实践 《全文数据库中多维数据检索效率的提升方法》: 基于可分布式部署的传统关系型数据库或全文数据库，其实现机制和单机数据库区别不大，并行机制来自于分布式数据库本身。本文主要介绍了全文数据库（关系型数据库类似）的实现机制，以及空间索引在其中的结合方法。典型代表如：Parallel Secondo、Paradise、 Sphinx 等。此外，专门面向科学数据的...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/91635a11.html" title="归一化流模型索引帖"><img class="cover" src="/img/coffe_03.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="info-item-2">归一化流模型索引帖</div></div><div class="info-2"><div class="info-item-1">   </div></div></div></a><a class="pagination-related" href="/posts/1e755394.html" title="归一化流概览"><img class="cover" src="/img/book_11.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-01</div><div class="info-item-2">归一化流概览</div></div><div class="info-2"><div class="info-item-1">   【摘要】 归一化流是一种用于定义可表示性概率分布的通用机制，它只需要指定一个基分布和一系列双射变换，就能够得到更具有表达能力的概率分布。近年来，从提高表达能力到扩展其应用方案法，出现了大量关于归一化流的工作。我们认为该领域现在已经成熟了，需要一个公共的统一视角。本文试图通过概率建模和推断视角来描述流。本文特别强调流设计的基本原则，并将讨论模型表达能力与计算代价权衡等基本主题。本文还通过将流与更一般的概率转换相关联，来拓宽流的概念框架。最后，总结了流在生成模型、近似推断和监督学习等任务中的应用。 【原文】Papamakarios, G., Nalisnick, E., Rezende, D. J., Mohamed, S., &amp; Lakshminarayanan, B. (2021). Normalizing Flows for Probabilistic Modeling and Inference (593 citation(s); arXiv:1912.02762). arXiv....</div></div></div></a><a class="pagination-related" href="/posts/839b65d0.html" title="变分自编码器索引帖"><img class="cover" src="/img/coffe_01.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="info-item-2">变分自编码器索引帖</div></div><div class="info-2"><div class="info-item-1">             #refplus, #refplus li{          padding:0;         margin:0;         list-style:none;     }；                         document.querySelectorAll(".refplus-num").forEach((ref) => {         let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');         let refel = document.querySelector(refid);         let refnum = refel.dataset.num;         let ref_content = refel.innerText.replace(`[${refnum}]`,'');         tippy(ref, {             content: ref_content,    ...</div></div></div></a><a class="pagination-related" href="/posts/65612c13.html" title="1️⃣  初始变分自编码器"><img class="cover" src="/img/book_02.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-01</div><div class="info-item-2">1️⃣  初始变分自编码器</div></div><div class="info-2"><div class="info-item-1">   【摘 要】本文从自编码器入手，讨论了自编码器与变分自编码器之间的本质区别，并简单介绍了变分自编码器的工作原理，适合于认识变分自编码器的第一篇入门读物。【原 文】Joseph Rocca &amp; Baptiste Rocca，Understanding Variational Autoencoders VAEs 1. 简介在过去的几年中，由于一些惊人的进步，基于深度学习的生成模型越来越受到关注。依靠大量数据，精心设计的网络结构和训练技术，深度生成模型已经显示出了令人难以置信的能力，可以生成高度逼真的各种内容，例如图像，文本和声音。在这些深度生成模型中，有两个类别脱颖而出，值得特别关注：生成对抗网络（GAN）和 变分自编码器（VAE）。   图 1 VAE 生成的人脸图片  简而言之，VAE 是一种自编码器，在训练过程中其编码的概率分布是正则化的，以确保其在隐空间具有良好特性，进而允许我们生成一些新数据。术语 “变分” 源自统计中的 正则化 和 变分推断 方法。 虽然最后两句话很好地概括了 VAE...</div></div></div></a><a class="pagination-related" href="/posts/5baf34d6.html" title="2️⃣  概率视角看变分自编码器"><img class="cover" src="/img/book_09.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-02</div><div class="info-item-2">2️⃣  概率视角看变分自编码器</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 本文从神经网络和概率机器学习两个视角，介绍了 VAE 背后的数学原理。严格意义上来说，变分自编码器（ VAE）是一种面向连续型隐变量的黑盒变分推断方法。其建立在基于神经网络的函数逼近之上，并可用随机梯度下降进行训练。VAE 已在生成多种复杂数据方面显示出很好的前景，包括手写数字、人脸、门牌号、CIFAR 图像、场景物理模型、分割以及从静态图像预测未来。 〖原文〗 Jaan Altosaar；Understanding Variational Autoencoders (VAEs) from two perspectives: deep learning and graphical models.；2016 p{text-indent:2em}  1 问题的提出为什么深度学习研究人员和概率机器学习人员在讨论变分自编码器时会感到困惑？什么是变分自编码器？为什么围绕这个术语存在不合理的混淆？ 这是因为存在概念和语言上的代沟！!! 神经网络科学和概率模型之间缺少共同的语言。本文的目标之一是弥合这一差距，并允许它们之间进行更多的协作和讨论，并提供一致的实现（Github...</div></div></div></a><a class="pagination-related" href="/posts/76780e73.html" title="3️⃣  变分自编码器原始论文"><img class="cover" src="/img/book_11.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-10</div><div class="info-item-2">3️⃣  变分自编码器原始论文</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 如果存在具有棘手后验的连续型隐变量和大数据集，如何在有向概率图模型中进行有效的推断和学习？  本文引入了一种随机变分推断和学习算法。该算法能够在一些轻度差异化（甚至棘手）的情况下工作，并且能够扩展到大型数据集。本文的贡献有两个：首先，证明了重参数化技巧可以得到对变分下界的无偏估计，并且可用于随机梯度的优化。其次，对于有连续型隐变量的独立同分布数据集，我们利用重参数化的变分下界估计，成功地为棘手后验拟合了近似的推断模型（注：利用摊销推断思想，将传统棘手的局部隐变量推断问题转变成了神经网络预测问题）。理论优势最终反映在了实验结果中。   【原 文】 Kingma, D.P. and Welling, M. (2014) ‘Auto-Encoding Variational Bayes’. arXiv. Available at: http://arxiv.org/abs/1312.6114 (Accessed: 14 October 2022). 1 ...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B8%B8%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E5%8F%8A%E5%85%B6%E6%95%B0%E5%80%BC%E8%A7%A3"><span class="toc-text">1 常微分方程及其数值解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%B8%B8%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E9%97%AE%E9%A2%98"><span class="toc-text">1.1 常微分方程问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E4%BC%A0%E7%BB%9F%E6%B1%82%E8%A7%A3%E5%99%A8%E4%B8%BE%E4%BE%8B"><span class="toc-text">1.2 传统求解器举例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%97%AE%E9%A2%98%E7%9A%84%E6%8F%90%E5%87%BA"><span class="toc-text">2 问题的提出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%81%8F%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E7%9A%84%E5%8F%8D%E5%90%91%E8%87%AA%E5%8A%A8%E5%BE%AE%E5%88%86"><span class="toc-text">2 偏微分方程的反向自动微分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%9C%A8%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E4%BB%BB%E5%8A%A1%E4%B8%AD%E7%94%A8-ODE-%E5%8F%96%E4%BB%A3%E6%AE%8B%E5%B7%AE%E7%BD%91%E7%BB%9C"><span class="toc-text">3 在监督学习任务中用 ODE 取代残差网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%BF%9E%E7%BB%AD%E5%9E%8B%E5%BD%92%E4%B8%80%E5%8C%96%E6%B5%81"><span class="toc-text">4 连续型归一化流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%94%9F%E6%88%90%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E6%A8%A1%E5%9E%8B"><span class="toc-text">5 生成时间序列模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">参考资料</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

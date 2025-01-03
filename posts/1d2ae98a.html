@@ -1,0 +1,701 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>高斯预测过程 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="高斯预测过程"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/1d2ae98a.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '高斯预测过程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/book_14.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">高斯预测过程</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">高斯预测过程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-01-04T12:50:00.000Z" title="发表于 2023-01-04 20:50:00">2023-01-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.201Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/">GeoAI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/">大数据专题</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">18.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>70分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>【摘 要】 有了地理编码的可用科学数据，研究人员越来越多地转向空间过程模型来进行统计推断。在过去的十年中，通过马尔可夫链蒙特卡洛方法实现的分层模型在空间建模中变得特别流行，因为它们能够灵活地拟合传统方法不可行的模型，并且避免了可能不正确的渐近。然而，拟合分层空间模型通常涉及昂贵的矩阵分解，其计算复杂度随空间位置的数量呈三次方增加，使得此类模型不适用于大型空间数据集。这种计算负担在具有多个空间相关响应变量的多变量设置中更为明显。当在频繁的时间点收集数据并使用时空过程模型时，这种情况会加剧。关于这一挑战，本文贡献是使用空间和时空数据的预测过程模型。每个空间（或时空）过程都会产生一个预测过程模型（实际上可以是任意多个）。后者将前者的过程实现投影到低维子空间，从而减少了计算负担。因此，我们实现了在大数据集上下文中拟合非平稳、非高斯、多变量、时空过程的灵活性。我们讨论了这些预测过程的理论特性，还提供了一个包含不同设置的计算模板。最后，我们用模拟和真实数据集来说明了该方法。</p>
+<p>【原 文】 Banerjee, S. et al. (2008) ‘Gaussian predictive process models for large spatial data sets’, Journal of the Royal Statistical Society: Series B (Statistical Methodology), 70(4), pp. 825–848. Available at: <a target="_blank" rel="noopener" href="https://doi.org/10.1111/j.1467-9868.2008.00663.x">https://doi.org/10.1111/j.1467-9868.2008.00663.x</a>.</p>
+<h2 id="1-引言"><a href="#1-引言" class="headerlink" title="1 引言"></a>1 引言</h2><p>地理信息系统和全球定位系统的最新进展使得能够对收集科学数据的位置进行准确的地理编码。这鼓励了在许多领域形成大型时空数据集，并引起了人们对位置参考空间数据统计建模的极大兴趣；例如，参见 Cressie (1993) <sup class="refplus-num"><a href="#ref-Cressie1993">[3]</a></sup> 、Møller (2003) <sup class="refplus-num"><a href="#ref-Moller2003">[22]</a></sup>、Banerjee 等 (2004)<sup class="refplus-num"><a href="#ref-Banerjee2004">[1]</a></sup> 和 Schabenberger 和 Gotway (2004) <sup class="refplus-num"><a href="#ref-Schabenberger2004">[33]</a></sup> 的各种方法和应用。
+
+**本文主要关注那些观测位置数量太大导致无法拟合分层空间随机效应模型的场景**。不确定性的全面推断和准确评估通常需要马尔可夫链蒙特卡罗 (MCMC) 方法（Banerjee 等，2004）<sup class="refplus-num"><a href="#ref-Banerjee2004">[1]</a></sup>。然而，这种拟合涉及矩阵分解，在 MCMC 算法的每次迭代中，其复杂性随着位置数 $n$ 的增加而增加：因此存在不可行性或大数据集的 “大 n” 问题。显然，当我们在每个位置都有一个随机效应向量或当我们有时空随机效应时，问题会进一步恶化。
+
+解决这个问题的方法有几种不同的途径。
+
+- **途径 1: 使用核卷积、移动平均数、低秩样条或基函数来寻求空间过程的近似值**
+  - 例如 Wikle 和 Cressie (1999) <sup class="refplus-num"><a href="#ref-Wikle1999">[45]</a></sup>、Lin 等 (2000) <sup class="refplus-num"><a href="#ref-Lin2000">[20]</a></sup>、Higdon (2001) <sup class="refplus-num"><a href="#ref-Higdon2001">[16]</a></sup>、Ver Hoef 等（2004) <sup class="refplus-num"><a href="#ref-Ver2004">[42]</a></sup>、Xia 和 Gelfand (2006) <sup class="refplus-num"><a href="#ref-Xia2006">[47]</a></sup>、Kammann 和 Wand (2003)<sup class="refplus-num"><a href="#ref-Kammann2003">[19]</a></sup> 以及 Paciorek (2007) <sup class="refplus-num"><a href="#ref-Paciorek2007">[24]</a></sup>。
+  - 本质上，过程 $w(\mathbf{s})$ 被替换为低维子空间中实现的近似表示 $\tilde{w} (\mathbf{s})$。
+
+- **途径 2: 寻求通过在空间过程的频谱域中工作并避免矩阵计算** 或者 **通过适当的条件分布乘积来近似似然**
+  - 前者如 Stein，1999 <sup class="refplus-num"><a href="#ref-Stein1999">[35]</a></sup>；Fuentes，2007 <sup class="refplus-num"><a href="#ref-Fuentes2007">[10]</a></sup>；Paciorek，2007 <sup class="refplus-num"><a href="#ref-Paciorek2007">[24]</a></sup>。
+  - 后者如 Vecchia (1988) <sup class="refplus-num"><a href="#ref-Vecchia1988">[41]</a></sup>、Jones 和 Zhang (1997) <sup class="refplus-num"><a href="#ref-Jones1997">[18]</a></sup> 以及 Stein 等 (2004) <sup class="refplus-num"><a href="#ref-Stein2004">[38]</a></sup>。
+  - 此类方法产生的问题是 **似然的近似是否充分**。需要裁剪和调整合适的谱密度估计或一系列条件分布专业知识，并且不容易拟合多变量过程。此外，谱密度方法似乎更适合平稳协方差函数。
+
+- **途径 3: 使用马尔可夫随机场代替过程（随机场）模型**
+  - 例如 Rue 和 Tjelmeland，2002 <sup class="refplus-num"><a href="#ref-Rue2002">[31]</a></sup>；Rue 和 Held，2006 <sup class="refplus-num"><a href="#ref-Rue2006">[29]</a></sup>。
+  - 此类方法适合规则网格上的点。对于不规则位置，需要通过特定算法重新对齐到网格或环面，这可能会引入无法量化的精度误差。
+  - 将此类方法应用于更复杂分层空间模型时可能存在问题，例如：
+    - 多变量过程： Wackernagel (2006) <sup class="refplus-num"><a href="#ref-Wackernagel2006">[43]</a></sup> 和 Gelfand 等 (2004) <sup class="refplus-num"><a href="#ref-Gelfand2004">[13]</a></sup>
+    - 时空过程和空间变系数回归（Gelfand 等，2003）<sup class="refplus-num"><a href="#ref-Gelfand2003">[12]</a></sup>
+    - 非平稳协方差结构（Paciorek 和 Schervish, 2006) <sup class="refplus-num"><a href="#ref-Paciorek2006">[25]</a></sup>）
+
+受克里金思想的启发， **我们提出了一类基于空间预测过程思想的模型**。 我们将原始过程投影到 **在一组指定位置处实现原始空间过程得到的** 子空间上。此想法的雏形来自于 Switzer (1989) <sup class="refplus-num"><a href="#ref-Switzer1989">[40]</a></sup> 。
+
+我们的方法与使用基函数和核卷积的过程模型方法具有相同的目的，即试图促进计算效率。我们的方法与正在寻求的有效协方差结构直接相关，并且适用于任何支持空间随机过程的分布类型。典型地，我们使用这种建模方法来描述一个可能从未被实际观测到的隐空间过程。对于第一阶段不需要是高斯分布的模型来说，本方法仍然能够为随机效应（如第二阶段的截距或系数）提供结构化依赖性。
+
+</p><div class="note info no-icon flat"><p>对第一阶段、第二阶段概念不清楚的读者，请参阅 <a href="b9f71b0a.html">贝叶斯分层模型</a> 、<a href="2f0fe298.html">空间思维及贝叶斯方法</a> </p>
+</div>
+
+我们的目标不同于机器学习中面向大数据集的高斯过程回归（例如，参见 Wahba (1990) <sup class="refplus-num"><a href="#ref-Wahba1990">[44]</a></sup>、Seeger 等 (2003) <sup class="refplus-num"><a href="#ref-Seeger2003">[34]</a></sup> 以及 Rasmussen 和 Williams (2006) <sup class="refplus-num"><a href="#ref-Rasmussen2006">[27]</a></sup>）：
+
+- **兴趣点不同**：在机器学习领域的高斯过程回归中，回归函数被视为一个以某些均值函数为中心的高斯过程实现，其中给出回归函数的数据被假设为条件独立的高斯模型。 假设已知过程和噪声参数以及大型训练集，高斯后验将出现大 $n$ 问题。 最近，Cornford 等 (2005)<sup class="refplus-num"><a href="#ref-Cornford2005">[2]</a></sup> 将这种机制转向地统计学。 在所有上述内容中，使用了贝叶斯预测的显式形式（在后一种情况下为 “克里金”）并且使用了相关的后验方差。 而我们对与时空分层模型及其参数相关的完整后验推断更感兴趣。
+
+- **推断方法不同**：完全贝叶斯推断很可能会采用 MCMC 方法（Robert 和 Casella，2005 年）<sup class="refplus-num"><a href="#ref-Robert2005">[28]</a></sup>，而这种方法在机器学习文献中已被摒弃（例如，参见 Cornford 等（2005 年）<sup class="refplus-num"><a href="#ref-Cornford2005">[2]</a></sup>）。从这个意义上说，我们目前的工作在空间建模和推断目标方面更具雄心。
+
+我们用两个模拟例子来说明生成相当复杂的空间随机场，并用一个具有挑战性的空间自适应回归模型来拟合森林生物量数据。第 2 节介绍并讨论了预测过程模型以及相关规范问题。第 3 节考虑对多变量过程模型的扩展。第 4 节描述贝叶斯计算问题，第 5 节介绍两个示例。第 6 节以简短讨论作为结尾，包括未来的工作。
+
+用于分析数据的程序可以从 http://www.blackwellpublishing.com/rss 获得
+
+## 2 单变量预测过程建模
+
+### 2.1 传统的单变量模型
+
+在地统计上下文中，通常假设在位置 $\mathbf{s} \in \mathcal{D} \subseteq \mathbb{R}^2$ 处，响应变量 $Y(\mathbf{s})$ 与 $p \times 1$ 的预测向量 $\mathbf{x}(\mathbf{s})$ 之间通过空间回归模型相关联，例如：
+
+$$
+Y(\mathbf{s}) = \mathbf{x}^T(\mathbf{s}) \boldsymbol{\beta}  + w(\mathbf{s}) + \varepsilon(\mathbf{s}) \tag{1}
+$$
+
+也就是说，残差中包含了一个捕获空间关联的空间过程 $w(\mathbf{s})$，以及一个独立的、通常被称为块金（nugget）的过程 $\varepsilon(\mathbf{s})$。 $w(\mathbf{s})$ 代表了空间随机效应，提供了对均值的局部调整（具有结构依赖性），被解释为捕获了那些未被测量的（或未被观测到的）协变量的某些具有空间模式的效应。
+
+- 过程$w(\mathbf{s})$ 的常规定义是具有协方差函数 $\mathbf{C}(\mathbf{s},\mathbf{s}^{\prime})$ 的零均值高斯过程，表示为 $\mathcal{GP}(\mathbf{0}, \mathbf{C}(\mathbf{s},\mathbf{s}^{\prime}))$。在应用中，我们经常指定： $\mathbf{C}(\mathbf{s},\mathbf{s}^{\prime}) = \sigma^2 ρ(\mathbf{s},\mathbf{s}^{\prime}; \boldsymbol{\theta})$ 来产生恒定的过程方差，其中 $ρ(·; \boldsymbol{\theta})$ 是相关函数，$\boldsymbol{\theta}$ 包括衰减和平滑参数。
+
+- 在任何情况下，每个位置 $\mathbf{s}$ 处的 $\varepsilon(\mathbf{s}) \stackrel{i.i.d.} \sim \mathcal{N}(0, \tau^2)$。
+
+- 对于 $n$ 个观测值 $\mathbf{Y} = (\mathbf{Y}(\mathbf{s}_1, \ldots , Y(\mathbf{s}_n)^{T}$，数据似然由多元高斯 $\mathbf{Y} \sim \mathcal{N}(\mathbf{X} \boldsymbol{\beta} , \boldsymbol{\Sigma}_{\mathbf{Y}})$ 给出，其中 $\boldsymbol{\Sigma}_{\mathbf{Y}} = \mathbf{C}(\boldsymbol{\theta}) + \tau^2 \mathbf{I}_n$，其中 $\mathbf{X}=[\mathbf{x}^T(\mathbf{s}_i)]^{n}_{i=1}$ 是回归矩阵，$\mathbf{C}(\boldsymbol{\theta})=[\mathbf{C}(\mathbf{s}_i,\mathbf{s}_j;\boldsymbol{\theta})]^{n}_{i,j=1}$。
+
+- 基于似然的推断通过最大似然或受限最大似然方法进行（例如 Schabenberger 和 Gotway (2004) <sup class="refplus-num"><a href="#ref-Schabenberger2004">[33]</a></sup>）。
+
+在分层模型中，我们通常将先验表示为 $\boldsymbol{\Omega}= ( \boldsymbol{\beta} , \boldsymbol{\theta}, \tau^2 )$ ，通过从后验 $p(\boldsymbol{\Omega} \mid \mathbf{Y})$ 中采样来执行推断，则在任意测点 $\mathbf{s}_0$ 处，可以根据 $\boldsymbol{\Omega}$ 的后验样本一对一得到预测分布 $p{Y(\mathbf{s}_0) \mid \mathbf{Y}}$ 的样本（Banerjee 等，2004 <sup class="refplus-num"><a href="#ref-Banerjee2004">[1]</a></sup>）。这对于高斯似然尤其方便，因为 $p{Y(\mathbf{s}_0) \mid \boldsymbol{\Omega}, \mathbf{Y}}$ 本身就是高斯的。显然，估计和预测都需要计算高斯似然，也就是计算 $n × n$ 矩阵的逆 $\Sigma^{-1}_y$。尽管显式求逆可以被更快的线性求解器所取代，但对于大 $n$ 的似然计算仍然很昂贵。
+
+### 2.2 预测过程模型
+
+**（1）预测过程模型**
+
+让我们考虑一组 “结点”： $\mathcal{S}^{*}=\{ \mathbf{s}^{*}_1,\ldots ,\mathbf{s}^{*}_m \}$，$\mathcal{S}^{*}$ 可能构成也可能不构成整个观测位置集合 $\mathcal{S}$ 的子集。我们可以利用 `式 (1)` 中的高斯过程模型，生成 $m$ 个预测值构成的向量 $\mathbf{w}^{*}=[w(\mathbf{s}^{*}_i)]^{m}_{i=1} \sim \mathcal{MVN}\{\mathbf{0},\mathbf{C}^{*}(\boldsymbol{\theta})\}$，其中 $\mathbf{C}^{*}(\boldsymbol{\theta})=[\mathbf{C}(\mathbf{s}^{*}_i,\mathbf{s}^{*}_j;\boldsymbol{\theta})]^{m}_{i,j=1}$ 是对应的 $m×m$ 协方差矩阵。 
+
+根据克里金法，新的测试点 $\mathbf{s}_0$ 处的空间插值也可以根据这些 “结点” 给出： 
+
+$$
+\tilde{w}(\mathbf{s}_0) = \mathbb{E}[w(\mathbf{s}_0) \mid \mathbf{w}^{*}] = \mathbf{c}^{T}(\mathbf{s}_0; \boldsymbol{\theta}) \mathbf{C}^{*-1} (\boldsymbol{\theta}) \mathbf{w}^{*}
+$$
+
+其中 $\mathbf{c}(\mathbf{s}_0;\boldsymbol{\theta})=[\mathbf{C}(\mathbf{s}_0,\mathbf{s}^{*}_j;\boldsymbol{\theta})]^{m}_{j=1}$。
+
+如果对上述单点插值进行泛化，可以得到一个具有 `式（2）` 协方差函数的新空间过程: 
+
+$$
+\tilde{w}(\mathbf{s}) \sim \mathcal{GP} \{\mathbf{0}, \tilde{w}(·)\}
+$$
+
+其对应的协方差函数为：
+
+$$
+\tilde{C}(\mathbf{s},\mathbf{s}^{\prime};\boldsymbol{\theta}) = \mathbf{c}^{T}(\mathbf{s};\boldsymbol{\theta}) \mathbf{C}^{*−1}(\boldsymbol{\theta}) \mathbf{c}(\mathbf{s}^{\prime},\boldsymbol{\theta}) \tag{2}
+$$
+其中 $\mathbf{c}(\mathbf{s};\boldsymbol{\theta})=[\mathbf{C}(\mathbf{s},\mathbf{s}^{*}_j;\boldsymbol{\theta})]^{m}_{j=1}$。
+
+我们将新的空间过程 $\tilde{w}(\mathbf{s})$ 称为由父进程 $w(\mathbf{s})$ 派生的 **预测过程（predictive process）**。$\tilde{w}(\mathbf{s})$ 的实现正是以 “原始空间过程 $w(\mathbf{s})$ 在 $\mathcal{S}^{*}$ 处的实现为” 条件的克里金预测。 
+
+如果给定父进程的协方差函数和 “结点” 集 $\mathcal{S}^{*}$，则该预测过程可以完全指定。因此，准确地记法应该是 $\tilde{w}_{\mathcal{S}^{*}}(\mathbf{s})$，但为了表达简洁，我们隐含了这种依赖。
+
+从 `式 (2)` 可知，无论原始过程 $w(\mathbf{s})$ 是否平稳，预测过程都是非平稳的。此外，与 $\mathcal{D}$ 中任何一组位置的过程实现相关联的联合分布，都是非奇异的，当且仅当该集合最多具有 $m$ 个位置。
+
+将 `式(1)` 中的 $w(\mathbf{s})$ 替换为 $\tilde{w}(\mathbf{s})$，就可以得到预测过程模型：
+
+$$
+Y(\mathbf{s})=\mathbf{x}^T(\mathbf{s}) \boldsymbol{\beta} +\tilde{w}(\mathbf{s}) + \varepsilon(\mathbf{s})  \tag{3}
+$$
+
+由于 $\tilde{w}(\mathbf{s}) = \mathbf{c}^{T}(\mathbf{s}) \mathbf{C}^{*-1} (\boldsymbol{\theta}) \mathbf{w}^{*}$，其中 $\mathbf{c}^{T}(\mathbf{s})$ 随空间位置变化而变化，因此，预测过程 $\tilde{w}(\mathbf{s})$ 可以被视为预测值 $\mathbf{w}^{*}$ 的空变线性变换。我们很容易看到降维的效果：在拟合 `式(3)` 时，$n$ 个随机效应 $\{ w(\mathbf{s}_i), i = 1, 2, \ldots , n \}$ 被 $\mathbf{w}^{*}$ 中的 $m$ 个随机效应代替；我们使用仅涉及 $m × m$ 矩阵的 $m$ 维联合分布。显然，`式（3）` 不同于 `式（1）`。因此，尽管我们在两个模型中引入了相同的参数集，但其值在两个模型中并不相同。
+
+**（2）与核卷积方法的比较**
+
+基于 “结点” 的线性组合形式（如 $\sum^{m}_{i=1} a_i(\mathbf{s}) w(\mathbf{s}^{*}_i)$）与其他空间过程的近似方法很相似。例如，受（某些）平稳过程的积分表示可以视为 $\mathbb{R}^2$ 上布朗运动核卷积的思想启发， Higdon (2001) <sup class="refplus-num"><a href="#ref-Higdon2001">[16]</a></sup> 提出了采用 $\sum^{m}_{i=1}a_i(\mathbf{s};\boldsymbol{\theta}) \mathbf{u}_i$ 的线性形式来近似父过程，其中 $\mathbf{u}_i \stackrel{i.i.d.} \sim \mathcal{N}(0, 1)$ 和 $a_i(\mathbf{s};\boldsymbol{\theta})=k(\mathbf{s},\mathbf{s}^{*}_i;\boldsymbol{\theta})$， 其中 $k(·;\boldsymbol{\theta})$ 是高斯核函数。显然，高斯核仅捕获具有高斯协方差函数的高斯过程（参见 Paciorek 和 Schervish (2006) <sup class="refplus-num"><a href="#ref-Paciorek2006">[25]</a></sup>）。 Xia 和 Gelfand (2006) <sup class="refplus-num"><a href="#ref-Xia2006">[47]</a></sup> 建议扩展以通过将核与协方差函数对齐来捕获更一般的平稳高斯过程类别。然而，承认核表示的平稳高斯过程模型的类别非常有限。
+
+积分表示允许以空变核的形式进行核卷积，如 Higdon  (1999) <sup class="refplus-num"><a href="#ref-Higdon1999">[17]</a></sup> 等所述。它还可以用 $\mathbb{R}^2$ 上的平稳高斯过程代替布朗运动。有限近似允许将白噪声的实现 $\mathbf{u}_i$ 替换为平稳过程的实现 $\mathbf{w}^{*}$。然后，将原始实现投影到由 $n × m$ 矩阵 $\mathbf{K}=[k(\mathbf{s}_i, \mathbf{s}^{*}_j;\boldsymbol{\theta})]^{n,m}_{i,j=1}$ 的列生成的 $m$ 维子空间，其中 $\tilde{\mathbf{w}} = \mathbf{K} \mathbf{w}^{*}$。或者，可以投影为 $\tilde{\mathbf{w}} = \mathbf{Z} \mathbf{u}$，其中 $\mathbf{u} \sim \mathcal{N}(0, I)$，并设置 $\mathbf{Z}=[\mathbf{c}^{T}(\mathbf{s}_i;\boldsymbol{\theta})]^{n}_{i=1} \mathbf{C}^{*−1/2} (\boldsymbol{\theta})$ 以产生与 `式（3）` 中的预测过程相同的联合分布。此方法已被用于 “低秩克里金法” 法（Kammann 和 Wand，2003 年 <sup class="refplus-num"><a href="#ref-Kammann2003">[19]</a></sup>）。
+
+希望提醒大家的是：我们不想使用归纳过程 $\tilde{w}(\mathbf{s})=\mathbf{c}^{T}(\mathbf{s})\mathbf{C}^{*−1/2}(\boldsymbol{\theta}) \mathbf{w}^{*}$。它具有归纳协方差函数 $\mathbf{c}^{T}(\mathbf{s}) \mathbf{c}(\mathbf{s})$ 但会牺牲一些我们在`第 2.3 节`中寻求的性质（如`精确插值`或 `Kullback–Leibler (KL) 最小化`）。 
+
+**（3）与低秩样条模型的比较**
+
+Ruppert 等(2003) <sup class="refplus-num"><a href="#ref-Ruppert2003">[32]</a></sup>，第 13 章，Lin 等 （2000）<sup class="refplus-num"><a href="#ref-Lin2000">[20]</a></sup> 还讨论了更一般的低秩样条模型。同样，我们将预测过程视为由潜在的满秩过程生成的、具有计算优势的竞争模型。事实上，正如我们在下一小节中阐明的那样，这些模型在某种意义上是最佳预测。此外，$\tilde{w} (\mathbf{s})$ 也并非空间过程积分表示的离散化，我们只需要一个有效的协方差函数来导出它。
+
+**（4）与固定秩克里金法的比较**
+
+Cressie 和 Johannesson (2008) <sup class="refplus-num"><a href="#ref-Cressie2008">[4]</a></sup> 最近提出了一种有点类似的降秩克里金方法。设 $g(\mathbf{s})$ 为 $\mathbb{R}^2$ 上指定基函数的 $k × 1$ 向量，建议的协方差函数为 $\mathbf{C}(\mathbf{s}, \mathbf{s}^{\prime}) = g(\mathbf{s})^{T} \mathbf{K} g(\mathbf{s}^{\prime})$，其中 $\mathbf{K}$ 为 $k × k$ 的未知正定矩阵，可以利用传统的矩量法从数据中估计出来。不过，对于本文设想的分层模型，固定秩方法可能具有一些挑战性。分层模型是在第二阶段提供具有随机效应的空间建模，并没有 “数据” 来提供经验协方差函数。
+
+**（5）与空间动态因子分析的联系**
+
+最后，我们可以将空间动态因子分析与最近的工作联系起来（例如，参见 Lopes 等 (2006) <sup class="refplus-num"><a href="#ref-Lopes2006">[21]</a></sup> 及其中的参考文献），其中 $K$ 被视为因子载荷的 $n × m$ 矩阵。 $\mathbf{K}$ 和 $\mathbf{w}^{*}$ 都未知，但引入了动态模型形式的随时间复制，以使数据能够将它们分开并推断它们。在我们的例子中，给定协方差函数 $\mathbf{C}$，$\mathbf{K}$ 中的条目是 “已知的”。
+
+### 2.3 预测过程的性质
+
+**（1） 预测过程是父过程的最佳近似**
+
+首先注意到，$\tilde{w}(\mathbf{s}_0)$ 是 $w(\mathbf{s}_0)$ 在特定线性子空间上的正交投影（例如 Stein (1999) <sup class="refplus-num"><a href="#ref-Stein1999">[35]</a></sup>）。如果令 $\mathcal{H}_{m+1}$ 为 $w(\mathbf{s}_0)$ 和 $\mathbf{w}^{*}$ 中的 $m$ 个随机变量生成的希尔伯特空间（$\mathcal{H}_{m}$ 表示后者生成的空间）；则空间 $\mathcal{H}_{m+1}$  包含这 $m + 1$ 个以零为中心的、具有有限方差的随机变量及其均方有限点（指均方差范围内的所有可能点）之间的所有线性组合。如果我们根据 $\mathbb{E}[w(\mathbf{s}) w(\mathbf{s}^{\prime})]$ 导出的内积范数，来寻找 $\tilde{w} (\mathbf{s}_0) \in  \mathcal{H}_{m}$ 中最接近 $w(\mathbf{s}_0)$ 的元素，我们就得到了一个具有唯一解 $\tilde{w}(\mathbf{s}_0) = \mathbf{c}^{T}(\mathbf{s}_0) \mathbf{C}^{*-1}  (\boldsymbol{\theta})\mathbf{w}^{*}$ 的线性系统 $\mathbb{E}[{w(\mathbf{s}_0)−\tilde{w}(\mathbf{s}_0)}w(\mathbf{s}^{*}_j)]=0$，其中 $j = 1, \ldots , m$。作为条件期望，很快会得出： $\tilde{w}(\mathbf{s}_0)$ 在所有实值函数 $f(\mathbf{w}^{*})$ 上最小化了 $\mathbb{E}[w(\mathbf{s}_0) − f(\mathbf{w}^{*}) \mid \mathbf{w}^{*}]$。从这个意义上说，预测过程是父过程的最佳近似。
+
+
+**（2） 预测过程是父过程的精确近似**
+
+此外，$\tilde{w}(\mathbf{s}_0)$ 在 $\mathcal{S}^{*}$ 上确定性地插值 $w(\mathbf{s})$。事实上，如果 $\mathbf{s}_0=\mathbf{s}^{*}_j \in \mathcal{S}^{*}$ ，我们有：
+
+$$
+\tilde{w}(s^{*}_j)=\mathbf{c}^{T}(\mathbf{s}_j;\boldsymbol{\theta}) \mathbf{C}^{*-1} (\boldsymbol{\theta})\mathbf{w}^{*}=w(s^{*}_j) \tag{4}
+$$
+
+因为 $\mathbf{e}^{T}_j \mathbf{C}^{*}(\boldsymbol{\theta}) = \mathbf{c}^{T}(\mathbf{s}^{*}_j,\boldsymbol{\theta})$，其中 $\mathbf{e}_j$ 表示第 $j$ 个位置为 1，其他位置为 0 的向量。因此，`式（4）` 表明 $\mathbb{E}[\tilde{w}(\mathbf{s}^{*}_j) \mid \mathbf{w}^{*}] = w(\mathbf{s}^{*}_j)$ 和 $\mathbb{Var} \{ \tilde{w}(\mathbf{s}^{*}_j) \mid \mathbf{w}^{*} \}=0$（克里金法的性质之一）。
+
+
+**（3） 预测过程的可变形小于父过程的可变性**
+
+在另一个极端，假设 $\mathcal{S}$ 和 $\mathcal{S}^{*}$ 不相交。然后 $\mathbf{w} \mid \mathbf{w}^{*} \sim \mathcal{MVN}(\mathbf{c}^{T} \mathbf{C}^{*-1} \mathbf{w}^{*}, \mathbf{C} − \mathbf{c}^{T}\mathbf{C}^{*-1} \mathbf{c})$， 其中 $\mathbf{c}$ 是 $m × n$ 矩阵，其列为 $\mathbf{c}(\mathbf{s}_i)$，$\mathbf{C}$ 是 $\mathbf{w}$ 的 $n × n$ 协方差矩阵。我们可以写出 $\mathbf{w} = \tilde{\mathbf{w}}  + (\mathbf{w} − \tilde{\mathbf{w}})$， $\mathbf{w}^{*}$ 的选择决定了右侧第二项的（条件）可变性，即 $\boldsymbol{\Sigma}_{\mathbf{w}}$ 与 $\boldsymbol{\Sigma}_{\tilde{\mathbf{w}}}$ 的接近程度。它还表明，由于 $n$ 个变量由 $m &lt; n$ 个随机变量确定，因此预测过程中的可变性将小于父过程中的可变性。
+
+**（4） 基于 KL 分解的解释**
+
+Csató (2002) <sup class="refplus-num"><a href="#ref-Csato2002">[5]</a></sup> 和 Seeger 等 (2003) <sup class="refplus-num"><a href="#ref-Seeger2003">[34]</a></sup> 对 $\tilde{w}(\mathbf{s}^{*})$ 给出了基于 KL 的解释，其中 Csató 为 KL 投影提供了一般性理论，并提出了用于计算的顺序算法。作为一个更简单和更直接的论证，让我们假设 $\mathcal{S}$ 和 $\mathcal{S}^{*}$ 不相交，并令 $\mathbf{w}_a= (\mathbf{w}^{*}, \mathbf{w})^{T}$ 是 $\mathcal{S} \cup \mathcal{S}^{*}$ 上实现的 $(m + n) × 1$ 向量。在 `式 (1)` 中，假设所有其他模型参数固定，$p(\mathbf{w}_a \mid \mathbf{Y} )$ 的后验分布与 $p(\mathbf{w}_a) p(\mathbf{Y} \mid \mathbf{w})$ 成正比，因为 $p(\mathbf{Y} \mid \mathbf{w}_a) = p(\mathbf{Y} \mid \mathbf{w})$。 `式 (3)` 中相应的后验概率将 $p(\mathbf{Y} \mid \mathbf{w})$ 替换为密度 $q(\mathbf{Y} \mid \mathbf{w}^{*})$。令 $\mathcal{Q}$ 是满足 $q(\mathbf{Y} \mid \mathbf{w}_a) = q(\mathbf{Y} \mid \mathbf{w}^{*})$ 的所有概率密度族，假设我们寻求能够使反向 KL 散度 $KL(q, p) = \int  q \log(q /p)$ 最小化的密度 $q \in \mathcal{Q}$ ，则在 `附录 A` 中，我们论证了当 $q(\mathbf{Y} \mid \mathbf{w}^{*}) \propto  \exp(E_{\mathbf{w} \mid \mathbf{w}^{*}} [\log \{ p(\mathbf{Y} \mid \mathbf{w}_a)\}]$ 时，$KL\{q(\mathbf{w}_a \mid \mathbf{Y}), p(\mathbf{w}_a \mid \mathbf{Y})\}$ 最小化。标准多元正态理论的后续计算表明，这对应于预测过程模型的高斯似然。
+
+### 2.4 “结点” 的选择
+
+与任何基于 “结点” 的方法一样， “结点” 的选择是一个具有挑战性的问题，而二维选择比一维更难。
+
+**（1）问题分析**
+
+暂时假设 $m$ 是给定的。首先，在样条平滑（以及大多数关于函数数据或使用基础表示的回归建模）的文献中，通常在每个数据点处放置 “结点”（例如 Ramsay 和 Silverman (2005) <sup class="refplus-num"><a href="#ref-Ramsay2005">[26]</a></sup>）。但这不是本文的选择，由此带来了 “使用已观测空间位置子集？还是使用一组不相交的位置集？” 的问题。如果我们使用已观测位置的一个子集，我们应该随机抽取这个子集吗？如果我们不使用子集，那么我们正在处理的可能是一个类似于规划设计的问题，不同之处在于我们已经在 $n$ 个位置有样本。
+
+**（2）空间设计方法**
+
+空间设计规划方面已经存在大量丰富的文献，例如，Xia 等 (2006) <sup class="refplus-num"><a href="#ref-Xia2006">[47]</a></sup> 对此进行了综述。我们需要选择一个标准来决定是使用规则网格，还是根据采样频率设置 “结点” 数量。一种方法是按照 Nychka 和 Saltzman (1998) <sup class="refplus-num"><a href="#ref-Nychka1998">[23]</a></sup> 的设计思想进行空间填充 “结点” 选择。此类空间设计基于几何准则衡量一组给定点覆盖研究区域的程度，而与假定的协方差函数无关。 Stevens 和 Olsen (2004)<sup class="refplus-num"><a href="#ref-Stevens2004">[39]</a></sup> 表明，设计点的空间平衡比简单随机抽样更有效。最近，Diggle 和 Lophaven (2006) <sup class="refplus-num"><a href="#ref-Diggle2006">[7]</a></sup> 讨论了对规则网格进行修改的空间设计。这些空间设计通过 “近邻对” 或 “内填充” 来增强网格。我们在 `第 5.1.1 节` 的模拟示例中检查了此类 “结点” 选择设计。
+
+
+考虑到 $w$ 和 $\tilde{w}$ 的联合分布都是多元正态分布，为了在我们的设置中引入协方差函数，我们使用了这些分布之间的 KL 距离。KL 距离的非对称性将涉及一种分布的协方差矩阵和另一种分布的逆协方差矩阵。我们无法获得 $w$ 的逆协方差矩阵，而且 $\tilde{w}$  的逆协方差矩阵不存在（因为分布是奇异的）。此外，如果尝试对任何一组 $m$ 个 “结点” 使用 KL 距离，我们在上面已经讨论过，在这种情况下 $w$ 和 $\tilde{w}$  是相同的实现； KL 距离为 $0$。
+
+**（3）核卷积近似**
+
+在使用核卷积近似时，KL 距离可用于任何位置子集，因为它不是精确的插值器。事实上，Xia 和 Gelfand (2005) <sup class="refplus-num"><a href="#ref-Xia2005">[46]</a></sup> 表明，使用规则网格时，引入大于研究区域的网格是可取的，但该论证是利用对整个 $\mathbb{R}^2$ 的积分表示所做的离散近似性质证明的。预测过程并不是由积分表示的有限近似驱动的，因此这种延展在这里似乎没有必要。
+
+**（4）结性能的比较**
+
+评估 “结点” 性能最直接的方法是 **比较父过程的协方差函数与预测过程的协方差函数**。为了说明，在 $[0, 10] × [0, 10]$ 的矩形上均匀生成 $200$ 个位置。“结点” 由 $10 × 10$ 的等距网格组成。我们使用 Matérn 协方差函数进行比较，不失一般性地设置 $\sigma^2 = 1$。固定变程参数 $φ = 2$，`图 1` 覆盖了父过程的协方差和平滑参数 $ν$ 的四个不同值的预测过程的协方差。 （为预测过程抽取了大约 $40 000$ 个距离对中的 $2000$ 个的协方差。）或者，设置 $ν = 0.5$（指数协方差函数），我们通过使用 `图 2` 中变程参数的四个值来比较协方差。
+
+![Fig01](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230104214441-03f5.webp)
+
+![](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230108140028-bc4c.webp)
+
+&gt; 图.1:  $w(\mathbf{s})$ 沿距离的协方差(`实线`) 和 $\tilde{w}(\mathbf{s})$ 沿距离的协方差(`灰点`)。 (a) 平滑参数为 $0.5$； (b) 平滑度参数为 $1$； (c) 平滑度参数为 $1.5$； (d) 平滑度参数为 $5$
+
+
+![Fig02](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230104214546-dd2a.webp)
+
+&gt;图 2: $w(\mathbf{s})$ 沿距离的协方差(`实线`) 和 $\tilde{w}(\mathbf{s})$ 沿距离的协方差（`灰点`）： (a) 变程参数为 $2$； (b) 变程参数为 $4$； (c) 变程参数为 $6$； (d) 变程参数为 $12$ 
+
+总的来说，我们发现：这些函数在距离越大时一致性越好，随着平滑度参数和变程参数的增加更是如此。对于给定的 $φ$ 和 $ν$，调整 $m$ 几乎没有新增信息。重要的是变程参数相对于 “结点” 网格间距的大小。事实上，这种比较在近距离处最弱，而在较短距离处甚至更弱，这一事实反映出：在这种情况下，在 “结点” 处的观测并不会提供更多关于近邻成对测点依赖性的信息。考虑到精细尺度空间变化或非常短的空间变程，可能需要一组相当密集的 “结点” （例如，参见 Stein (2007) <sup class="refplus-num"><a href="#ref-Stein2007">[37]</a></sup>）。然后，结合域上变化密度的 “结点” 选择（包含 “打包” 子集）将使我们更好地了解空间变程和方差组分。
+
+最后，$m$ 的选择取决于计算成本和对选择的敏感性。因此，原则上，我们必须对 $m$ 的不同选择进行分析。由于我们无法处理 $n$ 个位置的完整集合，因此比较必须是相对的，并且会考虑运行时间（以及相关的计算平稳性）以及预测推断的平稳性。实际上，下面的`第 5 节`说明了具有各种 $m$ 选择的模型性能。
+
+### 2.5 扩展到非高斯响应
+
+有两种典型的非高斯第一阶段设置：
+
+**（1）通过 logit 或 probit 回归建模的二值响应数据；**
+
+**（2）利用泊松回归建模的计数数据**。
+
+Diggle 等 (1998) <sup class="refplus-num"><a href="#ref-Diggle1998">[9]</a></sup> 统一了广义线性模型在空间数据环境中的使用框架。另见 Lin 等 (2000) <sup class="refplus-num"><a href="#ref-Lin2000">[20]</a></sup>、Kammann 和 Wand (2003) <sup class="refplus-num"><a href="#ref-Kammann2003">[19]</a></sup> 以及 Banerjee 等 (2004) <sup class="refplus-num"><a href="#ref-Banerjee2004">[1]</a></sup>。 本质上，我们利用 **$\mathbb{E}[Y(\mathbf{s})]$ 在变换尺度上是线性** 这一假设来修改 `式 (1)` 的线性模型，也就是说，响应 $η (\mathbf{s}) ≡ g{\mathbb{E}[Y(\mathbf{s})]} = \mathbf{x}^T(\mathbf{s}) \boldsymbol{\beta}  + w(s)$， 其中 $g(·)$ 是某种恰当的链接函数。
+
+当第一阶段是高斯时，我们可以通过边缘化 $w$ 获得协方差矩阵 $\tau^2  I + \mathbf{c}^{T}\mathbf{C}^{*-1} \mathbf{c}$。尽管此矩阵是 $n × n$ 的，但使用 Sherman–Woodbury 结论（Harville (1997) <sup class="refplus-num"><a href="#ref-Harville1997">[14]</a></sup>；另见`第 4 节`），其逆仅需要计算 $\mathbf{C}^{*-1}$ 。如果第一阶段是二值的或泊松的，则这种边缘化方法就被排除了；我们必须在运行 Gibbs 采样器时更新所有 $w$。而使用预测过程，我们只须更新 $m × 1$ 向量 $\mathbf{w}^{*}$。
+
+多一点澄清可能会有用。如前一段所述，结果模型将采用 $\prod_i p\{Y(\mathbf{s}_i) \mid  \boldsymbol{\beta} , \mathbf{w}^{*}, φ \} p(\mathbf{w}^{*} \mid \sigma^2, φ) p( \boldsymbol{\beta} , φ, \sigma^2)$ 的形式。尽管 $\mathbf{w}^{*}$ 仅为 $m × 1$，但由于 $\mathbf{w}^{*}$ 进入似然的方式，通过其完整条件分布更新此向量可能很难。通过引入一个小量级的纯误差有助于简化计算，令 $η(\mathbf{s}) ≡ g{\mathbb{E}[Y(\mathbf{s})]} = \mathbf{x}^T(\mathbf{s}) \boldsymbol{\beta}  + w(\mathbf{s}) + \varepsilon(\mathbf{s})$ ，其中 $\varepsilon(s ) \stackrel{i.i.d.} \sim \mathcal{N}(0, \tau^2 )$，且 $\tau^2$  已知且非常小。完整模型采用以下形式：
+
+$$
+\prod_i p\{Y(\mathbf{s}_i) \mid η(\mathbf{s}_i)\} \prod_i p\{ η(\mathbf{s}_i) \mid \boldsymbol{\beta} ,\mathbf{w}^{*},φ \}p(\mathbf{w}^{*} \mid φ,\sigma^2) p(\boldsymbol{\beta} ,φ,\sigma^2) 
+$$
+
+$\mathbf{w}^{*}$ 的完整条件分布现在变成了一个多元正态分布，并且 $η(\mathbf{s}_i)$ 是条件独立的。
+
+上述方法也可以被推广用于处理一般性的多分类数据。
+
+### 2.6 扩展到时空模型
+
+有多种可以引入预测过程的时空应用场景，我们在这里举例说明三个。
+
+**（1）时空过程联合建模**
+
+首先，对于 $\mathbf{s} \in \mathcal{D}$ 和 $t \in  [0, T]$，我们将 `式（1）` 推广到为：
+
+$$
+Y(\mathbf{s}, t) = \mathbf{x}(\mathbf{s}, t) \boldsymbol{\beta}  + w(\mathbf{s}, t) + \varepsilon(\mathbf{s}, t) \tag{5}
+$$
+
+在 `式 (5)` 中，
+
+- $\varepsilon$ 仍然是纯误差项；
+
+- $\mathbf{x}(\mathbf{s}, t)$ 是局部的时空协变量向量；
+
+- $\boldsymbol{\beta}$  是系数向量，但假设其为常数，不随空间和时间变化（但支持空间和/或时间变化，见 `第 3 节` ）。
+
+我们用协方差函数为 $\mathbb{Cov}\{w(\mathbf{s}, t), w(\mathbf{s}^{\prime}, t^{\prime})\}$ 的高斯过程建模的时空随机效应 $w(\mathbf{s}, t)$，替换了单纯的空间随机效应 $w(\mathbf{s})$。最近，有一些关于不可分时空协方差函数的讨论；例如，参见 Stein (2005)<sup class="refplus-num"><a href="#ref-Stein2005">[36]</a></sup> 。现在，我们假设数据为 $Y(\mathbf{s}_i, t_i)$， 其中 $i = 1, 2, \ldots , n$，$n$ 可能非常大。
+
+在任何情况下，时空预测过程的定义都与前述的模型类似：
+
+$$
+\tilde{w}(\mathbf{s},t) = \mathbf{c}(\mathbf{s},t)^{T} \mathbf{C}^{*-1} \mathbf{w}^{*}
+$$
+
+其中 $\mathbf{w}^{*}$ 是一个与 $\mathcal{D} × [0, T]$ 上的 $m$ 个 “结点” 相关联的 $m × 1$ 向量，具有协方差矩阵 $\mathbf{C}^{*}$；$\mathbf{w}^{*}$ 的元素由 $w(\mathbf{s}, t)$ 的协方差向量 $\mathbf{c}(\mathbf{s}, t)$ 给出。时空预测过程模型 $\tilde{w}(\mathbf{s}, t)$ 将享有与 $\tilde{w}(\mathbf{s})$ 相同的性质，只是现在 “结点” 的选择问题出现在域 $D × [0, T]$ 上。
+
+**（2）离散时间序列的情况**
+
+接下来，假设我们将时间离散化为 $t = 1, 2, \ldots , T$。现在将响应记为 $Y_t(\mathbf{s})$，将随机效应记为 $w_t(\mathbf{s})$。 $w_t(\mathbf{s})$ 的动态演化是导致了一种空间动态模型，参见 Gelfand 等 (2005)<sup class="refplus-num"><a href="#ref-Gelfand2005">[11]</a></sup>。在一种常见场景中，数据作为空间过程的时间序列出现，即在每个位置 $\mathbf{s} \in \mathcal{D}$ 处都有一个概念时间序列；或者，它有可能作为横截面数据出现，即有一组与每个时间点相关联的位置集，但这些位置集可能因时间点而异。在后一种情况下，可以预期随着时间推移，位置数量会出现爆炸式增长。不过，利用预测过程建模，通过在 $\mathbf{w}^{*}_t$ 动态序列中共享相同的 “结点”，我们可以轻松处理这个问题。
+
+**（3）动态滤波的情况**
+
+最后，预测过程为 Wikle 和 Cressie (1999) <sup class="refplus-num"><a href="#ref-Wikle1999">[45]</a></sup> 提出的时空卡尔曼滤波降维方法提供了一种替代方法。随着时间的离散化，他们设想通过具有空间结构噪声的离散化积分微分方程进行进化，即
+
+$$
+w_t(\mathbf{s}) = \int h_{\mathbf{s}} (\mathbf{u}) w_{t−1}(\mathbf{u}) d \mathbf{u} + η_t(\mathbf{s})
+$$
+
+$h_{\mathbf{s}}$ 是一个位置交互函数，$η$ 是一个空间染色的误差过程。 $w_t(\mathbf{s})$ 被分解为 $\sum^{K}_{k-1} φ_k(\mathbf{s})a_{kt}$，其中 $φ_k(\mathbf{s})$ 是确定性正交基函数，$a$ 是零均值时间序列。然后，每个 $h_{\mathbf{s}}$ 都有一个在 $φ$ 中的基表示，即 $h_{\mathbf{s}}(\mathbf{u})= \sum^{\infty}_{l=1}b_l(\mathbf{s}) φ_l(\mathbf{u})$，其中 $b$ 是未知的。
+
+这样就产生了一个由空间噪声过程 $η(\mathbf{s})$ 的线性变换驱动的 $k × 1$ 向量 $a_t$ 的动态模型。与上面对 $w_t(\mathbf{s})$ 的分解不同，我们将引入一个使用 $\mathbf{w}^{*}_t$ 的预测过程模型。我们用基于所需协方差规格的投影，替换了任意基上的投影。
+
+## 3 多元预测过程建模
+
+多元预测过程将前面的概念扩展到多元高斯过程。
+
+一个 $k × 1$ 的多元高斯过程 $w(\mathbf{s})=[wl(\mathbf{s})]^{k}_{l=1}$，可以被记为 $\mathbf{w}(\mathbf{s}) \sim  \mathcal{MVGP}_k\{\mathbf{0}, \Gamma_{\mathbf{w}}(·)\}$。该多元高斯过程由其互协方差函数 $\Gamma_{\mathbf{w}}(\mathbf{s},\mathbf{s}^{\prime})$ 指定，$\Gamma_{\mathbf{w}}(\mathbf{s},\mathbf{s}^{\prime})=\mathbb{Cov} \{ \mathbf{w}(\mathbf{s}),\mathbf{w}(\mathbf{s}^{\prime})\}=[\mathbb{Cov}\{ w_l(\mathbf{s}) ,w_m(\mathbf{s}^{\prime})\}]^{k}_{l,m=1}$ 是一个由任意位置配对构成的 $k × k$ 矩阵。当 $\mathbf{s} = \mathbf{s}^{\prime}$ 时，$\Gamma_{\mathbf{w}}(\mathbf{s, s})$ 恰好是 $\mathbf{w}(\mathbf{s})$ 的各元素的扩散矩阵。
+
+对于任何整数 $n$ 和任意测点集 $\mathbf{s}_1, \ldots , \mathbf{s}_n$，我们可以将多元实现记为 $kn × 1$ 的向量 $\mathbf{w}=[\mathbf{w}(\mathbf{s}_i)]^{n}_{i=1}$，其服从 $\mathbf{w} \sim  \mathcal{MVN}(\mathbf{0}, \boldsymbol{\Sigma}_{\mathbf{w}})$，其中 $\sum_{\mathbf{w}} =[\Gamma_{\mathbf{w}}(\mathbf{s}_i,\mathbf{s}_j)]^{n}_{i,j=1}$。一个有效的互协方差函数会确保 $\boldsymbol{\Sigma}_w$ 是正定的。在实际工作中，互协方差将涉及空间参数 $\boldsymbol{\theta}$，因此我们将其记为 $\Gamma (\mathbf{s},\mathbf{s}^{\prime}; \boldsymbol{\theta})$。
+
+类似于单变量设置，我们再次考虑一组 “结点” $\mathcal{S}^{*}$ 并用 $\mathbf{w}^{*}$ 表示 $\mathbf{w}(\mathbf{s})$ 在 $\mathcal{S}^*$ 上的实现。那么多元预测过程可以定义为：
+
+$$
+\tilde{\mathbf{w}}(\mathbf{s}) = \mathbb{Cov}\{\mathbf{w}(\mathbf{s}),\mathbf{w}^{*}\} \mathbb{Var}^{−1}(\mathbf{w}^{*}) \mathbf{w}^{*} = \mathbf{C}^{T}(\mathbf{s};\boldsymbol{\theta})\mathbf{C}^{*−1}(\boldsymbol{\theta})\mathbf{w}^{*} \tag{6}
+$$
+
+其中 $\mathbf{C}^{T}(\mathbf{s};\boldsymbol{\theta})=(\Gamma_{\mathbf{w}}(\mathbf{s},\mathbf{s}^{*}_1;\boldsymbol{\theta}),\ldots ,\Gamma_{\mathbf{w}}(\mathbf{s},\mathbf{s}^{*}_m;\boldsymbol{\theta}))$ 是 $k × mk$ 矩阵，并且 $\mathbf{C}^{*}(\boldsymbol{\theta})=[\Gamma_{\mathbf{w}}(\mathbf{s}^{*}_i ,\mathbf{s}^{*}_j;\boldsymbol{\theta})]^{m}_{i,j=1}$ 是 $\mathbf{w}^{*}$ 的 $mk×mk$ 扩散矩阵。`式 (6)` 表明： $\tilde{w}(\mathbf{s})$ 是一个 $k × 1$ 的零均值多元预测过程，其互协方差矩阵由 $\Gamma_{\tilde{\mathbf{w}}}(\mathbf{s},\mathbf{s}^{\prime}) = \mathbf{C}^{*}(\mathbf{s}; \boldsymbol{\theta}) \mathbf{C}^{*-1}(\boldsymbol{\theta}) \mathbf{C}(\mathbf{s}^{\prime}；\boldsymbol{\theta})$。
+
+$\tilde{\mathbf{w}}(\mathbf{s})$ 具有与其单变量对应物类似的性质。它在超过 $m$ 个位置的有限集上的实现具有奇异联合分布。一个 `式 (4)` 的多变量类似物也可以很快得出，其表明多变量预测过程是一个 $\tilde{\mathbf{w}}(\mathbf{s}^{*}_j) = \mathbf{w}(\mathbf{s}^{*}_j)$ 的插值器（对于任何 $\mathbf{s}_j \in \mathcal{S}^{*}$ ）。此外，KL 度量方面的最优性也得以体现。
+
+该过程的指定只需要 $\Gamma_{\mathbf{w}}(\mathbf{s},\mathbf{s}^{\prime}; \boldsymbol{\theta})$ 和 $\mathcal{S}^*$ 。在这里，我们采用空间自适应版本的 “协同区域化线性模型”（Wackernagel，2006 <sup class="refplus-num"><a href="#ref-Wackernagel2006">[43]</a></sup>；Gelfand 等，2004 <sup class="refplus-num"><a href="#ref-Gelfand2004">[13]</a></sup>）。我们将父进程建模为（可能）随空间变化的线性变换 $\mathbf{w}(\mathbf{s}) = A(\mathbf{s}) \mathbf{v}(\mathbf{s})$，其中 $\mathbf{v}(\mathbf{s})=[v_i(\mathbf{s})]^{k}_{i=1}$ 并且每个 $v_i(\mathbf{s})$ 都是一个具有单位方差和相关函数 $ρ_i(\mathbf{s},\mathbf{s}^{\prime})$ 的独立高斯过程。因此，$\mathbf{v}(\mathbf{s}) \sim  \mathcal{MVGP}{\mathbf{0}, \Gamma_{\mathbf{v}}(\mathbf{s},\mathbf{s}^{\prime})}$ 具有对角互协方差 $\Gamma_{\mathbf{v}}(\mathbf{s},\mathbf{s}^{\prime})=\text{diag}\{[ρ_i(\mathbf{s},\mathbf{s}^{\prime})]^{k}_{i=1}\}$，并产生一个对于 $\mathbf{w}(\mathbf{s})$ 而言有效的非平稳互协方差 $\Gamma_{\mathbf{w}}(\mathbf{s},\mathbf{s}^{\prime}) = A(\mathbf{s}) \Gamma_{\mathbf{v}}(\mathbf{s},\mathbf{s}^{\prime}) A^{T}(\mathbf{s}^{\prime})$。
+
+一般来说，即便 $\mathbf{v}(\mathbf{s})$ 是平稳的，$\mathbf{w}(\mathbf{s})$ 也是非平稳的。当 $A(\mathbf{s}) = A$ 为常量时，$\mathbf{w}(\mathbf{s})$ 才会继承 $\mathbf{v}(\mathbf{s})$ 的平稳性；$\Gamma_{\mathbf{w}}(\mathbf{s} − \mathbf{s}^{\prime}) = A\Gamma_{\mathbf{v}} (\mathbf{s} − \mathbf{s}^{\prime})A^{T}$。无论如何，与一维情况一样，归纳的多变量预测过程是非平稳的。
+
+由于 $\Gamma_{\mathbf{w}}(\mathbf{s}, \mathbf{s}) = A(\mathbf{s}) A^{T}(\mathbf{s})$，不失一般性，我们可以假设 $A(\mathbf{s})=\Gamma^{1/2}_{\mathbf{w}}(\mathbf{s,s})$ 是下三角平方根； $A(\mathbf{s})$ 和 $\Gamma_{\mathbf{w}}(\mathbf{s, s})$ 的元素之间的一对一对应关系是众所周知的（例如，参见 Harville (1997) <sup class="refplus-num"><a href="#ref-Harville1997">[14]</a></sup>，第 229 页）。因此，$A(\mathbf{s})$ 决定了 $\mathbf{s}$ 中 $\mathbf{w}(\mathbf{s})$ 的元素之间的关联。 $A(\mathbf{s})$ 的建模选择包括: $A(\mathbf{s}) A^{T}(\mathbf{s})$ 的逆空间 Wishart 过程（Gelfand 等，2004 年<sup class="refplus-num"><a href="#ref-Gelfand2004">[13]</a></sup>）、使用高斯过程和对数高斯过程的逐元素建模。当作出平稳性假设时（ 因此有 $A(\mathbf{s}) = A$ ），我们可以为 $AA^T$ 设置一个先验值（如逆 Wishart），或者根据特征值和 Givens 角将其参数化，并为参数设置超先验（Daniels 和 Kass，1999）<sup class="refplus-num"><a href="#ref-Daniels1999">[6]</a></sup>。
+
+我们指出: 这种方法可能会在计算 $\mathbf{C}^{*-1}$ 时带来更多好处。设 $\mathcal{A}^{*}= \oplus^{m}_{i=1} A(\mathbf{s}^{*}_i)$ 和 $\sum_{\mathbf{v}^{*}}=[\Gamma_{\mathbf{v}}(\mathbf{s}^{*}_i,\mathbf{s}^{*}_j)]^{m}_{i,j=1}$，我们有 $\mathbf{C}^{T}= \mathcal{A}^{*} \boldsymbol{\Sigma}_{\mathbf{v}^{*}} \mathcal{A}^{*T}$ 。由于 $\mathcal{A}^{*−1} = \oplus^{m}_{i=1} A^{−1}(\mathbf{s}^{*}_i)$，这需要 $m k × k$ 次三角逆。转向 $\boldsymbol{\Sigma}_{\mathbf{v}^{*}}$，对角 $\Gamma_{\mathbf{v}}$ 提供了一个稀疏结构。排列 $\mathbf{v}^{*}$ 的元素以堆叠出 $\mathcal{S}^{*}$ 上 $v_i(\mathbf{s})$ 的实现，得到 $\sum_{\mathbf{v}^{*}}=P^{T} \{ \oplus^{k}_{i=1} H^{*}_i (\boldsymbol{\theta}_i)\}P$，其中 $H^{*}_i (\boldsymbol{\theta}_i)=[ρ_i(\mathbf{s}^{*}_{j},\mathbf{s}^{*}_{j^{\prime}};\boldsymbol{\theta}_i)]^{m}_{j,j^{\prime}=1}$。由于 $P^{−1} = P^{T}$，计算复杂性在于 $k m × m$ 的对称相关矩阵 $H^{*-1}_i(\boldsymbol{\theta}_i)$ 的求逆，而不是 $km × km$ 矩阵。
+
+现在，假设每个位置 $\mathbf{s}$ 处产生 $q$ 个响应变量的观测，记为 $q × 1$ 向量 $\mathbf{Y}(\mathbf{s})=[Y_l(\mathbf{s})]^{q}_{l=1}$。对于每个 $Y_l(\mathbf{s})$，我们还观测到回归变量 $\mathbf{x}_l(\mathbf{s})$ 构成的 $pl × 1$ 向量。因此，对于每个位置，我们都有 $q$ 个单变量空间回归方程。它们可以组合成一个多元回归模型，写成
+
+$$
+\mathbf{Y}(\mathbf{s}) = \mathbf{X}^{T}(\mathbf{s}) \boldsymbol{\beta}  + \mathbf{Z}^{T}(\mathbf{s}) \mathbf{w}(\mathbf{s}) + \boldsymbol{\varepsilon}(\mathbf{s}) \tag{7}
+$$
+
+其中 $\mathbf{X}^{T}(\mathbf{s})$ 是一个 $q × p$ 矩阵 ( $p=\sum^{q}_{l=1}pl)$，具有块对角线结构，其第 $l$ 个对角线是 $1 × pl$ 的向量 $\mathbf{x}^T_l(\mathbf{s})$。请注意， $\boldsymbol{\beta}  = (\boldsymbol{\beta}_1, \ldots ,  \boldsymbol{\beta}_p)^{T}$ 是回归系数的 $p × 1$ 向量，其中  $\boldsymbol{\beta}_l$ 是对应于 $\mathbf{x}^T_l(\mathbf{s})$ 的回归系数的 $pl × 1$ 向量。空间效应 $w(\mathbf{s})$ 形成 $q × k$ 的设计矩阵 $\mathbf{Z}^{T}(\mathbf{s})$ 的 $k × 1$ 系数向量，其中 $\mathbf{w}(\mathbf{s}) \sim  \mathcal{MVGP}{\mathbf{0}, \Gamma_{\mathbf{w}}(·,·)}$。 $q × 1$ 向量 $\boldsymbol{\varepsilon}(\mathbf{s})$ 服从 $\mathcal{MVN}(\mathbf{0}, \boldsymbol{ψ})$ 分布，用扩散矩阵 $\boldsymbol{ψ}$ 对测量误差效应建模。
+
+`式（7）` 作为一个通用框架，蕴含了多个空间模型。例如，让 $k = q$ 和 $\mathbf{Z}^{T}(\mathbf{s}) = \mathbf{I}_q$ 会生成 `式 (1)` 的多元对应物，其中 $\mathbf{w}(\mathbf{s})$ 充当随空间变化的截距。然而，我们可以设想所有系数都随空间发生变化，并设置 $k = p$ 且 $\mathbf{Z}^{T}(\mathbf{s}) = \mathbf{X}^{T}(\mathbf{s})$，这会生成一个多元空间变系数模型，它们是 Gelfand 等 (2003) <sup class="refplus-num"><a href="#ref-Gelfand2003">[12]</a></sup> 所讨论模型的多元对应物。Banerjee 等 (2004) <sup class="refplus-num"><a href="#ref-Banerjee2004">[1]</a></sup> 的第 7 章讨论了当存在一个或多个多元数据缺失的位置时，使用 `式 (7)` 的基于模型的空间插值。预测过程版本将简单地将 `式 (7)` 中的 $\mathbf{w}(\mathbf{s})$ 替换为 $\tilde{\mathbf{w}}(\mathbf{s})$。
+
+## 4 贝叶斯实现和计算问题
+
+为了拟合与模型（7）对应的预测过程模型，我们形成数据方程
+
+$$
+\mathbf{Y} = \mathbf{X} \boldsymbol{\beta}  + \mathbb{Z}^{T} \mathbf{C}^{T} (\boldsymbol{\theta}) \mathbf{C}^{∗−1} (\boldsymbol{\theta}) \mathbf{w}^{*} + \boldsymbol{\varepsilon}, \boldsymbol{\varepsilon}  \sim  \mathcal{N}(\mathbf{0}, \mathbf{I}_q  \otimes  Ψ)  \tag{8}
+$$
+
+其中 $\mathbf{Y}=[\mathbf{Y}(\mathbf{s}_i)]^{n}_{i=1}$  是 $nq × 1$ 的响应向量，$\mathbf{X}=[\mathbf{X}^{T}(\mathbf{s}_i)]^{n}_{i=1}$  是回归变量的 $nq × p$ 矩阵， $\boldsymbol{\beta}$  是回归系数的 $p × 1$ 向量, $\mathbb{Z}^T= \oplus^{n}_{i=1} \mathbf{Z}^{T}(\mathbf{s}_i)$ 是 $nq × nk$ 矩阵， $\mathbf{C}^{T}(\boldsymbol{\theta})=[\Gamma_{\mathbf{w}}(\mathbf{s}_i\mathbf{s}^{*}_j;\boldsymbol{\theta})]^{n,m}_{i,j=1}$ 是 $nk × mk$ 矩阵，  $\mathbf{C}(\boldsymbol{\theta})$ 和 $\mathbf{w}^{*}$ 如`第 3 节`所述。
+
+给定先验，在对 $\mathbf{w}^{*}$ 做积分后，模型拟合对边缘似然 $\mathcal{MVN}\{ \mathbf{X} \boldsymbol{\beta} , \mathbb{Z}^{T} \mathbf{C}^{*}(\boldsymbol{\theta}) \mathbf{C}^{*-1}(\boldsymbol{\theta}) \mathbf{C}(\boldsymbol{\theta}) \mathbb{Z} + \mathbf{I}_n  \otimes  Ψ \}$ 采用 Gibbs 采样和 Metropolis 步骤。
+
+使用为了完成分层模型的指定，通常设置  $\boldsymbol{\beta}  \sim  \mathcal{MVN}(\boldsymbol{μ}_{\boldsymbol{\beta}}, \boldsymbol{\Sigma}_{\boldsymbol{\beta}})$，而 $Ψ$ 可以设置一个逆 Wishart 先验（尽管更常见的是采用每个测点不同响应的纯误差独立性），产生对角矩阵 $Ψ= \text{diag}\{(\tau^2 i)^{q}_{i=1} \}$，$\tau^2_i \sim \mathcal{IG}(a_i,b_i)$。此外，$\mathcal{A}^{*}$ 是未知的，需要随机指定。对于 $A$ 常数，$\mathcal{A}^{*} = \mathbf{I}_n  \otimes  A$， 并且我们使用逆 Wishart 先验对 $AA^{T}$ 进行建模。在平稳性下，$\sum_{\mathbf{v}} =[\Gamma_{\mathbf{v}}(\mathbf{s}_i − \mathbf{s}_j;\boldsymbol{\theta})]^{n}_{i,j=1}$，并且我们需要在 $\boldsymbol{\theta}=\{φ_k,ν_k\}^{q}_{k=1}$ 上分配先验。这将再次取决于相关函数的选择。一般来说，空间衰减参数难以识别，使得先验指定变得有些微妙。需要合理的信息性先验以得到令人满意的 MCMC 行为。衰减参数的先验是相对于 $\mathcal{D}$ 的大小设置的，例如先验均值意味着空间变程参数是最大距离的选定分数。对于 Matérn 相关函数，平滑度参数 $ν$ 的先验通常被设置有 $(0, 2)$，因为数据很少能告知高阶的平滑度。
+
+我们从 $p(\boldsymbol{\Omega} \mid \text{data}) \propto  p( \boldsymbol{\beta}) p(A) p(\boldsymbol{\theta}) p(\mathbf{Y} \mid  \boldsymbol{\beta} , A, \boldsymbol{\theta}, Ψ)$ 中抽取 $L$ 个样本，记为 $\{\boldsymbol{\Omega}^{(l)}\}^{L}_{l=1}$，其中 $\boldsymbol{\Omega}= (\boldsymbol{\beta}, A, \boldsymbol{\theta}, Ψ)$。采样首先从 $\mathcal{MVN}(\boldsymbol{μ}_{\boldsymbol{\beta}  \mid \cdot}, \boldsymbol{\Sigma}_{\boldsymbol{\beta}  \mid \cdot} )$ 分布中更新  $\boldsymbol{\beta} \boldsymbol{\theta}$，其中方差为：
+
+$$
+\Sigma_{\boldsymbol{\beta} \mid \cdot} = \{\Sigma^{-1}_{\boldsymbol{\beta}} + \mathbf{X}^{T}(\mathbb{Z}^{T} \mathbf{C}^{T}(\boldsymbol{\theta}) \mathbf{C}^{*−1}(\boldsymbol{\theta}) \mathbf{C}(\boldsymbol{\theta}) \mathbb{Z} + \mathbf{I}_N \otimes ψ)^{−1} \mathbf{X} \}^{−1}
+$$
+
+均值为：
+
+$$
+\boldsymbol{μ}_{\boldsymbol{\beta}  \mid \cdot} = \Sigma_{\boldsymbol{\beta}  \mid \cdot} \mathbf{X}^{T}(\mathbb{Z}^T \mathbf{C}^T(\boldsymbol{\theta}) \mathbf{C}^{∗−1}(\boldsymbol{\theta}) \mathbf{C}(\boldsymbol{\theta}) \mathbb{Z} + \mathbf{I}_N \otimes ψ)^{−1} \mathbf{Y}
+$$
+
+其余参数通过使用 Metropolis 步骤进行更新，可能使用块更新（例如，一个块中 $Ψ$ 的所有参数和另一个块中 $A$ 的所有参数）。通常，采用具有（多变量）正态提议的随机游走 Metropolis 步骤；由于所有具有正支撑的参数都被转换成了其对数，因此需要进行一些雅可比计算。例如，虽然我们为 $AA^T$ 分配了一个逆 Wishart 先验，但在 Metropolis 步骤中，我们更新了 $A$，这需要通过雅可比 $2^k \prod^{k}_{i=1} a^{k−i+1}_{ii}$ 来转换先验。
+
+
+该方案需要 $(\mathbb{Z}^T \mathbf{C}^{*}(\boldsymbol{\theta}) \mathbf{C}^{*-1}(\boldsymbol{\theta}) \mathbf{C}(\boldsymbol{\theta}) \mathbb{Z} + \mathbf{I}_n  \otimes  Ψ)$ 的行列式和逆矩阵，即 $nq × nq$。通过使用 Sherman–Woodbury–Morrison 类型计算（例如 Harville (1997) <sup class="refplus-num"><a href="#ref-Harville1997">[14]</a></sup>），这些任务可以仅根据 $mk × mk$ 矩阵就能有效地完成。
+
+该计算将行列式估值为： 
+
+$$
+|Ψ|^{n}  |\mathbf{C}^{T}(\boldsymbol{\theta}) + \mathbf{C}(\boldsymbol{\theta}) \mathbb{Z}( \mathbf{I}_n \otimes  Ψ^{−1}) \mathbb{Z}^{T} \mathbf{C}^{*}(\boldsymbol{\theta})|  /  | \mathbf{C}^{T}(\boldsymbol{\theta}) |
+$$
+
+将逆估值为：
+
+$$
+\mathbf{I}_n  \otimes  Ψ^{−1} − (\mathbf{I}_n  \otimes  Ψ^{−1}) \mathbb{Z}^{T} \mathbf{C}^{T}(\boldsymbol{\theta}) \{ \mathbf{C}^{*}(\boldsymbol{\theta}) + \mathbf{C}(\boldsymbol{\theta}) \mathbb{Z} (\mathbf{I}_n \otimes Ψ^{−1}) \mathbb{Z}^{T} \\mathbf{C}^{T}(\boldsymbol{\theta}) \}^{−1} \mathbf{C}(\boldsymbol{\theta}) \mathbb{Z}(\mathbf{I}_n  \otimes  Ψ^{−1})
+$$
+
+请注意，在使用边缘模型更新 $\boldsymbol{\Omega}$ 时，不会对 $\mathbf{w}^{*}$ 进行采样。然而，当第一阶段为高斯模型时，$\mathbf{w}$ 的后验样本可以通过如下分布的样本的组合来恢复：
+
+$$
+p(\mathbf{w}^{*} \mid \text{data}) \propto  \int p(\mathbf{w}^{*} \mid \boldsymbol{\Omega}, \text{data}) p(\boldsymbol{\Omega} \mid \text{data}) d \boldsymbol{\Omega}
+$$
+
+因为我们有来自 $p(\boldsymbol{\Omega} \mid \text{data})$ 的后验样本，并且积分下的第一个分布是多元正态分布。采样是与 $\boldsymbol{\Omega}^{(l)}$ 一对一的，产生 $\mathbf{w}^{*(l)}$，因此也样本 $\tilde{w}^{(l)} = \mathbf{C}^{*}(\boldsymbol{\theta}^{(l)}) \mathbf{C}^{*-1} (\boldsymbol{\theta}^{(l)}) \mathbf{w}^{*(l)}$。为了在新位置 $\mathbf{s}_0$ 预测 $\mathbf{Y}(\mathbf{s}_0)$，$\mathbf{w}^{*(l)}$ 生成 $\tilde{w}^{(l)}(\mathbf{s}_0)$。然后，通过使用`式 (7)` 与 $\boldsymbol{\Omega}^{(l)}$ 和 $\tilde{\mathbf{w}}^{(l)}(\mathbf{s}_0)$，可以采样 $\mathbf{Y}^{(l)}(\mathbf{s}_0)$。
+
+Sherman-Woodbury-Morrison 矩阵恒等式已用于其他带边缘似然的低秩克里金方法，例如 Cressie (2008) <sup class="refplus-num"><a href="#ref-Cressie2008">[4]</a></sup>。利用 `式 (8)` 中的似然，我们可以避免对 $(m × 1)$ 维向量 $\mathbf{w}^{*}$ 进行边缘化，而是使用其完整条件分布（当第一阶段似然为高斯分布时为多元正态分布）进行更新。当然，一般来说，边缘化的采样器收敛得更快。然而，对于第一阶段似然为非高斯的模型，边缘化是不可行的，我们必须更新 $\mathbf{w}^{*}$，而 Sherman-Wood-bury-Morrison 公式不起作用。
+
+## 5 展示
+
+我们的预测过程实现是用 C++ 编写的，利用处理器优化的 BLAS、稀疏 BLAS 和 LAPACK 例程 (www.netlib.org) 进行所需的矩阵计算。要求最苛刻的模型（涉及 28 500 个空间效应）在一个 3.06 GHz Intel Xeon 处理器和 4.0 GB 随机存取内存运行 Debian LINUX 上花费了大约 46 小时来交付其整个推断输出，涉及 15 000 次 MCMC 迭代。收敛诊断和其他后验总结是在 R 统计环境 (http://cran.r-project.us.org) 中使用 CODA 包实现的。
+
+### 5.1 模拟研究
+
+我们提供了两个模拟示例。第一个例子（`第 5.1.1 节`）涉及 $3000$ 个位置和一个各向异性随机场，我们在其中估计了父模型本身以提供与预测过程模型的比较。第二个例子（`第 5.1.2 节`）更大，有 $15000$ 个位置和更具挑战性的非固定空间结构，该结构排除了使用上述计算规格来估计父模型的可能性。
+
+#### 5.1.1 模拟示例一 
+
+在这里，我们使用 `式 (1)` 从 $1000 × 1000$ 域空间上的 $3000$ 个不规则分布的位置处，模拟了响应 $Y(\mathbf{s})$。在这种情况下，我们可以不借助预测过程来拟合 `式 (1)` 的模型；可以对 $m$ 和各种 “结点” 设计选择行比较。回归分量仅包括截距，而空间过程 $w(\mathbf{s})$ 是通过使用由下式给出的平稳各向异性 Matérn 协方差函数生成的：
+
+$$
+\mathbf{C}(\mathbf{s},\mathbf{s}^{\prime}:\boldsymbol{\theta}) = \{\sigma^2/2^{ν−1} \Gamma(ν)\} [2√\{ν d(\mathbf{s},\mathbf{s}^{\prime})\}]^{ν} κ_ν[2√\{ν d(\mathbf{s},\mathbf{s}^{\prime})\}]
+$$
+
+其中 $d(\mathbf{s}, \mathbf{s}^{\prime}) = (\mathbf{s} − \mathbf{s}^{\prime})^{T}\boldsymbol{\Sigma}^{−1}(\mathbf{s} − \mathbf{s}^{\prime})$。我们进一步参数化 $\boldsymbol{\Sigma}= G(ψ) Λ G^{T}(ψ)$，其中 $G(ψ)$ 是角度为 $ψ$ 的旋转矩阵，$Λ$ 是具有正对角元素 $λ^2$ 的对角矩阵。向量 $\boldsymbol{\theta}= (ν, ψ, Λ)$ 表示空间参数：$ν$ 控制平滑度，而空间衰减率由 $λ^2$ 控制。
+
+生成模拟过程的参数值在 `表 1` 的第二列中给出。`图 3(a)` 清楚地显示了该过程的主控 $45.0°$ 方向。我们为截距 $\boldsymbol{\beta}$  分配一个平先验，为旋转参数 $ψ$ 分配了 $U(0, π/2)$ 先验，为 $λ$ 分配了 $U(10, 400)$ 先验。 $λ$ 上的这种支撑对应于沿这些轴的有效空间变程的大约 $30-1200$ 个距离单位（即约 $3λ$ 是相关性降至 $0.05$ 的距离）。其余过程参数 $\sigma^2$ 和 $\tau^2$ 分别服从 $IG(2, 1)$ 和 $IG(2, 0.2)$ 先验。在本小节的分析中，我们将 $ν = 0.5$ 保持为固定值。
+
+![Fig03](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230104215610-27ad.webp)
+
+&gt; 图 3： (a) 通过使用表 1 中给出的参数值，用 3000 个测点生成的模拟平稳各向异性过程，(b) 预测过程模型的插值（后验平均）表面在格子中覆盖了 256 节加上邻近配对配置，以及 (c)预测过程模型的插值（后验平均）表面在格子加填充配置中覆盖了 256 节
+
+
+&gt; 表 1： 参数可信区间，50% (2.5% 97.5%)，并使用规则的 “结点” 网格对预测过程模型进行预测验证
+
+![Table01](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230104215716-b558.webp)
+
+我们进行了几个具有不同 “结点” 数量和配置的模拟实验。除了规则的格子（或网格）之外，我们还探索了 Diggle 和 Lophaven (2006) <sup class="refplus-num"><a href="#ref-Diggle2006">[7]</a></sup> 在空间设计背景下描述的两种不同的 “结点” 配置。第一个被称为 “格子加邻近配对” 的配置，它考虑一个规则的 $k × k$ 结点网格，然后通过随机选择这些格点中的 $m^{\prime}$ 来强化这个网格，然后在每个点附近放置一个额外的结——比如在内部以晶格点为中心，半径为晶格间距的一部分的圆。第二种配置称为格子加填充设计，也是从常规 $k × k$ 格子上的结开始，但现在通过在原始格子的 $m^{\prime}$ 随机选择的单元格中放置更精细间隔的格子来加强网格。
+
+在这里，我们展示了上述设计的插图， “结点” 大小为 $144$、$256$ 和 $529$。对于均匀网格，这些 “结点” 排列在正方形格子上， “结点” 间距分别为 $91.0$、$66.8$ 和 $45.5$ 个单位。对于邻近配对和内填充设计，我们将结数量保持在 $144$、$256$ 和 $529$（为了与均匀格子进行公平比较）并相应地调整格子。例如，`图 3（b）` 显示了通过从 $14×14$ 的格子中随机选择 $60$ 个结，然后在每个结上添加一个结以形成邻近配对，具有 $256$ 个结的邻近配对设计。类似地，`图 3（c）` 显示了通过随机选择原始 $14×14$ 格子的 $12$ 个单元格并在每个这些单元格中添加一个精细间隔的子格子而形成的具有 $256$ 个结的内填充设计。这导致每个单元格中有五个额外的结，使结的总数为 $142 + 12 × 5 = 256$。
+
+对于每个结配置，三个并行 MCMC 链分别运行 $5000$ 次迭代。收敛诊断显示 $1000$ 次迭代足以进行初始老化，因此来自每个链的剩余 $12000 (4000 × 3)$ 个样本用于后验推断。`表 1` 提供了均匀网格上三个结配置的参数估计值，以及来自父模型的参数估计值，即 $3000$ 个位置中的每一个都作为一个结，而 `表 2` 和 `表 3` 分别提供了来自邻近配对和内填充设计的参数估计值。对于 $144$、$256$ 和 $529$ 结模型，前面描述的实验环境用时分别约为 $0.75$ 小时、$1.5$ 小时和 $4.25$ 小时，而对于父模型，它约为 $18$ 小时。
+
+&gt; 表 2: 参数可信区间 $50\%$（$2.5\%$ $97.5\%$），对于具有 $3000$ 个位置的预测过程模型，通过使用具有不同结数量的网格加邻近配对设计。
+
+![Table02](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230104215825-bdca.webp)
+
+&gt; 表 3: 参数可信区间，$50\%$（$2.5\%$ $97.5\%$），用于使用网格加内填充设计的具有 $3000$ 个位置的预测过程模型。斜体条目表示缺少真实值的位置。最后一行提供了一组 $100$ 个保留位置的 $95\%$ 预测区间的经验覆盖率。
+
+![Table03](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230104215909-b655.webp)
+
+所有表格都显示了随着结数的增加带来的估计改进，与空间设计无关。在所有三个表中，我们发现预测过程模型的可信区间与原始模型的可信区间存在大量重叠。尽管 $144$ 个结足以捕获回归项  $\boldsymbol{\beta}$ ，但需要更高的结密度来捕获各向异性场参数和块金方差 $\tau^2$。特别是块金方差是一个难以估计的参数，其中大部分可变性由 $\sigma^2$ 控制，但我们看到从 $256$ 个结移动到 $529$ 个结带来的显著改进。`表 1-3` 表明估计对 “结的数量” 比对 “空间设计” 更敏感，尽管邻近配对设计似乎可以改善对较短变程的估计，如 $256$ 个结的 $λ^2$ 所见。然而，从 `表 1-3` 的最后一行可以看出，预测要稳健得多。这些显示了基于 $100$ 个位置的保留集的 $95\%$ 预测区间的经验覆盖率。考虑到预测过程中的不确定性低于父过程（见 `第 2.3 节`），尽管预计覆盖率会更低，但覆盖率只是略低。
+
+#### 5.1.2 模拟实例二
+
+现在，我们展示了一个更复杂的插图，其中包含 $15000$ 个位置（比前面的示例增加了五倍）和一个更复杂的非平稳随机场，这使得对整个模型的估值在计算上不可行。我们现在将域划分为三个子区域，并使用 `式 (1)` 为 $1000 × 1000$ 空间域上的 $15000$ 个位置生成 $Y(\mathbf{s})$，并为三个区域中的每一个分配不同截距。`图 4(a)` 显示了域和采样位置以及 $529$ 个重叠的结点。我们将前面示例中的协方差函数扩展到非平稳版本（Paciorek 和 Schervish，2006 <sup class="refplus-num"><a href="#ref-Paciorek2006">[25]</a></sup>）
+
+$$
+\mathbf{C}(\mathbf{s},\mathbf{s}^{\prime};\boldsymbol{\theta})=\sigma^2 \frac{1}{2^{ν−1} \Gamma(ν)} | \sum_{D(\mathbf{s})} |^{1/4}  |\sum_{D(\mathbf{s}^{\prime})}|^{1/4} \left | \frac{\Sigma_{D(\mathbf{s})} + \Sigma_{D(\mathbf{s}^{\prime})}}{2} \right|^{−1/2} [2√\{ν d(\mathbf{s},\mathbf{s}^{\prime})\}]^{ν} κ_ν[2√\{ν d(\mathbf{s},\mathbf{s}^{\prime})\}]
+$$
+
+其中
+
+$$
+d(\mathbf{s},\mathbf{s}^{\prime})=(\mathbf{s}−\mathbf{s}^{\prime})^{T} \left( \frac{\Sigma_{D(\mathbf{s})} + \Sigma_{D(\mathbf{s}^{\prime})}}{2} \right)^{−1}(\mathbf{s}−\mathbf{s}^{\prime})
+$$
+
+$\boldsymbol{\Sigma}_{D(\mathbf{s})}$ 现在随空间变化，$D(\mathbf{s})$ 指示 $\mathbf{s}$ 所属的子区域（$1$、$2$ 或 $3$）。我们再次参数化 $\boldsymbol{\Sigma}_{D(\mathbf{s})} = G(ψ_{D(\mathbf{s})}) Λ G^{T}(ψ_{D(\mathbf{s})})$ 但现在承认旋转角度取决于位置。`表 4` 中的第二列显示了用于生成数据的参数值。从西北的圆形区域开始，区域特定参数按顺时针方向标记为 $1$ 至 $3$。
+
+我们为三个截距分配了平坦先验，为三个区域特定的旋转参数中的每一个分配了 $U(0，π/2)$ 先验，为 $λ$ 分配了 $U(1.7，300)$ 先验（对应于大约 $5-900$ 个距离单位的空间变程）。其余的过程参数 $ν$、$\sigma^2$ 和 $\tau^2$ 分别服从 $U(0，2)$、$IG(2，1)$ 和 $IG(2，0.2)$ 先验。
+
+我们再次采用了均匀网格以及具有 $144$、$256$ 和 $529$ 节的邻近配对和格子加内填充网格；在前述实验环境中，运行分别约为 $6$ 小时、$15$ 小时和 $33$ 小时。这些设计的推断结果没有明显变化，所以我们只介绍了均匀网格的结果。对于每个模型，我们运行了三个最初过度分散的链，进行了 $3000$ 次迭代。收敛诊断显示，$1000$ 次迭代足以实现初始老化，因此每条链的剩余 $2000$ 个样本被用于后验推断。
+
+`表 4` 显示了参数估计值。总体情况与 `第 5.1.1 节` 中的情况非常相似，结密度的增加导致了估计的改善，特别是对空间和块金变异的估计。尽管 $144$ 个结的节间间隔较大，对潜在非平稳结构提供了一个不充分的近似，但 $256$ 个结和 $529$ 个结的模型表现更好，尤其是后者。`表 4` 的最后一行显示了基于 $100$ 个测点的保留区间的 $95\%$ 预测区间的经验覆盖率。虽然考虑到预测过程中的不确定性比父过程中的不确定性要小（ `第 2.3 节` ），但覆盖率预计会更低，所以只是略低。`图 4(b)` 是普通最小二乘法残差图，`图 4(c)` 是有 $529$ 个结的预测过程模型的空间残差表面。这些图使用了相同的插值和等值线算法（ R 中的 MBA 包）构建的。它们揭示了 `图 4(c)` 中由预测过程带来的平滑；`图 4(c)` 也使特定区域的各向异性更加明显。
+
+事实上，注意到 `区域 1` 和 `区域 3` 有相同的旋转角度 $(\boldsymbol{\theta}_1 = \boldsymbol{\theta}_2 = 45°)$，但有对等的变程参数（即 $λ_{1,1} = λ_{3,2} = 16.69$ 和 $λ_{1,2} = λ_{3,1} = 66.7$ ），造成d等值线的相反方向，而在 `区域 2`，较短的空间变程（ $λ_{2,1}$ ）产生更集中的沿 $75°$ 轴的等值线。
+
+
+![Figure04](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230104220111-a1ca.webp)
+
+&gt; 图 4： (a) 具有 $15000$ 个模拟测点 (·) 的三个区域，低于 $529$ 个结 (●)，用于估计父过程，(b) 普通最小二乘残差的插值（平均）表面； (c) 插值（ $529$ 个结的预测过程模型的空间残差的后验均值）曲面
+
+
+&gt; 表 4： 参数可信区间，$50\%$ ($2.5\%$ $97.5\%$)，三个 “结点” 强度和 $15000$ 个位置。斜体条目表示区间偏离真实值的位置。最后一行提供了一组 $100$ 个保留位置的 $95\%$ 预测区间的经验覆盖率。
+
+![Table04](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230104220231-ba65.webp)
+### 5.2 空间变化回归示例
+
+森林生物量的空间模型和与当前碳储量和通量测量相关的其他变量最近引起了很多关注，用于量化森林景观当前和未来的生态和经济可行性。兴趣通常在于检测整个景观（作为连续表面）的生物量如何变化以及它在整个地区的同质性。我们考虑在 $9500$ 个地点观测到的点参考生物量（对数转换）数据，这些数据是从美国农业部林务局的 “森林清查和分析” 计划中获得的。每个位置都会产生该位置树木生物量的测量值和两个回归变量：距离地面 $1.37$ 米以上的所有茎的横截面积（基础面积）和该位置的树茎数量（茎密度）。通常通过使用断面面积和茎密度测量值的典型值，或者在可用的情况下，使用来自历史数据源的值，在位置上寻求生物量的空间插值。`图 5` 显示了覆盖 $144$ 个结的域和采样位置。
+
+![Fig05](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230104220452-3ae7.webp)
+
+&gt; 图 5： 森林清查点的空间分布：$9500$ 个地理参考森林清查点 (•) 与 $144$ 个结 (●) 叠加 
+
+通常发现仅具有空间变化截距的空间回归模型不足以解释生物量。相反，我们为截距和两个回归变量选择空间变化的回归系数（Gelfand 等，2003 年）<sup class="refplus-num"><a href="#ref-Gelfand2003">[12]</a></sup>。
+
+更具体地说，我们使用 $q = 1$、$k = p = 3$ 和 $\mathbf{Z}^{T}(\mathbf{s}) = \mathbf{X}^{T}(\mathbf{s})$ 的 `式 (7)` 模型，得到 $Y(\mathbf{s}) = \mathbf{x}^T(\mathbf{s}) \tilde{\boldsymbol{\beta}}(\mathbf{s}) + \varepsilon(s)$, 其中  $\tilde{\boldsymbol{\beta}} (\mathbf{s}) = \boldsymbol{\beta}  + \mathbf{w}(\mathbf{s})$ 是空间变化的回归系数。
+
+尽管我们对模型有一个单变量响应，但因系数曲面的建模引入了一个多变量空间高斯过程 $\mathbf{w}(\mathbf{s})$。分层建模的力量在这里得到了体现；我们可以了解这个多变量过程，而无需从中看到任何观测结果。我们将其转换为 `第 4 节` 中所述的`式 (8)`，其中 $n = 9$ 和 $n = 500$，$q = 1$，$k = p = 3$（产生 $28 500$ 个空间效应）和 $\mathbb{Z} = \oplus^{n}_{i=1} \mathbf{x}^{T}(\mathbf{s}_i)$。例如，Gelfand 等 (2003)<sup class="refplus-num"><a href="#ref-Gelfand2003">[12]</a></sup>详细介绍了此类模型的优点。他认识到这些具有大型空间数据集的模型的计算不可行性，并求助于可分离的协方差结构，这些结构将相同的空间衰减限制在所有系数上。预测过程模型使我们能够超越可分离性，并采用`第 3 节`中讨论的更一般的协同区域化结构。
+
+我们估计的参数为 $\boldsymbol{\Omega}= ( \boldsymbol{\beta} , A, \boldsymbol{\theta}, Ψ)$，其中 $\boldsymbol{\beta}$  为 $3 × 1$，$Ψ$ 为 $\mathbf{I}_n  \otimes  \tau^2$ ，$A$ 为 $3 × 3$ 下三角矩阵。  $\boldsymbol{\beta}$ 向量中的参数包括模型截距 $\boldsymbol{\beta}_0$、断面面积 $\boldsymbol{\beta}_1$ 和树干密度 $\boldsymbol{\beta}_2$。我们假设 Matérn 相关函数添加了三个 $φ$ 和三个 $ν$。平坦先验被分配给 $\boldsymbol{\beta}$ 。我们使用了通过使用普通最小二乘残差计算的经验半变异函数的块金值，使 $IG(2,0.03)$ 在分配给纯误差项 $\tau^2$  之前居中。 $\Gamma (0) = AA^{T}$ 被分配了一个 $IW{4, \text{diag}(0.04)}$ 先验，其中，再次使用由回归量缩放的响应的半变异函数来指导缩放超参数的大小。在`第 4 节`的讨论之后，我们假设 $ν \sim  U(0, 2)$ 和 $φ \sim  U(3 × 10^{−4}, 0.003)$，如果 $ν = 0.5$，则描述了 $1-100$ 公里的有效空间变程间隔。
+
+具有 $64$、$144$ 和 $256$ 个结的预测过程模型分别使用三个并行链运行 $5000$ 次迭代（中央处理器单位时间分别为 $10$ 小时、$18$ 小时和 $46$ 小时）。他们揭示了相当快速的收敛，受益于边缘化的可能性，以及 $1000$ 次迭代的老化。保留剩余的 412 0004 个样本（$4000 × 3$）用于后验分析。 （只有 $36$ 个结时，相邻结之间的距离（$40$ 公里）似乎超出了数据支持的有效空间变程，导致过程参数收敛不可靠）。`表 5` 提供了模型参数的后验推断，对应于各种结密度。可以看出数据中的回归非常强烈，其中截面面积具有显著的负面影响，而茎密度对响应具有显著的正面影响。我们看到两对系数过程之间存在负相关，而另一对存在正相关。可以看到明显的金块效应 ( $\tau^2$ )。各种斜率参数的空间衰减参数非常相似，这可能表明可分离的协方差模型就足够了。在平滑度参数中可以看到一些收缩。这些估计在不同的 “结点” 密度下通常是稳健的；进一步增加结的数量对估计的增益很小。
+
+&gt; 表 5： 推断总结，50% (2.5%, 97.5%)，基于三个 “结点” 密度的空间变化系数模型
+
+![Table05](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230104220612-701d.webp)
+
+`图 6` 显示了残差系数过程的等值线图（即对应于每个系数的 $\tilde{w} (\mathbf{s})$ ）以及生物量（使用典型值的断面面积和茎密度）。拦截过程似乎吸收了大部分空间变化；两个协变量过程更平滑。与通过插值原始响应数据（未显示）获得的结果相比，预测的生物量表面提供了空间平滑版本，针对协变量进行了调整，有助于更好地阐明较高生物量的区域。
+
+![Fig06](https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230104220715-30e1.webp)
+
+&gt; 图 6： 来自空间变化系数模型的空间表面的后验（平均）估计：（a）空间变化截距参数的插值表面； (b) 空间变化底面积参数的插值表面； (c) 空间变化的茎密度参数的插值表面； (d) 预测（对数）生物量的插值表面
+
+
+## 6 总结及下一步工作 
+
+我们已经解决了将所需的分层空间建模拟合到大型数据集的问题。为此，我们建议简单地用其归纳的预测过程替换父空间过程。人们无需偏离建模目标来考虑选择基函数、核或位置对齐算法。由此产生的一类模型本质上属于广义线性混合模型框架（如 `式（8）`）。
+
+正如在现有的低秩克里金方法中一样，我们需要选择结点，并且正如我们在`第 5.1 节`中所展示的那样，预计对结点数量的一些敏感性。尽管对于大多数应用而言，合理的 “结点” 网格应该会产生稳健的推断，但 “结点” 越少，它们之间的分离就会增加，并且估计具有精细尺度空间依赖性的随机场变得困难。事实上，了解精细尺度空间依赖性始终是一个挑战（例如，参见 Cressie (1993) <sup class="refplus-num"><a href="#ref-Cressie1993">[3]</a></sup>，第 114 页）。
+
+我们在`第 5.1 节`中的示例表明，即使具有相当复杂的底层空间结构，预测过程模型也可以有效地捕获 $529$ 个结的大部分空间参数（无论位置总数是 $3000$ 还是 $15000$）。在我们的模拟示例中注意到的另一个挑战是方差分量比 ( $\sigma^2/\tau^2  = 5.0$) 很大的情况，因此很难估计 $\tau^2$ 。一种可能的补救措施是根据它们的比率和较大的方差分量重新参数化 $(\sigma^2, \tau^2)$（例如，参见 Diggle 和 Ribeiro (2007) <sup class="refplus-num"><a href="#ref-Diggle2007">[8]</a></sup>）。探索的另一个选择是将预测过程修改为 $\dot{w}(\mathbf{s}) = \tilde{w}(\mathbf{s}) + \tilde{\varepsilon}(\mathbf{s})$，其中 $\tilde{\varepsilon}(\mathbf{s})$ 是一个独立的高斯过程，方差为 $\mathbf{C}(\mathbf{s, s}) − \mathbf{c}^{T}(\mathbf{s}; \boldsymbol{\theta}) \mathbf{C}^{*-1} (\boldsymbol{\theta}) \mathbf{c}(\mathbf{s}; \boldsymbol{\theta})$。
+
+最后，目标是降维以促进似然的估值，以促进基于模拟的模型拟合。尽管我们采用 MCMC 方法来拟合这些模型，但也可以采用更快的替代方法来避免 MCMC 采样（例如，参见 Rue 等 (2007) <sup class="refplus-num"><a href="#ref-Rue2007">[30]</a></sup>）。事实上，在一个完整的 MCMC 实现中的预测过程方法可能仅限于在适度的单处理器机器上进行 $104$ 个观测的顺序（见`第 5 节`）；具有经验贝叶斯风格的策略，结合确定性和模拟方面，很可能是拟合非常大的时空数据集的未来。事实上，空间数据集，尤其是在大规模全球现象的科学研究中，包含的位置比此处的插图要多得多，这一点确实很常见。例如，Cressie 和 Johannesson (2008) <sup class="refplus-num"><a href="#ref-Cressie2008">[4]</a></sup> 处理了数十万数量级的数据。发现具有大量不同时间点的时空数据集也很常见，可能具有在不同位置观测到的不同时间点（例如房地产交易）。使用多个处理器，可以通过矩阵运算的并行处理实现计算效率的显著提高（例如，参见 Heroux 等 (2006) <sup class="refplus-num"><a href="#ref-Heroux2006">[15]</a></sup>）。我们打算在这种情况下广泛调查预测过程模型的潜力。更直接的是，我们打算将较低级别的 C++ 代码迁移到 R 环境中现有的 spBayes (http://cran.r-project.org) 包，以促进预测过程模型的可访问性。
+
+
+## 参考文献
+
+<ul id="refplus"><li id="ref-Banerjee2004" data-num="1">[1]  Banerjee, S.; Carlin, BP.; Gelfand, AE. Hierarchical Modeling and Analysis for Spatial Data. Boca Raton: Chapman and Hall–CRC; 2004.</li><li id="ref-Cornford2005" data-num="2">[2]  Cornford D, Csato L, Opper M. Sequential, Bayesian geostatistics: a principled method for large datasets. Geogr Anal 37:183–199; 2005.</li><li id="ref-Cressie1993" data-num="3">[3]  Cressie, NAC. Statistics for Spatial Data. Vol. 2. New York: Wiley; 1993.</li><li id="ref-Cressie2008" data-num="4">[4]  Cressie N, Johannesson G. Fixed rank kriging for very large data sets. J R Statist Soc B 70:209226; 2008.</li><li id="ref-Csato2002" data-num="5">[5]  Csato, L. PhD Thesis. Aston University; Birmingham. Gaussian processes—iterative sparse approximation; 2002.</li><li id="ref-Daniels1999" data-num="6">[6]  Daniels MJ, Kass RE. Nonconjugate Bayesian estimation of covariance matrices and its use in hierarchical models. J Am Statist Ass 94:1254–1263; 1999.</li><li id="ref-Diggle2006" data-num="7">[7]  Diggle P, Lophaven S. Bayesian geostatistical design. Scand J Statist 33:53–64; 2006.</li><li id="ref-Diggle2007" data-num="8">[8]  Diggle, PJ.; Ribeiro, PJ. Model-based Geostatistics. New York: Springer; 2007.</li><li id="ref-Diggle1998" data-num="9">[9]  Diggle PJ, Tawn JA, Moyeed RA. Model-based geostatistics (with discussion). Appl Statist 47:299350; 1998.</li><li id="ref-Fuentes2007" data-num="10">[10]  Fuentes M. Approximate likelihood for large irregularly spaced spatial data. J Am Statist Ass 102:321–331; 2007.</li><li id="ref-Gelfand2005" data-num="11">[11]  Gelfand AE, Banerjee S, Gamerman D. Spatial process modelling for univariate and multivariate dynamic spatial data. Environmetrics 16:465–479; 2005.</li><li id="ref-Gelfand2003" data-num="12">[12]  Gelfand AE, Kim H, Sirmans CF, Banerjee S. Spatial modelling with spatially varying coefficient processes. J Am Statist Ass 98:387–396; 2003.</li><li id="ref-Gelfand2004" data-num="13">[13]  Gelfand AE, Schmidt A, Banerjee S, Sirmans CF. Nonstationary multivariate process modelling through spatially varying coregionalization (with discussion). Test 13:1–50; 2004.</li><li id="ref-Harville1997" data-num="14">[14]  Harville, DA. Matrix Algebra from a Statistician’s Perspective. New York: Springer; 1997.</li><li id="ref-Heroux2006" data-num="15">[15]  Heroux, MA.; Padma, R.; Simon, HD., editors. Parallel Processing for Scientific Computing. Philadelphia: Society for Industrial and Applied Mathematics; 2006.</li><li id="ref-Higdon2001" data-num="16">[16]  Higdon, D. Technical Report. Institute of Statistics and Decision Sciences, Duke University; Durham. Space and space time modeling using process convolutions; 2001.</li><li id="ref-Higdon1999" data-num="17">[17]  Higdon, D.; Swall, J.; Kern, J. Non-Stationary spatial modeling. In: Bernardo, JM.; Berger, JO.; Dawid, AP.; Smith, AFM., editors. Bayesian Statistics. Vol. 6 p. 761-768.. Oxford: Oxford University Press; 1999.</li><li id="ref-Jones1997" data-num="18">[18]  Jones, RH.; Zhang, Y. Models for continuous stationary space-time processes. In: Diggle, PJ.; Warren, WG.; Wolfinger, RD., editors. Modelling Longitudinal and Spatially Correlated Data: Methods, Applications and Future Directions. New York: Springer; 1997.</li><li id="ref-Kammann2003" data-num="19">[19]  Kammann EE, Wand MP. Geoadditive models. Appl Statist 52:1–18; 2003.</li><li id="ref-Lin2000" data-num="20">[20]  Lin X, Wahba G, Xiang D, Gao F, Klein R, Klein B. Smoothing spline ANOVA models for large data sets with Bernoulli observations and the randomized GACV. Ann Statist 28:1570–1600; 2000.</li><li id="ref-Lopes2006" data-num="21">[21]  Lopes, HF.; Salazar, E.; Gamerman, D. Technical Report. Universidade Federal do Rio de Janeiro; Rio de Janeiro; Spatial dynamic factor analysis; 2006.</li><li id="ref-Moller2003" data-num="22">[22]  Møller, J., editor. Spatial Statistics and Computational Methods. New York: Springer; 2003.</li><li id="ref-Nychka1998" data-num="23">[23]  Nychka D, Saltzman N. Design of air-quality monitoring networks. Lect Notes Statist 132:51–76; 1998.</li><li id="ref-Paciorek2007" data-num="24">[24]  Paciorek CJ. Computational techniques for spatial logistic regression with large datasets. Computnl Statist Data Anal 51:3631–3653; 2007.</li><li id="ref-Paciorek2006" data-num="25">[25]  Paciorek CJ, Schervish MJ. Spatial modelling using a new class of nonstationary covariance functions. Environmetrics 17:483–506; 2006.</li><li id="ref-Ramsay2005" data-num="26">[26]  Ramsay, JO.; Silverman, BW. Functional Data Analysis. New York: Springer; 2005.</li><li id="ref-Rasmussen2006" data-num="27">[27]  Rasmussen, CE.; Williams, CKI. Gaussian Processes for Machine Learning. Cambridge: MIT Press; 2006.</li><li id="ref-Robert2005" data-num="28">[28]  Robert, CP.; Casella, G. Monte Carlo Statistical Methods. Vol. 2. New York: Springer; 2005.</li><li id="ref-Rue2006" data-num="29">[29]  Rue, H.; Held, L. Gaussian Markov Random Fields: Theory and Applications. Boca Raton: Chapman and Hall–CRC; 2006.</li><li id="ref-Rue2007" data-num="30">[30]  Rue, H.; Martino, S.; Chopin, N. Technical Report. Norwegian University of Science and Technology; Trondheim. Approximate Bayesian inference for latent Gaussian models using integrated nested Laplace approximations; 2007.</li><li id="ref-Rue2002" data-num="31">[31]  Rue H, Tjelmeland H. Fitting Gaussian Markov Random fields to Gaussian fields. Scand J Statist 29:31–49; 2002.</li><li id="ref-Ruppert2003" data-num="32">[32]  Ruppert, D.; Wand, MP.; Carroll, RJ. Semiparametric Regression. Cambridge: Cambridge University Press; 2003.</li><li id="ref-Schabenberger2004" data-num="33">[33]  Schabenberger, O.; Gotway, CA. Statistical Methods for Spatial Data Analysis. Boca Raton: Chapman and Hall–CRC; 2004.</li><li id="ref-Seeger2003" data-num="34">[34]  Seeger, M.; Williams, CKI.; Lawrence, N. Fast forward selection to speed up sparse Gaussian process regression. In: Bishop, CM.; Frey, BJ., editors. Proc. 9th Int. Wrkshp Artificial Intelligence and Statistics; KeyWest: Society for Artificial Intelligence and Statistics; 2003.</li><li id="ref-Stein1999" data-num="35">[35]  Stein, ML. Interpolation of Spatial Data: Some Theory of Kriging. New York: Springer; 1999.</li><li id="ref-Stein2005" data-num="36">[36]  Stein ML. Space-time covariance functions. J Am Statist Ass 100:310–321; 2005.</li><li id="ref-Stein2007" data-num="37">[37]  Stein ML. Spatial variation of total column ozone on a global scale. Ann Appl Statist 1:191–210; 2007.</li><li id="ref-Stein2004" data-num="38">[38]  Stein ML, Chi Z, Welty LJ. Approximating likelihoods for large spatial data sets. J R Statist Soc B 66:275–296; 2004.</li><li id="ref-Stevens2004" data-num="39">[39]  Stevens DL Jr, Olsen AR. Spatially balanced sampling of natural resources. J Am Statist Ass 99:262–278; 2004.</li><li id="ref-Switzer1989" data-num="40">[40]  Switzer, P. Non-stationary spatial covariances estimated from monitoring data. In: Armstrong, M., editor. Geostatistics. Vol. 1 p. 127-138. Dordrecht; Kluwer; 1989.</li><li id="ref-Vecchia1988" data-num="41">[41]  Vecchia AV. Estimation and model identification for continuous spatial processes. J R Statist Soc B 50:297–312; 1988.</li><li id="ref-Ver2004" data-num="42">[42]  Ver Hoef JM, Cressie NAC, Barry RP. Flexible spatial models based on the fast Fourier transform (FFT) for cokriging. J Computnl Graph Statist 13:265–282; 2004.</li><li id="ref-Wackernagel2006" data-num="43">[43]  Wackernagel, H. Multivariate Geostatistics: an Introduction with Applications. New York: Springer; 2006.</li><li id="ref-Wahba1990" data-num="44">[44]  Wahba, G. Spline Models for Observational Data. Philadelphia: Society for Industrial and Applied Mathematics; 1990.</li><li id="ref-Wikle1999" data-num="45">[45]  Wikle C, Cressie N. A dimension-reduced approach to space-time Kalman filtering. Biometrika 86:815–829; 1999.</li><li id="ref-Xia2005" data-num="46">[46]  Xia, G.; Gelfand, AE. Technical Report. Institute of Statistics and Decision Sciences, Duke University; Durham. Stationary process approximation for the analysis of large spatial datasets; 2005.</li><li id="ref-Xia2006" data-num="47">[47]  Xia G, Miranda ML, Gelfand AE. Approximately optimal spatial design approaches for environmental health data. Environmetrics 17:363–385; 2006.</li></ul><p></p>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/1d2ae98a.html">http://xishansnow.github.io/posts/1d2ae98a.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E5%AD%A6/">空间统计学</a><a class="post-meta__tags" href="/tags/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/">点参考数据</a><a class="post-meta__tags" href="/tags/%E6%A6%82%E8%BF%B0/">概述</a></div><div class="post-share"><div class="social-share" data-image="/img/book_14.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/4a9a38ba.html" title="协方差锥化"><img class="cover" src="/img/coffe_07.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">协方差锥化</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 空间相关随机过程的插值被用于许多科学领域。最好的无偏线性预测器，在地统计科学中通常称为克里金预测器，需要基于观测值的协方差矩阵求解（可能很大的）线性系统。在本文中，我们展示了使用适当的紧支撑正定函数对正确的协方差矩阵进行锥化可以显著减少计算负担，并且仍然会导致渐近最优均方误差。锥化的效果是创建一个稀疏的近似线性系统，然后可以使用稀疏矩阵算法对其进行求解。蒙特卡洛模拟支持理论结果。一个大型气候降水数据集的应用作为一个具体和实际的例子被提出。 【原 文】 Furrer, R., Genton, M.G. and Nychka, D. (2006) ‘Covariance Tapering for Interpolation of Large Spatial Datasets’, Journal of Computational and Graphical Statistics, 15(3), pp. 502–523. Available at: https://doi.org/10.1198/106186006X132178. 1...</div></div></div></a><a class="pagination-related" href="/posts/b1571674.html" title="最近邻高斯过程模型"><img class="cover" src="/img/008.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">最近邻高斯过程模型</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 用于分析地统计数据的空间过程模型需要进行计算，随着空间位置的数量变大，这些计算变得令人望而却步。本文开发了一类高度可扩展的最近邻高斯过程 (NNGP) 模型，为大型地统计数据集提供完全基于模型的推断。我们确定最近邻高斯过程是一个定义明确的空间过程，它提供合法的有限维高斯密度和稀疏精度矩阵。我们将最近邻高斯过程作为稀疏归纳先验嵌入到丰富的分层建模框架中，并概述了如何在不存储或分解大型矩阵的情况下执行计算高效的马尔可夫链蒙特卡罗 (MCMC) 算法。该算法每次迭代的浮点运算 (flops) 与空间位置的数量成线性关系，从而呈现出可观的可扩展性。我们使用模拟研究说明了最近邻高斯过程相对于竞争方法的计算和推断优势，并且还分析了美国森林资源清查数据集中的森林生物量，其规模超过了其他降维方法。本文的补充材料可在线获取。 【原 文】 Datta, A. et al. (2016) ‘Hierarchical Nearest-Neighbor Gaussian Process Models for Large Geostatistical Datasets’, Journal...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/737a759d.html" title="🔥 空间大数据组织管理方法索引帖"><img class="cover" src="/img/008.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-13</div><div class="info-item-2">🔥 空间大数据组织管理方法索引帖</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 个人用于整理时空大数据引擎原理、方法及其实现的汇总帖，大致分为综述、原理方法、工程实践三个板块。 一、 综述 《空间大数据引擎综述文章：大数据时代的空间数据引擎》  二、原理方法 空间索引方法综述：  《基于空间填充曲线的降维方法》: 介绍如何利用 Z 序 Hillbert 曲线等空间填充曲线方法，实现多维空间的降维索引。  《空间填充曲线的聚簇性分析》： 从理论上分析了空间填充曲线的聚簇性，表明空间填充曲线无法做到任意位置的高聚簇性。  《扩展 Z 序曲线（XZ-Ordering）索引》: 德国慕尼黑大学教授提出的一种有缝有叠的剖分和填充曲线方式，可有效解决跨剖分面片的单编码空间覆盖问题。   三、工程实践 《全文数据库中多维数据检索效率的提升方法》: 基于可分布式部署的传统关系型数据库或全文数据库，其实现机制和单机数据库区别不大，并行机制来自于分布式数据库本身。本文主要介绍了全文数据库（关系型数据库类似）的实现机制，以及空间索引在其中的结合方法。典型代表如：Parallel Secondo、Paradise、 Sphinx 等。此外，专门面向科学数据的...</div></div></div></a><a class="pagination-related" href="/posts/82ad5e00.html" title="🔥  点参考数据模型索引帖"><img class="cover" src="/img/book_06.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-10</div><div class="info-item-2">🔥  点参考数据模型索引帖</div></div><div class="info-2"><div class="info-item-1">   1 空间过程及平稳性假设 《随机过程与随机场》 ： 将空间表面（Surface）视为空间随机过程的一次实现，并将点参考数据视为空间表面的一次不完整观测，是研究点参考数据的基本假设。在此假设下，构成空间数据集的 $n$ 个具有地理参考的观测值集合，并不代表大小为 $n$ 的样本，而是代表了对一次随机实验的不完整观测，是一个来自 $n$ 维分布的大小为 $1$ 的样本。这种假设对于理解点参考数据的统计模型非常重要，也同时使传统基于重复观测的统计方法失效。本文介绍了这种假设以及相关的概念和知识。该文中还有部分关于空间连续性和可微性的讨论，之前认为不重要，但后来细品一下可能涉及点参考数据和面元数据之间的转换问题，将来有时间可以配合《随机偏微分方程方法: 高斯场和高斯马尔可夫随机场之间的明确联系》 进一步理解。  2 经典克里金方法 点参考数据及克里金法（2005） : 本文介绍了传统地统计学中的克里金方法。该方法发源于 1940 年代的地统计学领域，主要用于解决插值问题，因 Krige 1960 年的一篇硕士论文而命名。克里金法是一种基于高斯过程假设的经验估计和预测方法，建立在...</div></div></div></a><a class="pagination-related" href="/posts/36f530ea.html" title="空间过程的贝叶斯建模分析方法综述"><img class="cover" src="/img/005.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-11</div><div class="info-item-2">空间过程的贝叶斯建模分析方法综述</div></div><div class="info-2"><div class="info-item-1">   【阅读建议】 本文重点介绍点参考空间数据的贝叶斯建模和分析方法，尤其是贝叶斯分层建模框架。点参考数据（也被称为地统计数据）主要指在固定空间位置观测到的随机变量数据。过去二十年中，此类数据在空间和时间上的收集量已经大大增加，随之而来的是分析此类数据的大量方法。本文尝试对其中的贝叶斯方法进行回顾。此类分析方法的好处是能够进行全面而准确的推断，并对不确定性进行适当评估。地统计建模的测站数据虽然比较复杂，涉及单变量和多变量、连续型和类别型、静态和动态以及大量长时间观测结果等，但在贝叶斯分层模型框架内，可以统一进行描述和阐释。本文另一亮点在于对大规模观测数据的建模问题做了综述，介绍了降秩方法（高斯预测过程模型）和近邻方法（近邻高斯过程模型）两类主要的处理策略。 【引文信息】 A. E. Gelfand and S. Banerjee, “Bayesian Modeling and Analysis of Geostatistical Data,” Annu Rev Stat Appl, vol. 4, pp. 245–266, 2017, doi:...</div></div></div></a><a class="pagination-related" href="/posts/dd354f.html" title="空间数据的贝叶斯分层建模"><img class="cover" src="/img/book_02.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-01</div><div class="info-item-2">空间数据的贝叶斯分层建模</div></div><div class="info-2"><div class="info-item-1">   【摘 要】由于空间数据的复杂性，使其统计建模非常困难。分层建模方法由于能够对模型进行分解，从而使建模和推断变得更具可操作性，因此在空间统计学领域得到快速应用和发展。而本文正是围绕空间数据的分层建模方法展开的。文中涉及通用分层建模方法、地统计中的分层建模、广义线性模型的分层建模等内容，以及相应的推断问题。本文内容摘自 Gelfand 的 《空间统计手册》第七章。  【原 文】  Gelfand, A.E. et al. (2010)， Handbook of spatial statistics (chapter 7). CRC press. 7.1...</div></div></div></a><a class="pagination-related" href="/posts/37a1c275.html" title="基于似然的的方法"><img class="cover" src="/img/007.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-01</div><div class="info-item-2">基于似然的的方法</div></div><div class="info-2"><div class="info-item-1">   【摘 要】在空间统计学中，点参考数据模型通常采用高斯过程（场）建模，而超参数的推断则主要有基于经验的矩量估计法和基于似然的统计推断方法。本文主要介绍基于似然的统计推断方法。文中涉及最大似然估计、受限最大似然估计、组合似然近似估计、渐进特性分析等内容。本文内容摘自 Gelfand 的 《空间统计手册》第四章。  【原 文】  Gelfand, A.E. et al. (2010)， Handbook of spatial statistics (chapter 4). CRC press.  关于似然方法的基础资料见： 参见 普度大学机器人视觉实验室的 《最大似然、最大后验与贝叶斯方法的区别》  参见 Reid 等 2010 年的 《似然函数与基于似然的推断》  参见 Cousineau 等 2016 年 《似然概念的扫盲帖》   对非似然方法感兴趣的同学，可以阅读： 参见 《近似贝叶斯计算（ABC）索引贴》    4.1 概述上一章考虑了结合使用矩量法和最小二乘法来估计地质统计模型的参数（参见  《点参考数据及克里金法》 ）。这些方法统称为  “经典地质统计学” ...</div></div></div></a><a class="pagination-related" href="/posts/a944ff60.html" title="🔥  大规模点参考数据统计分析方法索引帖"><img class="cover" src="/img/book_12.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-10</div><div class="info-item-2">🔥  大规模点参考数据统计分析方法索引帖</div></div><div class="info-2"><div class="info-item-1">   〖摘 要〗 个人用于整理大规模点参考数据时空统计分析方法的汇总帖，大致分为克里金法和贝叶斯建模、高斯过程及其推断理论、大 n 问题及其对策、并行化策略和方法、与深度学习的结合等部分。目前主要兴趣点在大规模点参考数据的高效计算方法和统计深度学习方面。 1 基础地统计方法（1）克里金法及经验估计 克里金方法发源于 1940 年代的地统计学领域，主要用于解决插值问题，因 Krige 1960 年的一篇硕士论文而命名。在 1990s 年代，克里金法在贝叶斯推断背景下被重新表述，并被称为 高斯过程回归，而相关函数（在克里金法中是半变异函数）的选择，则被视为一个机器学习问题。  自编的《点参考数据及克里金法》 : 介绍了传统地统计学的克里金方法，其本质上就是高斯过程，只是提供了一套以变异函数和克里金预测为核心的独立技术体系。 Gelfand （2017）的 《点参考数据贝叶斯建模综述》 ： 系统地从贝叶斯建模角度重温了地统计方法，除简述克里金法外，还包括贝叶斯分层建模方法、大 N 问题的处理等介绍性文字。  2...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1 引言</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

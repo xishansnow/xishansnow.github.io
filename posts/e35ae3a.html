@@ -1,0 +1,493 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>空间回归模型综述 | 西山晴雪的知识笔记</title><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="空间回归模型综述"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/e35ae3a.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '空间回归模型综述',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">381</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">407</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/coffe_13.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">西山晴雪的知识笔记</span></a><a class="nav-page-title" href="/"><span class="site-name">空间回归模型综述</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><span class="site-page group hide"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">空间回归模型综述</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-26T12:50:00.000Z" title="发表于 2022-05-26 20:50:00">2022-05-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-09T13:55:38.194Z" title="更新于 2024-08-09 21:55:38">2024-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/">GeoAI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/">空间变系数模型</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">9.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>32分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="空间回归模型概述"><a href="#空间回归模型概述" class="headerlink" title="空间回归模型概述"></a>空间回归模型概述</h1><p>【摘要】 空间回归模型是按照空间区位研究变量之间关系的主要数学工具。根据回归模型是否存在空间同质特征（或反之空间异质性），通常可以将空间回归模型划分为 <code>全局空间回归模型</code> 和 <code>局部空间回归模型</code>。<br>【原文】 自编<br>【作者】 濮国梁，北京大学</p>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><style>p{text-indent:2em}</style>
+
+<p>空间回归模型是按照空间区位研究变量之间关系的主要数学工具之一。根据空间回归模型是否同质（或反之是否异质，可以简单理解为模型参数是否会随空间位置变化而变化 ），可以将空间回归模型划分为 <code>全局空间回归模型</code> 和 <code>局部空间回归模型</code>。其中：</p>
+<ul>
+<li><p>全局空间回归模型以<code>空间依赖性</code>研究为主体，主要探究的是不同变量、误差项之间的空间交互效应；</p>
+</li>
+<li><p>局部回归模型则相对复杂，它不仅要研究变量、误差项之间的空间交互效应，还要研究模型本身（ 通常指 <code>模型结构</code> 和 <code>模型参数</code> ）的空间变化规律，探究的重点是 <code>空间异质性</code>。</p>
+</li>
+</ul>
+<div class="mermaid-wrap"><pre class="mermaid-src" hidden>
+  flowchart LR
+  A[空间回归模型]---B{变系数检验}
+  B---|否|C01[全局空间回归]
+  B---|是|C02[局部空间回归]  
+  C01---D01[空间滞后模型]
+  C01---D02[空间误差模型]
+  C01---D03[空间杜宾模型]
+  C01---D05[其他模型...]
+  D01---F01[模型参数不随空间位置变化而变化]  
+  D01---F01
+  D02---F01
+  D03---F01  
+  D05---F01
+  C02---E01[地理加权回归]
+  C02---E02[分层贝叶斯]
+  C02---E03[局部样条方法]  
+  C02---E04[空间滤波方法]    
+  C02---E05[其他方法...]
+  E01---F02[空间变系数模型/或采用非参数模型]
+  E02---F02
+  E03---F02
+  E04---F02
+  E05---F02
+  </pre></div>
+
+
+<h2 id="2-全局空间回归"><a href="#2-全局空间回归" class="headerlink" title="2 全局空间回归"></a>2 全局空间回归</h2><h3 id="2-1-主要的空间交互效应"><a href="#2-1-主要的空间交互效应" class="headerlink" title="2.1 主要的空间交互效应"></a>2.1 主要的空间交互效应</h3><p>空间效应 (spatial effects) 包括 <code>空间依赖性</code> 与 <code>空间异质性</code>。而全局空间回归重点考虑的是 <code>空间依赖性</code>，主要表现为不同变量、误差项之间的各种 <code>空间交互效应</code>。</p>
+<p>以标准线性回归模型为起点，全局空间回归统计模型中主要涉及三种交互效应：</p>
+<ul>
+<li><p><strong>内生交互效应</strong>：不同空间单位的响应变量（ $Y$ ）之间存在的交互效应，即 “空间单位 $A$ 的响应变量 $y_A$ 与空间单位 $B$ 的响应变量 $y_B$ 之间的空间交互关系”。 例如：在一个行政区的税收与相邻行政区的税收之间存在交互效应。</p>
+</li>
+<li><p><strong>外生交互效应</strong>：一个空间单位的响应变量（ $Y$ ）与其他空间单位的解释变量（ $X$ ）之间的交互效应，即 “空间单位 $B$ 的解释变量 $x_B$ 与空间单位 $A$ 的响应变量 $y_A$ 之间的空间交互关系”。例如：一个国家的经济增长不仅取决于其内部收入水平、储蓄率、人口增长、技术变革等因素，还与相邻国家的这些因素有关。</p>
+</li>
+<li><p><strong>误差项交互效应</strong> ：不同空间单位的误差项（ $u$ ）之间的交互效应，即 “空间单位 $A$ 的误差项 $u_A$ 与空间单位 $B$ 的误差项 $u_B$ 之间的空间交互关系”，例如：行政指令对不可预测的财政政策变化的校正机制。</p>
+</li>
+</ul>
+<div class="mermaid-wrap"><pre class="mermaid-src" hidden>
+  flowchart LR
+  A[空间交互效应]---B[内生交互效应]
+  A[空间交互效应]---C[外生交互效应]
+  A[空间交互效应]---D[误差项交互效应]
+  B---B01[空间单位A的响应变量&lt;br/&gt;与其他空间单位B的响应变量之间]
+  B01---B02[空间自回归模型SAR]
+  C---C01[空间单位A的响应变量&lt;br/&gt;与其他空间单位B的解释变量之间]
+  C01---C02[空间杜宾模型SDM]
+  D---D01[空间单位A的误差项&lt;br/&gt;与其他空间单位B的误差项之间]  
+  D01---D02[空间误差项模型SAM]
+  </pre></div>
+
+<p>为了解释上述空间交互效应，历史上提出了大量模型来对这些空间交互效应进行建模，而其中线性模型的研究最为普遍和深入。</p>
+<h3 id="2-2-空间（线性）回归模型的发展过程"><a href="#2-2-空间（线性）回归模型的发展过程" class="headerlink" title="2.2 空间（线性）回归模型的发展过程"></a>2.2 空间（线性）回归模型的发展过程</h3><h4 id="（1）早期以内生效应和空间误差建模为主"><a href="#（1）早期以内生效应和空间误差建模为主" class="headerlink" title="（1）早期以内生效应和空间误差建模为主"></a>（1）早期以内生效应和空间误差建模为主</h4><p>空间计量模型最初关注的基本焦点是 <strong>空间滞后模型（也称为空间自回归模型，Spatial Auto Regression Model，SAR)</strong> 以及 <strong>空间误差项模型 (Spatial Error Model，SEM)</strong> ，分别对应 <strong>内生交互效应</strong> 和 <strong>误差项交互效应</strong> 。<code>Anselin (1988，1996)</code> 提出了基于稳健拉格朗日乘子的空间滞后模型检验和空间误差模型<strong>检验程序</strong>。</p>
+<h4 id="（2）逐步发展到复杂空间效应的建模"><a href="#（2）逐步发展到复杂空间效应的建模" class="headerlink" title="（2）逐步发展到复杂空间效应的建模"></a>（2）逐步发展到复杂空间效应的建模</h4><p>在 $2007$ 年，在首届空间计量经济学协会世界大会上，研究人员对于包含多种空间交互效应的模型，研究兴趣日益增加。<code>Harry Kelejian (1998)</code> 提倡使用同时包含 <strong>内生交互效应</strong> 和 <strong>误差项交互效应</strong> 的模型。 <code>LeSage and Pace (2009)</code> 将其称为 <strong>SAC 模型</strong>，尽管没有指出首字母缩略语代表什么。 <code>Elhorst (2010)</code> 则称这种模型为 <strong>Kelejian-Prucha 模型</strong>。</p>
+<p>同样在 $2007$ 年的第 $54$ 届地区科学协会国际会议 （北美洲） 上， <code>LeSage</code> 提倡使用同时包括 <em>内生交互效应</em> 和 <em>外生交互效应</em> 的模型，并称其为 <strong>空间杜宾模型（Spatial Durbin Model, SDM）</strong>。但 <code>Gibbons 和 Overman 等（2012）</code> 对 <strong>空间滞后模型 （SAR）</strong>、 <strong>空间误差项模型（ SEM ）</strong> 和 <strong>空间杜宾模型（ SDM ）</strong> 模型进行了批判，提倡使用仅含 <em>外生交互效应</em> 的 <strong>SLX 模型</strong>。</p>
+<h3 id="2-3-统一模型框架"><a href="#2-3-统一模型框架" class="headerlink" title="2.3 统一模型框架"></a>2.3 统一模型框架</h3><p>具有所有类型交互效应的完整模型形式如下：</p>
+<p>$$<br>\begin{array}{l}<br>Y=\underbrace{\alpha \cdot l_N}<em>{截距项} + \underbrace{X \cdot \beta}</em>{解释变量} +\underbrace{\delta \cdot W_1 \cdot Y}<em>{内生交互（空间滞后）项} +  \underbrace{W_2 \cdot X \cdot \theta}</em>{外生交互（空间杜宾）项} + \underbrace{u}_{误差项} \<br>u=\lambda \cdot M \cdot u + \varepsilon<br>\end{array}<br>$$</p>
+<p>该模型被称为 “<strong>广义嵌套空间模型</strong>”，它包括了上述所有类型的空间交互效应，其中：</p>
+<ul>
+<li>$\delta \cdot W_1 \cdot Y$ 为 <code>空间滞后项</code>，代表了内生交互效应</li>
+<li>$W_2 \cdot X \cdot \theta$ 为 <code>空间杜宾项</code>，代表了外生交互效应</li>
+<li>$\lambda \cdot M \cdot u$ 为 <code>误差项</code>，代表了误差项交互效应。</li>
+</ul>
+<p>其中：</p>
+<ul>
+<li><p>$W_1, W_2, M$ 为空间权重矩阵，是大小为 $N \times N$ 的非负矩阵， $N$ 为空间单位的数量，三者可以相同也可以不同。</p>
+</li>
+<li><p>$Y$ 为所有空间单位的响应变量观测值构成的向量，是 $N \times 1$ 的列向量。</p>
+</li>
+<li><p>$X$ 为解释变量矩阵，由所有空间单位内解释变量的观测值组成，大小为 $N \times K$ ，$K$ 为解释变量数目。</p>
+</li>
+<li><p>$\alpha \cdot l_N$ 为截距项，其中 $l_N$ 是大小为 $N \times 1$ 的列向量，$\alpha$ 是大小为 $N \times N$ 的常系数对角矩阵。</p>
+</li>
+<li><p>$\delta$ 为所有空间单位之间待估计的空间滞后系数，为 $N \times N$ 的矩阵。</p>
+</li>
+<li><p>$\beta$ 为所有空间单位内待估计的解释变量系数， 是 $K \times 1$ 的列向量。</p>
+</li>
+<li><p>$\theta$ 为所有空间单位之间待估计的外生交互系数，是 $K \times 1$ 的列向量。</p>
+</li>
+<li><p>$\lambda$ 是空间误差的自相关系数，为 $N \times N$ 的矩阵。</p>
+</li>
+<li><p>$\epsilon =(\epsilon_1，…， \epsilon_N)^T$ 为 $N \times 1$ 的干扰项。如果假设 $\epsilon_i$ 为独立同分布（对于所有 $i$ ），则其均值为零且方差为 $σ^2$ 。</p>
+</li>
+</ul>
+<p>在上述统一模型框架下，下图总结了八种常见的线性回归模型图谱（假设 $W_1 =W_2 = M = W$ ）。其中图右侧为 <strong>普通线性回归模型（ OLS ）</strong>，不含任何交互效应；图左侧是为 <strong>广义嵌套空间模型（ GNS ）</strong>，包含所有空间交互效应。GNS 右侧的每一个模型，都可以通过对 GNS 模型的一个或多个参数施加限制而得到，图中箭头旁边的标注表明了限制因素。读者也可以从右往左看，以了解在传统线性回归模型基础上，通过追加了哪些交互效应生成了哪些新模型。</p>
+<p>需要注意的是：</p>
+<ul>
+<li><p>该图同时表明，有很多可能的模型在计量经济学的理论与实证研究中使用较少。如：同时包含 <em>外生交互效应</em> 和 <em>误差项交互效应</em> ，但不含 <em>内生交互效应</em> 的 <strong>空间杜宾误差模型（SDEM）</strong>。</p>
+</li>
+<li><p>理论研究者和实际操作者对不同类型交互效应的兴趣水平有很大差异。理论研究者最感兴趣的是 <strong>空间滞后模型（ SAR ）</strong> 和 <strong>空间误差模型（ SEM ）</strong>，以及同时包含 <em>内生交互效应</em> 和 <em>误差项交互效应</em> 的 <strong>SAC 模型</strong>，因为计量经济学问题常伴随着对这些模型的估计方法。</p>
+</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20220525161527-f0fa.webp"></p>
+<blockquote>
+<p>注: GNS = general nesting spatial model（广义空间嵌套模型）, SAC = spatial autoregressive combined model（空间自回归组合模型）, SDM = spatial Durbin model（空间杜宾模型）, SDEM = spatial Durbin error model（空间杜宾误差模型）, SAR = spatial autoregressive model（空间自回归模型）, SLX = spatial lag of X model（外生空间滞后模型）, SEM = spatial error model（空间误差模型）, OLS = ordinary least squares model（普通最小二乘模型）.</p>
+</blockquote>
+<h3 id="2-4-空间权重矩阵"><a href="#2-4-空间权重矩阵" class="headerlink" title="2.4 空间权重矩阵"></a>2.4 空间权重矩阵</h3><p>在实证研究中，空间权重矩阵非常重要，起到了量化空间交互效应程度的作用。空间权重矩阵 $W$ 是一个非负的已知常数矩阵，通常是对称矩阵，但也能是非对称矩阵。</p>
+<p>经常采用的空间权重矩阵包括：</p>
+<p>（1）$p$ 阶邻接矩阵（如果 $p=1$ ，则只包含邻居；如果$p=2$ , 则不仅包含邻居，还包含邻居的邻居，以此类推），有时用 $W^1$ 和 $W^2$ 分别表示一阶和二阶；</p>
+<p>（2）逆距离矩阵（带有或者不带有分界点）</p>
+<p>（3）最近邻矩阵（需指定最近邻个数 $q$ 作为超参数）</p>
+<p>（4）分块对角矩阵，其中每一个分块代表一组空间单位，这些空间单位之间存在交互效应，但与其他分块内的空间单位之间不存在交互关系。</p>
+<p>为了进行更简单的解释，常见做法是对 $W$ 进行归一化，使其每一行元素之和等于 $1$。$W$ 非负确保了所有权重介于 $0$ 到 $1$ 之间，且可以将加权操作解释为对其邻近空间单位取值的加权平均。经过行归一化的 $W$ 被称为<code>行随机矩阵</code>。</p>
+<p>每行元素之和均为 $1$，这意味着区域 $i$ 的所有邻居对 $i$ 的影响之和，等于区域 $j$ 的邻居对 $j$ 的影响之和。</p>
+<p>此假定有时可能过强，<code>Keleji 和 Prucha (2010)</code> 证明：与全矩阵归一化不同，按行归一化很可能导致模型的错误设计，尤其是使用 <code>逆距离矩阵</code> 时，此问题更容易发生。此外，行归一化后的空间权重矩阵一般不再是对称矩阵，这也是其缺陷之一。</p>
+<p>也可以按列进行归一化，即每列元素的和等于 $1$ 。空间权重矩阵的列元素表示一个特定空间单位对所有空间的影响，而空间权重矩阵的行元素代表所有其他空间单位对某个特定空间单位的影响。因此，行归一化的效应是把其他空间单位对当前单元的影响进行归一化，而列归一化的效应是把当前空间单位对其他空间单位的影响进行归一化。</p>
+<h3 id="2-5-模型简介"><a href="#2-5-模型简介" class="headerlink" title="2.5 模型简介"></a>2.5 模型简介</h3><h4 id="2-5-1-空间自回归模型（SAR）"><a href="#2-5-1-空间自回归模型（SAR）" class="headerlink" title="2.5.1 空间自回归模型（SAR）"></a>2.5.1 空间自回归模型（SAR）</h4><p><strong>（1）模型的定义</strong></p>
+<p>对于样本容量为 $N$ 的空间序列 $${ y_i }_{i=1}^N$$ ，即使假设空间自相关形式是线性的，待估计参数在理论上最多也可达 $(n^2 - n)$ 个（每个区域最多可受 $n-1$ 个区域影响，共有 $n$ 个区域），大大超出样本容量。因为，必须对空间依赖性做出某种共同模式的假设，才能简化并计算参数。</p>
+<p>空间滞后的概念引申自时间序列数据的时间滞后，即假设当前时刻的数据线性滞后于前一时刻的数据。不过与时间滞后不同的是，空间滞后更为复杂，因为空间滞后可以来自不同的方向，而且是双向的。</p>
+<p>$$<br>\boldsymbol{Y}=\delta \boldsymbol{W} \boldsymbol{Y}+\boldsymbol{\varepsilon}<br>$$</p>
+<p>其中，$W$ 为已知的空间权重矩阵（ 一般是一阶空间邻接矩阵），$WY$ 是对 $Y$ 的时间滞后，$\delta$ 是空间滞后系数。</p>
+<p>该模型中，每个空间单位的空间依赖性仅来自于其空间滞后，因此被称为 <code>空间滞后模型（Spatial Lag Model，SLM）</code>。 相邻地区的响应变量可能相互依赖， 并最终形成一个均衡的结果。 例如，假设以地区税收为响应变量，则不同地区政府出于相互竞争或博弈的考虑，在制定本地区税收时，会考虑周边地区的税收水平。空间依赖性导致变量 $${y_i}_{i=1}^N$$ 之间互相影响，产生内生性。</p>
+<p>但是更一般地，会在方程中加入解释变量：</p>
+<p>$$<br>\boldsymbol{Y}=\delta \boldsymbol{W} \boldsymbol{Y}+ \boldsymbol{X}\beta+\boldsymbol{\varepsilon}<br>$$</p>
+<p>其中，$X$ 为 $N\times K$ 数据矩阵，包括 $K$ 列解释变量；$β_{k\times1}$ 为对应的解释系数。</p>
+<p>此方程也称为 <code>空间自回归模型（Spatial Auto Regression，SAR 模型）</code>。</p>
+<p>如果 $\delta=0$ ，则 SAR 简化为 <code>普通线性回归模型 OLS</code> 。</p>
+<p><strong>（2）模型的估计</strong></p>
+<p>对于空间自回归模型，常使用 <code>MLE 估计</code>。</p>
+<p>首先，假设扰动项 $\boldsymbol{\varepsilon} \sim N\left(\boldsymbol{0}, \sigma^{2} \boldsymbol{I}\right)$</p>
+<p>其次，方程可写为$ \boldsymbol{A y} \equiv(\boldsymbol{I}-\lambda \boldsymbol{W}) \boldsymbol{y}=\boldsymbol{X} \boldsymbol{\beta}+\boldsymbol{\varepsilon} $</p>
+<p>其中， $ \boldsymbol{A} \equiv(\boldsymbol{I}-\lambda \boldsymbol{W}) $ 。</p>
+<p>由于雅可比行列式 $ J \equiv\left|\frac{\partial \varepsilon}{\partial \boldsymbol{y}}\right|=\left|\frac{\partial(\boldsymbol{A} \boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta})}{\partial \boldsymbol{y}}\right|=\left|\frac{\partial \boldsymbol{A} \boldsymbol{y}}{\partial \boldsymbol{y}}\right|=\left|\boldsymbol{A}^{\prime}\right|=|\boldsymbol{A}| $, 根据多维正态密度公式，可写出样本的似然函数：</p>
+<p>$$<br>L\left(\boldsymbol{y} \mid \lambda, \sigma^{2}, \boldsymbol{\beta}\right)=\left(2 \pi \sigma^{2}\right)^{-n / 2}(\operatorname{abs}|\boldsymbol{A}|) \exp \left{-\frac{1}{2 \sigma^{2}}(\boldsymbol{A} \boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta})^{\prime}(\boldsymbol{A} \boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta})\right}<br>$$</p>
+<p>其中，$ \mathrm{abs}|\boldsymbol{A}| $ 表示行列式 $ |\boldsymbol{A}| $ 的绝对值。</p>
+<p>对数似然函数为：</p>
+<p>$$<br>\ln L\left(\boldsymbol{y} \mid \lambda, \sigma^{2}, \boldsymbol{\beta}\right)=-\frac{n}{2} \ln 2 \pi-\frac{n}{2} \ln \sigma^{2}+\ln (\mathrm{abs}|\boldsymbol{A}|)-\frac{1}{2 \sigma^{2}}(\boldsymbol{A} \boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta})^{\prime}(\boldsymbol{A} \boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta})<br>$$</p>
+<h4 id="2-5-2-空间外生滞后模型（SLX）"><a href="#2-5-2-空间外生滞后模型（SLX）" class="headerlink" title="2.5.2 空间外生滞后模型（SLX）"></a>2.5.2 空间外生滞后模型（SLX）</h4><p><strong>（1）模型定义</strong></p>
+<p>空间外生滞后模型（ <code>Spatial Lag of X model, SLX</code> ）假设某空间单位的响应变量 $y_i$ 依赖于其相邻空间单位的解释变量。例如：空间单位 $i$ 的犯罪率不仅依赖于本单元警力，还可能依赖于相邻空间单位的警力。</p>
+<p>此时的模型为：</p>
+<p>$$<br>\boldsymbol{y}=\boldsymbol{X} \boldsymbol{\beta}+\boldsymbol{W} \boldsymbol{X} \boldsymbol{\theta}+\boldsymbol{\varepsilon}<br>$$</p>
+<p>其中，$\boldsymbol{W} \boldsymbol{X} \boldsymbol{\theta}$ 表示来自相邻单元解释变量的影响，而 $\boldsymbol{\theta}$ 为相应的系数向量。</p>
+<p>此模型被称为 <code>空间杜宾模型（Spatial Durbin Model，SDM）</code>。</p>
+<p><strong>（2）模型的估计</strong></p>
+<p>此方程不存在内生性，故可直接进行普通最小二乘估计。 </p>
+<p>解释变量 $X$ 与 $WX$ 之间可能存在多重共线性。如果 $\theta=0$，则简化为普通线性回归模型。</p>
+<p>将空间杜宾模型与空间自回归模型相结合，可以得到：</p>
+<p>$$<br>\boldsymbol{Y}=\delta \boldsymbol{W} \boldsymbol{Y}+\boldsymbol{X} \boldsymbol{\beta} + \boldsymbol{W} \boldsymbol{X} \boldsymbol{\theta} + \boldsymbol{\varepsilon}<br>$$</p>
+<h4 id="2-5-3-空间误差模型（SEM）"><a href="#2-5-3-空间误差模型（SEM）" class="headerlink" title="2.5.3 空间误差模型（SEM）"></a>2.5.3 空间误差模型（SEM）</h4><p><strong>（1）模型的定义</strong></p>
+<p>空间依赖性还可能通过误差项来体现。考虑以下 <code>空间误差项模型(Spatial Errors Model，简记 SEM)</code>：</p>
+<p>$$<br>\boldsymbol{y}=\boldsymbol{X} \boldsymbol{\beta}+\boldsymbol{u}<br>$$</p>
+<p>其中，扰动项 $u$ 的生成过程为 ：</p>
+<p>$$<br>\boldsymbol{u}=\lambda \boldsymbol{M} \boldsymbol{u}+\boldsymbol{\varepsilon},,, \boldsymbol{\varepsilon} \sim N(0,\sigma^2I)<br>$$</p>
+<p>扰动项 $\boldsymbol{u}$ 之间存在空间依赖性，但不依赖于 $\boldsymbol{X}$ ，而且该扰动项与某些对 $\boldsymbol{Y}$ 有影响的未知变量存在空间相关性。</p>
+<p>如果 $\lambda=0$ ，则简化为普通线性回归模型。</p>
+<p><strong>（2）模型的估计</strong></p>
+<p>对于 SEM 模型，尽管扰动项存在自相关，OLS 仍一致，但缺乏效率。最有效率的方法为 MLE。</p>
+<h4 id="2-5-4-空间自回归组合模型（SAC）"><a href="#2-5-4-空间自回归组合模型（SAC）" class="headerlink" title="2.5.4 空间自回归组合模型（SAC）"></a>2.5.4 空间自回归组合模型（SAC）</h4><p><strong>（1）模型的定义</strong></p>
+<p>（Spatial Autoregressive Combined model，SAC）更一般的空间计量模型将<code>空间自回归模型 ( SAR )</code> 与<code>空间误差项模型 ( SEM )</code> 结合起来：</p>
+<p>$$<br>\boldsymbol{Y}=\delta \boldsymbol{W} \boldsymbol{Y}+ \boldsymbol{X}\beta+\boldsymbol{u}<br>$$</p>
+<p>$$<br>\boldsymbol{u}=\lambda \boldsymbol{M u}+\boldsymbol{\varepsilon},\boldsymbol{\varepsilon} \sim \boldsymbol{N}(0,\sigma ^ 2I)<br>$$</p>
+<p>其中，$W$ 与 $M$ 分别为响应变量 $Y$ 与扰动项 $u$ 的空间权重矩阵，二者可以相等。则此模型称为 <code>带空间自回归误差项的空间自回归模型 (Spatial Auto Regressive Model with Spatial Autoregressive Disturbances，SARAR)</code>。</p>
+<div class="note info simple"><p>上述 空间自回归模型（SAR）、空间误差模型（SEM）以及 SARAR 模型，被统称为 <code>Cliff-Ord 模型 </code> (Cliff and Ord, 1973, 1981; Ord, 1975)。</p>
+<p>SAR 模型与 SEM 模型都是 SARAR 模型 的特例，分别对应于 $\lambda=0$ 与 $\delta=0$的情形。</p>
+</div>
+
+
+<p><strong>（2）模型的估计</strong></p>
+<p>对于 <code>SARAR 模型</code>，可进行 MLE 估计。 样本的对数似然函数为 :</p>
+<p>$$<br>\begin{aligned} \ln L\left(\boldsymbol{y} \mid \lambda, \rho, \sigma^{2}, \boldsymbol{\beta}\right)=&amp;-\frac{n}{2} \ln 2 \pi-\frac{n}{2} \ln \sigma^{2}+\ln (\operatorname{abs}|\boldsymbol{A}|)+\ln (\operatorname{abs}|\boldsymbol{B}|) \ &amp;-\frac{1}{2 \sigma^{2}}(\boldsymbol{A} \boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta})^{\prime} \boldsymbol{B}^{\prime} \boldsymbol{B}(\boldsymbol{A} \boldsymbol{y}-\boldsymbol{X} \boldsymbol{\beta}) \end{aligned}<br>$$</p>
+<p>最大化仍可分两步进行，并进行迭代，与 <code>SEM 模型</code> 的情形类似。</p>
+<p>但 <code>MLE 估计量</code> 存在三个缺陷：</p>
+<p>首先，<code>MLE 估计量</code> 可能计算不方便，特别当空间权重矩阵 $W$ 与 $M$ 的维度较高时。</p>
+<p>其次，<code>MLE 估计量</code> 的大样本理论尚不健全。</p>
+<p>再次，如果 <code>扰动项 ε</code> 不服从独立同分布的正态分布，则 <code>QMLE 估计量</code> 可能不一致。</p>
+<p><code>Arraiz 等人</code> (2010) 通过蒙特卡罗模拟证明，在异方差的情况下，<code>QMLE 估计量</code> 存在不一致。 <code>Kelejian and Prucha</code> (1999, 1998, 2004, 2010) 提出利用工具变量，通过广义矩估计来估计 <code>SARAR 模型</code>，称为 <code>广义空间两阶段最小二乘法 (Generalized Spatial Two-stage Least Square，GS2SLS)</code>。<code>GS2SLS</code> 的计算方便，不会因为样本容量太大而产生困难。 </p>
+<h4 id="2-5-5-空间杜宾模型（SDM）"><a href="#2-5-5-空间杜宾模型（SDM）" class="headerlink" title="2.5.5 空间杜宾模型（SDM）"></a>2.5.5 空间杜宾模型（SDM）</h4><p>（1）模型的定义</p>
+<p><strong>（2）模型的估计</strong></p>
+<h4 id="2-5-6-空间杜宾误差模型（SDEM）"><a href="#2-5-6-空间杜宾误差模型（SDEM）" class="headerlink" title="2.5.6 空间杜宾误差模型（SDEM）"></a>2.5.6 空间杜宾误差模型（SDEM）</h4><p><strong>（1）模型的定义</strong></p>
+<p><strong>（2）模型的估计</strong></p>
+<h3 id="2-6-全局回归模型的局限性"><a href="#2-6-全局回归模型的局限性" class="headerlink" title="2.6 全局回归模型的局限性"></a>2.6 全局回归模型的局限性</h3><p>主要局限性：</p>
+<ul>
+<li>空间线性依赖模型的主要估计方法之一为 <strong>最大似然估计</strong>，但最大似然估计的大规模计算理论尚待完善。 </li>
+<li>需要研究者主观设定一个非随机的空间权重矩阵（而非根据数据估计得出），而此空间权重矩阵很可能无法完全反映不同地区之间复杂的相互关系。</li>
+<li>无法体现模型自身的空间异质性，这种异质性包括：解释变量的选择、模型结构的选择、模型参数的选择等。</li>
+</ul>
+<h2 id="3-局部空间回归"><a href="#3-局部空间回归" class="headerlink" title="3 局部空间回归"></a>3 局部空间回归</h2><h3 id="3-1-概述"><a href="#3-1-概述" class="headerlink" title="3.1 概述"></a>3.1 概述</h3><p>思维导图：</p>
+<div class="mermaid-wrap"><pre class="mermaid-src" hidden>
+  flowchart LR
+  A[空间局部回归模型]---B01[地理加权回归]
+  A[空间局部回归模型]---B02[贝叶斯空间变系数模型]
+  A[空间局部回归模型]---B03[空间扩展模型]
+  A[空间局部回归模型]---B04[空间自适应滤波]
+  A[空间局部回归模型]---B05[平滑过渡回归]
+  A[空间局部回归模型]---B06[空间高斯过程]
+  A[空间局部回归模型]---B07[样条方法]
+  A[空间局部回归模型]---B08[检验问题]
+  </pre></div>
+
+<!-- &lt;div class="mermaid-wrap"&gt;&lt;pre class="mermaid-src" hidden&gt;
+   --&amp;gt;
+&amp;lt;!-- flowchart LR --&amp;gt;
+&amp;lt;!--   A[空间局部回归模型]---B01[地理加权回归（Fotheringham,2003）] --&amp;gt;
+&amp;lt;!--   A[空间局部回归模型]---B02[分层贝叶斯方法（Gelfand,1993）] --&amp;gt;
+&amp;lt;!--   A[空间局部回归模型]---B03[空间扩展模型（Casetti,1972）] --&amp;gt;
+&amp;lt;!--   A[空间局部回归模型]---B04[空间自适应滤波（Foster,1982）] --&amp;gt;
+&amp;lt;!--   A[空间局部回归模型]---B05[平滑过渡回归（Pede,2014）] --&amp;gt;
+&amp;lt;!--   A[空间局部回归模型]---B06[空间高斯过程（Finley,2020）] --&amp;gt;
+&amp;lt;!--   A[空间局部回归模型]---B07[样条方法（Tang,2009）] --&amp;gt;
+&amp;lt;!--   A[空间局部回归模型]---B08[检验问题（Brunsdon，1999）] --&amp;gt;
+&amp;lt;!-- 
+  &lt;/pre&gt;&lt;/div&gt; -->
+
+
+<p>处理区域间互动关系的另一方法是直接将地区间的距离作为变量引入回归模型，即将空间坐标或空间距离直接纳入模型，实现显式的空间依赖模型。例如：在国际贸易领域，常使用以下模型来考察两国间贸易量的决定因素：</p>
+<p>$$<br>\text{Export}<em>{i j}=\frac{\alpha Y</em>{i}^{\beta} Y_{j}^{\gamma}}{D_{i j}^{\delta}}<br>$$</p>
+<p>其中，$$\text{Export}<em>{ij}$$ 代表 $i$ 国对 $j$ 国的出口额，$$Y_i,Y_j$$ 分别为两国的 GDP，而 $D^{\delta}</em>{ij}$ 是两国之间的地理距离。</p>
+<p>此式很像牛顿万有引力公式，故称为 <code>引力模型</code>。对该方程两边取对数，在加上误差项，即可构成线性依赖模型：</p>
+<p>$$<br>\ln Export_{i j}=\ln \alpha+\beta \ln Y_{i}+\gamma \ln Y_{j}-\delta \ln D_{i j}+\varepsilon<br>$$</p>
+<h3 id="3-2-地理加权回归"><a href="#3-2-地理加权回归" class="headerlink" title="3.2 地理加权回归"></a>3.2 地理加权回归</h3><p>一个基本的 GWR 模型可以指定为：</p>
+<p>$$<br>y_{i}=\beta_{i 0}+\sum_{k=1}^{p} \beta_{i k} x_{i k}+\epsilon_{i}, \quad i=1, \ldots, n,<br>$$</p>
+<p>其中 $y_{i}$ 是位置 $i$ 处的响应变量，$\beta_{i0}$ 是位置 $i$ 处的截距系数，$x_{ik}$ 是位置 $i$ 处的第 $k$ 个解释变量， </p>
+<p>$\beta_{ik}$ 是位置 $i$ 处第 $k$ 个解释变量局部回归系数，$\epsilon_{i}$ 是与位置 $i$ 相关的随机误差项。使用加权最小二乘估计，可以为每个位置的每个解释变量生成一组系数。在矩阵形式中，这由下式给出：</p>
+<p>$$<br>\hat{\boldsymbol{\beta}}(i)=\left[\boldsymbol{X}^{\prime} \boldsymbol{W}(i) \boldsymbol{X}\right]^{-1} \boldsymbol {X}^{\prime} \boldsymbol{W}(i) \boldsymbol{y}<br>$$</p>
+<p><strong>Li</strong> 2019 年的<a href="db061403.html">《快速地理加权回归（FastGWR）》</a>： 地理加权回归 (GWR) 是一种广泛使用的工具，用于探索地理空间过程的空间异质性。 GWR 计算特定位置的参数估计值，这使得其校准过程需要大量计算。当前开源 GWR 软件可以处理的最大数据点数是标准桌面上的大约 $15,000$ 个观测值。在大数据时代，这严重限制了 GWR 的使用。为了克服这一限制，我们提出了一种高度可扩展的开源 FastGWR 实现，该实现基于 Python 和消息传递接口 (MPI)，可扩展到数百万个观测值的数量级。 FastGWR 优化内存使用以及并行化以显著提高性能。为了说明 FastGWR 的性能，对来自洛杉矶市 Zillow 数据集的大约 $130$ 万个单户住宅物业进行了特征房价模型校准，这是将 GWR 应用于这种规模的数据集的首次尝试。结果表明，随着高性能计算 (HPC) 环境中内核数量的增加，FastGWR 呈线性扩展。它还优于当前可用的开源 GWR 软件包，在标准桌面上速度大幅降低——最高可达数千倍。</p>
+<p>$$<br>w_{j}(i)= \begin{cases}{\left[1-\left(\frac{d_{ij}}{b}\right)^{2}\right]^{2},} &amp; \text { if } j \in\left{N_{i}\right} \ 0, &amp; \text { if } j \notin\left{N_{i}\right}\end{cases}<br>$$</p>
+<p>其中 $d_{ij}$ 是 $i$ 和 $j$ 之间的距离，$b$ 是到第 $N$ 个最近邻的距离，${N_{i}}$ 是集合与 $i$ 的距离不超过 $b$ 的所有观测值。位置 $i$ 的观测值的权重为 $1$ ，而那些比距离 $b$ 更远的观测值的权重则为零。在拟合 GWR 模型之前，必须设定最近邻的数量，这进而又在上述平方核中定义了 $b$，也称为<code>带宽</code>。在整个研究过程中，可以使用 <code>AIC</code> 信息准则最小化来确定内核带宽，因为它提供了 <code>拟合优度</code> 和 <code>自由度</code>（或模型复杂度）之间的权衡（ Fotheringham、Brunsdon 和 Charlton 2002 ）。 GWR 特定的 AIC 计算为：</p>
+<p>$$<br>AI C_{c}=2 n \log _{e}(\hat{\sigma})+n \log _{e}(2 \pi)+n\left{\frac{n+\operatorname{tr} (\boldsymbol{S})}{n-2-\operatorname{tr}(\boldsymbol{S})}\right}<br>$$</p>
+<p>【摘要】 在各种类型的局部统计模型的校准中获得的空间变化参数估计的研究是司空见惯的。这种估计的变化通常用空间变化过程来解释。本文强调，在将这种变化与空间变化过程相关联之前，应先检查非线性方面的空间变化参数估计的另一种解释。这可以通过描述和演示的简单筛选程序来实现，并且可以轻松应用于任何局部模型的结果。突出显示问题并展示解决方案，使用一组模拟数据，然后使用真实世界的数据集。该论文还强调了相反的情况，即当实际关系是线性但空间变化时，GAM 的不当应用会产生虚假的非线性结果。</p>
+<h3 id="3-3-贝叶斯空间变系数模型"><a href="#3-3-贝叶斯空间变系数模型" class="headerlink" title="3.3 贝叶斯空间变系数模型"></a>3.3 贝叶斯空间变系数模型</h3><p>建模局部空间关系的另一种方法是使用贝叶斯层次模型来指定空间结构。<code>Gelfand 等人</code>（2003 年）提出的具有内生空间尺度的<code> 贝叶斯空间变化系数模型（ Bayesian Spatially Varying Coefficient models，SVC ）</code> 已很常见。为了对 <code>SVC</code> 的可能概括进行完整讨论，<code>Finley、Banerjee 和 Carlin</code>（2007 年）或 <code>Banerjee、Carlin 和 Gelfand</code>（2014 年）提供了非常出色的综述文章。 <code>SVC</code> 的核心是一个<code>相关混合效应模型</code>，其中 <code>随机效应协方差</code> 采用 <code>空间相关核</code> 来构建。</p>
+<p>对于 <code>SVC 模型</code>，首先考虑响应变量 $Y$ 的模型，将 $N$ 个位置观察到的 $p$ 维解释变量编组为 $N\times p$ 的设计矩阵 $X$ 。 <code>SVC 模型</code> 将响应变量建模为全局效应 $\mu$ 和两个随机效应 $\zeta$ 和 $\epsilon$ 的函数。对于位置 $i$，响应变量为：</p>
+<p>$$<br>y_{i}=\sum_{j=1}^{p} X_{i j}\left(\mu_{j}+\zeta_{i j}\right)+\boldsymbol{\epsilon}_{i}<br>$$</p>
+<p>其中 $\epsilon_{i}$ 是一个独立同分布正态误差项，均值为 $0$ ，方差为 $\tau^{2}$；$\zeta_{ij}$ 是每个过程 $j$ 的空间相关误差项。在这个模型中，$\mu_j$ 代表过程 $j$ 的平均全局效应。然后，通过计算每个单元的 $\mu_{j}+\zeta_{i j}$ 来恢复单元特定的参数估计值 $\beta_{i j}$。局部扰动项中的空间结构是通过其分层先验协方差在 $\zeta$ 中引入的。为了以向量形式说明这个模型，<code>Gelfand 等人</code> (2003) 将 $X$ “拉伸”成一个$N \times Np$ 的矩阵 $X_{s}$，其中每一行对应一个观测值，每组 $p$ 列包含观测到的 $p$ 个解释变量值。这种平铺将 $p$ 长度的解释变量向量放在对角线上，在其他地方放置零。然后，$\zeta$ 可以成为 $N p \times 1$ 的随机效应集合，其中第 $i$ 个块包含 $p$ 个随机效应，用于每个 $j$ 过程，$\mu$ 大小为 $N p \times 1$ 并且包含过程的 $p$ 长度向量，意味着重复了 $N$ 次。通过这种平铺，模型可以被表述为：</p>
+<p>$$<br>Y=X_{s} \mu+X_{s} \zeta+\epsilon<br>$$</p>
+<p>在此之后，$\zeta$ 的分层先验由一个 $p\times p$ 的过程间协方差矩阵 $T$ 和一个 $N\times N$ 的单元间相关矩阵 $H(\phi)$ （ 一个单独关于 $\phi$ 的函数）来构造。 $N p \times 1$ 空间随机效应的完整协方差矩阵为：</p>
+<p>$$<br>\zeta \sim \mathcal{N}(0, H(\phi) \otimes T)<br>$$</p>
+<p>通常，$H(\phi)$ 可能与 GWR 中的空间核函数类型相同。但这里的核直接影响随机效应的协方差，而不是对用于估计局部模型的数据进行加权。这是因为完整的 $H(\phi) \otimes T$ 协方差矩阵定义了在所有 $N$ 个单元处的过程之间的相关结构，体现了完整的 $N p \times N p$ 单元-过程关系。与 GWR 一样，该核也可能更复杂，用于建模各向异性或替代距离度量。但是，核必须提供一个有效的协方差矩阵，以确保得到的协方差仍然有效。这排除了 GWR 中经常使用的 “自适应” 带宽，因为这会导致不对称的 $H$。对于其他参数，<code>SVC 模型</code>的常规先验被挑选用于条件共轭，并且通常通过 <code>Gibbs 抽样</code> 进行估计（Finley、Banerjee 和 Carlin 2007）。</p>
+<p>为了将该模型推广到可与 MGWR 相媲美，需要一种对具有潜在不同尺度的多过程进行建模的方法。虽然 <code>Finley</code>（2011）提出了一种方法，但必须对其进行详细说明以使其可操作。这里重点考虑所有解释变量都存在局部变化的情况，但可以很容易推广到包括非变化项。首先，我们定义了一个新的 $X$ 平铺，称为 $X_{c}$，它不同于 <code>Gelfand 等人</code>  (2003) 的单带宽 SVC 模型中使用的平铺。 堆叠发生在 $p$ 的 $N$ 个集合中。对于多过程模型，我们改为堆叠 $N$ 的 $p$ 个集合。</p>
+<p>令 $X_{c}$ 是一个 $N\times N p$ 矩阵，它水平堆叠对角化解释变量 $X_{j}$。这意味着 $X_{c}$ 是 $p N \times N$ 对角矩阵：</p>
+<p>$$<br>X_{c}=\left[\begin{array}{llll}<br>\operatorname{Diag}\left[X_{1}\right] &amp; \operatorname{Diag}\left[X_{2}\right] \quad \ldots &amp; \left.\operatorname{Diag}\left[X_{p}\right]\right]<br>\end{array}\right.<br>$$</p>
+<p>然后，让 $\zeta$ 是一个 $N p \times 1$ 的列向量，它通过堆叠每个$p$ 过程的单元特定空间效应的 $N$-向量 来创建。由于每个过程都有自己的带宽，$j \in{1,2, \ldots, p}$ 的每个 $\zeta_{j}$ 都有自己的分层先验。这些被建模为可分离的以匹配 MGWR 规范，该方法将子过程视为有条件地相互独立。同时，$X_{c} \zeta$ 是 $N \times 1$ 向量，它将正确的 “过程-单元” 随机效应 $\zeta_{ij}$ 匹配到每个单元的正确解释变量 $x_ {ij}$ ：</p>
+<p>$$<br>X_{c} \zeta=\left[\begin{array}{c}<br>\sum_{j}^{p} x_{1 j} \zeta_{1 j} \<br>\sum_{j}^{p} x_{2 j} \zeta_{2 j} \<br>\vdots \<br>\sum_{j}^{p} x_{n j} \zeta_{n j}<br>\end{array}\right]<br>$$</p>
+<p>有了这个，我们可以以向量形式为响应变量声明一个局部模型：</p>
+<p>$$<br>\begin{gathered}<br>Y=X \mu_{\beta}+X_{c} \zeta+\epsilon \<br>\zeta \sim \mathcal{N}\left(0, \operatorname{Diag}\left[H\left(\phi_{j}\right) \sigma_{j}^{2}\right]_{j}^{p}\right) \<br>\epsilon \sim \mathcal{N}\left(0, \tau^{2}\right)<br>\end{gathered}<br>$$</p>
+<p>其中 $\operatorname{Diag}[M]_{i}^{k}$ 是一个块对角矩阵，其中 $M$ 沿对角线重复 $k$ 次。 $\zeta$ 的协方差矩阵是块对角线 $N p \times N p$ 矩阵，因此 $\zeta$ 可以通过分别收集每个过程的空间效应分布图来构造：</p>
+<p>$$<br>\zeta_{j} \sim \mathcal{N}\left(0, H\left(\phi_{j}\right) \sigma_{j}^{2}\right)<br>$$</p>
+<p>使用这种块，可以通过将平均效应和该过程的随机扰动相加，再次恢复每个过程的局部效应：</p>
+<p>$$<br>\beta_{i j}=\left(\mu_{\beta}\right)<em>{j}+\zeta</em>{i j}<br>$$</p>
+<p>每个过程的空间随机效应分解成它们自己的分布这一事实，也确保了在边缘化或调节全局参数之后，每个过程的后验分布是独立的。我们可以定义一个在全局模型参数 ${\mu, \tau, \zeta}$ 和过程特定参数 ${ \phi_{j}, \sigma_{j}^{2} }$ 之间迭代抽样的 Gibbs 采样器。与单带宽 SVC 中使用的块不同，这允许多尺度 SVC 处理 $N\times N$ 过程特定协方差矩阵中的 $p$，而不是处理完整的 $N p\times N p$ 随机效应协方差单带宽模型。</p>
+<h3 id="3-4-基于空间滤波的局部回归"><a href="#3-4-基于空间滤波的局部回归" class="headerlink" title="3.4 基于空间滤波的局部回归"></a>3.4 基于空间滤波的局部回归</h3><p>特征向量空间滤波器基于这样的解释：修改后的连接矩阵的特征向量是一组可能正交和不相关的地图模式（即空间自相关程度）（Griffith 1996, 2011）。其第一个特征向量 $E_1$ 为能够生成<code>具有最大可实现 Moran's I 相关系数的地图模式</code>的实数集；第二个特征向量 $E_2$ 同样为能够生成<code>具有最大可实现 Moran's I 相关系数的地图模式</code>的实数集，不过与 $E_1$ 之间不相关；这样继续直至与前面的 $n-1$ 个特征向量不相关的 $E_n$ 。改进后的连接矩阵 $W$ 常被定义为：</p>
+<p>$$<br>(\mathbb{I}-ll^\prime/n)C_n(\mathbb{I}-ll^\prime/n) \tag{5}<br>$$</p>
+<p>其中 $I$ 是 $n \times n$ 单元矩阵，$l$ 是 $l^\prime$ 的 $n \times 1$ 向量，$C_n$ 是将研究空间互斥且完全划分的 $n$ 个空间单位之间的二值连接矩阵。</p>
+<p>通过选择从 $W$ 派生的特征向量的子集并创建一个线性组合，可以生成一个能够解释残差中空间自相关的合成变量，并将其合并到线性回归模型：</p>
+<p>$$<br>\boldsymbol{y}=\beta_{0} \mathbf{1}+\sum_{p=1}^{P} \boldsymbol{X}<em>{p} \beta</em>{p}+\sum_{k=1}^{K} \boldsymbol{E}<em>{k} \beta</em>{E_{k}}+\boldsymbol{\epsilon}<br>$$</p>
+<p>其中前两项给出了传统的线性回归规范（即截距以及系数和解释变量对的组合），第三项表示空间滤波器。这里，$\boldsymbol{E}_{k}$ 是 $K$ 个选定特征向量的总集合中的一个潜在特征向量。 Griffith 假设（6）中的规范还应该包括每个解释变量和每个选定特征向量之间的交互项，以便创建局部系数。他进一步假设添加新术语将提供一个近似等于 GWR 模型的规范，使得</p>
+<p>$$<br>\hat{\boldsymbol{y}}<em>{g w r} \approx\left(\beta</em>{0} \mathbf{1}+\sum_{k_{0}=1}^{K_{0}} \boldsymbol{E}<em>{k</em>{0}} \beta_{k_{0}}\right)+\sum_{p=1}^{P}\left(\beta_{p} \mathbf{1}+\sum_{k_{p}=1}^{K_{p}} \boldsymbol{E}<em>{k</em>{p}} \beta_{k_{p}}\right) \cdot \boldsymbol{X}_{p}+\boldsymbol{\epsilon}<br>$$</p>
+<p>其中 $\hat{y}$ 是 GWR 模型的预测值向量，$\cdot$ 表示逐元素矩阵乘法（即 Hadamard 矩阵乘法），$k_{p}$ 表示来自集合的特征向量描述解释变量 $p$ 的 $K_{p}$ 个特征向量。根据 Griffith (2008)，当 (6) 中的第一项和第三项在 (7) 中组合时，它们成为 GWR 截距系数，将在后续章节中更详细地探讨。最后，通过将 $X_{p}$ 分布在等式 (7) 中它们的预乘总和并重新排列各项，可以实现以下规范</p>
+<p>$$<br>\boldsymbol{y}=\beta_{0} \mathbf{1}+\sum_{p=1}^{P} \boldsymbol{X}<em>{p} \cdot 1 \boldsymbol{\beta}</em>{p}+\sum_{k=1}^{K} \boldsymbol{E}<em>{k} \beta</em>{E_{k}}+\sum_{p=1}^{P} \sum_{k=1}^{K} \boldsymbol{X}<em>{p} \cdot \boldsymbol{E}</em>{k} \beta_{p E_{k}}+\boldsymbol{\epsilon}<br>$$</p>
+<p>其中第一项是回归截距，第二项表示解释变量及其全局系数，第三项和第四项分别表示全局特征向量和解释变量与特征向量之间的交互项。重要的是，全局解释变量是本规范要求构建交互项，最终允许构建局部系数。一旦选择了特征向量和交互项并估计了方程 (8)，每个解释变量的局部系数可以通过与每个全局解释变量相关的系数 $p$ 和与与 GWR 框架不同，交互项基于相应的全局解释变量。然而，目前尚不清楚如何执行有关来自空间滤波的局部系数的假设检验，也不清楚如何应用多假设检验的校正。</p>
+<p>基于空间滤波器的框架中的一个重要步骤是选择特征向量和交互项的子集。该方法需要基于统计显著性在所有交互项和全局特征向量中的前向逐步回归变量选择算法。首先，仅选择显示中度至高度空间自相关（即，莫兰系数 (MC) 大约大于 $0.25$）的特征向量。然后，对于逐步例程的每次迭代，在模型中测试每个候选变量。选择产生最小 P 值的变量，如果任何其他变量变得不显著（P 值大于 $0.1$），则将它们从模型中删除。该算法继续进行，直到没有变量可以添加到模型中，该模型也产生小于 $0.1001$ 的关联 P 值，此时例程终止并且可以处理局部系数 <code>(Griffith 2008)</code>。在后面的部分中，本规范与作为本研究的一部分开发的这种逐步选择例程的两种替代均方误差最小化 (MSE) 选择变体进行比较。</p>
+<h3 id="3-5-基于样条的局部回归"><a href="#3-5-基于样条的局部回归" class="headerlink" title="3.5 基于样条的局部回归"></a>3.5 基于样条的局部回归</h3><h3 id="3-6-神经网络方法"><a href="#3-6-神经网络方法" class="headerlink" title="3.6 神经网络方法"></a>3.6 神经网络方法</h3><h3 id="3-7-其他方法"><a href="#3-7-其他方法" class="headerlink" title="3.7 其他方法"></a>3.7 其他方法</h3><h2 id="4-变系数检验方法"><a href="#4-变系数检验方法" class="headerlink" title="4 变系数检验方法"></a>4 变系数检验方法</h2>
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/e35ae3a.html">http://xishansnow.github.io/posts/e35ae3a.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BB%BC%E8%BF%B0/">综述</a><a class="post-meta__tags" href="/tags/%E5%B1%80%E9%83%A8%E7%A9%BA%E9%97%B4%E5%9B%9E%E5%BD%92/">局部空间回归</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/">空间回归模型</a><a class="post-meta__tags" href="/tags/%E5%85%A8%E5%B1%80%E7%A9%BA%E9%97%B4%E5%9B%9E%E5%BD%92/">全局空间回归</a></div><div class="post-share"><div class="social-share" data-image="/img/coffe_13.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/2c6ed7d4.html" title="空间局部化思维对于统计和社会的重要性"><img class="cover" src="/img/coffe_08.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">空间局部化思维对于统计和社会的重要性</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 在过去的二十年里，越来越多的注意力集中在局部形式的空间分析上，无论是在描述性统计还是空间建模方面，我们称之为 “局部化思维”。局部化思维的基础在于：全局空间分析方法可能不适用，并且待测量的条件关系存在随空间变化的情况。本文不仅研究了局部化思维对空间过程建模的影响，而且更广泛地考察了人们对空间行为的理解。我们首先简要调查了局部统计建模的原因；然后描述一种局部建模框架（多尺度地理加权回归），以展示局部模型中的基本概念和此类模型的输出类型；之后，我们研究了局部方法对统计分析的影响，重点是局部模型与空间回归模型相比的作用、局部模型的诊断、局部方法如何与困扰空间分析数十年的空间尺度问题相关联等问题；最后，我们将注意力转向空间局部建模方法对社会的影响，讨论了可复制性以及如何使用空间局部模型来测量以前无法测量的基于地点的效应。文中通过一个房价影响因素的实例来证明在整篇论文中提出的问题。 【原 文】 A. S. Fotheringham and M. Sachdeva,  Spatial Statistics, vol. 50, p. 100601, 2022, doi:...</div></div></div></a><a class="pagination-related" href="/posts/5b171a36.html" title="高级模型--图模型的谱学习"><img class="cover" src="/img/book_11.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">高级模型--图模型的谱学习</div></div><div class="info-2"><div class="info-item-1">   〖摘要〗 〖原文〗 Standford cs228 notes 〖参考〗CMU 10-708 Slides &#x2F; CMU 10-708 Lecture Notes &#x2F; Jordan TextBook, Ch.2(section 2.2 - end) &#x2F; Koller’s Textbook,Ch.4 &#x2F; A. Fischer and C. Igel, An Introducton to Restricted Boltzmann Machines &#x2F; B. A. Cipra, An Introduction to the Ising Model </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/7bc2e597.html" title="采用 “空间变化过程建模” 还是 “非线性建模” ？"><img class="cover" src="/img/001.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-10</div><div class="info-item-2">采用 “空间变化过程建模” 还是 “非线性建模” ？</div></div><div class="info-2"><div class="info-item-1">   【摘要】 在各种类型的局部统计模型的校准中获得的空间变化参数估计的研究是司空见惯的。这种估计的变化通常用空间变化过程来解释。本文强调，在将这种变化与空间变化过程相关联之前，应先检查非线性方面的空间变化参数估计的另一种解释。这可以通过描述和演示的简单筛选程序来实现，并且可以轻松应用于任何局部模型的结果。突出显示问题并展示解决方案，使用一组模拟数据，然后使用真实世界的数据集。该论文还强调了相反的情况，即当实际关系是线性但空间变化时，GAM 的不当应用会产生虚假的非线性结果。 【原 文】 M. Sachdeva, A. S. Fotheringham, Z. Li, and H. Yu, “Are We Modelling Spatially Varying Processes or Non‐linear Relationships?,” Geographical Analysis, vol. 54, no. 4, pp. 715–738, Oct. 2022, doi: 10.1111/gean.12297. 1...</div></div></div></a><a class="pagination-related" href="/posts/a804b6ab.html" title="🔥  空间变系数模型索引帖"><img class="cover" src="/img/007.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-11</div><div class="info-item-2">🔥  空间变系数模型索引帖</div></div><div class="info-2"><div class="info-item-1">   1 综述类自行整理的 《空间回归模型综述》:  空间回归模型是按照空间区位研究变量之间关系的主要数学工具。根据回归模型是否存在局部空间同质特征（或反之空间异质性），通常可以将空间回归模型划分为 全局空间回归模型 和 局部空间回归模型。 Fotheringham 2022 年的 《空间局部化思维对于统计和社会科学的重要性》: 在过去的二十年里，越来越多的注意力集中在局部形式的空间分析上，无论是在描述性统计还是空间建模方面，我们称之为...</div></div></div></a><a class="pagination-related" href="/posts/985b5cec.html" title="🔥  大规模空间表面时间序列建模"><img class="cover" src="/img/coffe_03.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-12</div><div class="info-item-2">🔥  大规模空间表面时间序列建模</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 在许多现象中观测到的数据都具有空间和时间成分。由于复杂高性能技术的快速发展，现在可以大规模收集时空数据。然而，大型时空数据集的统计建模涉及几个具有挑战性的问题。例如，处理大型数据集和时空非平稳性在计算上具有挑战性。因此，有必要开发新的统计模型。在这里，我们提出了一种新方法来模拟复杂的大型时空数据集。在我们的方法中，在每个时间点估计一个连续的表面，用于捕获空间依赖性（可能是非平稳的）。以这种方式，时空数据产生一系列表面。然后，使用函数型时间序列技术对此表面序列进行建模。函数型时间序列方法使我们能够获得计算上可行的方法，并且还在时间预测方面提供了广泛的灵活性。我们通过蒙特卡罗模拟研究来说明这些优势。我们还使用超过 400 万个值的高分辨率风速模拟数据集测试了方法的性能。总的来说，本方法使用了一种新的数据分析范式，其中随机场被视为一个单一的实体，这在大数据的背景下是一种非常有价值的方法。 【原 文】 I. Martínez-Hernández and M. G. Genton, “Surface time series models for large...</div></div></div></a><a class="pagination-related" href="/posts/1857a4e4.html" title="GeoAI 的近期研究总结与思考"><img class="cover" src="/img/book_07.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-22</div><div class="info-item-2">GeoAI 的近期研究总结与思考</div></div><div class="info-2"><div class="info-item-1">   【摘 要】本文摘自武汉大学学报，作者在文章中列举了大量GeoAI领域的文献参考，值得收藏。尤其是梳理和总结了当前5个主要研究热点方向，并列出了最近急迫需要解决的3个方面挑战。 【原 文】高松，地理空间人工智能的近期研究总结与思考，武汉大学学报，DOI：10.13203&#x2F;j.whugis20200597 1 GeoAI...</div></div></div></a><a class="pagination-related" href="/posts/f184becf.html" title="🔥  空间表征学习综述文章"><img class="cover" src="/img/book_13.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-15</div><div class="info-item-2">🔥  空间表征学习综述文章</div></div><div class="info-2"><div class="info-item-1">   【摘要】无监督文本编码模型最近推动了自然语言处理的实质性进展。其关键思想是使用神经网络将文本中的词转换为基于单词位置及其上下文的向量空间表示（ 词嵌入 ），进而用于下游任务的端到端训练。我们在空间分析中看到了惊人的相似情况，即空间分析侧重于将地理对象（ 如：POI点 ）的绝对位置和空间上下文纳入模型。一个通用的空间表征模型对于许多任务都是有价值的。然而，迄今为止，除了简单地将离散化或前馈网络应用于坐标之外，还没有这样通用的模型存在，并且很少有努力对具有非常不同特征的分布进行联合建模，而这些特征经常出现在地理信系统数据中。神经科学领域诺贝尔奖得主的研究表明，哺乳动物的网格细胞（Grid Cell）提供了一种多尺度、周期性的位置编码表示，对于动物识别位置和寻找路径至关重要。因此，我们提出了一个称为 Space2Vec 的空间表征学习模型来编码地点（Place）的绝对位置和空间关系。我们对两个不同任务在两个真实世界的地理数据上进行实验：1）在给定位置和上下文的情况下预测 POI...</div></div></div></a><a class="pagination-related" href="/posts/d603dce7.html" title="空间异质性类型及检验方法"><img class="cover" src="/img/book_11.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-07</div><div class="info-item-2">空间异质性类型及检验方法</div></div><div class="info-2"><div class="info-item-1">   【摘 要】 本文关注的重点是空间异质性问题。空间异质性是统计学中使用的一个术语，表示一个或多个感兴趣的统计特征在总体的所有子集中不相同。空间异质性的存在与独立同分布假设相冲突，即观测值之间并不是同分布的，这使很多基于独立同分布假设的方法出现问题。如果我们的研究区域很大并且物理或社会经济多样化，或者研究区域在高空间分辨率下被观测到，那么作出数据子集都具有相同统计特征的假设大概率是无效的，因此这个问题值得重视。本文概述了三种基本的空间异质性：空间均值异质性、空间自相关结构（含异方差）异质性、空间分层异质性，其中前两者相对比较成熟，文中给除了相关连接；因此本文重点是空间分层异质性的定义、检验和建模。 【参 考】   J. Wang, R. Haining, T. Zhang, C. Xu, and M. Hu, “Statistics for spatially stratified heterogeneous data,” arXiv preprint arXiv:2211.16918, 2022. R. P. Haining and G. Li, Modelling...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B%E6%A6%82%E8%BF%B0"><span class="toc-text">空间回归模型概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="toc-text">1 概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%85%A8%E5%B1%80%E7%A9%BA%E9%97%B4%E5%9B%9E%E5%BD%92"><span class="toc-text">2 全局空间回归</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%B8%BB%E8%A6%81%E7%9A%84%E7%A9%BA%E9%97%B4%E4%BA%A4%E4%BA%92%E6%95%88%E5%BA%94"><span class="toc-text">2.1 主要的空间交互效应</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E7%A9%BA%E9%97%B4%EF%BC%88%E7%BA%BF%E6%80%A7%EF%BC%89%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%8F%91%E5%B1%95%E8%BF%87%E7%A8%8B"><span class="toc-text">2.2 空间（线性）回归模型的发展过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E6%97%A9%E6%9C%9F%E4%BB%A5%E5%86%85%E7%94%9F%E6%95%88%E5%BA%94%E5%92%8C%E7%A9%BA%E9%97%B4%E8%AF%AF%E5%B7%AE%E5%BB%BA%E6%A8%A1%E4%B8%BA%E4%B8%BB"><span class="toc-text">（1）早期以内生效应和空间误差建模为主</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E9%80%90%E6%AD%A5%E5%8F%91%E5%B1%95%E5%88%B0%E5%A4%8D%E6%9D%82%E7%A9%BA%E9%97%B4%E6%95%88%E5%BA%94%E7%9A%84%E5%BB%BA%E6%A8%A1"><span class="toc-text">（2）逐步发展到复杂空间效应的建模</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%BB%9F%E4%B8%80%E6%A8%A1%E5%9E%8B%E6%A1%86%E6%9E%B6"><span class="toc-text">2.3 统一模型框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E7%A9%BA%E9%97%B4%E6%9D%83%E9%87%8D%E7%9F%A9%E9%98%B5"><span class="toc-text">2.4 空间权重矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B"><span class="toc-text">2.5 模型简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-1-%E7%A9%BA%E9%97%B4%E8%87%AA%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B%EF%BC%88SAR%EF%BC%89"><span class="toc-text">2.5.1 空间自回归模型（SAR）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-2-%E7%A9%BA%E9%97%B4%E5%A4%96%E7%94%9F%E6%BB%9E%E5%90%8E%E6%A8%A1%E5%9E%8B%EF%BC%88SLX%EF%BC%89"><span class="toc-text">2.5.2 空间外生滞后模型（SLX）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-3-%E7%A9%BA%E9%97%B4%E8%AF%AF%E5%B7%AE%E6%A8%A1%E5%9E%8B%EF%BC%88SEM%EF%BC%89"><span class="toc-text">2.5.3 空间误差模型（SEM）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-4-%E7%A9%BA%E9%97%B4%E8%87%AA%E5%9B%9E%E5%BD%92%E7%BB%84%E5%90%88%E6%A8%A1%E5%9E%8B%EF%BC%88SAC%EF%BC%89"><span class="toc-text">2.5.4 空间自回归组合模型（SAC）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-5-%E7%A9%BA%E9%97%B4%E6%9D%9C%E5%AE%BE%E6%A8%A1%E5%9E%8B%EF%BC%88SDM%EF%BC%89"><span class="toc-text">2.5.5 空间杜宾模型（SDM）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-6-%E7%A9%BA%E9%97%B4%E6%9D%9C%E5%AE%BE%E8%AF%AF%E5%B7%AE%E6%A8%A1%E5%9E%8B%EF%BC%88SDEM%EF%BC%89"><span class="toc-text">2.5.6 空间杜宾误差模型（SDEM）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-%E5%85%A8%E5%B1%80%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7"><span class="toc-text">2.6 全局回归模型的局限性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B1%80%E9%83%A8%E7%A9%BA%E9%97%B4%E5%9B%9E%E5%BD%92"><span class="toc-text">3 局部空间回归</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%A6%82%E8%BF%B0"><span class="toc-text">3.1 概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%9C%B0%E7%90%86%E5%8A%A0%E6%9D%83%E5%9B%9E%E5%BD%92"><span class="toc-text">3.2 地理加权回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B"><span class="toc-text">3.3 贝叶斯空间变系数模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E5%9F%BA%E4%BA%8E%E7%A9%BA%E9%97%B4%E6%BB%A4%E6%B3%A2%E7%9A%84%E5%B1%80%E9%83%A8%E5%9B%9E%E5%BD%92"><span class="toc-text">3.4 基于空间滤波的局部回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E5%9F%BA%E4%BA%8E%E6%A0%B7%E6%9D%A1%E7%9A%84%E5%B1%80%E9%83%A8%E5%9B%9E%E5%BD%92"><span class="toc-text">3.5 基于样条的局部回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%96%B9%E6%B3%95"><span class="toc-text">3.6 神经网络方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-%E5%85%B6%E4%BB%96%E6%96%B9%E6%B3%95"><span class="toc-text">3.7 其他方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A3%80%E9%AA%8C%E6%96%B9%E6%B3%95"><span class="toc-text">4 变系数检验方法</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (true){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (false) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>
