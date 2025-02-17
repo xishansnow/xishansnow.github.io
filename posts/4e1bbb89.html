@@ -1,0 +1,431 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>🔥  贝叶斯方法索引帖 | 西山晴雪的知识笔记</title><meta name="keywords" content="贝叶斯统计,统计推断,统计建模,统计学习"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="贝叶斯方法索引帖">
+<meta property="og:type" content="article">
+<meta property="og:title" content="🔥  贝叶斯方法索引帖">
+<meta property="og:url" content="http://xishansnow.github.io/posts/4e1bbb89.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="贝叶斯方法索引帖">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/book_07.png">
+<meta property="article:published_time" content="2023-05-08T13:14:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.001Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="贝叶斯统计">
+<meta property="article:tag" content="统计推断">
+<meta property="article:tag" content="统计建模">
+<meta property="article:tag" content="统计学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/book_07.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/4e1bbb89"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '🔥  贝叶斯方法索引帖',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/book_07.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">🔥  贝叶斯方法索引帖</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-05-08T13:14:00.000Z" title="发表于 2023-05-08 21:14:00">2023-05-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.001Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/">贝叶斯统计</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/">综述概览</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src="https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js"></script>
+<script src="/js/attachTooltips.js"></script>
+<link rel="stylesheet" href="/css/tippy.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="一、知识要点">一、知识要点</h2>
+<h3 id="1-1-贝叶斯思维与工作流">1.1 贝叶斯思维与工作流</h3>
+<p>推荐的几本基础入门书籍：</p>
+<ul>
+<li>Martin 2015 年的 <a href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html">《Bayesian Analysis with Python》</a></li>
+<li>Martin 2022 年的 <a href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html">《Bayesian Modeling and Computation in Python》</a></li>
+<li>Kruschke 2015 年的 <a target="_blank" rel="noopener" href="https://sites.google.com/site/doingbayesiandataanalysis/">《Doing Bayesian Data Analysis》</a></li>
+</ul>
+<h3 id="1-2-主要的贝叶斯推断方法">1.2 主要的贝叶斯推断方法</h3>
+<p><strong>（1） 关于基础的推断方法</strong></p>
+<p><a target="_blank" rel="noopener" href="https://engineering.purdue.edu/kak/Tutorials/Trinity.pdf">普渡大学机器人视觉实验室的自编教程</a>： 普渡大学的一篇入门教程，清晰地从贝叶斯定理出发，阐明了最大似然估计、最大后验估计、贝叶斯估计三者之间的关系，值得仔细品读。</p>
+<p><strong>（2）关于似然函数</strong></p>
+<p>Reid 等 2010 年  <a href="db36c3ec.html">《似然与基于似然的推断》</a> ： 全面地对似然函数以及基于似然的推断方法进行了综述。由于似然函数时贝叶斯方法中的重要组成部分，因此掌握这方面的知识是必要的。文中提到了似然函数及其派生量、最大似然估计及其渐进性质、剖面最大似然估计、<a href="2c19b889.html">受限最大似然估计</a>、贝叶斯估计等方法，并给出了偏似然、伪似然、组合似然、准似然、经验似然等似然函数的常用变体。另外可参考  <a href="8f2c5e85.html">《似然及其在参数估计和模型比较中的引用》</a>。</p>
+<p>Martin 等 2022 年的 <a href="226fd4ce.html">《近似贝叶斯计算简明教程》</a> ：当似然函数无法解析建模时，只能以某种方式对似然进行近似。近似贝叶斯计算就是解决此类问题的一类方法，通过设计一个可参数化的函数来近似复杂的真实似然，进而使贝叶斯推断可以继续进行。本文节选自 Martin《Python 中的贝叶斯建模和计算》一书的第八章。</p>
+<p><strong>（3）关于先验</strong></p>
+<p>涉及共轭先验、无信息先验等内容，待整理。</p>
+<p><strong>（4）后验推断</strong></p>
+<p>精确推断，待整理。</p>
+<p>Blei 的 <a href="7e8d23a9.html">《主要的贝叶斯近似推断方法》</a> ：根据贝叶斯领域大师 Blei 关于贝叶斯推断方法的讲座整理，主要涉及蒙特卡罗方法和变分推断方法，是一篇入门贝叶斯推断方法的好资料。</p>
+<p>各种蒙特卡罗方法的具体介绍参见  <a href="d7dd5b59.html">《蒙特卡洛推断方法索引贴》</a>：涉及基础采样、MCMC、HMC、NUTS、SMC、SGMCMC 等重要方法。</p>
+<p>各种变分推断方法的具体介绍参见  <a href="5f5b1f29.html">《变分推断方法索引贴》</a>： 涉及平均场变分推断、随机变分推断、黑盒变分推断、自动变分推断等里程碑方法，另外 Zhang 2018 年的 <a href="46ae35f1.html">Advances in Variational Inference</a> 介绍了变分推断的核心思想，并概述了迄今为止最主要的变分推断方法，是不可多得的好综述。</p>
+<h3 id="1-3-基于概率图的表示、推断与学习">1.3 基于概率图的表示、推断与学习</h3>
+<p>概率图模型是利用图形化方式表达、学习和推断概率模型的优雅手段，是掌握贝叶斯方法的基本技能。</p>
+<p>对于概率图模型比较陌生的同学，可以阅读人门帖  <a href="70f04f5e.html">《概率图模型概览》</a></p>
+<p>进一步学习，可参考 <a target="_blank" rel="noopener" href="http://www.cs.cmu.edu/~epxing/Class/10708-17/slides/lecture1-Introduction.pdf">CMU 10-708 Slides</a> 和 <a target="_blank" rel="noopener" href="https://ermongroup.github.io/cs228-notes/preliminaries/introduction/">Stanford’s CS228</a> 课程。</p>
+<p>主要参考书籍包括:</p>
+<ul>
+<li>Koller, Daphne. Probabilistic Graphical Models : Principles and Techniques. Cambridge, Massachusetts: The MIT Press, 2009.</li>
+<li>Jordan, Michael Irwin, ed. Learning in Graphical Models. Adaptive Computation and Machine Learning. Cambridge, Mass: MIT Press, 1999.</li>
+</ul>
+<h3 id="1-4-常见模型的贝叶斯建模与推断">1.4 常见模型的贝叶斯建模与推断</h3>
+<p>常见模型的概率图表示、推断及学习，内容较多待整理。</p>
+<h3 id="1-5-贝叶斯优化问题">1.5 贝叶斯优化问题</h3>
+<p>为各类机器学习模型 <em>寻找最佳超参数</em> 本身是一种优化问题，与传统优化针对目标函数做出一些假设不同，在超参数调整过程中训练模型的代价可能非常高，而且如果某些超参数是离散型的，也不存在传统优化中的梯度概念，更困难的是，从超参数到性能的映射可能高度复杂且多峰的，局部的优化可能并不会产生可接受的结果。从目前来看，解决此类问题的主要方法是贝叶斯优化方法。</p>
+<p>暂时对此主题探讨不够深入，请参考 《贝叶斯优化》 一书的 <a href="5d350677.html">《引言》章节</a>。</p>
+<h3 id="1-6-概率模型与神经网络的结合">1.6 概率模型与神经网络的结合</h3>
+<p><strong>（1）神经网络的不确定性量化</strong></p>
+<p>回归与分类任务中中的不确定性量化，参见 Gawlikowski 等 2021 年的 <a href="926f8964.html">《深度神经网络中的不确定性综述文章》</a> ： 该文全面概述了神经网络中的不确定性估计，回顾了该领域的最新进展。论文首先对不确定性来源这一关键因素进行了全面介绍，并将其分为（可还原的） <strong>模型不确定性</strong> 和（不可还原的） <strong>数据不确定性</strong> 。介绍了基于<code>单一确定性神经网络</code>、<code>贝叶斯神经网络</code>、<code>神经网络集成</code>、<code>测试时数据增强</code> 四种不确定性的建模方法，讨论了这些领域的不同分支及最新发展。在实际应用方面，我们讨论了各种不确定性的度量和校准方法，并评述了现有基线和可用成果。</p>
+<p><strong>（2） 神经网络实现高斯过程</strong></p>
+<ul>
+<li>
+<p>Garnelo2018 年的 <a href="22316bf9.html">《条件神经过程》</a>。首次提出了条件神经过程和神经过程的概念，采用元学习实现了深度学习灵活性和概率模型不确定性的结合，算是用神经网络实现随机过程的最早尝试。该方法的问题在于无法为相同的背景点生成不同的函数样本，即缺少不确定性建模能力。</p>
+</li>
+<li>
+<p>Garnelo2018 年的 <a href="650d46e1.html">《神经过程》</a>，另参见 Kaspar 2018 年的一个<a href="c49f015e.html">博文</a>。为了提升不确定性建模能力，在条件神经过程基础上增加了一个类似于 VAE 瓶颈的隐变量 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span></span></span> 的每一个随机样本都对应于随机过程的一个具体实现，这样就可以通过多个样本在解码器网络中的前向传递，生成目标处的预测分布。作者将整个模型命名为神经过程。该方法的问题在于单个预测输出虽然包含了不确定性（即测试点处的边缘分布），但不同点处的输出之间相互独立，无法对输出的相关性建模，这从某种程度上来说，失去了随机过程的优势。</p>
+</li>
+<li>
+<p>Kim 等 2019 年提出的 <a href="">《注意力神经过程》</a> : 为了实现对输出相关性建模，在神经过程中引入注意力机制。</p>
+</li>
+<li>
+<p>Bruinsma 等 2021 年的 <a href="6c68a4b9.html">《高斯神经过程》</a> : 采用函数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mi>L</mi></mrow><annotation encoding="application/x-tex">KL</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mord mathnormal">L</span></span></span></span> 散度作为训练的代价函数，同时为了解决输出相关性建模问题，引入了一个用于学习核函数的神经网络，并将其与神经过程网络的结合体称为高斯神经过程。</p>
+</li>
+<li>
+<p>Markou 等 2021 年的 <a href="e85cc444.html">《高效的高斯神经过程回归》</a>： 认为 Bruinsma 的高斯神经过程方法采用的 CNN 神经网络（ 本文作者称为为 FullConvGP）会限制输入的维度（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">D = 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> ），因此提出了对原始高斯神经过程方法的改进，并将新模型称为卷积高斯神经过程（ConvGP）。</p>
+</li>
+<li>
+<p>Dutordoir 等 2022 年的 <a href="c0d702a8.html">《神经扩散过程》</a>：将扩散模型引入神经过程，</p>
+</li>
+<li>
+<p>Nguyen 等 2022 年的  <a href="a099fc2c.html">《transformer 神经过程》</a>: transformer 神经过程。</p>
+</li>
+<li>
+<p>Bruinsma 等 2023 年的 <a href="5f9a5d71.html">《自回归条件神经过程》</a> : 还是为了提升相关性预测能力，但自回归条件神经过程并不对模型或训练过程进行任何修改，而是像 MCDropout、神经自回归密度估计器 (NADE) 等一样，改变了 CNP 在测试阶段的部署方式，使用概率链式法则来自回归地定义联合预测分布，而不是对每个目标点独立进行预测。</p>
+</li>
+</ul>
+<p><strong>（3） 高斯过程模拟和解释神经网络</strong></p>
+<ul>
+<li>
+<p><strong>Neal</strong> 等 1994 年《无线宽神经网络的先验》: 单隐层无限宽神经网络等效于高斯过程。</p>
+</li>
+<li>
+<p><strong>Williams</strong> 等 1997 年  [《Computing with infinite networks》]: 计算出了单隐层神经网络的解析高斯过程核，并给出了使用高斯过程先验进行回归的精确贝叶斯推断方法。</p>
+</li>
+<li>
+<p><strong>Hazan</strong> 等 2015 年的《Steps toward deep kernel methods from infinite neural networks》：讨论了无限宽深度神经网络的等效核构建问题，但只限于两个非线性隐藏层。</p>
+</li>
+<li>
+<p><strong>Daniely</strong> 等 2016 年的《Toward deeper understanding of neural networks: The power of initialization and a dual view on expressivity》： 将组合核方法扩展到神经网络，利用有向无环图构造了神经网络的 “具有相同非线性全连接拓扑的组合核”。</p>
+</li>
+<li>
+<p><strong>Lee</strong> 等 2017 年的 <a href="9515d5ad.html">《神经网络高斯过程》</a>： 论证分析了深度的无线宽神经网络等效于高斯过程。</p>
+</li>
+<li>
+<p><strong>Matthews</strong> 等 2018 年的 <a href="bddb7fac.html">《宽深度神经网络的高斯过程表现》</a> :</p>
+</li>
+<li>
+<p><strong>Jacot</strong> 等 2018 年的 <a href="92799764.html">《神经切线核》</a>：剖析了神经网络训练期间的动态特性，并认为其训练动力学可以被视为一种神经正切核机制， 入门参见 Rajatvd 2019 年的 <a href="473bc1cc.html">《神经正切核入门》</a>， Novak 2019 年的 <a href="c1f3dd64.html">《神经切线核之 Python 实现》</a></p>
+</li>
+<li>
+<p><strong>Domingos</strong> 等 2020 年的  <a href="80deb1b2.html">《梯度下降学得的模型都近似于一个核机》</a>：在神经正切核基础上，提出了路径核的概念，并认为所有通过梯度下降学得的模型，都可以被视为一种核机器。</p>
+</li>
+<li>
+<p><strong>Li</strong>  等 2022 年的  <a href="">《神经网络的高斯过程代理模型》</a> 。将深度学习网络视为为内部过程不透明的复杂系统，用易于解释的高斯过程取代（或模仿）复杂神经网络系统的行为，这种高斯过程代理模型能够从神经网络的自然行为中凭经验学习高斯过程的核，这与 Lee 、Matthews Domingos 等从神经网络的极限情况下推导核具有显著不同。</p>
+</li>
+</ul>
+<p><strong>（4）生成式神经网络</strong></p>
+<p>所有的生成模型几乎都与学习数据分布以及采样有关，也是概率模型与神经网络产出最多的领域。</p>
+<ul>
+<li>
+<p>受限玻尔兹曼机：Hinton 等提出的 <a href="3f3fecac.html">受限玻尔兹曼机及深度置信网络</a></p>
+</li>
+<li>
+<p>变分自编码器：Kingma 等 2014 年提出的变分自编码器，入门可以先阅读<a href="65612c13.html">《初始变分自编码器》</a>，进一步可以阅读原作者 2019 年撰写的 <a href="da72f251.html">《权威综述》</a>。</p>
+</li>
+<li>
+<p>自回归神经网络：参看 Murphy 2023 年的  <a href="d097769d.html">《Probabilistic Machine Learning: Advanced Topics》 第 22 章</a>。</p>
+</li>
+<li>
+<p>归一化流：参见 Papamakarios 等人 2021 年的综述文章 <a href="1e755394.html"> 《Normalizing Flows for Probabilistic Modeling and Inference》 </a></p>
+</li>
+<li>
+<p>基于能量的模型：参看 Murphy 2023 年的  <a href="d8f42e3d.html">《Probabilistic Machine Learning: Advanced Topics》 第 24 章</a></p>
+</li>
+<li>
+<p>生成式对抗网络： 待整理</p>
+</li>
+<li>
+<p>扩散模型：参见 Yang 等 2022 年的综述 <a href="c0fb1f85.html">《Diffusion Models: A Comprehensive Survey of Methods and Applications》</a> 以及 <a href="3b7358a6.html">扩散模型概览</a></p>
+</li>
+</ul>
+<h2 id="二、知识体系的构建">二、知识体系的构建</h2>
+<p>贝叶斯统计方法以贝叶斯规则指导，已经基本形成了以概率图为形式化工具的一套相对完整的知识体系。贝叶斯新手建议由浅入深得学习。个人建议分为三个层次：</p>
+<h3 id="入门层次">入门层次</h3>
+<ul>
+<li>愿 景：掌握基础概念和入门级别的工作能力。</li>
+<li>目 的：
+<ul>
+<li>理解贝叶斯思维</li>
+<li>学会基础的贝叶斯建模流程和工作方法</li>
+<li>学会简单的概率编程</li>
+<li>感性认识 MCMC、变分推断等统计推断方法</li>
+<li>掌握线性回归、多元线性回归、广义线性回归等基础回归模型</li>
+<li>理解高斯混合模型、狄利克雷过程、连续混合模型等隐变量模型</li>
+<li>理解高斯过程等非参数贝叶斯方法</li>
+</ul>
+</li>
+<li>书 籍：
+<ul>
+<li>Osvaldo Martin, [Bayesian Analysis with Python(2nd)](<a href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html">https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html</a></li>
+<li>Osvaldo Martin,<a href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html">Bayesian Modeling and Computation in Python</a></li>
+<li>McElreath, R. . [Statistical Rethinking (2nd )]. <a target="_blank" rel="noopener" href="https://doi.org/10.1201/9781315372495">https://doi.org/10.1201/9781315372495</a></li>
+<li>Kruschke, <a target="_blank" rel="noopener" href="https://sites.google.com/site/doingbayesiandataanalysis/">Doing Bayesian Data Analysis</a></li>
+<li>Andrew Gelman et al., <a target="_blank" rel="noopener" href="https://avehtari.github.io/BDA_course_Aalto/index.html">Bayesian Data Analysis(3rd)</a></li>
+</ul>
+</li>
+<li>教 程：
+<ul>
+<li>Herbert Lee, <a target="_blank" rel="noopener" href="https://www.coursera.org/learn/bayesian-statistics?specialization=bayesian-statistics">Bayesian Statistics: From Concept to Data Analysis</a></li>
+<li>Matthew Helner, <a target="_blank" rel="noopener" href="https://www.coursera.org/learn/mcmc-bayesian-statistics?specialization=bayesian-statistics">Bayesian Statistics: Techniques and Models</a></li>
+<li>McElreath R. et al., [Statistical Rethinking 2022] <a target="_blank" rel="noopener" href="https://github.com/rmcelreath/stat_rethinking_2022">https://github.com/rmcelreath/stat_rethinking_2022</a></li>
+<li>Andrew Gelman et al., <a target="_blank" rel="noopener" href="https://avehtari.github.io/BDA_course_Aalto/index.html">Bayesian Data Analysis Course</a></li>
+<li>Padhraic Smyth et al., <a target="_blank" rel="noopener" href="https://www.ics.uci.edu/~smyth/courses/cs274/">California Unvi., CS274A-Probabilistic Learning:Theory and Algorithms</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="中级层次">中级层次</h3>
+<ul>
+<li>愿 景：熟练掌握概率图模型，并利用概率图模型进行建模、学习和推断。</li>
+<li>目 标：
+<ul>
+<li>理解什么是概率图模型</li>
+<li>掌握贝叶斯网络、马尔可夫随机场两种表示方法</li>
+<li>掌握变量消除、消息传递等概率图推断的传统方法</li>
+<li>掌握 MCMC、变分推断等近似推断基本原理和方法</li>
+<li>掌握完全可观测模型、部分可观测模型的学习原理和方法</li>
+<li>掌握高斯过程、狄利克雷过程等非参数模型的概率图方法</li>
+<li>掌握因子分析、主组分分析、隐马尔可夫、状态空间等常用的概率图模型</li>
+</ul>
+</li>
+<li>书 籍：
+<ul>
+<li>Koller, D. (2009). Probabilistic graphical models: Principles and techniques. The MIT Press.</li>
+<li>Michael I. Jordan, An Introduction to Probabilistic Graphical Models</li>
+</ul>
+</li>
+<li>教 程：
+<ul>
+<li>Stefano ERmon et al., <a target="_blank" rel="noopener" href="https://ermongroup.github.io/cs228/">Standford Univ., CS228- Probabilistic Graphical Models</a></li>
+<li>Daphne Koller, Standford Univ., <a target="_blank" rel="noopener" href="https://www.coursera.org/specializations/probabilistic-graphical-models">Probabilistic Graphical Models: Master a new way of reasoning and learning in complex domains</a></li>
+</ul>
+</li>
+<li>Erik Sudderth et al. <a target="_blank" rel="noopener" href="https://canvas.eee.uci.edu/courses/35909">California Univ. CS274B-Learning in Graphical Models</a></li>
+<li>Eric P.Xing et al. <a target="_blank" rel="noopener" href="http://www.cs.cmu.edu/~epxing/Class/10708-20/index.html">CMU. 10-708-Probabilistic Graphical Models</a> ， 课程的 Lecture 和 Notes 都非常全，其中高级主题部分可以纳入下一个层次</li>
+</ul>
+<hr>
+<h3 id="高级层级">高级层级</h3>
+<ul>
+<li>愿 景：掌握概率图和神经网络的结合和应用方法。</li>
+<li>目 标：
+<ul>
+<li>熟练使用概率图和计算图建立概率神经网络模型</li>
+</ul>
+</li>
+</ul>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/4e1bbb89.html">http://xishansnow.github.io/posts/4e1bbb89.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/">贝叶斯统计</a><a class="post-meta__tags" href="/tags/%E7%BB%9F%E8%AE%A1%E6%8E%A8%E6%96%AD/">统计推断</a><a class="post-meta__tags" href="/tags/%E7%BB%9F%E8%AE%A1%E5%BB%BA%E6%A8%A1/">统计建模</a><a class="post-meta__tags" href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/">统计学习</a></div><div class="post_share"><div class="social-share" data-image="/img/book_07.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/a099fc2c.html"><img class="prev-cover" src="/img/coffe_03.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Transformer 神经过程：通过序列建模进行不确定性感知元学习</div></div></a></div><div class="next-post pull-right"><a href="/posts/7e8d23a9.html"><img class="next-cover" src="/img/coffe_01.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">🔥  主要的贝叶斯推断方法</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/7e8d23a9.html" title="🔥  主要的贝叶斯推断方法"><img class="cover" src="/img/coffe_01.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-08</div><div class="title">🔥  主要的贝叶斯推断方法</div></div></a></div><div><a href="/posts/5600cedb.html" title="6️⃣  概率图推断--部分可观测马尔可夫随机场及 EM 算法"><img class="cover" src="/img/book_09.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-12-10</div><div class="title">6️⃣  概率图推断--部分可观测马尔可夫随机场及 EM 算法</div></div></a></div><div><a href="/posts/ddea1113.html" title="近似推断--平均场近似"><img class="cover" src="/img/coffe_01.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-10</div><div class="title">近似推断--平均场近似</div></div></a></div><div><a href="/posts/cc6501c0.html" title="高级模型--高斯过程与核学习"><img class="cover" src="/img/007.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-05</div><div class="title">高级模型--高斯过程与核学习</div></div></a></div><div><a href="/posts/d7dd5b59.html" title="🔥  蒙特卡洛推断方法索引帖"><img class="cover" src="/img/book_07.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-02</div><div class="title">🔥  蒙特卡洛推断方法索引帖</div></div></a></div><div><a href="/posts/43925297.html" title="蒙特卡洛方法原理"><img class="cover" src="/img/005.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-02</div><div class="title">蒙特卡洛方法原理</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%9F%A5%E8%AF%86%E8%A6%81%E7%82%B9"><span class="toc-text">一、知识要点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%80%9D%E7%BB%B4%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-text">1.1 贝叶斯思维与工作流</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E4%B8%BB%E8%A6%81%E7%9A%84%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%8E%A8%E6%96%AD%E6%96%B9%E6%B3%95"><span class="toc-text">1.2 主要的贝叶斯推断方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%9F%BA%E4%BA%8E%E6%A6%82%E7%8E%87%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA%E3%80%81%E6%8E%A8%E6%96%AD%E4%B8%8E%E5%AD%A6%E4%B9%A0"><span class="toc-text">1.3 基于概率图的表示、推断与学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E5%B8%B8%E8%A7%81%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%BB%BA%E6%A8%A1%E4%B8%8E%E6%8E%A8%E6%96%AD"><span class="toc-text">1.4 常见模型的贝叶斯建模与推断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98"><span class="toc-text">1.5 贝叶斯优化问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6-%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B%E4%B8%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%93%E5%90%88"><span class="toc-text">1.6 概率模型与神经网络的结合</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%9A%84%E6%9E%84%E5%BB%BA"><span class="toc-text">二、知识体系的构建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A5%E9%97%A8%E5%B1%82%E6%AC%A1"><span class="toc-text">入门层次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E7%BA%A7%E5%B1%82%E6%AC%A1"><span class="toc-text">中级层次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7%E5%B1%82%E7%BA%A7"><span class="toc-text">高级层级</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

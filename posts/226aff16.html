@@ -1,0 +1,379 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>多视图表示学习概览 | 西山晴雪的知识笔记</title><meta name="keywords" content="发现模型,发现任务,表示学习,多视图表示学习"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="多视图表示学习概览">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多视图表示学习概览">
+<meta property="og:url" content="http://xishansnow.github.io/posts/226aff16.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="多视图表示学习概览">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/book_10.png">
+<meta property="article:published_time" content="2022-11-06T04:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.038Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="发现模型">
+<meta property="article:tag" content="发现任务">
+<meta property="article:tag" content="表示学习">
+<meta property="article:tag" content="多视图表示学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/book_10.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/226aff16"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '多视图表示学习概览',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/book_10.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">多视图表示学习概览</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-11-06T04:00:00.000Z" title="发表于 2022-11-06 12:00:00">2022-11-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.038Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8F%91%E7%8E%B0%E4%BB%BB%E5%8A%A1/">发现任务</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8F%91%E7%8E%B0%E4%BB%BB%E5%8A%A1/%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0/">表示学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>【摘 要】 表示学习是一种训练机器学习模型的特殊类型，它学着将原始的输入数据变换为对实现未来任务更有用的新形式。近年关于表示学习的研风头日胜，因为在很多实际工作中，增加预训练以学习有用的表示，确实提升了很多下游任务的性能。本文主要对表示学习的门类和方法做一概述，文章内容主要来自 Murphy 的《Machine Learning: Advanced Topics》第 32 章。</p>
+<p>【参 考】 <a href="">李沐老师讲论文系列</a><br>
+<br></p>
+<p>自监督学习有生成式学习和对比学习，对比学习需要从无标注的数据中学习特征表示，并用于下游任务中。指导原则是: <strong>通过构造相似实例和不相似实例，学习一个表示学习模型，使得相似的实例在投影空间中较接近，不相似的实例在投影空间中距离较远</strong>。</p>
+<p>对比学习有三个关键问题:</p>
+<ol>
+<li>正负样本的构造</li>
+<li>编码器的设计</li>
+<li>Loss函数的选取。</li>
+</ol>
+<p>过去几年，尤其是2018年开始到现在，对比学习在计算机视觉领域的发展可以划成四个阶段:</p>
+<ol>
+<li>2018~2019年中，Inst Disc、CPC、CMC等方法和模型都还没有统一，目标函数和代理任务也还没有统一;</li>
+<li>2019~2020年中，SimCLR、Moco、CPC/CMC 的延伸、SwAV，这个阶段发展非常迅速;</li>
+<li>不用负样本也可以做对比学习，如 BYOL 和后续改进，SimSiam 把所有方法总结归纳融入 SimSiam 框架，是用 CNN 做对比学习的一个总结;</li>
+<li>Transformer 时代，MoCo-v3 和 DINO。随着 Vision Transformer 的爆火，对于自监督学习，不论是对比学习还是最新的掩码学习，都是用 VIT 做的。</li>
+</ol>
+<h2 id="第一阶段：2018-2019年中"><strong>第一阶段：2018~2019年中</strong></h2>
+<p>Inst Disc、CPC、CMC等方法和模型都还没有统一，目标函数和代理任务也还没有统一。</p>
+<h3 id="Inst-Disc-Unsupervised-Feature-Learning-via-Non-Parametric-Instance-Discrimination"><strong>Inst Disc - Unsupervised Feature Learning via Non-Parametric Instance Discrimination</strong></h3>
+<p>basic idea：让图片聚集在一起的原因并不是因为他们有相同的语义标签，而是图片(object)很相似。采用个体判别任务——无监督学习方式，把每个instance看成一个类别，目标就是能学一种特征，从而把每个图片都区分开。</p>
+<p><img src="https://pic1.zhimg.com/v2-4f582c94baa224a6d493ba608b309e48_b.jpg" alt="instdisc"></p>
+<p>正样本：图片本身+数据增强 负样本：其他图片</p>
+<p>memory bank: 存所有图片的特征，也就是一个字典，每个特征的维度不能太高——128维。</p>
+<p>NCE loss 算对比学习的目标函数。更新完网络后，把mini batch的特征到memory bank更换掉。反复更新encoder和memory bank。</p>
+<p>Proximal Regularization: 给模型训练加了约束，让memory bank里的特征进行动量式的更新。——跟Moco想法很一致。</p>
+<p>实验超参数设置：温度0.07，4096 个负样本(从memory bank 抽取) ，起始learning rate0.03 …  取得了不错的无监督表征学习的结果。</p>
+<h3 id="Unsupervised-Embedding-Learning-via-Invariant-and-Spreading-Instance-Feature-2019-CVPR"><strong>Unsupervised Embedding Learning via Invariant and Spreading Instance Feature - 2019 - CVPR</strong></h3>
+<p>基本的对比学习，SimCLR 的前身。没有使用额外的数据结构存负样本，正负样本来自同一个 minibatch, 就可以只使用一个编码器进行端到端学习。</p>
+<p><img src="https://pic1.zhimg.com/v2-a44760eb143588166133b27d7862fdcc_b.jpg" alt="INSIF"></p>
+<p>basic idea: 相似的图片和物体特征应该保持不变性。对于不相似的任务，特征应该尽可能分散开。</p>
+<p>代理任务——个体判别。</p>
+<p>目标函数——NCE loss的一个变体</p>
+<p><img src="https://pic4.zhimg.com/v2-b5ac58fff5de60a296a6fd189f2c8d8f_b.jpg" alt="INSIF2"></p>
+<p>原始数据 256 数据增强 256 * 2。正样本 256 负样本(256-1)*2。</p>
+<p>end-to-end</p>
+<p>字典必须足够大，对比学习时候负样本最好是足够多，本文没有TPU，也没有 SimCLR 那么强大的数据增广和 MLP projector, 所以结果没有那么出彩。</p>
+<h3 id="CPC-Representation-Learning-with-Contrastive-Predictive-Coding"><strong>CPC- Representation Learning with Contrastive Predictive Coding</strong></h3>
+<p>CPC——用预测的代理任务做对比学习</p>
+<p><img src="https://pic1.zhimg.com/v2-e691f587e1c7bdd77ce558cc94dd3cb4_b.jpg" alt="CPC"></p>
+<p>gar——自回归模型。常见的自回归模型auto-regressive：RNN、LSTM</p>
+<p>t当前时刻，Ct 代表上下文的一个特征表示，可以用来预测下文。</p>
+<p>正样本——未来的输入通过编码器以后得到的未来时刻的特征输出，做出的预测是query，真正的输出是由输入决定的。负样本——很广泛，可以任意选取输入，通过编码器得到输出。</p>
+<p>图中的序列可以换成文字序列、图片patch等。</p>
+<h3 id="CMC-Contrastive-Multiview-Coding"><strong>CMC - Contrastive Multiview Coding</strong></h3>
+<p>CMC——第一个或者比较早做多视角对比学习的，证明了对比学习的灵活性和多视角多模态的可行性。</p>
+<p><img src="https://pic4.zhimg.com/v2-f8011421311e018db7b987f3a2078e63_b.jpg" alt="CMC"></p>
+<p>正样本——四个视角：原始图像，深度信息(每个物体离观察者多远), surface<br>
+normal、物体分割图像，虽然输入来自不同的传感器，或者不同的模态，但是对应一张图片，互为正样本。特征空间中，四个绿色点应该接近，负样本特征红点应该远离绿色。</p>
+<h3 id="CLIP"><strong>CLIP</strong></h3>
+<p>基于CMC，OpenAI在2021年提出了 <strong>CLIP模型，</strong></p>
+<p>利用text信息监督视觉任务自训练，本质就是将分类任务化成了图文匹配任务，效果可与全监督方法相当。多模态的对比学习。CLIP文本端用BERT,图像端用VIT，不同的模态需要不同的编码器。Transformer的好处：可以同时处理不同模态的数据。</p>
+<p>CMC利用对比学习的思想，做了一篇蒸馏的工作：不论用什么网络，只要输入是同一张图片，得到的特征应该尽可能类似(eg.<br>
+teacher和student作为正样本对，从而做对比学习)。</p>
+<h2 id="第二阶段：2019年中-2020年中"><strong>第二阶段：2019年中~2020年中</strong></h2>
+<p>SimCLR、Moco、CPC/CMC的延伸工作、SwAV，这个阶段发展非常迅速。</p>
+<h3 id="MoCo-Momentum-Contrast-for-Unsupervised-Visual-Representation">**MoCo - Momentum Contrast for Unsupervised Visual Representation</h3>
+<p>Learning**</p>
+<p>MoCo 的主要贡献是把之前对比学习的一些方法都归纳总结为一个字典查询的问题。<br>
+提出了两个东西：队列queue和动量编码器momentum encoder，从而形成一个又大又一致的字典帮助更好地对比学习。</p>
+<p><img src="https://pic3.zhimg.com/v2-322c0cd73a6d0f8b0912893d2afdb63e_b.jpg" alt=""></p>
+<p>MoCo和 Inst Disc很相似，用queue取代memory</p>
+<p>bank去存负样本，解决大字典的问题。用动量编码器取代loss里的约束项，从而达到动量更新编码器的目的，而不是动量的更新特征，解决特征不一致问题，从而能得到更好的结果。</p>
+<p>实验参数：ResNet as encoder、基线模型res50、特征维度128、L2-norm、目标函数info NCE、 loss温度0.07…</p>
+<h3 id="SimCLR-A-Simple-Framework-for-Contrastive-Learning-of-Visual-Representations"><strong>SimCLR - A Simple Framework for Contrastive Learning of Visual Representations</strong></h3>
+<p><img src="https://pic3.zhimg.com/v2-0904e38ee986b22f5731b14ef5b80a0e_b.jpg" alt="SimCLR"></p>
+<p>对mini-batch的所有图片做更多的数据增强，得到xi和xj。同一图片延伸得到的两个图片就是正样本，batch size是N的话，正样本个数是N，负样本个数就是剩下所有的样本及增强过后的样本2(N-1)。</p>
+<p>经过编码器f 共享权重，得到特征表示h。创新点在h之后又加了一个g函数—projector（只有训练的时候才用g,做下游任务时候是扔掉的），就是一个MLP，<br>
+包含全连接层后加一个激活函数relu(Non-linear)。最后衡量一下正样本之间是不是能不能达到最大的一致性。</p>
+<p>采用normalized(h后进行L2归一化) temperature scaled(在loss上×个τ)的交叉熵函数。<br>
+用了更大的batch size且训练更久</p>
+<p><img src="https://pic1.zhimg.com/v2-d6a85439aabec5d65a5b110162c7e22c_b.jpg" alt="nothing"></p>
+<p>最有效的数据增强——crop和color，其他的增强可有可无 锦上添花</p>
+<p><img src="https://pic4.zhimg.com/v2-5654a1cf90ac7f236d01c5d39b2e462f_b.jpg" alt="nothing"></p>
+<p>使用Non-linear会比什么都不用提升十几个点<br>
+z最后的维度不管是多少，都没太大区别，所以对比学习都选一个比较低的维度，128就够了。</p>
+<h3 id="MoCo-v2-Improved-Baselines-with-Momentum-Contrastive-Learning"><strong>MoCo v2 - Improved Baselines with Momentum Contrastive Learning</strong></h3>
+<p><img src="https://pic4.zhimg.com/v2-2a5b3bb609eed7ee97ef8dc41c09821b_b.jpg" alt="MOCO"></p>
+<p>在SimCLR的基础上，moco v2：MLP + aug+ + cosine learning rate schedule + 800 epochs</p>
+<p>无监督学习训练越久 模型越大 结果会更好些</p>
+<p><img src="https://pic1.zhimg.com/v2-98e072993814c0f6dc1e03fd1be2f220_b.jpg" alt="MOCO2"></p>
+<p>MoCo v2相对于SimCLR的优越性——硬件。SimCLR——end to end</p>
+<p><img src="https://pic4.zhimg.com/v2-f71b0e6137e37aafa8480dec11eae5ab_b.jpg" alt="moco3"></p>
+<h3 id="SimCLR-v2-Big-Self-Supervised-Models-are-Strong-Semi-Supervised-Learners"><strong>SimCLR v2 - Big Self-Supervised Models are Strong Semi-Supervised Learners</strong></h3>
+<p><img src="https://pic3.zhimg.com/v2-2886e564e1e5609c73a1495c750e9ed2_b.jpg" alt="SimClrv2"></p>
+<p>自监督的对比学习去训练一个大的模型出来， 有一小部分有监督的数据去做一个有监督的微调， 用模型生成很多伪标签，可以在更多无标签的数据上去做自学习。</p>
+<p>SimCLR v1 - v2的改进：v2是个两页的技术报告</p>
+<ul>
+<li>更大的模型，152层的ResNet Selective kernels SK net，骨干网络很强</li>
+<li>SimCLR的projector MLP层有用， 多加几层？两层的MLP就够了，由原来的fc+relu变成fc+relu fc+relu，加深了projection head。</li>
+<li>也使用了动量编码器，提升不大，因为负样本已经相当多了，字典大小和特征一致性SimCLR已经足够好了。</li>
+</ul>
+<h3 id="SwAV-Unsupervised-Learning-of-Visual-Features-by-Contrasting-Cluster-Assignments"><strong>SwAV - Unsupervised Learning of Visual Features by Contrasting Cluster Assignments</strong></h3>
+<p>CNN中用res50分最高的工作75.3</p>
+<p>basic idea: 给定同样的图片，生成不同的视角， 希望可以用一个view得到的特征去预测另外一个视角得到的特征，<br>
+所以view的特征应该是非常接近的。</p>
+<p>做法：把对比学习和聚类(无监督的特征表示学习方式，相似的物体聚集在某个聚类中心附近，不相似的尽量推开)结合。</p>
+<p><img src="https://pic2.zhimg.com/v2-56b9ea2255b56cbae07497bee3d8d691_b.jpg" alt="Swav"></p>
+<p>左：之前对比学习的方法，同一个图片做两次数据增强，所有的样本通过一个编码器(res50或加一个projection head)，得到一个特征，去做对比学习的loss就可以。<br>
+右：SwAV, 左图简单，但是直接拿所有图片的特征去跟特征作对比，有点原始且有点费资源， 因为所有的图片都是自己的类。能不能不做近似，</p>
+<p>能不能借助先验信息不去跟大量的负样本比，而去跟一些更简洁的东西比？—— 可以去和聚类中心比，右图中的c(矩阵),维度d*k，d为特征的维度，k是有多少个聚类中心，本文是3000。</p>
+<p>区别：得到特征z后并不是直接在特征上做对比学习的loss，而是通过聚类的方法，让特征z和c生成一个目标q1,q2 相当于一个ground truth。z1,z2很相似，按道理可以互相去做预测，代理任务是 z1和c做点乘，可以预测q2，z2和c点乘，可以预测q1，通过换位预测对模型进行训练。</p>
+<p>聚类的好处：如果很很多负样本进行类比，需要成千上万的负样本，也是一个近似。而跟聚类中心做类比，可以用几百最多3000个聚类中心就足以表示。另外，聚类中心是有明确地语义含义的，如果只是之前的随机抽样负样本去做对比，有可能抽到正样本，负样本类别也不均衡，不如使用聚类中有效。(参考deep cluster, deep cluster two)</p>
+<p>另一个性能提升点：multi-crop，使用了更多的正样本。之前是取 224<em>224 的两个crop，现在取两个160的crop学习全局的特征，为了增加正样本数量学习局部特征，随机选4个小点的crop 96</em>_ 96。（multi- crop对其他对比学习方法也有用）</p>
+<p><img src="https://pic3.zhimg.com/v2-228aece0f0bebb0921c4b6d34d4b9742_b.jpg" alt="1"></p>
+<p><img src="https://pic3.zhimg.com/v2-be746a02ad9b0990182a85c05c39e89a_b.jpg" alt="2"></p>
+<p>聚类和对比学习的方法结合也没什么优势，multi- crop这个全局和局部特征都要关注的思想才是重点。SwAV算是一个承上启下的工作，也没有用什么负样本，用的聚类中心。</p>
+<p>附：CPC v2——用了更大的模型，更大的图像块，做了更多方向上的预测任务，把batch norm换成了layer norm，使用了更多的数据增强</p>
+<p>Info Min—— CMC的作者做的分析延伸工作，到底选什么样的视角才能对对比学习最好，提出了InfoMin的原则-<br>
+最小化互信息，想要不多不少刚好的互信息。按InfoMin原则做合适的数据增强，拿到合适的对比学习的视角。</p>
+<p>综上，对比学习到了第二阶段 很多细节都趋于统一，目标函数都是用Info NCE或类似函数去算，模型都是用一个编码器加一个projection head，都采用了更强的数据增强，使用动量编码器，尝试训练更久，在ImageNet上的准确度也逐渐逼近于有监督的基线模型。第三阶段就是不用负样本的对比学习。第二阶段的SwAV也算是一个承上启下的工作，也没有用什么负样本，用的聚类中心，但是明确对比的对象，第三阶段的BYOL和SimSiam就是正样本自己玩，没有负样本和聚类中心这样明确的东西去做对比。</p>
+<h2 id="第三阶段：2020-不用负样本也可以做对比学习"><strong>第三阶段：2020 不用负样本也可以做对比学习</strong></h2>
+<h3 id="BYOL-Bootstrap-Your-Own-Latent-A-New-Approach-to-Self-Supervised-Learning"><strong>BYOL - Bootstrap Your Own Latent A New Approach to Self-Supervised Learning</strong></h3>
+<p>Bootstrap: 已经有的东西之上改造， Latent: 特征。看论文看到latent、hidden、feature、embedding都是特征的意思。BYOL自己跟自己学，完全没用任何负样本。在ImageNet上得到74.3的top1准确率。</p>
+<p>对比学习中负样本是约束，如果没有负样本，只能让所有相似的物体特征也尽可能相似，不管给什么输入，都是相同的输出，算对比学习的loss都是0，负样本限制这种什么都学不到的情况发生(model collapse)。</p>
+<p><img src="https://pic1.zhimg.com/v2-d6c964211cc98c6776290ea5eb788518_b.jpg" alt="byol"></p>
+<p><img src="https://pic4.zhimg.com/v2-27b1364d6c930486144abdaaea9b6e57_b.jpg" alt="byol2"></p>
+<p>mini- batch的输入，数据增强后，上下编码器使用同样的网络架构，但是参数是不同的，上面的通过梯度更新而更新，下面的和MoCo一样是用动量编码器Moving average更新。得到特征，跟SimCLR一样用了一个projector，ztheta是256维，比128维效果好一点， 上下是一样的网络结构但参数不一样。</p>
+<p>BYOL加了新的一层q theta，跟g theta一样也是一个MLP，得到一个新的特征q(z theta)，让这个预测跟z xi尽可能一致，把匹配的问题换成一个预测的问题。自己预测自己，sg = stop gradient没有梯度。</p>
+<p>上面一行相当于query编码器，下面相当于key的编码器，key的编码器都是query编码器的动量更新，不一样是代理任务不一样，用自己一个视角的特征去预测另外一个视角的特征，去完模型性的训练。训练完成后只有编码器f theta留下了，最后用y theta 2048维的特征去做下游任务。</p>
+<p>目标函数MSE loss。</p>
+<h3 id="Blog-How-to-understand-BYOL"><strong>Blog - How to understand BYOL</strong></h3>
+<p><img src="https://pic2.zhimg.com/v2-817498c0c5243cbc506dd0b5da025645_b.jpg" alt="Blog"></p>
+<p>projection head是MLP，fc+BN+Relu+fc。</p>
+<p>BYOL训练的时候不坍塌，肯定是和Batch Norm有关系的。BN是把batch里所有样本的特征拿过来算均值和方差，去做归一化。当算某个正样本的loss的时候，其实也看到了其他样本的特征，这里面是有信息泄露的（Shuffling BN防止信息泄露）。</p>
+<p>当有了batch norm之后，BYOL其实并不光是正样本自己跟自己学，其实也在做对比，一种隐式的对比学习：正样本的图片和平均图片(batch norm产生的，有聚类中心的意思，中值的意思)有什么差别。</p>
+<h3 id="BYOL-works-even-without-batch-statistics"><strong>BYOL works even without batch statistics</strong></h3>
+<p>BYOL的作者不想让大家觉得BYOL的成功是依赖于batch norm，做了一系列实验，回应上个blog：</p>
+<p><img src="https://pic1.zhimg.com/v2-f1772262ff2e2c831094b978a595b8b4_b.jpg" alt="byol-nobatch"></p>
+<p>当projector有BN的时候，有一个BYOL还是训练失败了，不能解释BN很关键。当encoder和Projector都没有BN的是，SimCLR也失败了，证明BN不是提供了一个隐式的负样本，即使给了显式的负样本还是训练不出来。</p>
+<p>最后达成一致：BN主要作用是提高模型训练的稳健性，导致不会模型坍塌。</p>
+<p><strong>BYOL作者实验：Using GN with WS leads to competitive performance</strong><br>
+采用Group Norm 、 Weight Standardization模型初始化方式<br>
+都没有计算批统计量，没有隐式的对比，BYOL还是一个全新的自学方式。</p>
+<h3 id="SimSiam-Exploring-Simple-Siamese-Representation-Learning"><strong>SimSiam - Exploring Simple Siamese Representation Learning</strong></h3>
+<p>不需要负样本、不需要大的batch size、不需要动量编码器，不仅不模型坍塌，结果也好。</p>
+<p><img src="https://pic3.zhimg.com/v2-e832d0864ebf88f8d17d20e23c5c47c2_b.jpg" alt="simsiam"></p>
+<p>孪生网络——两个编码器，一般结构是一样的，共享参数。整体架构和BYOL非常一样。SimSiam Pseudocode, PyTorch- like伪代码：D函数是算loss的，MSE loss 对称性的loss，然后梯度回传，更新网络。</p>
+<p><img src="https://pic1.zhimg.com/v2-9f4a59668e03bf34a3a313fa65169a58_b.jpg" alt="simsiam1"></p>
+<p>SimSiam能够不模型坍塌成功训练，主要是有stop gradient操作的存在，SimSiam可以看成一种EM算法，一个训练过程或者一套模型参数被人为劈成两份，相当于解决两个子问题一样，模型更新也在交替进行。通过逐步更新的方式避免模型坍塌。</p>
+<p><img src="https://pic4.zhimg.com/v2-c428d7c2adc3c738e50dd1471325be97_b.jpg" alt="simsiam2"></p>
+<p>所有孪生网络的做法归纳：SimCLR end-to- end学习，两边都是有梯度回传的，还是做的一个对比任务。SwAV也是对比任务，没有跟负样本比，跟聚类中心(Sinkhorn- Knopp算法产生的)去比。BYOL新的贡献—predictor，从对比任务变为预测任务，用左边预测右边，还使用了动量编码器，SimSiam和BYOL很像，左边一样，右边没有用动量编码器。</p>
+<p><img src="https://pic1.zhimg.com/v2-2646d4bc4c4b43be64baa5bba697b734_b.jpg" alt="simsiam3"></p>
+<p>分类来说最强的方法 ——BYOL 下游任务：MoCo v2和SimSiam表现最好，对比学习的工作，MoCo v2可当基线模型，训练快、稳，下游任务迁移的好。</p>
+<p>Barles Twins:主要就是更换了一个目标函数。把之前的对比和预测，变成两个矩阵之间比相似性。因为是2021年3月提出的，很快淹没在ViT的洪流中。</p>
+<h2 id="第四阶段：2021-Transformer时代"><strong>第四阶段：2021 Transformer时代</strong></h2>
+<h3 id="MoCo-v3-An-Empirical-Study-of-Training-Self-Supervised-Vision">**MoCo v3 - An Empirical Study of Training Self-Supervised Vision</h3>
+<p>Transformers**</p>
+<p>MoCo v3只是一种架构，CNN也可以用，ViT也可以用。本文改进自监督训练VIT而更稳定。MoCo v3是MoCo v2和SimSiam的延伸工作</p>
+<p><img src="https://pic3.zhimg.com/v2-08d75f56e586e723c795d3deb2a2afba_b.jpg" alt="mocov3"></p>
+<p><img src="https://pic3.zhimg.com/v2-2f26363807ca0b3cfd25cb2814d88206_b.jpg" alt="mocov3-1"></p>
+<p>batch size变大后，准确度会掉下，恢复后也不如原来高。观察训练时候每一层回传梯度的情况。梯度波峰发生在第一层做patch projection的时候。如何把图片打成一个patch给它一个特征是一个可训练的全连接层，梯度不正常不如不训练。随机初始化了一个patch projection层然后冻住，整个训练过程都不变。对MoCo v3和BYOL都有用，用BYOL框架把残差网络换成VIT，patch projection冻住，一样能获得更平滑的曲线，更好地结果。</p>
+<p>不改Transformer本身，只能改开头Tokenazition和结尾loss 。</p>
+<h3 id="DINO-Emerging-Properties-in-Self-Supervised-Vision-Transformers"><strong>DINO - Emerging Properties in Self-Supervised Vision Transformers</strong></h3>
+<p>自监督训练ViT的方式，ViT在自监督训练下的特性: 完全不用任何标签信息，训练出来的ViT，把自注意力图拿出来，可以准确的抓住每个物体的轮廓，<br>
+媲美无监督分割。</p>
+<p><img src="https://pic2.zhimg.com/v2-1587342746975e6ef114d3ab4029612d_b.jpg" alt="dino"></p>
+<p><img src="https://pic2.zhimg.com/v2-cfc121fef19a46898a2a070aeb0d13d9_b.jpg" alt="dino-1"></p>
+<p>DINO——Self distillation with no labels 蒸馏的框架，延续了BYOL，换了个名字，student预测teacher，teacher可以想成group- truth。为了避免模型坍塌，DINO做了一个centering，把batch里的样本算一个均值，减掉均值就算centering。stop gradient操作。最后用p1去预测p2。</p>
+<p><img src="https://pic4.zhimg.com/v2-1455f9e36d2d692518627c0d9f7b6593_b.jpg" alt="dino-2"></p>
+<p>从方法和模型方面，跟第三阶段基本是一样的，主要是融合了ViT。</p>
+<h2 id="一张图总结对比学习历程。">一张图总结对比学习历程。</h2>
+<p><img src="https://pic1.zhimg.com/v2-9a618dbaa4f88a3fbcffa739e52f2558_b.jpg" alt="summary"></p>
+<p>对比学习还是一个很火的方向，虽然没有ViT火，MAE火爆了后都尝试掩码学习而不是对比学习，对比学习从火爆发展期变成发展潜伏期。而多模态的对比学习还是一个主流，CLIP的效果就很好。在多模态中图像和文本之间的对比学习loss还是一个标准的目标函数。对比学习只是一个想法而不是一个具体工作，几十年前就已经提出来了，接下来应该还会看到很多对比学习和其他方法的结合工作。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/226aff16.html">http://xishansnow.github.io/posts/226aff16.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8F%91%E7%8E%B0%E6%A8%A1%E5%9E%8B/">发现模型</a><a class="post-meta__tags" href="/tags/%E5%8F%91%E7%8E%B0%E4%BB%BB%E5%8A%A1/">发现任务</a><a class="post-meta__tags" href="/tags/%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0/">表示学习</a><a class="post-meta__tags" href="/tags/%E5%A4%9A%E8%A7%86%E5%9B%BE%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0/">多视图表示学习</a></div><div class="post_share"><div class="social-share" data-image="/img/book_10.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/292f7d71.html"><img class="prev-cover" src="/img/coffe_09.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">地理加权回归模型</div></div></a></div><div class="next-post pull-right"><a href="/posts/35520363.html"><img class="next-cover" src="/img/book_03.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">表示学习概览</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/6d76fe1d.html" title="发现模型概览"><img class="cover" src="/img/book_19.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-23</div><div class="title">发现模型概览</div></div></a></div><div><a href="/posts/6e44ee49.html" title="表示学习索引帖"><img class="cover" src="/img/coffe_12.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="title">表示学习索引帖</div></div></a></div><div><a href="/posts/35520363.html" title="表示学习概览"><img class="cover" src="/img/book_03.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-04</div><div class="title">表示学习概览</div></div></a></div><div><a href="/posts/31b8fa34.html" title="➁　离散型隐变量：EM 算法"><img class="cover" src="/img/010.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-05</div><div class="title">➁　离散型隐变量：EM 算法</div></div></a></div><div><a href="/posts/d7679ce0.html" title="发现任务索引帖"><img class="cover" src="/img/coffe_06.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="title">发现任务索引帖</div></div></a></div><div><a href="/posts/582fcc20.html" title="非参数贝叶斯模型索引帖"><img class="cover" src="/img/003.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="title">非参数贝叶斯模型索引帖</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5%EF%BC%9A2018-2019%E5%B9%B4%E4%B8%AD"><span class="toc-text">第一阶段：2018~2019年中</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Inst-Disc-Unsupervised-Feature-Learning-via-Non-Parametric-Instance-Discrimination"><span class="toc-text">Inst Disc - Unsupervised Feature Learning via Non-Parametric Instance Discrimination</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Unsupervised-Embedding-Learning-via-Invariant-and-Spreading-Instance-Feature-2019-CVPR"><span class="toc-text">Unsupervised Embedding Learning via Invariant and Spreading Instance Feature - 2019 - CVPR</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CPC-Representation-Learning-with-Contrastive-Predictive-Coding"><span class="toc-text">CPC- Representation Learning with Contrastive Predictive Coding</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMC-Contrastive-Multiview-Coding"><span class="toc-text">CMC - Contrastive Multiview Coding</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CLIP"><span class="toc-text">CLIP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5%EF%BC%9A2019%E5%B9%B4%E4%B8%AD-2020%E5%B9%B4%E4%B8%AD"><span class="toc-text">第二阶段：2019年中~2020年中</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MoCo-Momentum-Contrast-for-Unsupervised-Visual-Representation"><span class="toc-text">**MoCo - Momentum Contrast for Unsupervised Visual Representation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SimCLR-A-Simple-Framework-for-Contrastive-Learning-of-Visual-Representations"><span class="toc-text">SimCLR - A Simple Framework for Contrastive Learning of Visual Representations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MoCo-v2-Improved-Baselines-with-Momentum-Contrastive-Learning"><span class="toc-text">MoCo v2 - Improved Baselines with Momentum Contrastive Learning</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SimCLR-v2-Big-Self-Supervised-Models-are-Strong-Semi-Supervised-Learners"><span class="toc-text">SimCLR v2 - Big Self-Supervised Models are Strong Semi-Supervised Learners</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SwAV-Unsupervised-Learning-of-Visual-Features-by-Contrasting-Cluster-Assignments"><span class="toc-text">SwAV - Unsupervised Learning of Visual Features by Contrasting Cluster Assignments</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%98%B6%E6%AE%B5%EF%BC%9A2020-%E4%B8%8D%E7%94%A8%E8%B4%9F%E6%A0%B7%E6%9C%AC%E4%B9%9F%E5%8F%AF%E4%BB%A5%E5%81%9A%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0"><span class="toc-text">第三阶段：2020 不用负样本也可以做对比学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BYOL-Bootstrap-Your-Own-Latent-A-New-Approach-to-Self-Supervised-Learning"><span class="toc-text">BYOL - Bootstrap Your Own Latent A New Approach to Self-Supervised Learning</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Blog-How-to-understand-BYOL"><span class="toc-text">Blog - How to understand BYOL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BYOL-works-even-without-batch-statistics"><span class="toc-text">BYOL works even without batch statistics</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SimSiam-Exploring-Simple-Siamese-Representation-Learning"><span class="toc-text">SimSiam - Exploring Simple Siamese Representation Learning</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E9%98%B6%E6%AE%B5%EF%BC%9A2021-Transformer%E6%97%B6%E4%BB%A3"><span class="toc-text">第四阶段：2021 Transformer时代</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MoCo-v3-An-Empirical-Study-of-Training-Self-Supervised-Vision"><span class="toc-text">**MoCo v3 - An Empirical Study of Training Self-Supervised Vision</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DINO-Emerging-Properties-in-Self-Supervised-Vision-Transformers"><span class="toc-text">DINO - Emerging Properties in Self-Supervised Vision Transformers</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%BC%A0%E5%9B%BE%E6%80%BB%E7%BB%93%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E5%8E%86%E7%A8%8B%E3%80%82"><span class="toc-text">一张图总结对比学习历程。</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

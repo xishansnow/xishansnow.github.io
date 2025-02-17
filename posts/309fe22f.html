@@ -1,0 +1,271 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title> 弱监督之不完全学习任务 -- 半监督学习概述  | 西山晴雪的知识笔记</title><meta name="keywords" content="半监督学习,发现任务"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Semi-supervised Learning Semi-supervised Learning 是 半监督学习 的意思。他是指用于训练的数据有一部分是有标签的，一部分数据是无标签的，同时使用这两部分数据进行学习。你可能会有一些疑问，为什么要使用没有标签的数据？没有标签的数据怎么能用来训练？对于第一个问题，是因为现在的机器学习方法大多都是数据驱动的方法，数据的量很大程度上会决定我们训">
+<meta property="og:type" content="article">
+<meta property="og:title" content=" 弱监督之不完全学习任务 -- 半监督学习概述 ">
+<meta property="og:url" content="http://xishansnow.github.io/posts/309fe22f.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="Semi-supervised Learning Semi-supervised Learning 是 半监督学习 的意思。他是指用于训练的数据有一部分是有标签的，一部分数据是无标签的，同时使用这两部分数据进行学习。你可能会有一些疑问，为什么要使用没有标签的数据？没有标签的数据怎么能用来训练？对于第一个问题，是因为现在的机器学习方法大多都是数据驱动的方法，数据的量很大程度上会决定我们训">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/coffe_12.png">
+<meta property="article:published_time" content="2022-03-15T12:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.031Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="半监督学习">
+<meta property="article:tag" content="发现任务">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/coffe_12.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/309fe22f"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: ' 弱监督之不完全学习任务 -- 半监督学习概述 ',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/coffe_12.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title"> 弱监督之不完全学习任务 -- 半监督学习概述 </h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-03-15T12:00:00.000Z" title="发表于 2022-03-15 20:00:00">2022-03-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.031Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/">预测任务</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E5%8D%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/">半监督学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>Semi-supervised Learning</h1>
+<p><strong>Semi-supervised Learning</strong> 是 <strong>半监督学习</strong> 的意思。他是指用于训练的数据有一部分是有标签的，一部分数据是无标签的，同时使用这两部分数据进行学习。你可能会有一些疑问，为什么要使用没有标签的数据？没有标签的数据怎么能用来训练？对于第一个问题，是因为现在的机器学习方法大多都是数据驱动的方法，数据的量很大程度上会决定我们训练出的模型的好坏，但是提升数据量又是件不容易的事情，但是需要注意的是获取大量数据其实不难，难的是获取大量有标签的数据。比如图片分类的问题，我们现在有大量的摄像头安装在各种设备上，让他们不停的拍就能得到大量的图片，这是件很容易的事。所以如果这些无标签的数据也能对训练模型产生帮助，那么将是很好的，所以这就是半监督学习存在的意义。但是并不是所有问题都是能够通过使用一些无标签数据来提升有标签数据训练出的模型的，这就来到了第二个问题，没有标签的数据对训练模型有啥用？让我们来看下图这个例子，蓝色的点是标签为猫的数据，橙色是标签为狗的，如果只用有便签数据我们可能训练出的决策边界是竖着的那条红线。但是如果考虑无标签的数据，一种直觉告诉我们，可能斜着的那条红线会有更好的表现，置于会不会真的有更好的表现呢？其实这就取决于你对整个数据分布的假设符不符合实际了。接下来来看有哪些半监督学习的方法。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/statistics_20210423_191506_d2.webp" alt=""></p>
+<h2 id="Semi-supervised-Learning-for-Generative-Model">Semi-supervised Learning for Generative Model</h2>
+<p>在前面分类的那节课上我们学习过生成模型，他的理念就是训练出每个类别的样本的分布函数，然后使用贝叶斯公式计算一个新的样本属于每个类的概率，最后取概率最大的结果为最终的分类结果。训练的过程就是去用训练集数据求分布函数，采用的方法是极大似然估计。那么在用这种方法进行半监督学习的时候，能够有效提升模型效果的直观上的原因是如下图所示，使用有标签的数据训练出的分布如实线所示，如果数据的分布如图中所示，那么直观上的感受会感觉虚线的分布可能会更适应实际中的数据。所以我们可以使用无标签的数据来改变我们原来训练出的分布函数。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200922203510469.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI3MzA5NTE1,size_16,color_FFFFFF,t_70#pic_center" alt=""></p>
+<h3 id="训练的步骤">训练的步骤</h3>
+<p>首先我们不考虑为什么要这么做，只是来看看他是怎么做的。以下是训练的步骤：</p>
+<p><strong>第一步：初始化参数，随机生成</strong> θ = { \mu  1 、 \mu  2 、 Σ 、 P ( C 1 ) 、 P ( C 2 ) } \theta=\{\mu^1、\mu^2、\Sigma、P(C_1)、P(C_2)\} θ={\mu 1、\mu 2、Σ、P(C1)、P(C2)}</p>
+<p><strong>第二步：计算每个无标签数据的后验概率</strong> P θ ( C 1 ∣ x u ) P_\theta(C_1|x^u) Pθ(C1∣xu) ，<strong>即在参数为</strong> θ \theta θ <strong>条件下每个无标签数据属于每一类的概率</strong></p>
+<p><strong>第三步：使用以下公式更新</strong> θ \theta θ<br>
+P ( C 1 ) = N 1 + ∑ x u P ( C 1 ∣ x u ) N P ( C 2 ) = 1 − P ( C 1 ) \mu  1 = 1 N 1 ∑ x r ∈ C 1 x r + 1 ∑ x u P ( C 1 ∣ x u ) ∑ x u P ( C 1 ∣ x u ) x u \mu  2 = 1 N 2 ∑ x r ∈ C 2 x r + 1 ∑ x u P ( C 2 ∣ x u ) ∑ x u P ( C 2 ∣ x u ) x u Σ = ⋯</p>
+<p>P(C1)P(C2)\mu 1\mu 2Σ=N1+∑xuP(C1|xu)N=1−P(C1)=1N1∑xr∈C1xr+1∑xuP(C1|xu)∑xuP(C1|xu)xu=1N2∑xr∈C2xr+1∑xuP(C2|xu)∑xuP(C2|xu)xu=⋯P(C1)=N1+∑xuP(C1|xu)NP(C2)=1−P(C1)\mu 1=1N1∑xr∈C1xr+1∑xuP(C1|xu)∑xuP(C1|xu)xu\mu 2=1N2∑xr∈C2xr+1∑xuP(C2|xu)∑xuP(C2|xu)xuΣ=⋯</p>
+<p>\begin{aligned} P(C_1) &amp;= \frac {N_1+\sum_{x^u}P(C_1|x^u)} {N} \\ P(C_2) &amp;= 1-P(C_1) \\ \mu^1 &amp;= \frac {1} {N_1} \sum_{x^r \in C_1}x^r+\frac {1} {\sum_{x^u}P(C_1|x^u)} \sum_{x^u} P(C_1|x^u)x^u \\ \mu^2 &amp;= \frac {1} {N_2} \sum_{x^r \in C_2}x^r+\frac {1} {\sum_{x^u}P(C_2|x^u)} \sum_{x^u} P(C_2|x^u)x^u \\ \Sigma&amp;= \cdots \end{aligned} P(C1)P(C2)\mu 1\mu 2Σ=NN1+∑xuP(C1∣xu)=1−P(C1)=N11xr∈C1∑xr+∑xuP(C1∣xu)1xu∑P(C1∣xu)xu=N21xr∈C2∑xr+∑xuP(C2∣xu)1xu∑P(C2∣xu)xu=⋯<br>
+  其中， x r x^r xr 表示有标签数据， x u x^u xu 表示无标签数据。上面的更新其实是在说，我现在已经根据了概率分布得到了每个无标签样本属于每个类的概率，假设分别是 P 1 、 P 2 、 ⋯ P_1、P_2、\cdots P1、P2、⋯ （如果这有两个类别的话就没有后面的 ⋯ \cdots ⋯），那么我就把这个样本给拆开来看，他的 P 1 P_1 P1 属于类别 C 1 C_1 C1 ，他的 P 2 P_2 P2 属于类别 C 2 C_2 C2 ，当然所有 P P P 加起来是 1 1 1 的。然后再和那些有标签的数据去来更新在这种样本条件下的极大似然估计情况下的概率分布（就是用上面的式子更新那些参数）。上面计算 P ( C 1 ) 、 \mu  1 P(C_1)、\mu^1 P(C1)、\mu 1 的式子中，前半部分是有标签的数据项，后半部分是无标签的数据项，有标签的数据项属于哪个类是确定的（标签告诉我们了）所以不用拆开，后半部分我们不知道属于哪个类，所以根据算出来的概率拆开。</p>
+<p>然后不断重复迭代步骤二和三，直到参数收敛。通常参数是可以收敛的，和梯度下降一样，初始值的位置会决定最终收敛的位置落入不同的局部极小值点。</p>
+<h3 id="为什么这么训练？">为什么这么训练？</h3>
+<p>在只使用有标签数据进行训练的时候，我们是去求解这些数据被采集到的条件下的概率最大的时候的概率分布的参数值，即极大似然的想法，我们的似然函数是：<br>
+log ⁡ L ( θ ) = ∑ x r log ⁡ ( P θ ( x r , y ^ r ) ) \log L(\theta) = \sum_{x^r}\log(P_\theta(x^r,\hat y^r)) logL(θ)=xr∑log(Pθ(xr,y^r))<br>
+  其中 P θ ( x r , y ^ r ) P_\theta(x^r,\hat y^r) Pθ(xr,y^r) 是在类别为 y ^ r \hat y^r y^r 的概率分布上取到一个特制为 x r x^r xr 的样本的概率， P θ ( x r , y ^ r ) = P θ ( x r ∣ y ^ r ) P ( y ^ r ) P_\theta(x^r,\hat y^r)=P_\theta(x^r|\hat y^r)P(\hat y^r) Pθ(xr,y^r)=Pθ(xr∣y^r)P(y^r) 。这个时候任何一个样本只可能出现在一个样本的概率分布上，因为标签已经告诉我们了。那么再考虑加入无标签的数据时，我们不知道它属于那个类别，所以我们就允许他同时出现在所有类别的分布函数上，可以算出他在某一个类 C i C_i Ci 上出现的概率为 P = P θ ( x u ∣ C i ) P ( C i ) P = P_\theta(x^u|C_i)P(C_i) P=Pθ(xu∣Ci)P(Ci) ，所以他能被采到的概率就是在所有类别上被采到的概率的和，所以我们极大似然的方向就是希望这个无标签的样本能够被采集到，这个条件就比有标签的弱，在有标签的数据上，我们不仅要求他被采到，还要求他是要在标签所在的那个分布上采到。无标签就无所谓他在哪个分布上被采到，能被采到就行。所以被采到的概率为 P θ ( x u ) = P θ ( x u ∣ C 1 ) P ( C 1 ) + P θ ( x u ∣ C 2 ) P ( C 2 ) P_\theta(x^u) = P_\theta(x^u|C_1)P(C_1)+P_\theta(x^u|C_2)P(C_2) Pθ(xu)=Pθ(xu∣C1)P(C1)+Pθ(xu∣C2)P(C2) 。似然函数变为：<br>
+log ⁡ L ( θ ) = ∑ x r log ⁡ ( P θ ( x r , y ^ r ) ) + ∑ x u P θ ( x u ) \log L(\theta) = \sum_{x^r}\log(P_\theta(x^r,\hat y^r)) + \sum_{x^u}P_\theta(x^u) logL(θ)=xr∑log(Pθ(xr,y^r))+xu∑Pθ(xu)<br>
+  而上面那个训练步骤就是在对这个式子进行迭代求解（可能这个式子是一个超越方程，无法进行公式求解，只能迭代进行数值求解）</p>
+<h2 id="Low-density-Separation">Low-density Separation</h2>
+<p>低密度分离是一个 “非黑即白” 的思想进行半监督学习的，他和上面不同，不接受无标签数据可以有一部分是一个类别，另一部分是另外一个类别。</p>
+<h3 id="Self-training">Self-training</h3>
+<p>Self-training 的做法非常简单，首先用有标签的数据训练一个分类模型，然后把无标签的数据进行分类，然后取其中的一部分数据加入到有标签数据中，再重新训练模型。置于如何选数据，并没有一个确定的方法，你可以自己觉得，对于加入到训练集的无标签的数据，还可以给他们权重，来调整他们对模型的影响。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200922203556708.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI3MzA5NTE1,size_16,color_FFFFFF,t_70#pic_center" alt=""></p>
+<p>这是一种 hard-label 的方式，还有 soft-label 的方式，在 self-training 中，soft-label 是不会有效果的，因为加入到训练集的数据并不会影响最优时的损失值。</p>
+<h3 id="Entropy-based-Regularization">Entropy-based Regularization</h3>
+<p>上面那种方法其实是在制造新的有标签的数据来改变模型，而这个方法则是通过调整损失函数来改变模型。调整的思想是，我们就把无标签的数据看成是运用到实际中所输入到模型的数据，那么我们肯定会期望模型在进行分类的时候，每个数据属于某一个类别的概率很大，属于其他类别的概率很小（虽然也有可能分错了），而不希望模型告诉我输入的样本输入每个类的概率基本是相同的。所以我们可以基于这一点来调整我们的损失函数，当我们的模型让无标签的样本分类时所有类别的概率都差不多时有一个很大的损失，而只有一个类概率很大，其他都很小时损失很小。所以我们可以计算熵来衡量我们的模型能否做到尽可能的只让一个类别的概率很大，计算公式如下：<br>
+E ( x u ) = − ∑ m = 1 M y m u ln ⁡ y m u E(x^u)=-\sum_{m=1}^{M}y_m^u\ln{y_m^u} E(xu)=−m=1∑Mymulnymu<br>
+  其中， M M M 是类别个数， y m u y_m^u ymu 是输入为 x u x^u xu 时，模型输出的该样本属于 m m m 类的概率，如果各个类别概率差不多时， E E E 会比较大，否则则很小，最小为 0 0 0 。那么我们的损失函数就可以在原来的后面加上这一项，这个有点类似于我们为了模型更平滑而加上正则项，为了调整是更希望模型在训练集上的准确率更高，还是在无标签样本上更能给出明确的分类结果，引入一个权重参数 λ \lambda λ 来平衡两者的关系，损失函数变为：<br>
+L = ∑ x r C ( x r , y ^ r ) + λ ∑ x u E ( x u ) L=\sum_{x^r}C(x^r,\hat y^r) + \lambda\sum_{x^u}E(x^u) L=xr∑C(xr,y^r)+λxu∑E(xu)</p>
+<p><img src="https://img-blog.csdnimg.cn/20200922203556657.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI3MzA5NTE1,size_16,color_FFFFFF,t_70#pic_center" alt=""></p>
+<h2 id="Smoothness-Assumption">Smoothness Assumption</h2>
+<p>上面那个采用的是先做分类，再把分类好的无标签数据加入到有标签数据的方式进行半监督学习。接下来这类方法类似于先做聚类再用聚类的结果训练。即把无标签的数据标记为和他属性相类似的有标签的数据，并且这种类似是可以传递的，即被标签后的数据可以作为其他没标签的数据标记类别时的参考。使用这种方法有一个前提假设，要求同一类的数据在分布上是集中的，密度比较大，而不同数据在分布上较为分散。这样，有标签的数据就可以在同一个密度簇中传播标签，最终使整个簇被标记为同一个标签。比如下图， x 1 、 x 2 x^1、x^2 x1、x2 在同一个密度簇中，但距离较远，而 x 3 x^3 x3 在另一个簇中，虽然可能 x 3 x^3 x3 离 x 2 x^2 x2 更近一些，但是由于他两之间没有较为稠密的路径可以相连，所以不会被看作同一类，但 x 1 x^1 x1 可以不断感染周围的数据，最终影响传播到 x 2 x^2 x2 ，使其被标记为同一类。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200922203655462.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI3MzA5NTE1,size_16,color_FFFFFF,t_70#pic_center" alt=""></p>
+<p>这么做在实际中也是有合理的依据的，例如下图这个数据集，最右边的 2 2 2 其实和最左边的 2 2 2 通过比较同一个位置的像素可能算出来的距离并不是很近，可能还没有和那个 3 3 3 近，但是如果中间还有一些数据集是这两种 2 2 2 的过渡形式的话，那么就可以做到正确标记。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200922203655546.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI3MzA5NTE1,size_16,color_FFFFFF,t_70#pic_center" alt=""></p>
+<p>聚完簇标记完标签，就可以按照常用的方法训练分类器了。</p>
+<h3 id="Graph-based-Approach">Graph based Approach</h3>
+<p>我个人感觉，上面的聚类方法其实有点类似密度聚类的思想，接下来的基于图的聚类方法其实感觉和上面使用的密度聚类也很相似，在上课中没有细想这两部分内容是并列的关系还是递进的关系，现在感觉应该是递进的关系，即接下讲的是具体的实际操作方法。</p>
+<p>基于图的方法其实可以分为两步，第一步是把每个样本看作是一个点，然后采用一定的放在在一些相似的点之间建立边，最终所有的点构成了图，不过并不是所有点之间都是两两连通的，如下图所示，会形成多条连通的图。第二步就是根据每个连通的图内的有标签的点，标记其他的无标签的点，要是同一个连通图上的所有有标签的点都是同一类的，那就很容易了，直接把所有能连接的点都标记成这一类就好了。如果存在多种类别的点在同一个连通图的话，则需要使用一种规则来标记其他点了。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200922203655422.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI3MzA5NTE1,size_16,color_FFFFFF,t_70#pic_center" alt=""></p>
+<h4 id="Graph-Structure">Graph Structure</h4>
+<p>接下来先将怎么建立点与点之间的变变成图。首先我们需要定义点与点之间距离的计算方法，进而计算他们的相似度 s ( x i , x j ) s(x^i,x^j) s(xi,xj) ，可以使用例如欧氏距离等多种计算方式。</p>
+<p>第一步就是建立点与点之间的边，将不同点连起来了。第一种方法是 K 邻近连接法，即把一个点和他最近的 K 个点相连。第二种是 e e e 密度连接法，即把一个点和他周围距离小于 e e e 的所有点相连，有多少连多少，没有就不连。每个边也都会有权重，权重值和距离有关，我们希望距离越远权重越小，所以可以使用下面的函数来计算边的权重 s s s ，同时也可以理解为相似度。<br>
+s ( x i , x j ) = e − γ ∣ ∣ x i − x j ∣ ∣ 2 s(x^i,x^j) = e^{-\gamma||x^i-x^j||^2} s(xi,xj)=e−γ∣∣xi−xj∣∣2</p>
+<p><img src="https://img-blog.csdnimg.cn/2020092220375260.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI3MzA5NTE1,size_16,color_FFFFFF,t_70#pic_center" alt=""></p>
+<h4 id="Label-based-on-structure">Label based on structure</h4>
+<p>写到这里我意识到可能我前面理解的和老师讲解的不太一样了，我原来的理解是接下来用下面的方法计算出把一个为标记的样本标记为某一类的代价，然后使用代价最小的标签方法来标未标签的数据，然后再拿去用常规的方法训练分类器。但其实老师在课上讲的意思并不只看这个代价，而是把这个代价当做损失函数的一项，类似于正则化的思想，还是要先用训练好的数据训练一个分类器，然后再分类为标签的数据，然后再根据上面的图的结构使用后面说的方法去计算那一项损失。这一项损失体现了标签的平滑成都，计算公式为：<br>
+S = 1 2 ∑ i , j w i , j ( y i − y j ) 2 S = \frac {1} {2} \sum_{i,j}w_{i,j}(y^i-y^j)^2 S=21i,j∑wi,j(yi−yj)2<br>
+  其中 y i − y j y^i-y^j yi−yj 是两个相邻的点的标签，一样就是 0 ，不一样就是 1 ， w i , j w_{i,j} wi,j 是这两个点的边权，前面的系数应该是为了上面那个式子可以用更简洁的形式表示。Smooth” 的结果。</p>
+<p><img src="https://img-blog.csdnimg.cn/2020092220375215.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI3MzA5NTE1,size_16,color_FFFFFF,t_70#pic_center" alt=""></p>
+<p>使用线性代数矩阵表示上面那个式子，可以表示为：<br>
+S = y T L y S=\boldsymbol y^T \boldsymbol L \boldsymbol y S=yTLy<br>
+  其中， y \boldsymbol y y 是所有数据的标签构成的向量， y = [ ⋯   , y i , ⋯   , y j , ⋯   ] T \boldsymbol y = [\cdots,y^i,\cdots,y^j,\cdots]^T y=[⋯,yi,⋯,yj,⋯]T 。 L = D − W \boldsymbol L = \boldsymbol D - \boldsymbol W L=D−W ，是两个矩阵的差，矩阵 W \boldsymbol W W 是图的边权的邻接矩阵 ，矩阵 D \boldsymbol D D 是对角线各行元素为矩阵 W \boldsymbol W W 各行的和的对角矩阵 。所以最后总的损失函数就是：<br>
+L = ∑ x r + λ S L=\sum_{x^r}+\lambda S L=xr∑+λS</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/309fe22f.html">http://xishansnow.github.io/posts/309fe22f.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8D%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/">半监督学习</a><a class="post-meta__tags" href="/tags/%E5%8F%91%E7%8E%B0%E4%BB%BB%E5%8A%A1/">发现任务</a></div><div class="post_share"><div class="social-share" data-image="/img/coffe_12.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/ebf9ff80.html"><img class="prev-cover" src="/img/book_17.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">GeoAI 中的位置编码：方法和应用</div></div></a></div><div class="next-post pull-right"><a href="/posts/9d2e33ad.html"><img class="next-cover" src="/img/book_16.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">神经网络--卷积与循环神经网络</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/31b8fa34.html" title="➁　离散型隐变量：EM 算法"><img class="cover" src="/img/010.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-05</div><div class="title">➁　离散型隐变量：EM 算法</div></div></a></div><div><a href="/posts/519d71c0.html" title="隐因子模型索引帖"><img class="cover" src="/img/book_02.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="title">隐因子模型索引帖</div></div></a></div><div><a href="/posts/fa1f2b0c.html" title="➀　隐变量模型概览"><img class="cover" src="/img/book_10.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-02</div><div class="title">➀　隐变量模型概览</div></div></a></div><div><a href="/posts/54f9e5bd.html" title="➂  连续型隐变量：混合模型"><img class="cover" src="/img/book_13.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-07</div><div class="title">➂  连续型隐变量：混合模型</div></div></a></div><div><a href="/posts/4df17652.html" title="概率图学习索引帖"><img class="cover" src="/img/001.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="title">概率图学习索引帖</div></div></a></div><div><a href="/posts/a3cfe0dc.html" title="状态空间模型索引帖"><img class="cover" src="/img/book_17.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-03</div><div class="title">状态空间模型索引帖</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">Semi-supervised Learning</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Semi-supervised-Learning-for-Generative-Model"><span class="toc-text">Semi-supervised Learning for Generative Model</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="toc-text">训练的步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E8%AE%AD%E7%BB%83%EF%BC%9F"><span class="toc-text">为什么这么训练？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Low-density-Separation"><span class="toc-text">Low-density Separation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Self-training"><span class="toc-text">Self-training</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Entropy-based-Regularization"><span class="toc-text">Entropy-based Regularization</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Smoothness-Assumption"><span class="toc-text">Smoothness Assumption</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Graph-based-Approach"><span class="toc-text">Graph based Approach</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Graph-Structure"><span class="toc-text">Graph Structure</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Label-based-on-structure"><span class="toc-text">Label based on structure</span></a></li></ol></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

@@ -1,0 +1,829 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title> Git简明教程  | 西山晴雪的知识笔记</title><meta name="keywords" content="软件安装与使用,Git"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Git简明教程 1. 个人基本故事线 下图是从个人开发者角度所能观察到的场景：  1.1 如何从远程仓库获取代码   git clone   第一次时用克隆   git fetch   第二次开始  将远程仓库代码拉取到本地仓库 无冲突时checkout到工作区 有冲突时merge到工作区    git pull   第二次开始  掌握pull和fetch的区别  pull  &#x3D; fe">
+<meta property="og:type" content="article">
+<meta property="og:title" content=" Git简明教程 ">
+<meta property="og:url" content="http://xishansnow.github.io/posts/459f47c7.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="Git简明教程 1. 个人基本故事线 下图是从个人开发者角度所能观察到的场景：  1.1 如何从远程仓库获取代码   git clone   第一次时用克隆   git fetch   第二次开始  将远程仓库代码拉取到本地仓库 无冲突时checkout到工作区 有冲突时merge到工作区    git pull   第二次开始  掌握pull和fetch的区别  pull  &#x3D; fe">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/book_19.png">
+<meta property="article:published_time" content="2021-03-16T04:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.045Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="软件安装与使用">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/book_19.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/459f47c7"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: ' Git简明教程 ',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/book_19.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title"> Git简明教程 </h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-03-16T04:00:00.000Z" title="发表于 2021-03-16 12:00:00">2021-03-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.045Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/">软件安装与使用</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/Git/">Git</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>20分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>Git简明教程</h1>
+<h2 id="1-个人基本故事线">1. 个人基本故事线</h2>
+<p>下图是从个人开发者角度所能观察到的场景：</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/git/image-20210317005948153.png" alt="image-20210317010024234"></p>
+<h3 id="1-1-如何从远程仓库获取代码">1.1 如何从远程仓库获取代码</h3>
+<ul>
+<li>
+<p><code>git clone</code></p>
+</li>
+<li>
+<p>第一次时用克隆</p>
+</li>
+<li>
+<p><code>git fetch</code></p>
+</li>
+<li>
+<p>第二次开始</p>
+<ul>
+<li>将远程仓库代码拉取到<strong>本地仓库</strong></li>
+<li>无冲突时checkout到<strong>工作区</strong></li>
+<li>有冲突时merge到<strong>工作区</strong></li>
+</ul>
+</li>
+<li>
+<p><code>git pull</code></p>
+</li>
+<li>
+<p>第二次开始</p>
+<ul>
+<li>掌握pull和fetch的区别
+<ul>
+<li>pull  = fetch+merge</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-2-提交代码到远程仓库">1.2 提交代码到远程仓库</h3>
+<ul>
+<li>
+<p><code>git add .  </code></p>
+</li>
+<li>
+<p>从<strong>工作区</strong>添加到<strong>暂存区</strong></p>
+</li>
+<li>
+<p><code>git commit</code></p>
+</li>
+<li>
+<p>从<strong>暂存区</strong>更新到<strong>本地仓库</strong></p>
+</li>
+<li>
+<p><code>git commit -a</code> = <code>git add .</code> + <code>git commit</code></p>
+</li>
+<li>
+<p>git push</p>
+<ul>
+<li>从<strong>本地仓库</strong>更新到<strong>远程仓库</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="1-3-手工创建本地仓库并与远程仓库同步">1.3 手工创建本地仓库并与远程仓库同步</h3>
+<ul>
+<li><code>git init</code>
+<ul>
+<li>初始化一个本地仓库</li>
+</ul>
+</li>
+<li><code>git remote add origin</code> &lt;远程仓库地址&gt;
+<ul>
+<li>将本地仓库关联到远程仓库</li>
+<li>若有已经关联的远程仓库，使用git remote rm origin删除老的远程仓库</li>
+</ul>
+</li>
+<li>拉取远程仓库，与本地merge
+<ul>
+<li><code>git pull</code> 拉取分支</li>
+</ul>
+</li>
+<li><code>git add .</code> &amp;&amp; <code>git commit</code>
+<ul>
+<li>本地修改后，提交到本地仓库</li>
+</ul>
+</li>
+<li><code>git push</code>，在远端分支上创建新版本
+<ul>
+<li>将本地仓库推送到远程仓库</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-4-文件级别的操作">1.4 文件级别的操作</h3>
+<p>​	上述操作大多是基于分支和提交版本的，又是需要对部分文件进行提交和检出：</p>
+<ul>
+<li><code>git add *files*</code> 把当前文件放入暂存区域。</li>
+<li><code>git commit</code> 给暂存区域生成快照并提交到本地仓库</li>
+<li><code>git reset -- *files*</code> 用来撤销最后一次<code>git add *files*</code>，你也可以用<code>git reset</code> 撤销所有暂存区域文件。</li>
+<li><code>git checkout -- *files*</code> 把文件从暂存区域复制到工作目录，用来丢弃本地修改。</li>
+</ul>
+<p>[注：此处为文件的checkout操作，分支操作也用checkout但含义稍有区别]</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_32bf1.webp" alt=""></p>
+<p>你也可以跳过暂存区域直接从仓库取出文件或者直接提交代码：</p>
+<ul>
+<li><code>git commit -a </code>相当于运行 <code>git add</code> 把所有当前目录下的文件加入暂存区域再运行<code>git commit</code></li>
+<li><code>git commit *files*</code> 进行一次包含最后一次提交加上工作目录中文件快照的提交。并且文件被添加到暂存区域。</li>
+<li><code>git checkout HEAD -- *files*</code> 回滚到复制最后一次提交。</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_3b409.webp" alt=""></p>
+<h2 id="2-理解远程仓库">2. 理解远程仓库</h2>
+<h3 id="2-1-创建远程仓库（通过页面操作实现）">2.1 创建远程仓库（通过页面操作实现）</h3>
+<ul>
+<li>
+<p>创建操作create</p>
+</li>
+<li>
+<p>复制操作fork</p>
+<ul>
+<li>fork的远程仓库如果与源仓库需要合并，则需要Pull Request操作</li>
+</ul>
+</li>
+<li>
+<p>导入操作import</p>
+</li>
+</ul>
+<h3 id="2-2-克隆远程仓库（通过本地git命令操作）">2.2 克隆远程仓库（通过本地git命令操作）</h3>
+<ul>
+<li>
+<p>克隆命令git clone仓库地址</p>
+<ul>
+<li>要在没有本地仓库的地方执行</li>
+<li>从本人可见的远程仓库复制到本地电脑</li>
+<li>可以做本地修改，但仅有开发权限的项目成员才能向远程仓库推送</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-3-拉取远程仓库代码（通过本地git命令操作）">2.3 拉取远程仓库代码（通过本地git命令操作）</h3>
+<ul>
+<li>
+<p>拉取命令git pull [分支名]</p>
+<ul>
+<li>
+<p>要在本地仓库内执行</p>
+<ul>
+<li>拉取的内容会被合并到<strong>本地工作区</strong>（<strong>本地仓库</strong>同步合并）</li>
+</ul>
+</li>
+<li>
+<p>只有有开发权限的项目成员才能够拉取，并在修改后推送</p>
+</li>
+<li>
+<p>git pull [分支名] = git fetch [分支名]+ git merge</p>
+</li>
+</ul>
+</li>
+<li>
+<p>拉取命令git fetch [分支名]</p>
+<ul>
+<li>
+<p>要在本地仓库内执行</p>
+<ul>
+<li>拉去的内容会被合并到<strong>本地仓库</strong></li>
+</ul>
+</li>
+<li>
+<p>需要配套git checkout [分支名]</p>
+<ul>
+<li>从<strong>本地仓库</strong>拉取并覆盖到<strong>本地工作区</strong>后使用</li>
+</ul>
+</li>
+<li>
+<p>或者配套git mearge</p>
+<ul>
+<li>从<strong>本地仓库</strong>拉取并合并到<strong>本地工作区</strong>后使用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-4-推送代码到远程仓库（通过本地git命令操作）">2.4 推送代码到远程仓库（通过本地git命令操作）</h3>
+<ul>
+<li>
+<p>推送命令git push [分支名]</p>
+<ul>
+<li>当<strong>远程仓库</strong>新于<strong>本地仓库</strong>时，需要先pull，使<strong>本地仓库</strong>与<strong>远程仓库</strong>同步，并merge解决所有冲突后，才能够push</li>
+<li>要先配置好用户名和邮箱，以便远程仓库记录操作用户</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-团队故事线">3 团队故事线</h2>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/git/image-20210317010024234.png" alt="image-20210317010024234"></p>
+<h3 id="3-1-角色区分">3.1 角色区分</h3>
+<ul>
+<li>
+<p>Team leader</p>
+<ul>
+<li>
+<p>负责主远程仓库的创建</p>
+</li>
+<li>
+<p>新版本开发过程中（可通过页面操作实现）</p>
+<ul>
+<li>收到程序员A和B的pull Request</li>
+<li>检查程序员A和B的pull Request</li>
+<li>当pull request出现冲突时，解决冲突</li>
+<li>接受pull Request，合并至主仓库</li>
+</ul>
+</li>
+<li>
+<p>新版本开发完成（可通过页面操作实现）</p>
+<ul>
+<li>创建本地release分支</li>
+<li>合并本地主分支到release分支</li>
+<li>推送本地分支到远程仓库</li>
+<li>版本的标签管理和推送</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>程序员A</p>
+<ul>
+<li>
+<p>新任务生命周期</p>
+<ul>
+<li>fork创建个人远程仓库（可通过页面操作完成）</li>
+<li>针对某个任务完成个人故事线</li>
+<li>pull request远程操作（可通过页面操作完成）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>程序员B</p>
+<ul>
+<li>
+<p>新任务生命周期</p>
+<ul>
+<li>fork创建个人远程仓库（可通过页面操作完成）</li>
+<li>针对某个任务完成个人故事线</li>
+<li>pull request远程操作（可通过页面操作完成）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2-四种可能的协作方式">3.2 四种可能的协作方式</h3>
+<ul>
+<li>
+<p>集中式协作工作流</p>
+<ul>
+<li>**大家共用一个远程仓库 **</li>
+<li>大家都工作在master分支上</li>
+<li>不同角色通过pull和push操作远程仓库，他们各自在本地维护和控制冲突，并推送到远程仓库</li>
+</ul>
+</li>
+<li>
+<p>功能分支工作流</p>
+<ul>
+<li><strong>大家共用一个远程仓库</strong></li>
+<li>只有团队leader可以操控master分支，开发者们工作在各自的功能分支上</li>
+<li>允许开发者创建各自的功能分支，并推送到远程仓库</li>
+<li>开发者完成开发后，向团队leader交Pull Request，由leader进行代码审查并合入master分支</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/landscape/goodpic_55ac6.webp" alt=""></p>
+</li>
+<li>
+<p>GitFlow工作流程</p>
+<ul>
+<li><strong>大家共用一个远程仓库</strong></li>
+<li>设置master分支、develop分支、release分支和hotfix分支
+<ul>
+<li><code>master</code>分支：
+<ul>
+<li>只用来储存官方发布历史，通常我们会在<code>master</code>分支的提交中打上版本标签号</li>
+<li>master分支由team leader管控</li>
+</ul>
+</li>
+<li><code>develop</code>分支：
+<ul>
+<li>开发者打交道最多的分支，源自<code>master</code>分支，用于整合各功能分支，类似于前面两种方式的<code>master</code>分支</li>
+<li>develop分支由team leader管控</li>
+</ul>
+</li>
+<li><code>feature</code>分支：
+<ul>
+<li>每个新功能都放在自己的分支中，并以develop分支作为父分支，因此可以由很多功能分支</li>
+<li>当一个功能完成后，开发这向团队leader提交Pull Request，由团队leader完成合并后推送到develop分支</li>
+<li>功能分支永远不应该直接与master分支交互，而应先合会到develop分支，再由develop分支合并回master分支</li>
+<li>命名规范遵循<code>feature-*</code>或者<code>feature/*</code></li>
+<li>feature分支可由开发人员创建和维护</li>
+</ul>
+</li>
+<li><code>release</code>分支：
+<ul>
+<li>release分支是develop分支和master分支之间的一个过渡阶段，主要用于该发布版本的功能完善或bug修复</li>
+<li>release分支基于develop分支创建，只有和发布相关的任务才在这个分支上进行，如修复bug，生成文档等等</li>
+<li>release分支的所有功能均完善后，将并入master分支和develop分支（此时develop分支也许正在并行开发）</li>
+<li>并入master分支和develop分支后，<strong><u>该release分支应当被删除</u></strong></li>
+<li>release分支可以确保一个团队完善当前发布，而不影响其他团队继续在develop上开发下一个待发布的功能或在master上修复产品bug</li>
+<li>命名规范遵循<code>release-*</code>或者<code>release/*</code></li>
+<li>release分支由teame leader负责管控，也可由release版维护人员采用集中式工作流程方式自行解决冲突</li>
+</ul>
+</li>
+<li><code>hotfix</code>分支：
+<ul>
+<li>与release分支不同，hotfix分支基于master分支创建，主要用于master版本做快速的bug修复</li>
+<li>hotfix分支完成后，应当合并入master分支和develop分支，会影响到下一个release分支，但不会影响当前release分支，以免带来更多bug</li>
+<li>并入master分支和develop分支后，该hotfix分支应当被删除，而master分支应当打上更新的标签</li>
+<li>hotfix分支可以被看作 <code>master</code> 分支的临时发布分支，它使得团队能够及时处理issues，而不打断其他工作流。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Forking工作流程</p>
+<ul>
+<li><strong>每个角色有自己的远程仓库</strong>  <strong>---- 推荐得多人协作方式</strong></li>
+<li>所有角色都有自己的远程仓库，其中team leader拥有主仓库的权限</li>
+<li>不同角色通过fork和pull request保持与主仓库的协作，由team leader协调不同pull request的冲突</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-冲突的控制">4 冲突的控制</h2>
+<h3 id="4-1-fork与pull-request中产生的冲突">4.1 fork与pull request中产生的冲突</h3>
+<ul>
+<li>
+<p>冲突的产生：冲突在主仓库产生，由team leader处理冲突</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/git/image-20210317010100843.png" alt=""></p>
+</li>
+<li>
+<p>由team leader将主仓库和PR仓库都拉取到本地，在本地通过merge tool合并有冲突的代码后，推送到主仓库，PR仓库可以通过与主仓库同步自动更新版本</p>
+</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/git/image-20210317010222818.png" alt="image-20210317010222818"></p>
+<h3 id="4-2-pull和push过程中产生的冲突">4.2 pull和push过程中产生的冲突</h3>
+<ul>
+<li>
+<p>冲突的产生：冲突在角色本地产生，每个角色都可以在本地处理冲突，但会不断受到其他角色新push的影响</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/git/image-20210317010326020.png" alt="image-20210317010326020"></p>
+</li>
+<li>
+<p>冲突的解决</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/git/image-20210317010335025.png" alt="image-20210317010335025"></p>
+</li>
+</ul>
+<h3 id="4-3-总结">4.3 总结</h3>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/git/image-20210317010355629.png" alt="image-20210317010355629"></p>
+<h2 id="5-分支的管理">5 分支的管理</h2>
+<h3 id="5-1-分支管理的目的">5.1 分支管理的目的</h3>
+<ul>
+<li>在不中断主分支的情况下，同时开展其他工作</li>
+<li>通常在完成该工作后，将成果合并到主分支</li>
+</ul>
+<h3 id="5-2-远程仓库分支管理">5.2 远程仓库分支管理</h3>
+<ul>
+<li>
+<p>创建远程分支（页面操作）</p>
+</li>
+<li>
+<p>本地命令创建远程分支</p>
+<ul>
+<li>先创建本地分支：git branch [新分支名]</li>
+<li>推送到远程仓库：git push -u origin [新分支名]</li>
+</ul>
+</li>
+<li>
+<p>删除远程分支（页面操作）</p>
+</li>
+<li>
+<p>使用远程分支</p>
+<ul>
+<li>git pull/fetch/push [指定分支名称]</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-3-本地仓库分支管理">5.3 本地仓库分支管理</h3>
+<ul>
+<li>
+<p>本地分支管理</p>
+<ul>
+<li>
+<p>创建当前版本的本地分支</p>
+</li>
+<li>
+<p>git branch [新分支名]</p>
+</li>
+<li>
+<p>删除本地分支B的命令</p>
+<ul>
+<li>git branch -d分支B</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>切换本地分支 ，或者检出内容到工作区</p>
+<ul>
+<li>git checkout [已有分支名]</li>
+<li>或者git checkout -b  [新分支名称]
+<ul>
+<li>创建并检出一个新分支</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="C:%5CUsers%5C89877%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210328152736904.png" alt="image-20210328152736904"></p>
+<ul>
+<li>
+<p>合并分支得大致流程（将B分支合并到A分支的过程）</p>
+<ul>
+<li>检出分支B：   git checkout 分支B</li>
+<li>修改并提交分支B： 完成分支B工作区修改，并提交</li>
+<li>检出分支A：  git checkout 分支A</li>
+<li>合并分支B到当前分支A：   git merge B</li>
+</ul>
+</li>
+<li>
+<p>拉取远程仓库分支</p>
+<ul>
+<li>git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;</li>
+</ul>
+</li>
+<li>
+<p>推送远程仓库分支</p>
+<ul>
+<li>git push &lt;远程主机名&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;</li>
+</ul>
+</li>
+</ul>
+<h2 id="6-标签管理">6 标签管理</h2>
+<h3 id="6-1-标签管理的目的">6.1 标签管理的目的</h3>
+<p>​	用于版本管理</p>
+<h3 id="6-2-常用命令">6.2 常用命令</h3>
+<ul>
+<li>
+<p>在本地创建标签</p>
+<ul>
+<li>git tag -a 标签名</li>
+</ul>
+</li>
+<li>
+<p>删除本地标签</p>
+<ul>
+<li>git tag -d 标签名</li>
+</ul>
+</li>
+<li>
+<p>列出本地标签</p>
+<ul>
+<li>git tag</li>
+</ul>
+</li>
+<li>
+<p>切换本地标签</p>
+<ul>
+<li>git checkout 标签名</li>
+</ul>
+</li>
+<li>
+<p>推送远程标签</p>
+<ul>
+<li>git push</li>
+</ul>
+</li>
+<li>
+<p>拉取远程标签</p>
+<ul>
+<li>git pull</li>
+</ul>
+</li>
+</ul>
+<h2 id="7-查看历史记录">7 查看历史记录</h2>
+<h3 id="7-1-命令行">7.1 命令行</h3>
+<ul>
+<li>
+<p>git log</p>
+<ul>
+<li>查看所有commit行为</li>
+<li>输入q退出git log</li>
+</ul>
+</li>
+</ul>
+<h3 id="7-2-web页面">7.2 web页面</h3>
+<ul>
+<li>选择仓库的“统计”按钮查看</li>
+</ul>
+<h3 id="7-3-IDE工具">7.3 IDE工具</h3>
+<ul>
+<li>不同IDE通常会提供可视化的git历史记录</li>
+</ul>
+<h2 id="8-常见场景速查手册">8 常见场景速查手册</h2>
+<p>以下为一些常见的小场景及其对策：</p>
+<h3 id="场景1-本地已经存在的项目-分支与如何远程仓库关联">场景1. 本地已经存在的项目/分支与如何远程仓库关联</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin &lt;your-repo-git-url&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="场景2-刚刚提交了的commit-log发现错了，想修改">场景2. 刚刚提交了的commit log发现错了，想修改</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit --amend -m &quot;your new log&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="场景3-查看某次提交的日志和ID">场景3. 查看某次提交的日志和ID</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reflog</span><br></pre></td></tr></table></figure>
+<h3 id="场景4-查看某次提交的内容">场景4. 查看某次提交的内容</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git show &lt;commit_id&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="场景5-只是修改了工作区的文件，想恢复到原来修改前的样子">场景5. 只是修改了工作区的文件，想恢复到原来修改前的样子</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD</span><br><span class="line">git checkout -- &lt;file_name&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="场景6-被修改的文件已经添加到了暂存区，想撤销添加">场景6. 被修改的文件已经添加到了暂存区，想撤销添加</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --mixed HEAD</span><br></pre></td></tr></table></figure>
+<h3 id="场景7-被修改的文件已经commit提交，想撤销提交">场景7. 被修改的文件已经commit提交，想撤销提交</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --soft HEAD^</span><br></pre></td></tr></table></figure>
+<h3 id="场景8-已经提交到远程主机的文件，想撤销">场景8. 已经提交到远程主机的文件，想撤销</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git revert &lt;commit_id&gt;</span><br><span class="line">git revert HEAD</span><br></pre></td></tr></table></figure>
+<h3 id="场景9-已经开发一半的功能，但是没有开发完，这时候有个bug要紧急处理，需要放下手头的功能，赶去修改BUG">场景9. 已经开发一半的功能，但是没有开发完，这时候有个bug要紧急处理，需要放下手头的功能，赶去修改BUG</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// 保存现场</span><br><span class="line">git add .</span><br><span class="line">git stash  </span><br><span class="line">// 恢复现场</span><br><span class="line">git stash pop [stash_num] </span><br><span class="line">或者恢复但不删除工作现场</span><br><span class="line">git stash apply [stash_num]</span><br></pre></td></tr></table></figure>
+<h3 id="场景10-加入过历史版本的文件，因某些原因被删除了想恢复">场景10. 加入过历史版本的文件，因某些原因被删除了想恢复</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;commit_id&gt; -- &lt;file_name&gt;</span><br></pre></td></tr></table></figure>
+<p>另外你也可以用reset命令来完成</p>
+<h3 id="场景11-需要单独把多次提交中的某一次提交从你的分支迁移到另外一个分支上，即跨分支应用commit">场景11. 需要单独把多次提交中的某一次提交从你的分支迁移到另外一个分支上，即跨分支应用commit</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick &lt;commit_id&gt;</span><br></pre></td></tr></table></figure>
+<p>比如：我想把以下分支</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A-B  master</span><br><span class="line">   \</span><br><span class="line">    C-D-E-F-G develop</span><br></pre></td></tr></table></figure>
+<p>中的D，F两次提交移动到master分支，而保持其他commit不变，结果就像这样</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A-B-D-F  master</span><br><span class="line">       \</span><br><span class="line">        C-E-G develop</span><br></pre></td></tr></table></figure>
+<p>那么，思路是将D，F用cherry-pick应用到master分支上，然后将develop分支对master分支变基。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout master  </span><br><span class="line">$ git cherry-pick D  </span><br><span class="line">$ git cherry-pick F  </span><br><span class="line">$ git checkout develop  </span><br><span class="line">$ git rebase master</span><br></pre></td></tr></table></figure>
+<p>注意有些情况下使用cherry-pick会存在冲突，解决方法和我们平时合并分支遇到冲突一样。</p>
+<h3 id="场景12-遇到文件冲突，可以手动解决，或者用你配置的工具解决，记得把文件标位resolved：add-rm">场景12. 遇到文件冲突，可以手动解决，或者用你配置的工具解决，记得把文件标位resolved：add/rm</h3>
+<p>如：常见的拉取同事的代码合并引起冲突</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 手动处理冲突</span><br><span class="line">2. 文件标志位置为resolved：git add &lt;file_name&gt;</span><br><span class="line">3. 继续合并  git merge --continue</span><br><span class="line">当然也可以选择放弃合并：git merge --abort</span><br></pre></td></tr></table></figure>
+<h3 id="场景13-让自己本地分支上面的每一次提交日志变得更有意义，有时候需要我们选择有意义的提交日志信息合并上去">场景13. 让自己本地分支上面的每一次提交日志变得更有意义，有时候需要我们选择有意义的提交日志信息合并上去</h3>
+<p>比如我们在bugfix分支上面由于修改bug提交了很多次，修复好了之后，我们想把这些提交合并入我们的master分支</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge --squash bugfix</span><br><span class="line">git commit -m &quot;bug fixed&quot;</span><br></pre></td></tr></table></figure>
+<p>上面操作会将bugfix分支上的所有commit都合并为一个commit，并把它并入我们的master分支上去。这里还有一点需要注意的是：–squash含义代表的是本地内容与不使用该选项的合并结果相同，但是不提交，不移动HEAD指针，所以我们要另外多一条语句来移动我们的HEAD指针，即最后的commit。</p>
+<h3 id="场景14-有时候需要整理我们本地的commits，可以使用Squash">场景14. 有时候需要整理我们本地的commits，可以使用Squash</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i &lt;commit&gt;</span><br></pre></td></tr></table></figure>
+<p>举例：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i HEAD~5</span><br><span class="line"></span><br><span class="line">执行完后，Git会把所有commit列出来，让你进行一些修改，修改完成之后会根据你的修改来rebase。HEAD-5的意思是只修改最近的5个commit。</span><br><span class="line"></span><br><span class="line">pick 033beb4 b1</span><br><span class="line">pick b426a8a b2</span><br><span class="line">pick c216era b3</span><br><span class="line">pick d627c9a b4</span><br><span class="line">pick e416c8b b5</span><br><span class="line"></span><br><span class="line"># Rebase 033beb4..e416c8b onto 033beb4</span><br><span class="line">#</span><br><span class="line"># Commands:</span><br><span class="line">#  p, pick = use commit</span><br><span class="line">#  r, reword = use commit, but edit the commit message</span><br><span class="line">#  e, edit = use commit, but stop for amending</span><br><span class="line">#  s, squash = use commit, but meld into previous commit</span><br><span class="line">#  f, fixup = like &quot;squash&quot;, but discard this commit&#x27;s log message</span><br><span class="line">#  x, exec = run command (the rest of the line) using shell</span><br><span class="line">#</span><br><span class="line"># If you remove a line here THAT COMMIT WILL BE LOST.</span><br><span class="line"># However, if you remove everything, the rebase will be aborted.</span><br><span class="line">#</span><br></pre></td></tr></table></figure>
+<p>上面pick是要执行的commit指令，另外还有reword、edit、squash、fixup、exec这5个，具体的含义可以看上面的注释解释，比较简单，这里就不说了。 我们要合并就需要修改前面的pick指令：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pick 033beb4 b1</span><br><span class="line">squash b426a8a b2</span><br><span class="line">squash c216era b3</span><br><span class="line">squash d627c9a b4</span><br><span class="line">squash e416c8b b5</span><br></pre></td></tr></table></figure>
+<p>也就是下面这4个提交合并到最前面的那个提交里面，按esc，打上:wq提交保存离开。 接着是输入新的commit message</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">b</span><br><span class="line"># This is a combination of 2 commits.</span><br><span class="line"># The first commit&#x27;s message is:</span><br><span class="line"># b1</span><br><span class="line">#</span><br><span class="line"># This is the 2nd commit message:</span><br><span class="line">#</span><br><span class="line"># b2</span><br><span class="line">#</span><br><span class="line"># This is the 3rd commit message:</span><br><span class="line">#</span><br><span class="line"># b3</span><br><span class="line">#</span><br><span class="line"># This is the 4th commit message:</span><br><span class="line">#</span><br><span class="line"># b4</span><br><span class="line">#</span><br><span class="line"># This is the 5th commit message:</span><br><span class="line">#</span><br><span class="line"># b5</span><br><span class="line">#</span><br><span class="line"># Please enter the commit message for your changes. Lines starting</span><br><span class="line"># with &#x27;#&#x27; will be ignored, and an empty message aborts the commit.</span><br><span class="line"># Not currently on any branch.</span><br><span class="line"># Changes to be committed:</span><br><span class="line"># (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line">#</span><br><span class="line"># modified:   a.txt</span><br><span class="line">#</span><br></pre></td></tr></table></figure>
+<p>其中第一行的b就是需要我们输入的新信息，同样编辑完保存，出现类似下面的信息：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Successfully rebased and updated refs/heads/develop.</span><br></pre></td></tr></table></figure>
+<p>最后可以用git log指令来验证commits是不是我们要变成的样子。</p>
+<h3 id="场景15-多人协作开发项目，想知道某个文件的当前改动情况">场景15. 多人协作开发项目，想知道某个文件的当前改动情况</h3>
+<p>通常查问题时想知道某个文件的某部分代码是谁改动的，那么git blame就派上用场了。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git blame &lt;file_name&gt;</span><br></pre></td></tr></table></figure>
+<p>你也可以具体指定到某一行或者某几行代码</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git blame -L &lt;start_line&gt;,&lt;end_line&gt; &lt;file_name&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="场景16-执行push命令向多个仓库同时提交代码">场景16. 执行push命令向多个仓库同时提交代码</h3>
+<p>有时候会做代码备份，将代码保存在几个不同的Git代码管理平台，这时候就需要用到了</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">修改本地仓库目录下.git/config文件</span><br><span class="line"></span><br><span class="line">[core]</span><br><span class="line">	repositoryformatversion = 0</span><br><span class="line">	filemode = true</span><br><span class="line">	bare = false</span><br><span class="line">	logallrefupdates = true</span><br><span class="line">	ignorecase = true</span><br><span class="line">	precomposeunicode = true</span><br><span class="line">[remote &quot;origin&quot;]</span><br><span class="line">	url = git@github.com:yuxingxin/blog.git</span><br><span class="line">        url = ……</span><br><span class="line">        url = ……</span><br><span class="line">	fetch = +refs/heads/*:refs/remotes/origin/*</span><br></pre></td></tr></table></figure>
+<p>如上在remote处可以添加多个远程地址。</p>
+<h3 id="场景17-从多次提交中快速定位某一次提交的bug">场景17. 从多次提交中快速定位某一次提交的bug</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 开始 bisect</span><br><span class="line">$ git bisect start</span><br><span class="line"></span><br><span class="line"># 录入正确的 commit</span><br><span class="line">$ git bisect good xxxxxx</span><br><span class="line"></span><br><span class="line"># 录入出错的 commit</span><br><span class="line">$ git bisect bad xxxxxx</span><br><span class="line"></span><br><span class="line"># 然后 git 开始在出错的 commit 与正确的 commit 之间开始二分查找，这个过程中你需要不断的验证你的应用是否正常</span><br><span class="line">$ git bisect bad</span><br><span class="line">$ git bisect good</span><br><span class="line">$ git bisect good</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"># 直到定位到出错的 commit，退出 bisect</span><br><span class="line">$ git bisect reset</span><br></pre></td></tr></table></figure>
+<h2 id="9-常用命令图解">9 常用命令图解</h2>
+<p>后文中以下面的形式使用图片。绿色的5位字符表示提交的ID，分别指向父节点。分支用橘色显示，分别指向特定的提交。当前分支由附在其上的<em>HEAD</em>标识。 这张图片里显示最后5次提交，<em>ed489</em>是最新提交。 <em>main</em>分支指向此次提交，另一个<em>stable</em>分支指向祖父提交节点。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_9c0df.webp" alt=""></p>
+<h3 id="（1）Diff">（1）Diff</h3>
+<p>有许多种方法查看两次提交之间的变动。下面是一些示例。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_e2cba.webp" alt=""></p>
+<h3 id="（2）Commit">（2）Commit</h3>
+<p>提交时，git用暂存区域的文件创建一个新的提交，并把此时的节点设为父节点。然后把当前分支指向新的提交节点。下图中，当前分支是<em>main</em>。 在运行命令之前，<em>main</em>指向<em>ed489</em>，提交后，<em>main</em>指向新的节点<em>f0cec</em>并以<em>ed489</em>作为父节点。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_ad05f.webp" alt=""></p>
+<p>即便当前分支是某次提交的祖父节点，git会同样操作。下图中，在<em>main</em>分支的祖父节点<em>stable</em>分支进行一次提交，生成了<em>1800b</em>。 这样，<em>stable</em>分支就不再是<em>main</em>分支的祖父节点。此时，<a target="_blank" rel="noopener" href="http://marklodato.github.io/visual-git-guide/index-zh-cn.html#merge">合并</a> (或者 <a target="_blank" rel="noopener" href="http://marklodato.github.io/visual-git-guide/index-zh-cn.html#rebase">衍合</a>) 是必须的。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_199c4.webp" alt=""></p>
+<p>如果想更改一次提交，使用 <code>git commit --amend</code>。git会使用与当前提交相同的父节点进行一次新提交，旧的提交会被取消。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_17088.webp" alt=""></p>
+<h3 id="（3）Checkout">（3）Checkout</h3>
+<p>​	checkout命令用于从历史提交（或者暂存区域）中拷贝文件到工作目录，也可用于切换分支。</p>
+<p>​	当给定某个文件名（或者打开-p选项，或者文件名和-p选项同时打开）时，git会从指定的提交中拷贝文件到暂存区域和工作目录。比如，<code>git checkout HEAD~ foo.c</code>会将提交节点<em>HEAD~</em>(即当前提交节点的父节点)中的<code>foo.c</code>复制到工作目录并且加到暂存区域中。（如果命令中没有指定提交节点，则会从暂存区域中拷贝内容。）注意当前分支不会发生变化。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_31005.webp" alt=""></p>
+<p>​	当不指定文件名，而是给出一个（本地）分支时，那么<em>HEAD</em>标识会移动到那个分支（也就是说，我们“切换”到那个分支了），然后暂存区域和工作目录中的内容会和<em>HEAD</em>对应的提交节点一致。新提交节点（下图中的a47c3）中的所有文件都会被复制（到暂存区域和工作目录中）；只存在于老的提交节点（ed489）中的文件会被删除；不属于上述两者的文件会被忽略，不受影响。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_d0768.webp" alt=""></p>
+<p>如果既没有指定文件名，也没有指定分支名，而是一个标签、远程分支、SHA-1值或者是像<em>main~3</em>类似的东西，就得到一个匿名分支，称作<em>detached HEAD</em>（被分离的<em>HEAD</em>标识）。这样可以很方便地在历史版本之间互相切换。比如说你想要编译1.6.6.1版本的git，你可以运行<code>git checkout v1.6.6.1</code>（这是一个标签，而非分支名），编译，安装，然后切换回另一个分支，比如说<code>git checkout main</code>。然而，当提交操作涉及到“分离的HEAD”时，其行为会略有不同，详情见在<a target="_blank" rel="noopener" href="http://marklodato.github.io/visual-git-guide/index-zh-cn.html#detached">下面</a>。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_d681c.webp" alt=""></p>
+<h3 id="（4）HEAD标识处于分离状态时的提交和检出操作">（4）HEAD标识处于分离状态时的提交和检出操作</h3>
+<p>当<em>HEAD</em>处于分离状态（不依附于任一分支）时，提交操作可以正常进行，但是不会更新任何已命名的分支。(你可以认为这是在更新一个匿名分支。)</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_c8abd.webp" alt=""></p>
+<p>一旦此后你切换到别的分支，比如说<em>main</em>，那么这个提交节点（可能）再也不会被引用到，然后就会被丢弃掉了。注意这个命令之后就不会有东西引用<em>2eecb</em>。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_cbd1d.webp" alt=""></p>
+<p>但是，如果你想保存这个状态，可以用命令<code>git checkout -b *name*</code>来创建一个新的分支。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_16db1.webp" alt=""></p>
+<h3 id="（5）Reset">（5）Reset</h3>
+<p>reset命令把当前分支指向另一个位置，并且有选择的变动工作目录和索引。也用来在从历史仓库中复制文件到索引，而不动工作目录。</p>
+<p>如果不给选项，那么当前分支指向到那个提交。如果用–hard选项，那么工作目录也更新，如果用–soft选项，那么都不变。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_5cd2c.webp" alt=""></p>
+<p>如果没有给出提交点的版本号，那么默认用HEAD。这样，分支指向不变，但是索引会回滚到最后一次提交，如果用–hard选项，工作目录也同样。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_f9aa9.webp" alt=""></p>
+<p>如果给了文件名(或者 -p选项), 那么工作效果和带文件名的checkout差不多，除了索引被更新。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_d44c9.webp" alt=""></p>
+<h3 id="（6）Merge">（6）Merge</h3>
+<p>merge命令把不同分支合并起来。合并前，索引必须和当前提交相同。如果另一个分支是当前提交的祖父节点，那么合并命令将什么也不做。 另一种情况是如果当前提交是另一个分支的祖父节点，就导致fast-forward合并。指向只是简单的移动，并生成一个新的提交。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_4fc04.webp" alt="image-20210328174604793"></p>
+<p>否则就是一次真正的合并。默认把当前提交(ed489如下所示)和另一个提交(33104)以及他们的共同祖父节点(b325c)进行一次三方合并。结果是先保存当前目录和索引，然后和父节点33104一起做一次新提交。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_54833.webp" alt=""></p>
+<h3 id="（7）Cherry-Pick">（7）Cherry Pick</h3>
+<p>cherry-pick命令&quot;复制&quot;一个提交节点并在当前分支做一次完全一样的新提交。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_34716.webp" alt=""></p>
+<h3 id="（9）Rebase">（9）Rebase</h3>
+<p>衍合是合并命令的另一种选择。合并把两个父分支合并进行一次提交，提交历史不是线性的。衍合在当前分支上重演另一个分支的历史，提交历史是线性的。 本质上，这是线性化的自动的 <a target="_blank" rel="noopener" href="http://marklodato.github.io/visual-git-guide/index-zh-cn.html#cherry-pick">cherry-pick</a></p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_7ce9b.webp" alt=""></p>
+<p>上面的命令都在<em>topic</em>分支中进行，而不是<em>main</em>分支，在<em>main</em>分支上重演，并且把分支指向新的节点。注意旧提交没有被引用，将被回收。</p>
+<p>要限制回滚范围，使用<code>--onto</code>选项。下面的命令在<em>main</em>分支上重演当前分支从<em>169a6</em>以来的最近几个提交，即<em>2c33a</em>。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_56bb8.webp" alt=""></p>
+<p>同样有<code>git rebase --interactive</code>让你更方便的完成一些复杂操作，比如丢弃、重排、修改、合并提交。没有图片体现这些，细节看这里:<a target="_blank" rel="noopener" href="http://www.kernel.org/pub/software/scm/git/docs/git-rebase.html#_interactive_mode">git-rebase(1)</a></p>
+<h2 id="推荐链接">推荐链接</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://learngitbranching.js.org/?locale=zh_CN">在线图解练习</a></li>
+<li><a target="_blank" rel="noopener" href="http://marklodato.github.io/visual-git-guide/index-zh-cn.html">图解Git</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.shortcutfoo.com/app/dojos/git/git-basics/practice">shortcutFoo在线练习</a></li>
+<li><a target="_blank" rel="noopener" href="http://git-scm.com/book/zh/v2">Pro Git Book</a></li>
+<li><a target="_blank" rel="noopener" href="http://git.oschina.net/progit/">Pro Git Book（Gitee）</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.worldhello.net/gotgithub/">GitHub中文指南</a></li>
+<li><a target="_blank" rel="noopener" href="http://alx.github.io/gitbook/">Git community book</a></li>
+<li><a target="_blank" rel="noopener" href="https://backlog.com/git-tutorial/cn/">猴子都能懂得Git入门</a></li>
+<li><a target="_blank" rel="noopener" href="https://gitee.com/DTSDY/git-recipes">Git菜单</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/459f47c7.html">http://xishansnow.github.io/posts/459f47c7.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/">软件安装与使用</a><a class="post-meta__tags" href="/tags/Git/">Git</a></div><div class="post_share"><div class="social-share" data-image="/img/book_19.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/c6315948.html"><img class="prev-cover" src="/img/coffe_07.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">知识仓库</div></div></a></div><div class="next-post pull-right"><a href="/posts/67c3f1d6.html"><img class="next-cover" src="/img/coffe_01.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">贝叶斯神经网络快速上手教程</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/b355ef0c.html" title=" Git命令大全 "><img class="cover" src="/img/book_16.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-31</div><div class="title"> Git命令大全 </div></div></a></div><div><a href="/posts/ae3cd9c2.html" title="Git 如何一次 Push 至多个远程仓库"><img class="cover" src="/img/book_02.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-02</div><div class="title">Git 如何一次 Push 至多个远程仓库</div></div></a></div><div><a href="/posts/7d9a7cbc.html" title=" Power Shell的使用与配置 "><img class="cover" src="/img/book_06.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-08</div><div class="title"> Power Shell的使用与配置 </div></div></a></div><div><a href="/posts/f7905162.html" title="Linux 环境配置文件处理流程"><img class="cover" src="/img/coffe_11.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-10</div><div class="title">Linux 环境配置文件处理流程</div></div></a></div><div><a href="/posts/41ac964d.html" title="RIME输入法方案配置手册"><img class="cover" src="/img/coffe_11.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-02</div><div class="title">RIME输入法方案配置手册</div></div></a></div><div><a href="/posts/7ea2da9d.html" title="Youyun"><img class="cover" src="/img/book_10.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-01</div><div class="title">Youyun</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">Git简明教程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%B8%AA%E4%BA%BA%E5%9F%BA%E6%9C%AC%E6%95%85%E4%BA%8B%E7%BA%BF"><span class="toc-text">1. 个人基本故事线</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%A6%82%E4%BD%95%E4%BB%8E%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E8%8E%B7%E5%8F%96%E4%BB%A3%E7%A0%81"><span class="toc-text">1.1 如何从远程仓库获取代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-text">1.2 提交代码到远程仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E6%89%8B%E5%B7%A5%E5%88%9B%E5%BB%BA%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%B9%B6%E4%B8%8E%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E5%90%8C%E6%AD%A5"><span class="toc-text">1.3 手工创建本地仓库并与远程仓库同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E6%96%87%E4%BB%B6%E7%BA%A7%E5%88%AB%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-text">1.4 文件级别的操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%90%86%E8%A7%A3%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-text">2. 理解远程仓库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%88%9B%E5%BB%BA%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%EF%BC%88%E9%80%9A%E8%BF%87%E9%A1%B5%E9%9D%A2%E6%93%8D%E4%BD%9C%E5%AE%9E%E7%8E%B0%EF%BC%89"><span class="toc-text">2.1 创建远程仓库（通过页面操作实现）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%85%8B%E9%9A%86%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%EF%BC%88%E9%80%9A%E8%BF%87%E6%9C%AC%E5%9C%B0git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%EF%BC%89"><span class="toc-text">2.2 克隆远程仓库（通过本地git命令操作）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%8B%89%E5%8F%96%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E4%BB%A3%E7%A0%81%EF%BC%88%E9%80%9A%E8%BF%87%E6%9C%AC%E5%9C%B0git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%EF%BC%89"><span class="toc-text">2.3 拉取远程仓库代码（通过本地git命令操作）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E6%8E%A8%E9%80%81%E4%BB%A3%E7%A0%81%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%EF%BC%88%E9%80%9A%E8%BF%87%E6%9C%AC%E5%9C%B0git%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%EF%BC%89"><span class="toc-text">2.4 推送代码到远程仓库（通过本地git命令操作）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%9B%A2%E9%98%9F%E6%95%85%E4%BA%8B%E7%BA%BF"><span class="toc-text">3 团队故事线</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E8%A7%92%E8%89%B2%E5%8C%BA%E5%88%86"><span class="toc-text">3.1 角色区分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%9B%9B%E7%A7%8D%E5%8F%AF%E8%83%BD%E7%9A%84%E5%8D%8F%E4%BD%9C%E6%96%B9%E5%BC%8F"><span class="toc-text">3.2 四种可能的协作方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%86%B2%E7%AA%81%E7%9A%84%E6%8E%A7%E5%88%B6"><span class="toc-text">4 冲突的控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-fork%E4%B8%8Epull-request%E4%B8%AD%E4%BA%A7%E7%94%9F%E7%9A%84%E5%86%B2%E7%AA%81"><span class="toc-text">4.1 fork与pull request中产生的冲突</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-pull%E5%92%8Cpush%E8%BF%87%E7%A8%8B%E4%B8%AD%E4%BA%A7%E7%94%9F%E7%9A%84%E5%86%B2%E7%AA%81"><span class="toc-text">4.2 pull和push过程中产生的冲突</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E6%80%BB%E7%BB%93"><span class="toc-text">4.3 总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%88%86%E6%94%AF%E7%9A%84%E7%AE%A1%E7%90%86"><span class="toc-text">5 分支的管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%9A%84%E7%9B%AE%E7%9A%84"><span class="toc-text">5.1 分支管理的目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86"><span class="toc-text">5.2 远程仓库分支管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86"><span class="toc-text">5.3 本地仓库分支管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%A0%87%E7%AD%BE%E7%AE%A1%E7%90%86"><span class="toc-text">6 标签管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E6%A0%87%E7%AD%BE%E7%AE%A1%E7%90%86%E7%9A%84%E7%9B%AE%E7%9A%84"><span class="toc-text">6.1 标签管理的目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">6.2 常用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%9F%A5%E7%9C%8B%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95"><span class="toc-text">7 查看历史记录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="toc-text">7.1 命令行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-web%E9%A1%B5%E9%9D%A2"><span class="toc-text">7.2 web页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-IDE%E5%B7%A5%E5%85%B7"><span class="toc-text">7.3 IDE工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%B8%B8%E8%A7%81%E5%9C%BA%E6%99%AF%E9%80%9F%E6%9F%A5%E6%89%8B%E5%86%8C"><span class="toc-text">8 常见场景速查手册</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF1-%E6%9C%AC%E5%9C%B0%E5%B7%B2%E7%BB%8F%E5%AD%98%E5%9C%A8%E7%9A%84%E9%A1%B9%E7%9B%AE-%E5%88%86%E6%94%AF%E4%B8%8E%E5%A6%82%E4%BD%95%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E5%85%B3%E8%81%94"><span class="toc-text">场景1. 本地已经存在的项目&#x2F;分支与如何远程仓库关联</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF2-%E5%88%9A%E5%88%9A%E6%8F%90%E4%BA%A4%E4%BA%86%E7%9A%84commit-log%E5%8F%91%E7%8E%B0%E9%94%99%E4%BA%86%EF%BC%8C%E6%83%B3%E4%BF%AE%E6%94%B9"><span class="toc-text">场景2. 刚刚提交了的commit log发现错了，想修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF3-%E6%9F%A5%E7%9C%8B%E6%9F%90%E6%AC%A1%E6%8F%90%E4%BA%A4%E7%9A%84%E6%97%A5%E5%BF%97%E5%92%8CID"><span class="toc-text">场景3. 查看某次提交的日志和ID</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF4-%E6%9F%A5%E7%9C%8B%E6%9F%90%E6%AC%A1%E6%8F%90%E4%BA%A4%E7%9A%84%E5%86%85%E5%AE%B9"><span class="toc-text">场景4. 查看某次提交的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF5-%E5%8F%AA%E6%98%AF%E4%BF%AE%E6%94%B9%E4%BA%86%E5%B7%A5%E4%BD%9C%E5%8C%BA%E7%9A%84%E6%96%87%E4%BB%B6%EF%BC%8C%E6%83%B3%E6%81%A2%E5%A4%8D%E5%88%B0%E5%8E%9F%E6%9D%A5%E4%BF%AE%E6%94%B9%E5%89%8D%E7%9A%84%E6%A0%B7%E5%AD%90"><span class="toc-text">场景5. 只是修改了工作区的文件，想恢复到原来修改前的样子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF6-%E8%A2%AB%E4%BF%AE%E6%94%B9%E7%9A%84%E6%96%87%E4%BB%B6%E5%B7%B2%E7%BB%8F%E6%B7%BB%E5%8A%A0%E5%88%B0%E4%BA%86%E6%9A%82%E5%AD%98%E5%8C%BA%EF%BC%8C%E6%83%B3%E6%92%A4%E9%94%80%E6%B7%BB%E5%8A%A0"><span class="toc-text">场景6. 被修改的文件已经添加到了暂存区，想撤销添加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF7-%E8%A2%AB%E4%BF%AE%E6%94%B9%E7%9A%84%E6%96%87%E4%BB%B6%E5%B7%B2%E7%BB%8Fcommit%E6%8F%90%E4%BA%A4%EF%BC%8C%E6%83%B3%E6%92%A4%E9%94%80%E6%8F%90%E4%BA%A4"><span class="toc-text">场景7. 被修改的文件已经commit提交，想撤销提交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF8-%E5%B7%B2%E7%BB%8F%E6%8F%90%E4%BA%A4%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%B8%BB%E6%9C%BA%E7%9A%84%E6%96%87%E4%BB%B6%EF%BC%8C%E6%83%B3%E6%92%A4%E9%94%80"><span class="toc-text">场景8. 已经提交到远程主机的文件，想撤销</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF9-%E5%B7%B2%E7%BB%8F%E5%BC%80%E5%8F%91%E4%B8%80%E5%8D%8A%E7%9A%84%E5%8A%9F%E8%83%BD%EF%BC%8C%E4%BD%86%E6%98%AF%E6%B2%A1%E6%9C%89%E5%BC%80%E5%8F%91%E5%AE%8C%EF%BC%8C%E8%BF%99%E6%97%B6%E5%80%99%E6%9C%89%E4%B8%AAbug%E8%A6%81%E7%B4%A7%E6%80%A5%E5%A4%84%E7%90%86%EF%BC%8C%E9%9C%80%E8%A6%81%E6%94%BE%E4%B8%8B%E6%89%8B%E5%A4%B4%E7%9A%84%E5%8A%9F%E8%83%BD%EF%BC%8C%E8%B5%B6%E5%8E%BB%E4%BF%AE%E6%94%B9BUG"><span class="toc-text">场景9. 已经开发一半的功能，但是没有开发完，这时候有个bug要紧急处理，需要放下手头的功能，赶去修改BUG</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF10-%E5%8A%A0%E5%85%A5%E8%BF%87%E5%8E%86%E5%8F%B2%E7%89%88%E6%9C%AC%E7%9A%84%E6%96%87%E4%BB%B6%EF%BC%8C%E5%9B%A0%E6%9F%90%E4%BA%9B%E5%8E%9F%E5%9B%A0%E8%A2%AB%E5%88%A0%E9%99%A4%E4%BA%86%E6%83%B3%E6%81%A2%E5%A4%8D"><span class="toc-text">场景10. 加入过历史版本的文件，因某些原因被删除了想恢复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF11-%E9%9C%80%E8%A6%81%E5%8D%95%E7%8B%AC%E6%8A%8A%E5%A4%9A%E6%AC%A1%E6%8F%90%E4%BA%A4%E4%B8%AD%E7%9A%84%E6%9F%90%E4%B8%80%E6%AC%A1%E6%8F%90%E4%BA%A4%E4%BB%8E%E4%BD%A0%E7%9A%84%E5%88%86%E6%94%AF%E8%BF%81%E7%A7%BB%E5%88%B0%E5%8F%A6%E5%A4%96%E4%B8%80%E4%B8%AA%E5%88%86%E6%94%AF%E4%B8%8A%EF%BC%8C%E5%8D%B3%E8%B7%A8%E5%88%86%E6%94%AF%E5%BA%94%E7%94%A8commit"><span class="toc-text">场景11. 需要单独把多次提交中的某一次提交从你的分支迁移到另外一个分支上，即跨分支应用commit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF12-%E9%81%87%E5%88%B0%E6%96%87%E4%BB%B6%E5%86%B2%E7%AA%81%EF%BC%8C%E5%8F%AF%E4%BB%A5%E6%89%8B%E5%8A%A8%E8%A7%A3%E5%86%B3%EF%BC%8C%E6%88%96%E8%80%85%E7%94%A8%E4%BD%A0%E9%85%8D%E7%BD%AE%E7%9A%84%E5%B7%A5%E5%85%B7%E8%A7%A3%E5%86%B3%EF%BC%8C%E8%AE%B0%E5%BE%97%E6%8A%8A%E6%96%87%E4%BB%B6%E6%A0%87%E4%BD%8Dresolved%EF%BC%9Aadd-rm"><span class="toc-text">场景12. 遇到文件冲突，可以手动解决，或者用你配置的工具解决，记得把文件标位resolved：add&#x2F;rm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF13-%E8%AE%A9%E8%87%AA%E5%B7%B1%E6%9C%AC%E5%9C%B0%E5%88%86%E6%94%AF%E4%B8%8A%E9%9D%A2%E7%9A%84%E6%AF%8F%E4%B8%80%E6%AC%A1%E6%8F%90%E4%BA%A4%E6%97%A5%E5%BF%97%E5%8F%98%E5%BE%97%E6%9B%B4%E6%9C%89%E6%84%8F%E4%B9%89%EF%BC%8C%E6%9C%89%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E6%88%91%E4%BB%AC%E9%80%89%E6%8B%A9%E6%9C%89%E6%84%8F%E4%B9%89%E7%9A%84%E6%8F%90%E4%BA%A4%E6%97%A5%E5%BF%97%E4%BF%A1%E6%81%AF%E5%90%88%E5%B9%B6%E4%B8%8A%E5%8E%BB"><span class="toc-text">场景13. 让自己本地分支上面的每一次提交日志变得更有意义，有时候需要我们选择有意义的提交日志信息合并上去</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF14-%E6%9C%89%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E6%95%B4%E7%90%86%E6%88%91%E4%BB%AC%E6%9C%AC%E5%9C%B0%E7%9A%84commits%EF%BC%8C%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8Squash"><span class="toc-text">场景14. 有时候需要整理我们本地的commits，可以使用Squash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF15-%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C%E5%BC%80%E5%8F%91%E9%A1%B9%E7%9B%AE%EF%BC%8C%E6%83%B3%E7%9F%A5%E9%81%93%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6%E7%9A%84%E5%BD%93%E5%89%8D%E6%94%B9%E5%8A%A8%E6%83%85%E5%86%B5"><span class="toc-text">场景15. 多人协作开发项目，想知道某个文件的当前改动情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF16-%E6%89%A7%E8%A1%8Cpush%E5%91%BD%E4%BB%A4%E5%90%91%E5%A4%9A%E4%B8%AA%E4%BB%93%E5%BA%93%E5%90%8C%E6%97%B6%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81"><span class="toc-text">场景16. 执行push命令向多个仓库同时提交代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF17-%E4%BB%8E%E5%A4%9A%E6%AC%A1%E6%8F%90%E4%BA%A4%E4%B8%AD%E5%BF%AB%E9%80%9F%E5%AE%9A%E4%BD%8D%E6%9F%90%E4%B8%80%E6%AC%A1%E6%8F%90%E4%BA%A4%E7%9A%84bug"><span class="toc-text">场景17. 从多次提交中快速定位某一次提交的bug</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%9B%BE%E8%A7%A3"><span class="toc-text">9 常用命令图解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89Diff"><span class="toc-text">（1）Diff</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89Commit"><span class="toc-text">（2）Commit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89Checkout"><span class="toc-text">（3）Checkout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%884%EF%BC%89HEAD%E6%A0%87%E8%AF%86%E5%A4%84%E4%BA%8E%E5%88%86%E7%A6%BB%E7%8A%B6%E6%80%81%E6%97%B6%E7%9A%84%E6%8F%90%E4%BA%A4%E5%92%8C%E6%A3%80%E5%87%BA%E6%93%8D%E4%BD%9C"><span class="toc-text">（4）HEAD标识处于分离状态时的提交和检出操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%885%EF%BC%89Reset"><span class="toc-text">（5）Reset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%886%EF%BC%89Merge"><span class="toc-text">（6）Merge</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%887%EF%BC%89Cherry-Pick"><span class="toc-text">（7）Cherry Pick</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%889%EF%BC%89Rebase"><span class="toc-text">（9）Rebase</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E9%93%BE%E6%8E%A5"><span class="toc-text">推荐链接</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

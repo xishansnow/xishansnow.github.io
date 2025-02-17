@@ -1,0 +1,575 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>从自然语言文本中收割地理空间大数据 | 西山晴雪的知识笔记</title><meta name="keywords" content="地名解析,地名识别,GeoAI,地理空间人工智能,地理文本,Geoparsing"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="从自然语言文本中收割地理空间大数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从自然语言文本中收割地理空间大数据">
+<meta property="og:url" content="http://xishansnow.github.io/posts/dfaef359.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="从自然语言文本中收割地理空间大数据">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/book_08.png">
+<meta property="article:published_time" content="2021-04-11T12:50:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.045Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="地名解析">
+<meta property="article:tag" content="地名识别">
+<meta property="article:tag" content="GeoAI">
+<meta property="article:tag" content="地理空间人工智能">
+<meta property="article:tag" content="地理文本">
+<meta property="article:tag" content="Geoparsing">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/book_08.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/dfaef359"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '从自然语言文本中收割地理空间大数据',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/book_08.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">从自然语言文本中收割地理空间大数据</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-11T12:50:00.000Z" title="发表于 2021-04-11 20:50:00">2021-04-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.045Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">地理知识图谱</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E7%9F%A5%E8%AF%86%E8%8E%B7%E5%8F%96%E4%B8%8E%E8%9E%8D%E5%90%88/">知识获取与融合</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E7%9F%A5%E8%AF%86%E8%8E%B7%E5%8F%96%E4%B8%8E%E8%9E%8D%E5%90%88/%E5%9C%B0%E7%90%86%E6%96%87%E6%9C%AC%E4%B8%8E%E7%A4%BE%E4%BA%A4%E5%AA%92%E4%BD%93/">地理文本与社交媒体</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">15.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>57分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><style>p{text-indent:2em}</style>
+<h1>从自然语言文本中收割地理空间大数据</h1>
+<p>【评论】在非结构化自然语言本文中获取地理相关信息是一个很有意思而又有难度的话题，也是知识层次体系结构中，“数据–&gt;信息–&gt;知识 ”最完整的过程体现。Yingjie Hu 等在德国慕尼黑技术大学知名教授Martin WerNER的新书《Handbook of Big Geospatial Data》中，专门撰写了名为《Harvesting big geospatial data from natural language texts》的一章，来阐述相关的技术进展状态。</p>
+<p>【原文摘要】大量地理空间数据存在于自然语言文本中，例如报纸、维基百科文章、社交媒体帖子、旅游博客、在线评论和历史档案。与美国地质调查局和国家统计局收集的更传统、更结构化的地理空间数据相比，从这些非结构化文本中获得的地理空间数据具有独特的优势。它们捕捉人类对不同地点的感受，反映不同地理区域的近实时态势，或记录其他方式无法获得的重要历史信息。此外，这些非结构化文本中的地理空间数据在数量、速度和多样性方面通常都很大。本文介绍了从自然语言文本中获取大型地理空间数据的动机，描述了这样做的典型方法和工具，总结了一些现有的应用程序，并讨论了挑战和未来的发展方向。</p>
+<p>【原文】Hu Y, Adams B. Harvesting big geospatial data from natural language texts[J]. Handbook of Big Geospatial Data, Springer, 2020.</p>
+<p>【ISBN】ISBN 978-3-030-55461-3</p>
+<h1>1 概况和动机</h1>
+<h2 id="1-1-地理空间信息来源的多样性">1.1 地理空间信息来源的多样性</h2>
+<p>地理空间信息由各种各样的数据源产生。除了来自美国地质调查局和美国人口普查等机构的常用数据集之外，地理空间信息还包含在新闻文章 （ Lieberman and Samet，2011；Liu等，2014  ） 、百科全书条目 （ Hecht和Raubal，2008；Salvini和Fabrikant，2016  ） 、社交媒体帖子 （ Keßler等，2009b；Zhang和Gelernter，2014  ） 、历史档案 （ Southall，2014；DeLozzkant  ） 中。房屋广告（ Madden, 2017; McKenzie et al, 2018 ），在线评论 （ Cataldi等，2013；王和周，2016  ） ，旅游博客条目 （ Adams and McKenzie, 2013; Ballatore and Adams, 2015  ） 以及其他来源。从这些来源中，地理空间数据被嵌入在自然语言文本中，通常以地名提及和地点描述形式呈现。例如，一篇社交媒体帖子或一篇新闻文章可能会通过他们的名字提到多个地方，或者一个旅游博客可能会描述作者在一个特定地方的经历。在当今的大数据时代，来自这些来源的数据的数量和种类正在以前所未有的速度增长，从文本中获取大的地理空间数据已经成为可能。</p>
+<h2 id="1-3-为什么需要从文本中收割地理空间数据？">1.3 为什么需要从文本中收割地理空间数据？</h2>
+<p>这个问题非常重要，因为自然语言文本集合（ 例如：那些来自社交媒体或新闻文章的文本 ）往往不能代表整个人口 （ Hecht和Stephens，2014；Malik等，2015；Jiang等，2018  ） 。但从文本中获取地理空间数据至少在三个方面有价值：</p>
+<p><strong>（ 1 ）互补性</strong></p>
+<p>自然语言文本可以提供有价值的<strong>人类体验信息</strong>，这是其他数据集中没有的。</p>
+<p>例如，旅游博客条目不仅描述了人们去过哪里，还描述了他们对这些地方的感觉。这些关于人类经验的信息对于建立地点的计算模型至关重要 （ GoodChild，2011；Merschdorf and Blaschke，2018  ） 。</p>
+<p><strong>（ 2 ）即时性</strong></p>
+<p>部分自然语言文本能够反映近实时的情况，对于灾难响应等应用很有价值 （ MacEachren等，2011年；Crooks等，2013年；Huang等，2015年  ） 。与基于问卷调查或面对面采访的数据相比，这是一个重要优势，后者往往需要几个月甚至几年时间才能产生。</p>
+<p>虽然从社交媒体获得的地理空间数据可能不具有代表性，但灾害响应和其他情况感知应用往往侧重于识别事件，而不是考虑某种代表性，如：被困在倒塌建筑物中的三人是否代表研究区域的全部人口</p>
+<p><strong>（ 3 ）必要性</strong></p>
+<p>某些地理空间数据仅在非结构化文本中可用。例如：报纸上报道的事件、旧档案中记录的历史战斗、网页中包含的企业地址 （ Nesi等，2016；Hu等，2017；Barbaresi，2017  ） 。在这些情况下，从文本中获取地理空间数据是实现高级空间分析所必需的。</p>
+<h1>2 相关研究</h1>
+<p>从非结构化文本中获取地理空间数据在地理信息检索 （ GIR  ） 领域经常被研究，主题词是 Geoparsing  （ Jones和Purves，2008；Purves等，2018  ） 。Geoparsing的目标是识别文本中提及的地名或地点，并确定地名相应的实例和位置坐标 （ Freire等，2011年；Gritta等，2018年  ） 。为Geoparsing开发的软件工具称为Geoparser，它以非结构化自然语言文本作为输入，输出结构化地理数据和识别出的地名及位置坐标。一些Geoparser被发布为Web服务，为普通用户提供通过互联网的便捷访问，如： GeoTxt （ Karimzadeh等，2013年  ） 。</p>
+<p>Geoparsing通常分两个连续的步骤执行：<strong>地名识别</strong>和<strong>地名解析</strong>。</p>
+<p><strong>地名识别（ Toponym Recognition ）：</strong>  目标是从自然语言文本中识别地名，而不识别名称所引用的特定地点实例。例如，在一句话中，“华盛顿是崎岖的西南小道上的重要一站”，“华盛顿”一词将被认定为地名，但该步不会试图理解这个词具体指的是哪个华盛顿 （ 美国有50多个地方命名为“华盛顿”  ） 。</p>
+<p><strong>地名解析（ Toponym Resolution ）：</strong> 旨在解决地名歧义，并将地名解析为正确的实例和地理位置。地名解析步骤将（ 理想情况下 ）找出名称“Washington”指的是句子中的“Washington，Arkansas”，并将地名定位到其相应的空间足迹，例如城市边界的几何中心。图1概述了地理围栏的两个步骤。从自然语言文本获取的地理空间数据通常包含已识别的地名及其空间足迹，例如点、线和多边形。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/geoai_20210410163715_09.webp" alt=""></p>
+<p>地理空间数据也可以从没有明确提到地名的文本中获取 （ Wing和Baldridge，2014  ） 。非空间词汇（如海滩和阳光）可以表示地理位置  （ Adams and Janowicz, 2012  ） 。也就是说，在包含与地球上的位置相关联的文档的文本语料库的上下文中，某些单词和短语或多或少可能与特定位置相关联。具有非随机空间分布的词语将在描述物理环境和/或当地文化习俗的文本中最为明显。与地理相关的文本使我们能够发现有关地点的有用知识。这可以在Geoparsing之后完成，也可以在已经由数据源完成地理参考的文本上完成。例如：带有GPS定位的推文和标有指定地点的旅游博客条目 （ Hahmann等，2014年；Adams和McKenzie，2013年  ） 。</p>
+<p>对于较短的文档，通常情况是整个文本内容可以与一个或几个地名相关联。而对于较长的文本，将地名与文本中正确的选择（ 如段落 ）联系起来的任务仍然是悬而未决的研究命题，可能需要更复杂的语义实体链接和关系提取技术，反映出该领域缺乏易于使用的工具。</p>
+<p>本章的其余部分组织如下。第三节回顾了从文本中识别和解析地名的方法，并列出了现有的地名解析工具和人工标注的语料库。第四节讨论了从自然语言文本中获取大量地理空间数据用于各种应用的一些研究。这些研究被分为三种主题：地名相关研究、时间敏感型应用、以及专业信息抽取。最后，第五节提出了在不久的将来面临的挑战和可能的发展方向。</p>
+<h1>3 方法和工具</h1>
+<p>人们提出了从自然语言文本中获取地理空间数据的各种方法。我们首先回顾了现有地名识别和解析方法，然后描述了现有完善这两个步骤的工具。我们也讨论了使用语言模型工具从文本中推导位置的方法，当文本中没有明确包含地名时，这些方法特别有用。</p>
+<h2 id="3-1-地名识别（Toponym-Recognition）">3.1 地名识别（Toponym Recognition）</h2>
+<p>地名识别的目标是识别自然语言文本中提到的地名字符串，目前常见的方法有两大类，一是采用地名词典，二是使用自然语言处理工具。</p>
+<h3 id="3-1-1-使用地名词典和地名匹配"><strong>3.1.1 使用地名词典和地名匹配</strong></h3>
+<p>地名词典是包含地名、地名类型和空间坐标的有序集合 （ Hill，2000；Janowicz和Keßler，2008  ） 。人类习惯于通过名字来指代地点，但机器却是通过坐标来理解地点的。地名词典填补了非形式化的人类语言和形式化的计算机表示之间的关键空白 （ GoodChild and Hill，2008；Keßler et al，2009a  ） 。因此，可以将自然语言文本与地名词典中的条目进行比较，以识别包含的地名。例如：Woodruff和PLaunt （ 1994  ） 使用GNIS地名词典的子集从与加州地区相关文本文档中识别地名；Amitay等 （ 2004  ） 提出了名为Web-a-where的系统，可以根据世界大洲、国家、州和城市的地名索引从网页中识别地名。</p>
+<p>利用地名词典直接配对的方法虽然简单，但当有些地名未为被收录在地名词典中时，会导致地名无法识别。为解决该问题，现已提出一些方法，以白话或含糊的地名来充实现有地名词典。例如：Twaroch和Jones （ 2010年  ） 提出了一个名为“People’s Place<br>
+Names”   （  <a target="_blank" rel="noopener" href="http://www.yourplacenames.com">http://www.yourplacenames.com</a>  ） 的平台，鼓励本地人贡献本地地名；Gelernter等 （ 2013  ） 开发了一种自动算法，可以将OpenStreetMap和Wikimapia中的地名添加到地名词典中；Jones等 （ 2008  ） 开发了一种方法，利用Web搜索引擎来获取与模糊地名相关的实体，以便构建其边界。</p>
+<p>带地理标记的照片和相关的文本标签也被许多研究人员用来在地名词典中添加模糊地名 （ Grothe和Schaab，2009；Keüler等，2009b；Intagorn和Lerman，2011；Li和GoodChild，2012  ） 。</p>
+<p>最近，部分学者对经常将白话地名作为地理标记的住房广告进行了分析，以确定其在提供本地地名和丰富地名词典方面的潜力 （ McKenzie等，2018年；Hu等，2018年  ） 。</p>
+<h3 id="3-1-2-利用NLP技术识别地名"><strong>3.1.2 利用NLP技术识别地名</strong></h3>
+<p>从文本中识别地名的另一种方法是使用自然语言处理(NLP)技术。该方法的关键优点在于可以不依赖于地名词典就能识别地名。NLP技术利用目标词上下文中的词(例如：围绕目标词的前五个词和后五个词)来推断目标词是否为地名的一部分。而此类方法又可以进一步划分为以下方法：</p>
+<h3 id="（1）基于规则的识别方法">（1）<strong>基于规则的识别方法</strong></h3>
+<p>该方法定义一组识别地名的语法规则，然后通过正则表达式或其他自然语言处理手段识别地名。**例如，“City of &lt;name&gt;” 和 “&lt;name&gt; Boulevard”模式中的name通常是地名，而“FirstName &lt;name&gt;”模式中的名字不是地名(Purves等人，2018年)。规则方法的缺点是需要人工定义规则。</p>
+<h3 id="（2）基于机器学习的识别方法"><strong>（2）基于机器学习的识别方法</strong></h3>
+<p>该方法根据文本中的上下文证据识别地名。从该角度来看，地名识别可以看作命名实体识别(NER)的一个子任务。一个常用的NER工具是Stanford NER，它基于条件随机场(CRF)序列模型(Finkel等人，2005年)，可以从文本中识别多种类型的命名属性，例如地点、人员和组织。要识别地名，可以将识别的实体仅限于位置。许多现有研究都将Stanford NER作为其工作流程的一部分。</p>
+<p>例如：Karimzadeh等人(2013)开发了GeoTxt，其中Stanford NER被用于命名实体识别步骤；2011年Christchurch地震后，Gelernter 和  Mushegian (2011)也使用Standford NER从推文中识别出地名；Lieberman等人(2010)利用Stanford NER从本地新闻文章中找到位置实体，以便为文本数据建立空间索引。除了Standford NER外，研究人员还利用了其他NER模型。例如：Gelernter等人(2013)使用OpenCalais从文本中查找建筑名称，Hu等(2018)使用Spacy NER作为他们的四个NER模型之一，以识别地理标记的房屋广告中的地名。许多研究还利用数据中的其他证据（如词性标签、左词、右词、实体关系和其他可能的线索）来训练自己的NER模型进行地名识别(Lieberman和Samet，2011年；Inkpenet等人，2015年)。</p>
+<h2 id="3-2-地名解析（-Toponym-Resolution-）">3.2 地名解析（ Toponym Resolution ）</h2>
+<p>从文本中识别出地名字符串后，第二步的目标是将这些名称解析为其对应的地理实例。地名解析是必要的，因为地名的语义存在歧义问题(LeidNER，2008)和转喻问题。</p>
+<h3 id="问题1：歧义问题"><strong>问题1：歧义问题</strong></h3>
+<p>Amitay等人(2004)讨论了两种类型的歧义：</p>
+<ul>
+<li>
+<p>地理–地理歧义（一词多地问题），即相同名称指代多个不同的实例，如“伦敦”可以指世界上不同的地理实例</p>
+</li>
+<li>
+<p>地理–非地理歧义（一词多义问题），即相同名称既可以指代地名也可以指代非地名，如华盛顿不仅可以指地点，还可以指人名</p>
+</li>
+</ul>
+<h3 id="问题2：转喻问题"><strong>问题2：转喻问题</strong></h3>
+<p>转喻问题也是普遍存在的。例如，“伦敦投票通过了一项法案”，其中“伦敦”可能代表的不是地方，而是政府实体，尽管该句子中将“伦敦”解析为英国首都并非完全不合理。将其他名称转喻为地名也比较常见，如将“大裤衩”借喻为“中央电视台大楼”。也许是因为转喻是个有争议的命题，许多地理学家并不直接处理转喻问题。</p>
+<h3 id="问题3：识别错误导致的问题"><strong>问题3：识别错误导致的问题</strong></h3>
+<p>此外，地名识别的结果可能包含误报和漏报。在地理–非地理歧义的消解过程中，可以通过地名消解方法来处理误报，即被误识别为地名的非地名短语（假阳性识别）。而假阴性（即地名识别步骤遗漏的地名）则比较难处理，因为大多数地名解析方法只处理识别出的地名。如何恢复这些假阴性或者提高地名识别率是一个非常有趣的研究课题。</p>
+<p>目前已经开发了很多处理地名解析问题的技术方法：</p>
+<h3 id="方法1：基于规则匹配的方法"><strong>方法1：基于规则匹配的方法</strong></h3>
+<p>早期的方法通常利用关于地点(例如，总人口)的某些其他领域知识来定义用于消除歧义的启发式规则。一种简单方法是将地名解析为其最突出或默认的Place实例（例如人口最多或总面积最大的实例）。</p>
+<ul>
+<li>
+<p>Li等人(2002)提出了一种基于搜索引擎返回的结果来识别地名缺省语义项的方法，他们的实验表明，仅使用所获得的缺省语义项可以达到相当好的性能(能够解决78%的地名歧义)。</p>
+</li>
+<li>
+<p>Ladra等人(2008)开发了一个地名解析Web服务，它结合了行政层级、不同地方的人口、一个地方是首府还是主要城市，以及其他一些信息来执行地名消歧。</p>
+</li>
+<li>
+<p>(LeidNER，2008)制定了其他一些规则，例如每个文档一个指称(即，在同一文档的不同部分出现的地名很可能指的是同一地点实例)</p>
+</li>
+</ul>
+<p>虽然手工创建规则已经可以解析许多地名，但它们可能是不完整或任意的：哪些规则应该包含，哪些不应该包含？如何界定一个城市被视为主要城市的条件？哪些规则应该比其他规则具有更高的优先级？</p>
+<p>此外，开发这些规则还需要大量的人工工作。</p>
+<h3 id="方法2：基于机器学习的方法"><strong>方法2：基于机器学习的方法</strong></h3>
+<p>由于手工规则的局限性，人们提出了自动或半自动的地名解析方法。</p>
+<ul>
+<li>Overell和Rüger(2008)提出了一个基于地名在维基百科中如何一起出现的共现模型，然后应用该共现模型来消除文本中地名的歧义。</li>
+<li>Buscaldi和Rosso(2008)开发了一种基于概念密度的方法，该方法使用外部参考语料库GeoSemCor来消除地名歧义。</li>
+<li>Lieberman和Samet(2011)提出了一种多方面的地名识别和解析方法，该方法利用了广泛的方法和信息资源，包括实体名称和提示词词典、词性标注和NER等统计方法以及基于规则的地名重构。</li>
+<li>Speriosu和Baldridge(2013)使用带有地理标签的维基百科文章培训了一个地名解析器，该文章将地理和非地理单词与地名联系起来，并使用经过训练的解析器根据周围上下文中的单词来消除地名的歧义。</li>
+<li>Santos等人(2015)提出了一种用于地名消歧的机器学习方法，该方法结合了多种学习特征，如候选对象与文档中其他位置之间的地理空间距离，以及发生地名引用的文本上下文。</li>
+<li>Ju等人(2016)结合实体共现和主题建模来识别各种上下文线索(即相关实体和主题词)，以增强地名消歧。</li>
+<li>也有许多其他的地名消歧研究聚焦于社交媒体数据(例如，推文)和利用社交媒体的特定特征，例如社交互动、用户的位置一致性以及与推文相关联的元数据字段(Zhang和Gelernter，2014；Awamura等人，2015；Di Rocco等人，2016)。</li>
+</ul>
+<h2 id="3-3-主要的地名解析器和工具">3.3 主要的地名解析器和工具</h2>
+<p>已经开发了一些可以从文本中识别和解析地名的软件工具。本节讨论这些工具及其优势和限制，目的是帮助潜在用户为其应用程序选择合适的工具。我们的讨论分为两部分：可用于识别地名的通用语言工具和专门设计的地名解析工具。</p>
+<h3 id="（1）通用语言工具">（1）通用语言工具</h3>
+<p>地名识别和消解可以看作自然语言处理当中的命名实体识别或词义消歧的一个子任务。因此，从文本中提取地名的一个自然想法是使用计算机科学界开发NER工具，并且提取位置实体。</p>
+<ul>
+<li>Stanford NER是一个被广泛用于识别地名的工具。它基于CRF并使用Java实现(Finkel等人，2005年)。虽然Standford NER具有识别地名词典不包含地名的能力，但它不会将识别出的地名定位到相应地理坐标，因为它仅仅是一个通用的NER工具。</li>
+<li>Spacy NER(<a target="_blank" rel="noopener" href="https://spacy.io/">https://spacy.io/</a>)用Python语言实现。与Standford NER类似，它只能识别地名，无法将地名与坐标联系起来。</li>
+<li>DBpedia Spotlight(Mendes等人，2011年；Daiber等人，2013年)和Open Calais(<a target="_blank" rel="noopener" href="http://www.opencalais.com">http://www.opencalais.com</a>)是两个基于外部知识库(如维基百科)的通用NER工具。其主要缺点是只能识别那些记录在维基百科或地名词典等知识库中的地名。与Stanford NER相比，DBpedia Spotlight的一个优点是可以将识别的地名链接到DBpedia上的相应实体，从而根据这些地名在DBpedia中的地理坐标进行地理定位。然而，Open Calais没有为公认的地名提供这样的直接链接。</li>
+</ul>
+<h3 id="（2）专用地名解析工具">（2）专用地名解析工具</h3>
+<p>目前已经存在专门为识别和解析地名任务而设计的地名解析器。由于Stanford NER已经提供了强大的地名识别工具，因此许多地名解析器都是通过将Stanford NER与地名解析组件集成在一起来开发的。例如：</p>
+<ul>
+<li>Karimzadeh等人(2013)开发了GeoTxt，这是一个基于Web的地名解析工具，利用Stanford NER进行地名识别，并使用GeoNames和一组启发式规则进行地名解析。</li>
+<li>Delozier等人(2015)设计了TopOCluster，这是一种无需使用地名词典就可以进行地理搜索的地名解析工具。他们使用斯坦福大学的NER来识别文本中的地名，然后根据周围环境中单词的地理分布来解析地名。单词的地理轮廓是以局部空间统计为特征的单词的空间分布，DeLozier等人(2015)使用一组地理标记的维基百科关键词导出了单词的地理轮廓。</li>
+<li>地图位置和附近索引器(CLAVIN)是一个开源的地名解析工具，它在不同实现中使用Stanford NER和Apache OpenNLP进行地名识别，并利用地名词典和模糊搜索进行地名解析。</li>
+<li>有些地名解析工具是使用自己的地名识别方法开发的。例如，Edinburgh Geoparser是由爱丁堡大学语言技术组(Alex等人，2015年)开发的地理搜索系统，该系统使用同一小组开发的软件包进行地名识别。Edinburgh Geoparser的地名解析步骤可以基于不同的地名词典，例如GeoNames和Unlock。</li>
+<li>还有一些商用的地名解析工具，如Yahoo PlaceSpotter(<a target="_blank" rel="noopener" href="https://developer.html">https://developer.html</a>) 和 <a target="_blank" rel="noopener" href="http://geoparser.io">geoparser.io</a>(<a target="_blank" rel="noopener" href="https://geoparser.io/">https://geoparser.io/</a>)，但通常会限制免费应用编程接口调用的次数。</li>
+</ul>
+<h3 id="（3）评测情况">（3）评测情况</h3>
+<p>比较地名解析器的表现往往具有挑战性，这在很大程度上是因为缺乏公开可用、人工标注的语料库(Monteiro等人，2016年；Gritta等人，2018年)。一些研究人员已经做了很大努力来缓解这种问题。</p>
+<ul>
+<li>Leidner(2008)贡献了TRCoNLL，这是一个人工注释的新闻语料库，由路透社大约1000篇国际新闻文章和大约6000个地名组成。</li>
+<li>Lieberman等人(2010)共享了一个名为Local-Global Licion(LGL)语料库的人类注释数据集，其中包含78家地方报纸发表的588篇新闻文章，这些文章来自高度模棱两可的地方，如德克萨斯州的巴黎新闻(Paris News)和伊利诺伊州的巴黎灯塔新闻(Paris Beacon-News)。</li>
+<li>Hu等人(2014)贡献了一个半自动注释语料库，其中包含来自美国两个高度模棱两可的地名的城市网站的文本描述，即华盛顿和格林维尔。</li>
+<li>Gritta等人(2018)贡献了Wiktor，这是一个由Python脚本自动标注的维基百科文章语料库，其中包含名称含糊的维基百科文章，如秘鲁的利马、俄亥俄州的利马和俄克拉何马州的利马。</li>
+<li>Wallgrün等人(2018年)发表了GeoCopora，这是一个推文数据集，使用基于亚马逊的Mechanical Turk的众包方法进行手动注释，并得到专家的进一步验证。</li>
+<li>DeLozier等人(2016)提供了历史数据集《War Of The Rebellion》。</li>
+<li>ACE 2005 English SpatialML是一个在语言数据联盟(Mani et al，2008)上共享的带标签新闻语料库，但对非成员收取费用。</li>
+</ul>
+<h2 id="3-4-基于语言模型的位置推理">3.4 基于语言模型的位置推理</h2>
+<p>虽然地名解析器在识别和定位文本中的地名方面很有效，但事实上大量文本中没有明确提到地名。已经开发了多种语言模型，用于使用文档中出现的所有术语而不是仅限于地名来定位地理参考文本(Purves等，2018)。</p>
+<p>此类方法多种多样，从开发基于单词特征的文档级位置机器学习分类器(Wing和Baldridge，2011；Adams和Janowicz，2012)到创建更定制化的语言模型。这些模型分析文本中的空间语言(例如空间介词、形容词和参照系)，以便识别地名之上和之外的位置(TenBrink和Kuhn，2011；Stock和Y ousaf，2018)。前者往往利用简单的空间模型，如区域和测地网格，这使我们能够相对容易地在大量数据上训练预测分类器(Roller等人，2012年；Wing和Baldridge，2014；han等人，2014)。此外，当分类器以单词作为特征进行训练时，通常是单语言模型；最近开发出了一种独立于语言的Unicode字符级分类器(Adams和McKenzie，2018年)。</p>
+<p>语言模型涉及空间语言的形式化，试图捕捉自然语言篇章中空间关系的语义。开发的语言模型可能会提取出其他方法无法提取的空间信息，但在应用于大数据时也会带来更繁重的任务。例如：人们可以区分位置(空间中的物体)和关系(与位置相关的另一个物体)，这可以被空间场景中的读者用来定位文本中描述的元素(Bateman et al, 2007)。要以自动化方式做到这一点，需要一个完整的NLP管道，在空间分析之前可以识别文本中的词性和依存关系(Chen和Manning，2014年；Avvenuti等人，2018年)。</p>
+<p>此外，语料库语言学研究与位置推理也有关。词汇方言学(通过计算手段研究方言)可以用来将特定的语言特征与地球上的地方联系起来，这反过来又可以用来改进文本定位的模型(Rahimi等人，2017；Dunn，2018)。</p>
+<p>与上一节描述的基于地名解析的地理解析工具不同，基于语言建模的位置推断在很大程度上仍然是在特定研究项目的上下文中进行的。在上一节列出的地名解析器中，只有TopOCluster(DeLozier等人，2015)使用语言建模作为处理管道中的重要组件。</p>
+<h2 id="3-5-小结">3.5 小结</h2>
+<p>本节讨论为从自然语言文本中获取大型地理空间数据而开发的主要方法和工具。我们从Geoparsing开始，这是一种通过识别和解析文本中提到的地名来收集地理空间数据的主要方法。地名识别与解析可作对整个文档进行地理定位的基础(Monteiro等人，2016；Melo和Martins，2017)。有必要将地名解析任务（即从自然语言文本中识别和解析(可能是口语的)地名的任务）与传统地理信息系统中的地理编码任务（即定位格式化地址，例如门牌和街道名称的任务）区分开来(Goldberg等人，2008年)。两者在地理信息科学中都很重要。除了地名解析，我们还讨论了当文本中没有明确提到地名时，通过机器学习和语言学方法使用语言建模来获取地理空间数据的一些研究。</p>
+<h1>4 应用</h1>
+<p>本节讨论利用从自然语言文本获取的地理空间数据的一些应用程序。我们将从理解人类对地点的经验开始，转向使用近乎实时的数据来感知情况，最后讨论在虚拟或认知空间中提取关于地点关系的信息。</p>
+<h2 id="4-1-人文地理：理解地点的人类体验及数字人文">4.1 人文地理：理解地点的人类体验及数字人文</h2>
+<p>在地理学中，空间和地点是两个既有联系又有不同的概念。地理信息的定量统计分析几乎完全集中在Space分析上，而Place一直是人文地理学学术研究的一个丰富课题。最近，随着更多地理用户生成的内容在网上发布（尤其是在社交媒体上），Place已经成为那些进行定量数据驱动研究的人越来越感兴趣的主题(Elwood等人，2012；Sui和DeLyser，2012)。在现象学意义上，Place经常被描述为通过人类体验(直接或间接)产生意义的Space(Tuan，1977)。因此，大量反映了人类随机体验的文本，为研究这种现象学提供了一个新的窗口和视角，而在此之前，这种工作仅限于较小规模的人工调查。</p>
+<p>基于关键字的分析、主题分析、情绪分析和情绪分析为概括人类体验提供了不同的方法(Mei等，2006；Hollenstein和Purves，2010；Chon等，2012；Adams和McKenzie，2013；Adams，2015；Ballatore和Adams，2015；Doytsher等，2017)。</p>
+<p>除了提供对Place的更好理解之外，相关研究也被用于各种应用，包括：</p>
+<ul>
+<li>旅游(Hao等，2010；Xiang等，2015；Rahmani等，2017；McKenzie和Adams，2018)</li>
+<li>城市研究(Cranshaw和Yano，2010；Campagna，2014；van Weerdenburg等人，2019年)</li>
+<li>政治学(Bastos等，2014)</li>
+<li>公共卫生(Ghosh和Guha，2018年)</li>
+</ul>
+<p>从文本中获取的基于地点的地理空间数据越来越多地被使用的另一个领域是数字(地理空间)人文学科(Bodenhamer等人，2010年)。隐藏在图书馆和在线海量馆藏中的地理空间信息被视为空间、历史和文学分析的金矿(Gregory等人，2015年)。然而，历史数据集构成了独特的挑战，因为许多地理搜索工具都建立在现代地名词典的基础上，因此通常需要定制的解决方案来自动从历史文本中提取地理信息(Rupp等人，2013年)。在这方面，已经开发了Pleiades(<a target="_blank" rel="noopener" href="https://pleiades.stoa.org">https://pleiades.stoa.org</a>))和世界历史地名录(<a target="_blank" rel="noopener" href="http://whgazetteer.org">http://whgazetteer.org</a>)等历史地名录，以提供查找和使用与古代地方有关的信息的服务。除了支持直接分析之外，地理空间数据还可以从人文学科使用的各种文档中提取，以建立空间索引，从而提供从地理角度探索文本内容的另一种方式(McCurley，2001；Purves等人，2007；Adams等人，2015)。</p>
+<h2 id="4-2-态势感知：应急事件的态势感知">4.2 态势感知：应急事件的态势感知</h2>
+<p>应急响应应用通常需要有关地面情况的实时数据。很多这样的数据都是以自然语言文本形式出现的。例如，社交媒体帖子、短信、从电话(或语音消息)转换而来的文本，以及记者在紧急情况下发送的新闻报道。紧急情况发生后，来自不同来源的信息经常涌入紧急行动中心，使急救人员不堪重负。因此，自动化方法和工具对于从海量数据中提取位置信息(例如，谁在哪个位置需要帮助)变得非常有用。</p>
+<p>许多研究都使用了从文本中获取的地理空间数据来进行应急响应。社交媒体数据（特别是推特数据）已被很多学者使用(Tsou，2015；HaworthandBruce，2015)。例如：</p>
+<ul>
+<li>Delongueville等人广泛使用(2009年)调查了2009年法国南部一场重大森林火灾期间推文的空间、时间和社会动态。</li>
+<li>Crooks等(2013) 研究了2011年美国东海岸发生5.8级地震后推文的时空特征。</li>
+<li>Nagar等人(2014)使用纽约市每天的地理标记推文来调查与流感样疾病(ILI)相关的时空推文行为。</li>
+</ul>
+<p>虽然有一小部分推文已经加了地理标签(约1-2%)，但据估计，超过10%的推文在文本中包含地名引用(Wallgrün等人，2018年)。因此，研究人员也将重点放在了从推文的文本内容中提取位置参考信息。例如：</p>
+<ul>
+<li>MacEachren等人(2011年)开发了SensePlace2，这是一个视觉分析系统，支持对Twitter数据进行时空主题探索，以了解情况和处理危机。在SensePlace2中，研究人员将推文与推文区分开来(即地理标记的位置)和关于推文的推文(即推文内容中提到的位置)。</li>
+<li>Gelernter和Balaji(2013)提出了一种算法，用于从2011年新西兰克赖斯特彻奇地震后发布的推文内容中提取各种形式的地名，如缩写、拼写错误或高度本地化的名称。</li>
+<li>Issa等人(2017)研究了有关流感的推文在四个不同城市使用地理标记推文和非地理标记推文的空间扩散情况。</li>
+<li>除了社交媒体，研究人员还利用新闻文章了解与自然灾害相关的情况。例如，Wang和Stewart(2015)通过从新闻文本中提取地名、时间戳和紧急信息(例如停电)来检查飓风桑迪的影响。</li>
+</ul>
+<p>为了直观地了解如何使用社交媒体数据进行态势感知，我们根据2017年9月伊尔玛飓风期间收集的推文样本，在图2中展示了可能的信息系统图形用户界面。在这个用户界面中，主地图显示了飓风的当前和预测轨迹及其影响区域。带地理标记的推文的位置是在地面上可视化的(人们也可以使用MacEachren等2011提出的方法来可视化推文内容中提到的位置)。底部的条形图显示了不同日期的推文强度。在飓风伊尔玛的情况下，大多数推文都是在9月9日至11日之间发布的，当时伊尔玛在佛罗里达州登陆，并向内陆移动。在界面的左侧，用户可以选择三个特定的日期，并检查这三天推文的强度和地理分布。在右边，三个单词云总结了三个不同时间段的推文的主要主题。在飓风伊尔玛的情况下，推文是根据伊尔玛之前、期间和之后的时段进行总结的。可以看出，飓风前，与备灾疏散相关的词汇很多，飓风活动期间频繁出现关于风、雨、树的词汇；飓风过后，频频出现的词汇则是关于灾情破坏和救灾。这些从社交媒体收集并以近乎实时方式处理的信息可以帮助支持应急人员的决策。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/geoai_20210410184257_e7.webp" alt=""></p>
+<h2 id="4-3-认知地理：虚拟或认知空间中的位置关系">4.3 认知地理：虚拟或认知空间中的位置关系</h2>
+<p>文本捕获的另一种特殊而有价值的地理空间信息是虚拟空间或认知空间中的位置及其关系。大多数传统的地理数据集都是基于空间邻近度进行组织的。例如，我们可能有一个位于同一地理区域的地块数据集。相比之下，文本（如网页、社交媒体帖子和新闻文章）可以提到多个相距甚远、甚至在全球范围内的地方。将这些地方联系在一起通常代表非空间决定的社会、经济和历史关系(Adams，2018)。地名共现通常被认为是这种地方关系的证据(Hecht和Raubal，2008；Twaroch等人，2009；Ballatore等人，2014；Liu等人，2014；Spitz等人，2016)。根据应用需要，可以使用不同文本上下文(例如句子、段落甚至整个文章)来确定地名的共现。位置关系也可以通过超链接建立，比如维基百科文章和其他网页中的超链接。</p>
+<p>由于各种原因，文本中的地点可以联系在一起。新闻文章可以报道涉及多个地方的不同事件：一个运动队可能会从他们的家乡到另一个城市去比赛；一个国家的公司可能会在另一个国家设立新的分支机构(Toly等人，2012年；Sassen，2016年)；一场自然灾害，如飓风和洪水，可能会影响多个城镇。此外，维基百科页面和在线博客可以讨论两个地方在气候、人口、地理位置和其他方面的相似和不同之处。在社交媒体帖子中，人们可以谈论和比较不同地方的生活方式、食物和文化。在由信息和通信技术支持的今天的数字社会中，大多数地方在虚拟或网络空间中相互联系，形成了地点网络(Taylor和DeRudder，2015；Shaw等人，2016)。因此，从自然语言文本中获取的大量地理空间数据为理解虚拟空间中多样的、动态的位置关系，以及人们感知的位置关系，即认知空间中的关系提供了一个重要的来源。</p>
+<p>许多研究使用不同类型的语篇来考察地点关系。赫克特和莫克斯利(2009)使用维基百科页面中的超链接对地点关系进行了早期研究，发现近处的地点比远方的地点更有可能有关系，尽管遥远的地方仍然可以有关系。刘等人(2014)对一组新闻文章中的地名共现进行了研究，发现新闻文章中的地名共现比源于人类运动的地名具有更弱的距离衰减效应。钟等人(2017)还研究了新闻文章中地名的共现情况，得出的结论是，如果它们属于同一行政级别或具有部分-整体关系(例如，西雅图是华盛顿州的一部分)，那么它们更有可能是相关的。Salvini和Fabrikant(2016)分析了维基百科页面中地名的共现现象，并通过维基百科页面的分类研究了位置关系的语义。同样基于维基百科文章中地名的共现，Spitz等人(2016)构建了地名消歧网络。Adams和Gahegan(2016)对维基百科语料库进行了时空(时间主题)分析，通过分析文本中地点和时间的共现来理解叙事性文本中地点、空间和时间之间的内在关系。Hu等人(2017)考察了新闻文章中的地名共现现象，并采用主题建模的方法对地点关系的语义主题进行了标注。图3.3显示了从卫报语料库中提取的地点在不同语义主题下的关系，如Hu等人(Hu等人，2017)所讨论的。由此可见，地方在不同语义话题下的关系强度不同，因此在地方网络中的位置突显程度也不同：华盛顿特区在政治话题下的地位比在科技话题下的地位要重要得多；相比之下，旧金山在科技话题下的地位显著高于其在政治话题下的地位。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/geoai_20210410185814_4f.webp" alt=""></p>
+<ul>
+<li>
+<p>文本能够捕捉到的虚拟空间或认知空间中地点间的关系</p>
+</li>
+<li>
+<p>传统方法</p>
+<ul>
+<li>基于空间坐标和邻近性来组织
+<ul>
+<li>例如：位于同一地理区域的地块数据集</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>文本方法</p>
+<ul>
+<li>文本（ 如：网页、社交媒体帖子和新闻文章等 ）可以提及相距遥远甚至全球范围内的多个地方，从而将这些地方联系在一起
+<ul>
+<li>地名共现通常被视为此类地名关系的证据，根据应用需要，可以使用不同的文本上下文（ 例如句子、段落甚至整篇文章 ）来确定地名是否同时出现</li>
+<li>地点间关系也可以通过超链接建立，比如维基百科文章和其他网页上的超链接</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>自然语言文本为理解虚拟空间和认知空间中各种动态空间关系提供了重要的来源</p>
+<ul>
+<li>例1：一个运动队可能从家乡前往另一个城市参加比赛</li>
+<li>例2：一个国家的公司可能会在另一个国家设立新的分支机构</li>
+<li>例3：自然灾害（ 如飓风和洪水 ）会对多个城镇产生影响</li>
+<li>例4：维基百科页面和在线博客可以讨论两个地方在气候、人口、地理位置等方面的相似性和不同性</li>
+<li>例5：在社交媒体上，人们可以谈论和比较不同地方的生活方式、食物和文化</li>
+<li>例6：大多数地方在虚拟或网络空间中相互连接，形成了地方网络</li>
+</ul>
+</li>
+<li>
+<p>许多研究使用不同类型的文本来研究地点关系。</p>
+<ul>
+<li>
+<p>Hecht和Moxley（ 2009 ）利用Wikipedia页面中的超链接对地点关系进行了早期研究，发现虽然距离较远的地方仍然可以有关系，但附近的地方比遥远的地方更有可能发生关系。</p>
+</li>
+<li>
+<p>Liu et al（ 2014 ）研究了一组新闻文章中的地名共现现象，发现新闻文章中的地名关联性与人类活动产生的地名关联性相比，具有较弱的距离衰减效应。</p>
+</li>
+<li>
+<p>Zhong等（ 2017 ）还研究了新闻文章中的地名共现现象，得出结论认为，如果地方处于同一行政级别或具有部分-整体关系（ 例如，西雅图是华盛顿州的一部分 ），则它们更可能有关联。</p>
+</li>
+<li>
+<p>Salvini和Fabrikant（ 2016 ）分析了维基百科页面中的地名共现现象，并通过维基百科页面的类别考察了地名关系的语义。</p>
+</li>
+<li>
+<p>同样，基于维基百科文章中地名同时出现的情况，Spitz等（ 2016 ）构建了地名网络以消除地名歧义。</p>
+</li>
+<li>
+<p>Adams和Gahegan（ 2016 ）通过分析文本中地点和时间的共现，对Wikipedia语料库进行时空（ chronotopic ）分析，以了解叙事文本中的地点、空间和时间之间的内在关系。</p>
+</li>
+<li>
+<p>Hu et al（ 2017 ）研究了新闻文章中的地名共现现象，并采用话题建模方法对地名关系的语义话题进行了注释。</p>
+<ul>
+<li>在不同的语义主题下，地点具有不同的关系优势，因而在地点网络中的位置突出度也不同</li>
+<li>例如：华盛顿特区在政治主题下的作用比在科学技术主题下的作用要大得多；相比之下，旧金山在科技网络中的地位大大提高，而它在政治话题下的地位则大大提高。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1>5 未来发展方向</h1>
+<p>地理空间数据存在于各种类型的自然语言文本中，例如新闻文章、社交媒体帖子、维基百科页面、旅游博客、历史档案、住房广告等。这些数据源中的许多都提供了大量的数据(例如，数百万甚至数十亿的社交媒体帖子)，这些数据随着时间的推移不断增加。因此，从自然语言文本中获取大量的地理空间数据成为可能。与美国地质调查局和美国人口普查等传统来源的数据相比，文本中的地理空间数据捕捉了人类对地点的宝贵经验，在灾难发生后提供了近实时的信息，并在虚拟和认知空间中记录了地点关系。在本章中，我们讨论了可用于从文本中获取地理空间数据的方法和工具。Geoparsing是一种通过识别和解析文本中提到的地名来从非结构化文本中提取结构化地理信息的主要方法。当文本中没有明确包含地名时，其他基于语言建模的方法可以帮助我们从文本中提取地理信息。</p>
+<p>在不久的将来，可以追求一些研究方向。对于地名识别，现有方法的性能仍然取决于测试的数据集。深度学习的进步，如双向递归神经网络，可以帮助提高从文本中识别地名的准确性。新的自然语言处理方法也可能有助于更好地识别文本中使用的转喻。对于地名解析，目前大多数方法仍然只将地名解析为基于点的位置，并且存在河流、国家和其他地理特征，它们的空间足迹可以更好地表示为折线、多边形，甚至多面体(在3D空间中)。此外，虽然存在多个地表盘，但很难直接比较这些地表盘的性能。原因之一是缺乏开放和带注释的语料库。虽然研究人员在最近几年已经开始解决这个问题，但实现现有基线并将其与公共数据集进行比较仍然需要大量的时间和精力。因此，一个基准平台，如EUPEG(Wang和Hu，2019年)，可能有助于比较和评估地理参数。从应用的角度来看，虽然本章重点介绍了在关于地点、数字人文、情境感知和地点关系的研究中使用文本中的地理空间数据，但其他应用还有待于在不久的将来进行探索和研究。</p>
+<h1>参考文献</h1>
+<ol>
+<li>Adams B (2015) Finding similar places using the observation-to-generalization place model. Journal of Geographical Systems 17(2):137–156</li>
+<li>Adams B (2018) From spatial representation to processes, relational networks, and thematic roles in geographic information retrieval. In: Proceedings of the 12th Workshop on Geographic Information Retrieval, ACM, New Y ork, NY , USA, GIR’18, pp 1:1–1:2</li>
+<li>Adams B, Gahegan M (2016) Exploratory chronotopic data analysis. In: Interna- tional Conference on Geographic Information Science, Springer, pp 243–258</li>
+<li>Adams B, Janowicz K (2012) On the geo-indicativeness of non-georeferenced text. In: Proceedings of the International Conference on Web and Social Media (ICWSM), AAAI Press, pp 375–378</li>
+<li>Adams B, McKenzie G (2013) Inferring thematic places from spatially referenced natural language descriptions. In: Crowdsourcing  geographic knowledge, Springer, pp 201–221</li>
+<li>Adams B, McKenzie G (2018) Crowdsourcing the character of a place: Character-level convolutional networks for multilingual geographic text classification.Transactions in GIS 22(2):394–408</li>
+<li>Adams B, McKenzie G, Gahegan M (2015) Frankenplace: interactive thematic mapping for ad hoc exploratory search. In: Proceedings of the 24th international conference on world wide web, International World Wide Web Conferences Steering Committee, pp 12–22</li>
+<li>Alex B, Byrne K, Grover C, Tobin R (2015) Adapting the Edinburgh geoparser for historical georeferencing. International Journal of Humanities and Arts Computing 9(1):15–35</li>
+<li>Amitay E, Har’El N, Sivan R, Soffer A (2004) Web-a-where: geotagging web content. In: Proceedings of the 27th annual international ACM SIGIR conference on Research and development in information retrieval, ACM, pp 273–280</li>
+<li>Avvenuti M, Cresci S, Nizzoli L, Tesconi M (2018) Gsp (geo-semantic-parsing): Geoparsing and geotagging with machine learning on top of linked data. In: European Semantic Web Conference, Springer, pp 17–32</li>
+<li>Awamura T, Aramaki E, Kawahara D, Shibata T, Kurohashi S (2015) Location name disambiguation exploiting spatial proximity and temporal consistency. SocialNLP 2015@ NAACL pp 1–9</li>
+<li>Ballatore A, Adams B (2015) Extracting place emotions from travel blogs. In: Proceedings of AGILE, vol 2015, pp 1–5</li>
+<li>Ballatore A, Bertolotto M, Wilson DC (2014) An evaluative baseline for geosemantic relatedness and similarity. GeoInformatica 18(4):747–767</li>
+<li>Barbaresi A (2017) Towards a toolbox to map historical text collections. In: Proceedings of the 11th Workshop on Geographic Information Retrieval, ACM, p 5</li>
+<li>Bastos MT, Recuero R, Zago G (2014) Taking tweets to the streets: A spatial analysis of the vinegar protests in brazil. First Monday 19(3)</li>
+<li>Bateman J, Tenbrink T, Farrar S (2007) The role of conceptual and linguistic ontologies in interpreting spatial discourse. Discourse Processes 44(3):175–212</li>
+<li>Bodenhamer DJ, Corrigan J, Harris TM (2010) The spatial humanities: GIS and the future of humanities scholarship. Indiana University Press</li>
+<li>Buscaldi D, Rosso P (2008) A conceptual density-based approach for the disambiguation of toponyms. International Journal of Geographical Information Science 22(3):301–313</li>
+<li>Campagna M (2014) The geographic turn in social media: opportunities for spatial planning and geodesign. In: International Conference on Computational Science and Its Applications, Springer, pp 598–610</li>
+<li>Cataldi M, Ballatore A, Tiddi I, Aufaure MA (2013) Good location, terrible food: detecting feature sentiment in user-generated reviews. Social Network Analysis and Mining 3(4):1149–1163</li>
+<li>Caverlee J, Cheng Z, Sui DZ, Kamath KY (2013) Towards geo-social intelligence: Mining, analyzing, and leveraging geospatial footprints in social media. IEEE Data Eng Bull 36(3):33–41</li>
+<li>Chen D, Manning C (2014) A fast and accurate dependency parser using neural networks. In: Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP), pp 740–750</li>
+<li>Chon Y , Lane ND, Li F, Cha H, Zhao F (2012) Automatically characterizing places with opportunistic crowdsensing using smartphones. In: Proceedings of the 2012 ACM Conference on Ubiquitous Computing, ACM, pp 481–490</li>
+<li>Cranshaw J, Y ano T (2010) Seeing a home away from the home: Distilling proto-neighborhoods from incidental data with latent topic modeling. In: CSSWC Workshop at NIPS, vol 10</li>
+<li>Crooks A, Croitoru A, Stefanidis A, Radzikowski J (2013) # earthquake: Twitter as a distributed sensor system. Transactions in GIS 17(1):124–147</li>
+<li>Daiber J, Jakob M, Hokamp C, Mendes PN (2013) Improving efficiency and accuracy in multilingual entity extraction. In: Proceedings of the 9th International Conference on Semantic Systems, ACM, pp 121–124</li>
+<li>De Longueville B, Smith RS, Luraschi G (2009) Omg, from here, i can see the flames!: a use case of mining location based social networks to acquire spatio-temporal data on forest fires. In: Proceedings of the 2009 international workshop on location based social networks, ACM, pp 73–80</li>
+<li>DeLozier G, Baldridge J, London L (2015) Gazetteer-independent toponym resolu tion using geographic word profiles. In: Proceedings of the AAAI Conference on Artificial Intelligence (AAAI), AAAI Press, pp 2382–2388</li>
+<li>DeLozier G, Wing B, Baldridge J, Nesbit S (2016) Creating a novel geolocation corpus from historical texts. In: Proceedings of The 10th Linguistic Annotation Workshop, Association for Computational Linguistics, pp 188–198</li>
+<li>Di Rocco L, Bertolotto M, Catania B, Guerrini G, Cosso T (2016) Extracting finegrained implicit georeferencing information from microblogs exploiting crowdsourced gazetteers and social interactions. In: AGILE International Conference on Geographic Information Science</li>
+<li>Doytsher Y , Galon B, Kanza Y (2017) Emotion maps based on geotagged posts in the social media. In: Proceedings of the 1st ACM SIGSPA TIAL Workshop on Geospatial Humanities, ACM, pp 39–46</li>
+<li>Dunn J (2018) Finding variants for construction-based dialectometry: A corpus based approach to regional CxGs. Cognitive Linguistics 29(2):275–311</li>
+<li>Eisenstein J, O’Connor B, Smith NA, Xing EP (2010) A latent variable model for geographic lexical variation. In: Proceedings of the 2010 Conference on Empirical Methods in Natural Language Processing, Association for Computational Linguistics, pp 1277–1287</li>
+<li>Elwood S, Goodchild MF, Sui DZ (2012) Researching volunteered geographic information: Spatial data, geographic research, and new social practice. Annals of the association of American geographers 102(3):571–590</li>
+<li>Finkel JR, Grenager T, Manning C (2005) Incorporating non-local information into information extraction systems by gibbs sampling. In: Proceedings of the 43rd annual meeting on association for computational linguistics, Association for Computational Linguistics, pp 363–370</li>
+<li>Freire N, Borbinha J, Calado P , Martins B (2011) A metadata geoparsing system for place name recognition and resolution in metadata records. In: Proceedings of the 11th annual international ACM/IEEE joint conference on Digital libraries, ACM, pp 339–348</li>
+<li>Gelernter J, Balaji S (2013) An algorithm for local geoparsing of microtext. GeoInformatica 17(4):635–667</li>
+<li>Gelernter J, Mushegian N (2011) Geo-parsing messages from microtext. Transactions in GIS 15(6):753–773</li>
+<li>Gelernter J, Ganesh G, Krishnakumar H, Zhang W (2013) Automatic gazetteer en- richment with user-geocoded data. In: Proceedings of the Second ACM SIGSPATIAL International Workshop on Crowdsourced and V olunteered Geographic Information, ACM, pp 87–94</li>
+<li>Ghosh D, Guha R (2013) What are we ‘tweeting’ about obesity? mapping tweets with topic modeling and geographic information system. Cartography and geographic information science 40(2):90–102</li>
+<li>Goldberg DW, Wilson JP , Knoblock CA, Ritz B, Cockburn MG (2008) An effec- tive and efficient approach for manually improving geocoded data. International journal of health geographics 7(1):60</li>
+<li>Goodchild MF (2011) Formalizing place in geographic information systems. In: Communities, neighborhoods, and health, Springer, pp 21–33</li>
+<li>Goodchild MF, Hill LL (2008) Introduction to digital gazetteer research. International Journal of Geographical Information Science 22(10):1039–1044</li>
+<li>Gregory I, Donaldson C, Murrieta-Flores P , Rayson P (2015) Geoparsing, gis, and textual analysis: Current developments in spatial humanities research. International Journal of Humanities and Arts Computing 9(1):1–14</li>
+<li>Gritta M, Pilehvar MT, Limsopatham N, Collier N (2018) What?s missing in geographical parsing? Language Resources and Evaluation 52(2):603–623</li>
+<li>Grothe C, Schaab J (2009) Automated footprint generation from geotags with kernel density estimation and support vector machines. Spatial Cognition &amp; Computation 9(3):195–211</li>
+<li>Hahmann S, Purves R, Burghardt D (2014) Twitter location (sometimes) matters: Exploring the relationship between georeferenced tweet content and nearby feature classes. Journal of Spatial Information Science 2014(9):1–36</li>
+<li>Han B, Cook P , Baldwin T (2014) Text-based twitter user geolocation prediction. Journal of Artificial Intelligence Research 49:451–500</li>
+<li>Hao Q, Cai R, Wang C, Xiao R, Y ang JM, Pang Y , Zhang L (2010) Equip tourists with knowledge mined from travelogues. In: Proceedings of the 19th international conference on World wide web, ACM, pp 401–410</li>
+<li>Haworth B, Bruce E (2015) A review of volunteered geographic information for disaster management. Geography Compass 9(5):237–250</li>
+<li>Hecht B, Moxley E (2009) Terabytes of tobler: evaluating the first law in a massive, domain-neutral representation of world knowledge. In: International conference on spatial information theory, Springer, pp 88–105</li>
+<li>Hecht B, Raubal M (2008) Geosr: Geographically explore semantic relations in world knowledge. The European Information Society pp 95–113</li>
+<li>Hecht BJ, Stephens M (2014) A tale of cities: Urban biases in volunteered geographic information. ICWSM 14:197–205</li>
+<li>Hill LL (2000) Core elements of digital gazetteers: placenames, categories, and footprints. In: International Conference on Theory and Practice of Digital Libraries, Springer, pp 280–290</li>
+<li>Hollenstein L, Purves R (2010) Exploring place through user-generated content: Using flickr tags to describe city cores. Journal of Spatial Information Science 2010(1):21–48</li>
+<li>Hu Y , Janowicz K, Prasad S (2014) Improving wikipedia-based place name disambiguation in short texts using structured data from dbpedia. In: Proceedings of the 8th workshop on geographic information retrieval, ACM, pp 1–8</li>
+<li>Hu Y , Y e X, Shaw SL (2017) Extracting and analyzing semantic relatedness between cities using news articles. International Journal of Geographical Information Science 31(12):2427–2451</li>
+<li>Hu Y , Mao H, McKenzie G (2018) A natural language processing and geospatial clustering framework for harvesting local place names from geotagged housing advertisements. International Journal of Geographical Information Science pp 1– 25</li>
+<li>Huang Q, Xiao Y (2015) Geographic situational awareness: mining tweets for disaster preparedness, emergency response, impact, and recovery. ISPRS International Journal of Geo-Information 4(3):1549–1568</li>
+<li>Inkpen D, Liu J, Farzindar A, Kazemi F, Ghazi D (2015) Location detection and disambiguation from twitter messages. Journal of Intelligent Information Systems pp 1–17</li>
+<li>Intagorn S, Lerman K (2011) Learning boundaries of vague places from noisy annotations. In: Proceedings of the 19th ACM SIGSPA TIAL international conference on advances in geographic information systems, ACM, pp 425–428</li>
+<li>Issa E, Tsou MH, Nara A, Spitzberg B (2017) Understanding the spatio-temporal characteristics of twitter data with geotagged and non-geotagged content: two case studies with the topic of flu and ted (movie). Annals of GIS 23(3):219–235</li>
+<li>Janowicz K, Keßler C (2008) The role of ontology in improving gazetteer interaction. International Journal of Geographical Information Science 22(10):1129–1157</li>
+<li>Jiang Y , Li Z, Y e X (2018) Understanding demographic and socioeconomic biases of geotagged twitter users at the county level. Cartography and Geographic Information Science pp 1–15</li>
+<li>Jones CB, Purves RS (2008) Geographical information retrieval. International Journal of Geographical Information Science 22(3):219–228<br>
+Jones CB, Purves RS, Clough PD, Joho H (2008) Modelling vague places with knowledge from the web. International Journal of Geographical Information Science 22(10):1045–1065</li>
+<li>Ju Y , Adams B, Janowicz K, Hu Y , Y an B, McKenzie G (2016) Things and strings: Improving place name disambiguation from short texts by combining entity cooccurrence with topic modeling. In: 20th International Conference on Knowledge Engineering and Knowledge Management, Springer</li>
+<li>Karimzadeh M, Huang W, Banerjee S, Wallgrün JO, Hardisty F, Pezanowski S, Mitra P , MacEachren AM (2013) Geotxt: a web api to leverage place referencesin text. In: Proceedings of the 7th workshop on geographic information retrieval, ACM, pp 72–73</li>
+<li>Keßler C, Janowicz K, Bishr M (2009a) An agenda for the next generation gazetteer: Geographic information contribution and retrieval. In: Proceedings of the 17th ACM SIGSPA TIAL International Conference on Advances in Geographic Information Systems, ACM, pp 91–100</li>
+<li>Keßler C, Maué P , Heuer J, Bartoschek T (2009b) Bottom-up gazetteers: Learning from the implicit semantics of geotags. GeoSpatial semantics pp 83–102</li>
+<li>Ladra S, Luaces MR, Pedreira O, Seco D (2008) A toponym resolution service following the ogc wps standard. In: International Symposium on Web and Wireless Geographical Information Systems, Springer, pp 75–85</li>
+<li>Leidner JL (2008) Toponym resolution in text: Annotation, evaluation and applications of spatial grounding of place names. Universal-Publishers</li>
+<li>Li H, Srihari RK, Niu C, Li W (2002) Location normalization for information extraction. In: Proceedings of the 19th international conference on Computational linguistics-V olume 1, Association for Computational Linguistics, pp 1–7</li>
+<li>Li L, Goodchild MF (2012) Constructing places from spatial footprints. In: Proceedings of the 1st ACM SIGSPA TIAL international workshop on crowdsourced and volunteered geographic information, ACM, pp 15–21</li>
+<li>Lieberman MD, Samet H (2011) Multifaceted toponym recognition for streaming news. In: Proceedings of the 34th international ACM SIGIR conference on Research and development in Information Retrieval, ACM, pp 843–852</li>
+<li>Lieberman MD, Samet H, Sankaranarayanan J (2010) Geotagging with local lexicons to build indexes for textually-specified spatial data. In: Data Engineering (ICDE), 2010 IEEE 26th International Conference on, IEEE, pp 201–212</li>
+<li>Liu Y , Wang F, Kang C, Gao Y , Lu Y (2014) Analyzing relatedness by toponym co-occurrences on web pages. Transactions in GIS 18(1):89–107</li>
+<li>MacEachren AM, Jaiswal A, Robinson AC, Pezanowski S, Savelyev A, Mitra P , Zhang X, Blanford J (2011) Senseplace2: Geotwitter analytics support for situational awareness. In: Visual analytics science and technology (V AST), 2011 IEEE conference on, IEEE, pp 181–190</li>
+<li>Madden DJ (2017) Pushed off the map: Toponymy and the politics of place in new york city. Urban Studies p Online First<br>
+Malik MM, Lamba H, Nakos C, Pfeffer J (2015) Population bias in geotagged tweets. People 1(3,759.710):3–759</li>
+<li>Mani I, Hitzeman J, Richer J, Harris D (2008) ACE 2005 english spatialML annotations. Linguistic Data Consortium, Philadelphia</li>
+<li>McCurley KS (2001) Geospatial mapping and navigation of the web. In: Proceedings of the 10th international conference on World Wide Web, ACM, pp 221–229</li>
+<li>McKenzie G, Adams B (2018) A data-driven approach to exploring similarities of tourist attractions through online reviews. Journal of Location Based Services 12(2):94–118</li>
+<li>McKenzie G, Liu Z, Hu Y , Lee M (2018) Identifying urban neighborhood names through user-contributed online property listings. ISPRS International Journal of Geo-Information 7(10):388</li>
+<li>Mei Q, Liu C, Su H, Zhai C (2006) A probabilistic approach to spatiotemporal theme pattern mining on weblogs. In: Proceedings of the 15th international conference on World Wide Web, ACM, pp 533–542</li>
+<li>Melo F, Martins B (2017) Automated geocoding of textual documents: A survey of current approaches. Transactions in GIS 21(1):3–38</li>
+<li>Mendes PN, Jakob M, Garc´ ıa-Silva A, Bizer C (2011) Dbpedia spotlight: shedding light on the web of documents. In: Proceedings of the 7th international conference on semantic systems, ACM, pp 1–8</li>
+<li>Merschdorf H, Blaschke T (2018) Revisiting the role of place in geographic information science. ISPRS International Journal of Geo-Information 7(9):364</li>
+<li>Monteiro BR, Davis Jr CA, Fonseca F (2016) A survey on the geographic scope of textual documents. Computers &amp; Geosciences 96:23–34</li>
+<li>Nagar R, Y uan Q, Freifeld CC, Santillana M, Nojima A, Chunara R, Brownstein JS (2014) A case study of the new york city 2012-2013 influenza season with daily geocoded twitter data from temporal and spatiotemporal perspectives. Journal of medical Internet research 16(10)</li>
+<li>Nesi P , Pantaleo G, Tenti M (2016) Geographical localization of web domains and organization addresses recognition by employing natural language processing, pattern matching and clustering. Engineering Applications of Artificial Intelligence 51:202–211</li>
+<li>Overell S, Rüger S (2008) Using co-occurrence models for placename disambiguation. International Journal of Geographical Information Science 22(3):265–287</li>
+<li>Purves RS, Clough P , Jones CB, Arampatzis A, Bucher B, Finch D, Fu G, Joho H, Syed AK, V aid S, et al (2007) The design and implementation of spirit: a spatially aware search engine for information retrieval on the internet. International journal of geographical information science 21(7):717–745</li>
+<li>Purves RS, Clough P , Jones CB, Hall MH, Murdock V , et al (2018) Geographic information retrieval: Progress and challenges in spatial search of text. Foundations and Trends R ? in Information Retrieval 12(2-3):164–318</li>
+<li>Rahimi A, Cohn T, Baldwin T (2017) A neural model for user geolocation and lexical dialectology. In: Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (V olume 2: Short Papers), vol 2, pp 209–216</li>
+<li>Rahmani K, Gnoth J, Mather D (2017) Tourists’ participation on web 2.0: A corpus linguistic analysis of experiences. Journal of Travel Research p0047287517732425</li>
+<li>Roller S, Speriosu M, Rallapalli S, Wing B, Baldridge J (2012) Supervised text-based geolocation using language models on an adaptive grid. In: Proceedings of the 2012 Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning, Association for Computational Linguistics, pp 1500–1510</li>
+<li>Rupp C, Rayson P , Baron A, Donaldson C, Gregory I, Hardie A, Murrieta-Flores P (2013) Customising geoparsing and georeferencing for historical texts. In: Big Data, 2013 IEEE International Conference on, IEEE, pp 59–62</li>
+<li>Salvini MM, Fabrikant SI (2016) Spatialization of user-generated content to uncover the multirelational world city network. Environment and Planning B: Planning and Design 43(1):228–248</li>
+<li>Santos J, Anastácio I, Martins B (2015) Using machine learning methods for disambiguating place references in textual documents. GeoJournal 80(3):375–392</li>
+<li>Sassen S (2016) The global city: Strategic site, new frontier. In: Managing Urban Futures, Routledge, pp 89–104</li>
+<li>Shaw SL, Tsou MH, Y e X (2016) Human dynamics in the mobile and big data era. International Journal of Geographical Information Science 30(9):1687–1693</li>
+<li>Southall H (2014) Rebuilding the great britain historical gis, part 3: integrating qualitative content for a sense of place. Historical Methods: A Journal of Quantitative and Interdisciplinary History 47(1):31–44</li>
+<li>Speriosu M, Baldridge J (2013) Text-driven toponym resolution using indirect supervision. In: ACL (1), ACL, pp 1466–1476</li>
+<li>Spitz A, Geiß J, Gertz M (2016) So far away and yet so close: augmenting toponym disambiguation and similarity with text-based networks. In: Proceedings of the third international ACM SIGMOD workshop on managing and mining enriched geo-spatial data, ACM, p 2</li>
+<li>Stock K, Y ousaf J (2018) Context-aware automated interpretation of elaborate natural language descriptions of location through learning from empirical data. International Journal of Geographical Information Science 32(6):1087–1116, DOI10.1080/13658816.2018.1432861</li>
+<li>Sui D, DeLyser D (2012) Crossing the qualitative-quantitative chasm i: Hybrid geographies, the spatial turn, and volunteered geographic information (vgi). Progress in Human Geography 36(1):111–124</li>
+<li>Taylor PJ, Derudder B (2015) World city network: a global urban analysis.Routledge Tenbrink</li>
+<li>T, Kuhn W (2011) A model of spatial reference frames in language. In:Egenhofer M, Giudice N, Moratz R, Worboys M (eds) Spatial Information Theory, Springer Berlin Heidelberg, Berlin, Heidelberg, pp 371–390</li>
+<li>Toly N, Bouteligier S, Smith G, Gibson B (2012) New maps, new questions: global cities beyond the advanced producer and financial services sector. Globalizations 9(2):289–306</li>
+<li>Tsou MH (2015) Research challenges and opportunities in mapping social media and big data. Cartography and Geographic Information Science 42(sup1):70–74</li>
+<li>Tuan YF (1977) Space and place: The perspective of experience. U of Minnesota Press</li>
+<li>Twaroch FA, Jones CB (2010) A web platform for the evaluation of vernacular place names in automatically constructed gazetteers. In: Proceedings of the 6th Workshop on Geographic Information Retrieval, ACM, p 14</li>
+<li>Twaroch FA, Jones CB, Abdelmoty AI (2009) Acquisition of vernacular place names from web sources. In: King I, Baeza-Y ates R (eds) Weaving Services and People on the World Wide Web, Springer, pp 195–214</li>
+<li>Wallgrün JO, Karimzadeh M, MacEachren AM, Pezanowski S (2018) Geocorpora: building a corpus to test and train microblog geoparsers. International Journal of Geographical Information Science 32(1):1–29</li>
+<li>Wang J, Hu Y (2019) Enhancing spatial and textual analysis with eupeg: An extensible and unified platform for evaluating geoparsers. Transactions in GIS</li>
+<li>Wang M, Zhou X (2016) Geography matters in online hotel reviews. ISPRS International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences pp 573–576</li>
+<li>Wang W, Stewart K (2015) Spatiotemporal and semantic information extraction from web news reports about natural hazards. Computers, environment and urban systems 50:30–40</li>
+<li>van Weerdenburg D, Scheider S, Adams B, Spierings B, van der Zee E (2019) Where to go and what to do: Extracting leisure activity potentials from web data on urban space. Computers, Environment and Urban Systems 73:143–156</li>
+<li>Wing B, Baldridge J (2014) Hierarchical discriminative classification for text-based geolocation. In: Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP), pp 336–348</li>
+<li>Wing BP , Baldridge J (2011) Simple supervised document geolocation with geodesic grids. In: Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies-V olume 1, Association for Computational Linguistics, pp 955–964</li>
+<li>Woodruff AG, Plaunt C (1994) Gipsy: Automated geographic indexing of text documents. Journal of the American Society for Information Science 45(9):645–655</li>
+<li>Xiang Z, Schwartz Z, Gerdes Jr JH, Uysal M (2015) What can big data and text analytics tell us about hotel guest experience and satisfaction? International Journal of Hospitality Management 44:120–130</li>
+<li>Zhang W, Gelernter J (2014) Geocoding location expressions in twitter messages: A preference learning method. Journal of Spatial Information Science 2014(9):37– 70</li>
+<li>Zhong X, Liu J, Gao Y , Wu L (2017) Analysis of co-occurrence toponyms in web pages based on complex networks. Physica A: Statistical Mechanics and its Applications 466:462–475</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/dfaef359.html">http://xishansnow.github.io/posts/dfaef359.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%9C%B0%E5%90%8D%E8%A7%A3%E6%9E%90/">地名解析</a><a class="post-meta__tags" href="/tags/%E5%9C%B0%E5%90%8D%E8%AF%86%E5%88%AB/">地名识别</a><a class="post-meta__tags" href="/tags/GeoAI/">GeoAI</a><a class="post-meta__tags" href="/tags/%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">地理空间人工智能</a><a class="post-meta__tags" href="/tags/%E5%9C%B0%E7%90%86%E6%96%87%E6%9C%AC/">地理文本</a><a class="post-meta__tags" href="/tags/Geoparsing/">Geoparsing</a></div><div class="post_share"><div class="social-share" data-image="/img/book_08.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/c090e647.html"><img class="prev-cover" src="/img/coffe_06.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">➄  广义线性模型</div></div></a></div><div class="next-post pull-right"><a href="/posts/620bea1b.html"><img class="next-cover" src="/img/coffe_01.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info"> 机器学习的五大流派 </div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/cd1740d4.html" title="非结构化文本的地理定位"><img class="cover" src="/img/coffe_02.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-28</div><div class="title">非结构化文本的地理定位</div></div></a></div><div><a href="/posts/1857a4e4.html" title="GeoAI 的近期研究总结与思考"><img class="cover" src="/img/coffe_11.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-22</div><div class="title">GeoAI 的近期研究总结与思考</div></div></a></div><div><a href="/posts/1e4b7e74.html" title="地理知识发现中的空间显式人工智能技术"><img class="cover" src="/img/book_14.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-09</div><div class="title">地理知识发现中的空间显式人工智能技术</div></div></a></div><div><a href="/posts/601b54e8.html" title="2021 年GeoAI 研讨会总结"><img class="cover" src="/img/coffe_06.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-27</div><div class="title">2021 年GeoAI 研讨会总结</div></div></a></div><div><a href="/posts/ae7bb62d.html" title="空间统计学概论"><img class="cover" src="/img/book_12.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-20</div><div class="title">空间统计学概论</div></div></a></div><div><a href="/posts/66c1fa2d.html" title="GeoAI：社交媒体数据用于灾害管理的研究综述"><img class="cover" src="/img/book_14.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-09</div><div class="title">GeoAI：社交媒体数据用于灾害管理的研究综述</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">从自然语言文本中收割地理空间大数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">1 概况和动机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E4%BF%A1%E6%81%AF%E6%9D%A5%E6%BA%90%E7%9A%84%E5%A4%9A%E6%A0%B7%E6%80%A7"><span class="toc-text">1.1 地理空间信息来源的多样性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E4%BB%8E%E6%96%87%E6%9C%AC%E4%B8%AD%E6%94%B6%E5%89%B2%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%EF%BC%9F"><span class="toc-text">1.3 为什么需要从文本中收割地理空间数据？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">2 相关研究</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">3 方法和工具</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%9C%B0%E5%90%8D%E8%AF%86%E5%88%AB%EF%BC%88Toponym-Recognition%EF%BC%89"><span class="toc-text">3.1 地名识别（Toponym Recognition）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-%E4%BD%BF%E7%94%A8%E5%9C%B0%E5%90%8D%E8%AF%8D%E5%85%B8%E5%92%8C%E5%9C%B0%E5%90%8D%E5%8C%B9%E9%85%8D"><span class="toc-text">3.1.1 使用地名词典和地名匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-%E5%88%A9%E7%94%A8NLP%E6%8A%80%E6%9C%AF%E8%AF%86%E5%88%AB%E5%9C%B0%E5%90%8D"><span class="toc-text">3.1.2 利用NLP技术识别地名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84%E8%AF%86%E5%88%AB%E6%96%B9%E6%B3%95"><span class="toc-text">（1）基于规则的识别方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%9F%BA%E4%BA%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E8%AF%86%E5%88%AB%E6%96%B9%E6%B3%95"><span class="toc-text">（2）基于机器学习的识别方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E5%9C%B0%E5%90%8D%E8%A7%A3%E6%9E%90%EF%BC%88-Toponym-Resolution-%EF%BC%89"><span class="toc-text">3.2 地名解析（ Toponym Resolution ）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%981%EF%BC%9A%E6%AD%A7%E4%B9%89%E9%97%AE%E9%A2%98"><span class="toc-text">问题1：歧义问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%982%EF%BC%9A%E8%BD%AC%E5%96%BB%E9%97%AE%E9%A2%98"><span class="toc-text">问题2：转喻问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%983%EF%BC%9A%E8%AF%86%E5%88%AB%E9%94%99%E8%AF%AF%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">问题3：识别错误导致的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%951%EF%BC%9A%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E5%8C%B9%E9%85%8D%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">方法1：基于规则匹配的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%952%EF%BC%9A%E5%9F%BA%E4%BA%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">方法2：基于机器学习的方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E4%B8%BB%E8%A6%81%E7%9A%84%E5%9C%B0%E5%90%8D%E8%A7%A3%E6%9E%90%E5%99%A8%E5%92%8C%E5%B7%A5%E5%85%B7"><span class="toc-text">3.3 主要的地名解析器和工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E9%80%9A%E7%94%A8%E8%AF%AD%E8%A8%80%E5%B7%A5%E5%85%B7"><span class="toc-text">（1）通用语言工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E4%B8%93%E7%94%A8%E5%9C%B0%E5%90%8D%E8%A7%A3%E6%9E%90%E5%B7%A5%E5%85%B7"><span class="toc-text">（2）专用地名解析工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E8%AF%84%E6%B5%8B%E6%83%85%E5%86%B5"><span class="toc-text">（3）评测情况</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-%E5%9F%BA%E4%BA%8E%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%BD%8D%E7%BD%AE%E6%8E%A8%E7%90%86"><span class="toc-text">3.4 基于语言模型的位置推理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-%E5%B0%8F%E7%BB%93"><span class="toc-text">3.5 小结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">4 应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E4%BA%BA%E6%96%87%E5%9C%B0%E7%90%86%EF%BC%9A%E7%90%86%E8%A7%A3%E5%9C%B0%E7%82%B9%E7%9A%84%E4%BA%BA%E7%B1%BB%E4%BD%93%E9%AA%8C%E5%8F%8A%E6%95%B0%E5%AD%97%E4%BA%BA%E6%96%87"><span class="toc-text">4.1 人文地理：理解地点的人类体验及数字人文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E6%80%81%E5%8A%BF%E6%84%9F%E7%9F%A5%EF%BC%9A%E5%BA%94%E6%80%A5%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%80%81%E5%8A%BF%E6%84%9F%E7%9F%A5"><span class="toc-text">4.2 态势感知：应急事件的态势感知</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E8%AE%A4%E7%9F%A5%E5%9C%B0%E7%90%86%EF%BC%9A%E8%99%9A%E6%8B%9F%E6%88%96%E8%AE%A4%E7%9F%A5%E7%A9%BA%E9%97%B4%E4%B8%AD%E7%9A%84%E4%BD%8D%E7%BD%AE%E5%85%B3%E7%B3%BB"><span class="toc-text">4.3 认知地理：虚拟或认知空间中的位置关系</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">5 未来发展方向</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">参考文献</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

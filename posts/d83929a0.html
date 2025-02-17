@@ -1,0 +1,674 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>基于空间滤波方法的机器学习模型 | 西山晴雪的知识笔记</title><meta name="keywords" content="综述,空间变系数模型,空间滤波方法"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基于空间滤波方法的机器学习模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于空间滤波方法的机器学习模型">
+<meta property="og:url" content="http://xishansnow.github.io/posts/d83929a0.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="基于空间滤波方法的机器学习模型">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/book_09.png">
+<meta property="article:published_time" content="2022-12-08T12:50:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.028Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="综述">
+<meta property="article:tag" content="空间变系数模型">
+<meta property="article:tag" content="空间滤波方法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/book_09.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/d83929a0"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '基于空间滤波方法的机器学习模型',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/book_09.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">基于空间滤波方法的机器学习模型</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-08T12:50:00.000Z" title="发表于 2022-12-08 20:50:00">2022-12-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.028Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/">GeoAI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/">空间变系数模型</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">8.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>32分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src="https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js"></script>
+<script src="/js/attachTooltips.js"></script>
+<link rel="stylesheet" href="/css/tippy.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>【摘 要】 空间统计模型对于地理空间数据建模非常有效，因为它们考虑了地理空间和其他非空间协变量的空间信息，使它们能够通过解决空间依赖性来最小化空间自相关。相比之下，机器学习模型在预测非空间数据方面非常有效，但由于空间自相关问题，它们在建模和预测地理空间数据方面效果不佳。在用于地理空间数据建模的机器学习模型中，经常出现的局限性之一是没有将地理空间的空间信息融合到模型中的标准方法，因此机器学习模型中无法最小化空间自相关。</p>
+<p>在本研究中，我们提出了一种局部空间信息嵌入的机器学习方法，该方法能够在预测地理空间现象的同时，通过解决空间依赖性来最小化空间自相关。</p>
+<p>我们的研究应用 <code>特征向量空间滤波方法</code> 从空间坐标中提取近似特征向量，并将它们作为一组向量与选定的非空间协变量一起嵌入到机器学习模型中。我们比较了传统空间统计模型和基于机器学习的模型之间的相对预测性能。实验表明，在机器学习模型规范中结合空间过滤的特征向量来表示空间信息可显著提高预测性能。</p>
+<p>【原 文】 M. D. Islam, B. Li, C. Lee, and X. Wang, “Incorporating spatial information in machine learning: The Moran eigenvector spatial filter approach,” Transactions in GIS, vol. 26, no. 2, pp. 902–922, Apr. 2022, doi: 10.1111/tgis.12894.</p>
+<h2 id="1-引言">1 引言</h2>
+<p>空间统计和机器学习(ML) 模型可以提供有关地理空间现象的影响因素的宝贵信息以及对未来情景的洞察。通常，统计模型更适合生成推理统计，而机器学习模型主要用于预测/分类目的。对于地理空间数据分析，空间统计模型因其对传统统计模型预测的准确估计而越来越受欢迎 (Griffith，[2003]；Murakami &amp; Griffith，[2015])。在构建地理空间数据模型时，空间统计回归考虑了 Tobler 地理学第一定律的影响：“一切都与其他事物相关，但近处的事物比远处的事物更相关” (Tobler，[1970])。由于地理空间数据的空间依赖性，空间现象受邻域特征的影响很大。空间依赖性描述了一种情况，即在特定位置的观察往往表现出与邻近位置相似的值 (LeSage，[2008] )。某些非空间数据 (例如，房价或 Airbnb 租金)由于其空间依赖性而在中央商务区 (CBD) 区域显示较高值的空间聚簇 (Gyódi 和 Nawaro，[2021] )。最早的空间统计模型无法解决空间数据的空间依赖性；因此，在残差中可以观察到空间自相关现象 (Cliff &amp; Ord，[1969]，[1973] )。空间统计模型通过应用 <code>地理加权回归</code> 和 <code>特征向量空间过滤</code> 等多种方法来解决空间数据的空间依赖性，从而克服了传统统计模型的局限性；因此，它们的性能比传统回归模型更准确和令人满意 (Anselin，[2010]；Brunsdon，Fotheringham， &amp; Charlton，[1998]；Goodchild，[2004]；Griffith，[2003]，[2020]; Murakami &amp; Griffith, [2015]；Tobler，[1970])。</p>
+<p>尽管机器学习模型因其在预测非空间数据方面的性能而倍受推崇，但它们无法解决空间自相关问题，因为它们缺乏捕获地理空间数据的空间相关性的能力。通过纯数据驱动的机器学习算法训练空间数据集的结果往往是一个 “无法检测空间模式” 和 “无法最小化空间自相关问题” 的模型。但忽视空间模式和自相关问题会导致模型产生误导性的、糟糕的结果。</p>
+<p>因此， <strong>本研究提出了一种基于特征向量空间滤波 (ESF) 的机器学习方法来预测地理空间现象，其中空间过滤特征向量的作用是通过应用地图模式变量来捕获空间依赖性</strong>。特征向量是从数据点的空间位置获得的，在机器学习模型定义中表示为空间信息的代理变量（ proxy variable ）。我们的假设是： <strong>这些选定的特征向量如果作为空间信息的代理变量，会使机器学习模型能够解决空间依赖性并最小化空间自相关</strong>。</p>
+<p>我们使用华盛顿金县的房屋销售价格数据集作为实验数据集来测试所提出方法的性能。</p>
+<h2 id="2-研究现状">2 研究现状</h2>
+<p>GIS 和统计模型现在为研究人员提供了一种能够识别和监测空间现象的宝贵工具。 GIS 数据对于分析地理空间问题至关重要，因为一些问题与地理位置相关，并且在许多学科中具有更广泛的应用，甚至超出了数据科学或空间统计。此类数据还可以捕获时间变化，这可能有助于我们了解时空趋势。</p>
+<p>统计和机器学习模型与 GIS 相结合使我们能够模拟未来场景，这些场景提供有关时空趋势的有用信息和对特定空间现象潜在问题的洞悉 (Montero、Mínguez 和 Fernández-Avilés，[2017]；Wu，[2017])。然而，一些模型由于其复杂的错误处理技术而获得比其他模型更高的预测准确性。因此，仔细选择合适的预测模型对于分析和预测空间数据至关重要。</p>
+<p>长期以来，空间统计模型一直是空间数据建模和预测的主要方法。局部空间模型可以表现空间数据的空间依赖性质，因此在空间数据建模和预测方面非常成功。早期的空间统计模型是以基于共享回归模型及其变体的形式引入的 (Ahasan，[2019a]; Can, [1992]; Chen, Ong, Zheng, &amp; Hsu, [2017]；Goodman，[1978]；Janssen、Söderberg 和 Zhou，[2001])。通常，共享回归是在多元线性回归框架内进行的，并且经常因其严格的假设而受到批评 (Ahasan，[2019a], [2019b])。该模型可用于生成推断统计数据，但与更灵活的机器学习模型 (Limsombunc、Gan 和 Lee，[2004] ) 相比，其预测性能非常差。最近推出的基于随机效应的特征向量空间滤波(RE-ESF) 模型，似乎在解决空间自相关问题方面比其他空间回归模型提供了有希望的结果 (Griffith，[2020]; Murakami &amp; Griffith, [2015]; Wang, Kockelman and Wang [2013]。空间过滤的特征向量与协变量相互作用可以在对地理空间数据建模时消解许多空间关系。</p>
+<p>相比之下，机器学习模型，例如支持向量机 (SVM; Chen et al., [2017]; Wu, [2017])、人工神经网络 (ANNs; Lim, Wang, Wang, &amp; Chang, [2016])、随机森林 (RF；Akay、Topal、Kizilarslan 和 Bulbul，[2019])、决策树 (Park &amp; Bae，[2015]) 等，被用于空间数据建模，并在预测中提供了有希望的结果。然而，这些研究仅限于结合距离衰减变量，通过距离衰减和非空间协变量之间的相互作用来在一定程度上解决空间自相关 (Ahasan，[2019a]；Chen 等，[2017])。这种方法的缺点是有时数据不可用或人为错误可能导致在创建和处理距离衰减变量时排除一些表示数据空间结构的协变量。因此，机器学习模型无法解决因缺少协变量而导致的空间自相关问题，因此性能可能会下降。</p>
+<p>此外，处理和研究这些空间变量也是一项费时费力的工作。研究这么多距离衰减变量以确定哪个变量可以解决空间自相关是不可行的。为了克服这些限制，我们提出了一种面向空间数据建模的、基于 ESF 的机器学习方法，该方法将从地理空间坐标中生成选定的特征向量，并在模型定义中将其表示为空间信息的代理变量，而不是距离衰减变量。本研究假设特征向量空间滤波方法（原先主要用于回归分析以解决空间自相关问题）能够使机器学习模型解决相同的问题。</p>
+<p>在选择机器学习模型时，我们专注于更灵活的算法，例如 XGBoost、支持向量回归器 (SVR) 和 人工神经网络 ANN，因为与其他机器学习算法相比，它们具有复杂的错误处理能力。</p>
+<ul>
+<li>XGBoost 在数据建模方面的表现优于任何其他机器学习算法，并已成功应用于众多领域 (Georganos 等，[2018]; Islam, Islam, Ahasan, Mia, &amp; Haque, [2021]; Li, Cao, Li , Zhao, &amp; Sun, [2020]; Oh, Ham, Lee, &amp; Kim, [2019])。在多项研究中，它显示出比其他算法 (包括 SVM、RF 和 ANN) 更好的性能和更少的时间 (Georganos 等，[2018]; Munkhdalai, Wang, Park, &amp; Ryu, [2019])。因此，本研究将探索该算法与其他空间统计模型一起用于空间数据建模的有效性。</li>
+<li>相比之下，SVR 在类之间有明显的分离边缘时也表现良好，并且在高维空间中更有效。因此，本研究假设数据库中额外选择的特征向量将提高 SVR 模型的性能，从而使模型能够解决空间自相关问题。</li>
+<li>除了这两个机器学习模型外，本研究还探讨了 ANN 模型，该模型非常流行并广泛用于建模和预测空间和非空间数据 (Zhang, Di, Lin, &amp; Guo, [2019] ) 。</li>
+</ul>
+<p>最后，本研究以基于特征向量空间滤波的空间统计模型作为基准，对基于特征向量空间滤波的机器学习模型的相对预测性能进行了比较。</p>
+<h2 id="3-材料和方法">3 材料和方法</h2>
+<h3 id="3-1-研究区域和数据预处理">3.1 研究区域和数据预处理</h3>
+<p>本研究使用华盛顿州金县的开源房屋销售数据集（<code>图 [1]</code>），可在 Kaggle 网站上获取（Harlfoxem，[2016]）。该数据集包含 2014 年 5 月至 2015 年 5 月共有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>21</mn><mo separator="true">,</mo><mn>613</mn></mrow><annotation encoding="application/x-tex">21,613</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">21</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">613</span></span></span></span> 条记录，具有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>20</mn></mrow><annotation encoding="application/x-tex">20</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">20</span></span></span></span> 个单独的住房特征。</p>
+<p><img src="https://onlinelibrary.wiley.com/cms/asset/ebadba77-7349-40e8-a5f8-a07b846f7727/tgis12894-fig-0001-m.jpg" alt="Figure01"></p>
+<blockquote>
+<p>图 1: 数据点（房屋）在华盛顿 King County 的位置</p>
+</blockquote>
+<p>少数数据点位于县城偏远地区，距离中心城区和郊区太远。这些数据点会严重影响特征向量空间滤波的空间地图模式，并在空间统计模型中产生噪声。因此，从数据集中删除了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>136</mn></mrow><annotation encoding="application/x-tex">136</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">136</span></span></span></span> 个数据点以使分析更简单。剩余数据点总数为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>21</mn><mo separator="true">,</mo><mn>477</mn></mrow><annotation encoding="application/x-tex">21,477</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">21</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">477</span></span></span></span>，平均售价为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>54</mn><mo separator="true">,</mo><mn>062</mn></mrow><annotation encoding="application/x-tex">54,062</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">54</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">062</span></span></span></span>。有关住房数据集属性，请参见 <code>表 [1]</code>。</p>
+<blockquote>
+<p>表 1： King County 的房价数据库属性列表</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Identification</td>
+</tr>
+<tr>
+<td>price</td>
+<td>Sale price</td>
+</tr>
+<tr>
+<td>bedrooms</td>
+<td>Number of bedrooms</td>
+</tr>
+<tr>
+<td>bathrooms</td>
+<td>Number of bathrooms</td>
+</tr>
+<tr>
+<td>sqft_liv</td>
+<td>Size of living area in square feet</td>
+</tr>
+<tr>
+<td>sqft_lot</td>
+<td>Size of the lot in square feet</td>
+</tr>
+<tr>
+<td>floors</td>
+<td>Number of floors</td>
+</tr>
+<tr>
+<td>waterfront</td>
+<td>1 if the property has a waterfront, 0 if not</td>
+</tr>
+<tr>
+<td>view</td>
+<td>How good the view of the property is, ranked 0 to 4</td>
+</tr>
+<tr>
+<td>condition</td>
+<td>Condition of the house, ranked 1 to 5</td>
+</tr>
+<tr>
+<td>grade</td>
+<td>Classification by construction quality</td>
+</tr>
+<tr>
+<td>sqft_above</td>
+<td>Square feet above the ground</td>
+</tr>
+<tr>
+<td>sqft_basmt</td>
+<td>Square feet of basement</td>
+</tr>
+<tr>
+<td>yr_built</td>
+<td>Year built</td>
+</tr>
+<tr>
+<td>yr_renov</td>
+<td>Year renovated</td>
+</tr>
+<tr>
+<td>zipcode</td>
+<td>5-digit zip code</td>
+</tr>
+<tr>
+<td>lat</td>
+<td>Latitude</td>
+</tr>
+<tr>
+<td>long</td>
+<td>Longitude</td>
+</tr>
+<tr>
+<td>sqft_liv15</td>
+<td>Size of living space in 2015 (square feet)</td>
+</tr>
+<tr>
+<td><code>sqft_lot15</code></td>
+<td>Size of the lot in 2015 (square feet)</td>
+</tr>
+</tbody>
+</table>
+<p>销售价格的频率密度图显示它是右偏的（<code>图[2a]</code>）。偏态响应变量可能会产生偏态残差，因为异常值仍保留在残差中。回归分析的假设之一是残差正态性，在这种情况下会被违反。因此，已执行对数转换以减少响应变量的偏斜。变换后变量的频率密度直方图显示响应变量呈正态分布（<code>图[2b]</code>）。</p>
+<p><img src="https://onlinelibrary.wiley.com/cms/asset/de1d9a25-c15f-48dd-a826-76ec6d22de13/tgis12894-fig-0002-m.jpg" alt="Figure02"></p>
+<blockquote>
+<p>图 2: 房屋销售价格分布情况：（a）未经转换； (b) 对数转换后</p>
+</blockquote>
+<p>转换后的销售价格地图显示，金县的房屋销售价格分布存在地域差异（<code>图[3]</code>）。地图中心（即华盛顿湖周围）的一组较高值很明显，表明华盛顿湖周围的房价高于其他位置。</p>
+<p><img src="https://onlinelibrary.wiley.com/cms/asset/f4ca124b-6134-4f6a-9a44-3fa04953f8e8/tgis12894-fig-0003-m.jpg" alt="Figure03"></p>
+<blockquote>
+<p>图 3: 对数变换后的房屋销售价格空间分布</p>
+</blockquote>
+<p>局部莫兰散点图和聚类图（<code>图 [4]</code>）。在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>999</mn></mrow><annotation encoding="application/x-tex">999</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">999</span></span></span></span> 个随机排列和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.05</mn></mrow><annotation encoding="application/x-tex">p = 0.05</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.05</span></span></span></span> 显示整个地理空间的高-高和低-低聚类。 Moran’s I <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo><mn>0.632</mn></mrow><annotation encoding="application/x-tex">= 0.632</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.632</span></span></span></span> 表明研究区房价分布存在空间自相关。</p>
+<p><img src="https://onlinelibrary.wiley.com/cms/asset/58cc569d-439d-4323-8020-faaab9c91037/tgis12894-fig-0004-m.jpg" alt="Figure04"></p>
+<blockquote>
+<p>图 4: (a) Moran 的销售价格散点图和 (b) 聚类图</p>
+</blockquote>
+<p>为了简化分析和模型解释，我们通过处理原始变量创建了几个变量。例如，我们没有使用 <code>yr_built</code>，而是通过从销售年份中减去 <code>yr_built</code> 创建了一个名为 <code>building_age</code> 的变量。我们将 <code>yr_renov</code> 转换为分类变量 (<code>age_renov</code>)，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 表示建筑物至少翻新过一次，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> 表示建筑物根本没有翻新过。纬度和经度变量被排除在分析之外，因为一些机器学习算法需要数据归一化，例如 ANN（Nayak、Misra 和 Behera，[2014]），并且归一化地理坐标会使其变得毫无意义。相反，我们将地理坐标转换为平面坐标 [投影坐标系：NAD 1983 (2011) State Plane Washington North FIPS 4601] 并使用它们来提取空间特征向量。由于担心区域单元的变更问题，邮政编码变量被排除在分析之外（Gehlke &amp; Biehl, [1934]; Openshaw, [1984]）。</p>
+<h3 id="3-2-变量选择">3.2 变量选择</h3>
+<p>选择重要变量构成的子集是模型构建过程中不可或缺的一部分，因为大多数模型不会处理大量不相关的变量，这可能会在模型中引入噪声并最终可能导致模型过拟合。</p>
+<p>本研究使用顺序替换法，也称为逐步选择法，去除不太重要的变量并找到用于建模的最佳变量组合（Miller，[1984]）。顺序替换法是向前和向后选择的结合，最初从没有预测变量开始，然后顺序添加有影响的预测变量。接下来删除不会改善模型拟合的剩余变量。最后，只有选定的变量用于进一步分析，以确保模型之间的公平比较。</p>
+<h3 id="3-3-随机效应特征值空间过滤">3.3 随机效应特征值空间过滤</h3>
+<p>特征向量空间滤波主要用于通过展示空间在不同空间尺度下的空间排列来理解地理空间中的空间现象（Griffith，[2003]，[2020]；Griffith &amp; Chun，[2013]；Griffith，Chun，&amp; Li , [2019])。 Jong, Sprenger, and Veen ([1984])。 揭示了极端非零特征值与其关联的极端 Moran’s <em>I</em> 和 Geary’s <em>C</em> 之间的关系，它估计空间自相关的强度。然而，来自 Tiefelsdorf 和 Boots ([1995]) 的发现。后来导致了 Moran’s <em>I</em> 和特征值之间联系的概念，并开创了基于拓扑特征向量的空间过滤概念 (Griffith, [1996])。空间过滤方法生成的综合解释变量代表了数据集的空间结构，可以通过与非空间协变量的交互来解决空间依赖性问题（Wang et al., [2013]）。在各种空间过滤技术中，基于特征向量的空间过滤似乎在空间数据建模时提供了有希望的结果（Griffith，[2000]）。正如 Griffith 和 Chun ([2013]) 所述，特征向量空间滤波使用数学分解，其结果称为双中心空间权重矩阵的特征函数。</p>
+<p>详细信息参见 <a href="d99f4eaf.html">《空间滤波方法》</a>。</p>
+<h3 id="3-4-XGBoost">3.4 XGBoost</h3>
+<p>XGBoost 是树回归器的集合，被引入以有效减少计算时间并扩展树提升算法（Chen 和 Guestrin，2016 年）。它主要用于监督学习，其中训练数据 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold">x</mi><mrow><mi mathvariant="bold">i</mi><mi mathvariant="bold">j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathbf{x_{ij}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7305em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathbf">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathbf mtight">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> 用于分类/预测目标变量 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold">y</mi><mi mathvariant="bold">i</mi></msub></mrow><annotation encoding="application/x-tex">\mathbf{y_i}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6389em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathbf" style="margin-right:0.01597em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.016em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathbf mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。将每棵树的预测分数相加得到最终分数，并通过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 个加性函数评估预测输出。</p>
+<p>详细信息参见 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/83901304">《深入理解XGBoost（知乎）》</a>。</p>
+<h3 id="3-5-Support-vector-regressor">3.5 Support vector regressor</h3>
+<p>原文此处只是支持向量回归的简介，没有价值，暂略。</p>
+<h3 id="3-6-Artificial-neural-networks">3.6 Artificial neural networks</h3>
+<p>原文此处只是支持人工神经网络，没有价值，暂略。</p>
+<h3 id="3-7-基于特征向量空间滤波的-XGBoost、SVR-和-ANN">3.7 基于特征向量空间滤波的 XGBoost、SVR 和 ANN</h3>
+<p><strong>本研究应用特征向量空间滤波方法从空间坐标中提取近似特征向量，并将它们作为一组向量与选定的非空间协变量一起嵌入到机器学习模型中。</strong></p>
+<p>实施方法：使用 R 编程语言的 “spmoran” 包提取特征向量 (EV)（Murakami，[2017]）。使用 “XGBoost” 包来实现 XGBoost 算法，并使用 “Caret” 包来实现 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> 折交叉验证方法来验证每个模型。在交叉验证期间，我们应用网格搜索方法优化每个算法的参数，并在最终模型中使用优化后的参数（XGBoost：<code>eta = 0.3，max_depth = 3，nrounds = 150，colsample_bytree = 0.6</code>；SVR：<code>C = 3，kernel = rbf</code>；ANN：<code>size = 5，decay = 1e-01</code>）。使用多种机器学习算法的目的是确保基于特征向量空间滤波的机器学习为方法在基准模型 RE-ESF 上的性能可靠性。</p>
+<h3 id="3-8-评估指标">3.8 评估指标</h3>
+<p>本研究应用了几种传统的回归指标来进行模型验证。</p>
+<ul>
+<li>（1）<em>R</em><sup>2</sup> 衡量预测值和实际值之间的拟合优度。</li>
+<li>（2）均方误差 (MSE) 测量预测值和观测值之间的平方差的平均值。</li>
+<li>（3）均方根误差 (RMSE) 是 <em>MSE</em> 的平方根，它衡量残差的标准差。</li>
+<li>（4）平均绝对误差 (MAE) 衡量观察值和预测值之间误差差异的平均值，而不考虑它们的方向。</li>
+<li>（5）全局莫兰 <em>I</em> 检验，测量残差中空间自相关的强度。它检测残差的空间聚类，能够揭示特定模型捕获空间依赖性的能力。</li>
+</ul>
+<h2 id="4-ANALYSIS-AND-RESULTS">4 ANALYSIS AND RESULTS</h2>
+<p><code>表 2</code> 显示了初始线性回归结果，不包括任何位置/空间变量。预测变量可以解释 <code>log_price</code> 中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>65.2</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">65.2\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">65.2%</span></span></span></span> 的变化，而所有变量都很显著的，<code>grade</code> 和 <code>waterfront</code> 是两个最有影响力的预测变量，系数分别为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.212</mn></mrow><annotation encoding="application/x-tex">0.212</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.212</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.385</mn></mrow><annotation encoding="application/x-tex">0.385</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.385</span></span></span></span>。但是一些变量，例如 <code>sqft_lot</code>、<code>sqft_above</code>、<code>sqft_lot15</code>，估计值非常小甚至为零。 <code>sqft_liv</code> 和 <code>sqft_above</code> 的方差膨胀因子 (VIF) 得分均大于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn></mrow><annotation encoding="application/x-tex">5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span>，表明变量之间存在多重共线性。相关变量必须从数据集中删除，因为它们严重影响空间统计模型。但是我们在删除这些变量时应该非常小心，因为我们可能会错误地删除一个重要的变量。因此，除了相关矩阵 ( <code>图 [7a]</code> ) 同时删除一个变量。<code>图 [7a]</code> 显示 <code>sqft_liv</code> 和 <code>sqft_above</code> 高度相关。因此，它们都需要从数据集中删除。但两者都与 <code>log_price</code> 高度相关。 <em>R</em><sup><i>2</i></sup> 图 (图 [7b])。 显示 <code>sqft_liv</code> 与 <code>log_price</code> 的相关性强于 <code>sqft_above</code>。因此，从数据集中删除了 <code>sqft_above</code> 变量。 <code>sqft_liv15</code> 变量也与 <code>sqft_liv</code> 和 <code>grade</code> 适度相关，但与 <code>log_price</code> 的相关性不如其他两个变量强。同样，<code>sqft_lot15</code> 和 <code>sqft_lot</code> 中度相关，但它们与 <code>log_price</code> 的关联相似。在删除上面的强相关变量 <code>sqft_above</code> 之后，我们运行逐步回归以从数据集中选择最具影响力的变量子集。确定了八个最具影响力的变量，导致低贝叶斯信息准则 (BIC)、<em>C<sub>p</sub></em> 和残差平方和 (RSS) 值以及逐步回归分析中调高后的 <em>R</em><sup>2</sup> 值 (<code>图 [8]</code>)。 。</p>
+<blockquote>
+<p>表 2： 线性回归结果</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Predictor</th>
+<th>log_price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Estimate</td>
+<td>CI [confidence interval]</td>
+</tr>
+<tr>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>(Intercept)</td>
+<td>10.335626</td>
+</tr>
+<tr>
+<td>bedrooms</td>
+<td>−0.0163770</td>
+</tr>
+<tr>
+<td>bathrooms</td>
+<td>0.0545398</td>
+</tr>
+<tr>
+<td>sqft_liv</td>
+<td>0.0001983</td>
+</tr>
+<tr>
+<td>sqft_lot</td>
+<td>0.0000002</td>
+</tr>
+<tr>
+<td>floors</td>
+<td>0.1198739</td>
+</tr>
+<tr>
+<td>waterfront</td>
+<td>0.3850934</td>
+</tr>
+<tr>
+<td>view</td>
+<td>0.0386654</td>
+</tr>
+<tr>
+<td>condition</td>
+<td>0.0444042</td>
+</tr>
+<tr>
+<td>grade</td>
+<td>0.2115720</td>
+</tr>
+<tr>
+<td>sqft_above</td>
+<td>−0.0000866</td>
+</tr>
+<tr>
+<td>building_age</td>
+<td>0.0054347</td>
+</tr>
+<tr>
+<td>age_renov[1]</td>
+<td>0.0363239</td>
+</tr>
+<tr>
+<td>sqft_liv15</td>
+<td>0.0001090</td>
+</tr>
+<tr>
+<td>sqft_lot15</td>
+<td>−0.0000006</td>
+</tr>
+<tr>
+<td>Obs.</td>
+<td>21,477</td>
+</tr>
+<tr>
+<td><em>R</em><sup>2</sup>/<em>R</em><sup>2</sup>&nbsp;adj.</td>
+<td>0.652/0.651</td>
+</tr>
+</tbody>
+</table>
+<p><img src="https://onlinelibrary.wiley.com/cms/asset/67c92a40-aae0-424a-b420-eac2420fa251/tgis12894-fig-0007-m.jpg" alt="Figure07"></p>
+<blockquote>
+<p>图 7: (a) 皮尔逊相关系数矩阵； (b) 预测变量之间的 R2 矩阵和响应变量</p>
+</blockquote>
+<p><img src="https://onlinelibrary.wiley.com/cms/asset/4848a65f-f126-4340-9b7e-f7a426db8ce0/tgis12894-fig-0008-m.jpg" alt="Figure08"></p>
+<blockquote>
+<p>图 8: (a) RSS； (b) 调整后的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>R</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">R^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>； © BIC ；和 (d) 逐步回归的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mi>p</mi></msub></mrow><annotation encoding="application/x-tex">C_p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">p</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> 图</p>
+</blockquote>
+<p>我们再次实施了另一个线性回归模型，仅从逐步回归分析中选择了八个变量，发现所有变量都显著，并且 VIF 分数是可以接受的 (<code>表 [3]</code> 。这八个变量可以解释响应变量中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64.5</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">64.5\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">64.5%</span></span></span></span> 的变异，而其他七个变量仅对 <em>R</em><sup>2</sup> 的增加贡献了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.7</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">0.7\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">0.7%</span></span></span></span>，可以忽略不计。</p>
+<blockquote>
+<p>表 3： 具有子集变量的线性回归结果</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Predictor</th>
+<th>log_price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Estimate</td>
+<td>CI [confidence interval]</td>
+</tr>
+<tr>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>(Intercept)</td>
+<td>10.4629</td>
+</tr>
+<tr>
+<td>bathrooms</td>
+<td>0.0603</td>
+</tr>
+<tr>
+<td>sqft_liv</td>
+<td>0.0001</td>
+</tr>
+<tr>
+<td>floors</td>
+<td>0.0889</td>
+</tr>
+<tr>
+<td>waterfront</td>
+<td>0.3802</td>
+</tr>
+<tr>
+<td>view</td>
+<td>0.049</td>
+</tr>
+<tr>
+<td>grade</td>
+<td>0.2104</td>
+</tr>
+<tr>
+<td>building_age</td>
+<td>0.0059</td>
+</tr>
+<tr>
+<td>sqft_liv15</td>
+<td>0.0001</td>
+</tr>
+<tr>
+<td>Obs.</td>
+<td>21,477</td>
+</tr>
+<tr>
+<td><em>R</em><sup>2</sup>/<em>R</em><sup>2</sup>&nbsp;adj.</td>
+<td>0.6448/0.6447</td>
+</tr>
+</tbody>
+</table>
+<p>去除那些无关紧要的变量后，可以注意到系数的微小变化，而滨水区和坡度仍然是八个变量中影响最大的。因此，只有这八个变量被用于进一步分析，以便在空间统计和机器学习模型之间进行公平比较。</p>
+<p><em>k</em>-fold (<em>k</em> = 10) 交叉验证 (CV) 方法用于验证和比较统计模型和机器学习模型之间的性能。<code>表 [4]</code> 显示，仅使用八个非空间变量，XGBoost 就可以达到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>68.72</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">68.72\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">68.72%</span></span></span></span> <em>R</em><sup>2</sup>。此外，RMSE 为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.2948</mn></mrow><annotation encoding="application/x-tex">0.2948</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.2948</span></span></span></span>，可以优于 SVR 和 ANN 模型。统计回归模型达到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">64\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">64%</span></span></span></span> 的 <em>R</em><sup>2</sup>，RMSE 为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.3142</mn></mrow><annotation encoding="application/x-tex">0.3142</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.3142</span></span></span></span>，表明机器学习模型 XGBoost 和 SVR 在预测方面优于统计回归模型。</p>
+<blockquote>
+<p>表 4. 仅使用非空间变量的 10 折交叉验证结果</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>RMSE</th>
+<th>MSE</th>
+<th>MAE</th>
+<th><em>R</em> <sup>2</sup></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LR</td>
+<td>0.3142</td>
+<td>0.0988</td>
+<td>0.2511</td>
+<td>0.6444</td>
+</tr>
+<tr>
+<td>XGBoost</td>
+<td>0.2948</td>
+<td>0.0869</td>
+<td>0.2333</td>
+<td>0.6872</td>
+</tr>
+<tr>
+<td>SVR</td>
+<td>0.2998</td>
+<td>0.0899</td>
+<td>0.2334</td>
+<td>0.6772</td>
+</tr>
+<tr>
+<td>ANN</td>
+<td>0.3128</td>
+<td>0.0978</td>
+<td>0.2490</td>
+<td>0.6490</td>
+</tr>
+</tbody>
+</table>
+<p><code>表 [5]</code> 显示了在融合了近似空间特征向量（ EV ）时所有四个模型的预测性能结果作为局部空间信息。此外，还使用了修改后的 LR 模型 (RE-ESF)，其中特征向量被添加为协变量。该表表明，与初始对应的非空间模型相比，添加空间特征向量可以显著提高所有机器学习模型的预测性能。 XGBoost 和 SVR 模型的_R_<sup>2</sup>均为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>89</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">89\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">89%</span></span></span></span> ，RSME 为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.174</mn></mrow><annotation encoding="application/x-tex">0.174</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.174</span></span></span></span>；这些最初大约是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>68</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">68\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord">68%</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.29</mn></mrow><annotation encoding="application/x-tex">0.29</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.29</span></span></span></span>。与 XGBoost 和 SVR 模型相比，ANN 模型的性能并不令人满意。令人惊讶的是，空间统计回归模型 RE-ESF (即修改后的 LR 模型) 在初始非空间模型上表现得非常好，并且达到了与 XGBoost 和 SVR 模型几乎相似的预测精度。<code>图 [9]</code> 可视化了具有和不具有空间变量的所有四种模型的准确性评估指标。这些图表描述了在初始点上添加空间信息后模型的性能提高了多少。 <strong>可以说，嵌入特征向量的机器学习模型比初始的非空间模型具有更高的准确性</strong>，这是本研究的主要目标。与此同时，已经建立的空间统计模型 RE-ESF 也达到了几乎相似的预测精度。因此，我们可以总结，以空间特征向量的形式结合空间信息可以提高空间统计和机器学习模型的性能。</p>
+<blockquote>
+<p>表 5: 非空间变量和 EV 的 10 折交叉验证结果</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>RMSE</th>
+<th>MSE</th>
+<th>MAE</th>
+<th><em>R</em> <sup>2</sup></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RE-ESF</td>
+<td>0.1764</td>
+<td>0.0311</td>
+<td>0.1304</td>
+<td>0.8854</td>
+</tr>
+<tr>
+<td>XGBoost</td>
+<td>0.1745</td>
+<td>0.0305</td>
+<td>0.1269</td>
+<td>0.8901</td>
+</tr>
+<tr>
+<td>SVR</td>
+<td>0.1744</td>
+<td>0.0304</td>
+<td>0.1256</td>
+<td>0.8910</td>
+</tr>
+<tr>
+<td>ANN</td>
+<td>0.2693</td>
+<td>0.0725</td>
+<td>0.2015</td>
+<td>0.8428</td>
+</tr>
+</tbody>
+</table>
+<p><img src="https://onlinelibrary.wiley.com/cms/asset/86aabeec-e65b-47ad-a5b9-ee12e16e69b7/tgis12894-fig-0009-m.jpg" alt="Figure09"></p>
+<blockquote>
+<p>图 9: (a) RMSE; (b) MSE; © MAE; and (d) <em>R</em><sup>2</sup> plots of all four models showing their improvement after incorporating spatial EVs</p>
+</blockquote>
+<p>虽然 XGBoost 和 SVR 模型的性能相似，但我们选择 XGBoost 模型只是为了可视化在机器学习模型规范中加入空间特征向量的效果。 LR 和 XGBoost 模型的残差分布图显示没有空间信息的空间聚类残差 (图 [10])。 。残差较高并与 Elliott 和 Poverty Bay 以及重工业综合区周围聚集在一起 (见图 [1] ). LR 和 XGBoost 模型残差中的 Moran’s <em>I</em> 检验分数分别为 0.5329 和 0.4161，表明残差中存在显著的空间自相关。</p>
+<p><img src="https://onlinelibrary.wiley.com/cms/asset/2e7878aa-994b-43c9-a754-3a6bfd49b981/tgis12894-fig-0010-m.jpg" alt="Figure10"></p>
+<blockquote>
+<p>图 10: 残差分布和残差的全局 Moran’s_I_检验结果</p>
+</blockquote>
+<p>将空间特征向量添加到模型后，RE-ESF 和基于特征向量空间滤波的 XGBoost 模型残差中的 Moran’s <em>I</em> 得分分别降至 0.0729 和 0.0484，表明统计模型和机器学习模型残差中的空间自相关性显著降低.此外，两个模型的残差分布图都显示空间聚类的去除表明残差的空间随机性。结果再次证实，将空间过滤的 EV (主要用于空间统计回归以解决空间依赖性) 纳入机器学习模型，使它们能够最大限度地减少空间自相关并提高预测性能。</p>
+<p>变量重要性图 (图 [11])。 显示 XGBoost 模型将等级和 sqft_liv 识别为最重要的树结构构建中的预测因子。它还将 EV2、EV3、EV1 和 EV6 确定为之后的重要预测变量，这证实了局部空间信息也影响响应变量。因此，我们可以总结，将 EV 作为空间信息的表示形式纳入机器学习模型规范中，使它们能够捕获空间数据集的潜在空间依赖属性。结果，我们观察到机器学习模型的预测准确性有了显著提高。</p>
+<p><img src="https://onlinelibrary.wiley.com/cms/asset/297b33c9-584e-4e5b-be7e-cc6a52b220a3/tgis12894-fig-0011-m.jpg" alt="Figure11"></p>
+<blockquote>
+<p>图 11: XGBoost (特征向量) 模型的前 15 个重要变量图</p>
+</blockquote>
+<h2 id="5-CONCLUSIONS">5 CONCLUSIONS</h2>
+<p>对机器学习模型使用空间过滤特征向量的意义很明显，因为空间特征向量与非空间协变量相互作用可以解决空间依赖性并提高机器学习模型的预测性能。此外，将这些值包含在机器学习模型规范中有助于避免创建和处理距离衰减变量的挫折，其中人为错误、数据不可用和数据兼容性 (即数据规范化/缩放) 问题会严重影响空间结果分析。此外，从空间坐标生成的空间过滤特征向量可能足以替代那些缺失的代表数据空间结构的空间协变量，这使得建模过程更容易、更可靠。总之，基于特征向量空间滤波的机器学习方法很有吸引力，因为它们能够在对空间数据建模时解决空间自相关问题，从而显著提高预测性能并有助于准确评估地理空间现象。然而，包含 200 个近似特征向量会在机器学习模型中引发巨大的计算负担；因此，在未来的工作中可以应用主成分分析方法，将近似空间特征向量集的维数缩小到更低的维数，以加快计算速度，同时保留最大的空间信息。</p>
+<h2 id="参考文献">参考文献</h2>
+<ul id="refplus"><li id="ref-Ahasan2019a" data-num="1">[1]  Ahasan, R. (2019a). Transit proximity and affordable housing investments: Application of hedonic model in Des Moines, Iowa. In Proceedings of the 2019 Annual Conference of the Association of Collegiate Schools of Planning, Toronto, ON, Canada.</li><li id="ref-Ahasan2019b" data-num="2">[2]  Ahasan, R. (2019b). Transportation accessibility, housing investments, and housing prices: Application of hedonic price model in Des Moines, Iowa (Unpublished Master of Community and Regional Planning Thesis). Ames, IA: Iowa State University.</li><li id="ref-Akay2019" data-num="3">[3]  Akay, E. Ç., Topal, K. H., Kizilarslan, S., &amp; Bulbul, H. (2019). Forecasting of Turkish housing price index: ARIMA, random forest, ARIMA-random forest. _Pressacademia_, 10(10), 7– 11. [https://doi.org/10.17261/pressacademia.2019.1134]</li><li id="ref-Anselin2010" data-num="4">[4]  Anselin, L. (2010). Thirty years of spatial econometrics. _Papers in Regional Science_, 89(1), 3– 25. [https://doi.org/10.1111/j.1435-5957.2010.00279.x]</li><li id="ref-Brunsdon1998" data-num="5">[5]  Brunsdon, C., Fotheringham, S., &amp; Charlton, M. (1998). Geographically weighted regression. _Journal of the Royal Statistical Society, Series D: The Statistician_, 47(3), 431– 443. [https://doi.org/10.1111/1467-9884.00145]</li><li id="ref-Can1992" data-num="6">[6]  Can, A. (1992). Specification and estimation of hedonic housing price models. _Regional Science and Urban Economics_, 22(3), 453– 474. [https://doi.org/10.1016/0166-0462(92)90039-4]90039-4)</li><li id="ref-Chen2017" data-num="7">[7]  Chen, J., Ong, C. F., Zheng, L., &amp; Hsu, S. (2017). Forecasting spatial dynamics of the housing market using support vector machine. _International Journal of Strategic Property Management_, 21(3), 273– 283. [https://doi.org/10.3846/1648715x.2016.1259190]</li><li id="ref-Chen2016" data-num="8">[8]  Chen, T., &amp; Guestrin, C. (2016). XGBoost. In Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, San Francisco, CA (pp. 785– 794). New York, NY: ACM. [https://doi.org/10.1145/2939672.2939785]</li><li id="ref-Cliff1969" data-num="9">[9]  Cliff, A. D., &amp; Ord, K. (1969). Spatial autocorrelation: A review of existing and new measures with applications. Bristol, UK: University of Bristol.</li><li id="ref-Cliff1973" data-num="10">[10]  Cliff, A. D., &amp; Ord, K. (1973). Spatial autocorrelation. New York, NY: Methuen.</li><li id="ref-Cortes1995" data-num="11">[11]  Cortes, C., &amp; Vapnik, V. (1995). Support-vector networks. _Machine Learning_, 20(3), 273– 297. [https://doi.org/10.1007/bf00994018]</li><li id="ref-Gehlke1934" data-num="12">[12]  Gehlke, C., &amp; Biehl, K. (1934). Certain effects of grouping upon the size of the correlation coefficient in census tract material. _Journal of the American Statistical Association_, 29(185), 169– 170. [https://doi.org/10.2307/2277827]</li><li id="ref-Georganos2018" data-num="13">[13]  Georganos, S., Grippa, T., Vanhuysse, S., Lennert, M., Shimoni, M., &amp; Wolff, E. (2018). Very high resolution object-based land use-land cover urban classification using extreme gradient boosting. _IEEE Geoscience and Remote Sensing Letters_, 15(4), 607– 611. [https://doi.org/10.1109/lgrs.2018.2803259]</li><li id="ref-Goodchild2004" data-num="14">[14]  Goodchild, M. F. (2004). The validity and usefulness of laws in geographic information science and geography. _Annals of the Association of American Geographers_, 94(2), 300– 303. [https://doi.org/10.1111/j.1467-8306.2004.09402008.x]</li><li id="ref-Goodman1978" data-num="15">[15]  Goodman, A. C. (1978). Hedonic prices, price indices and housing markets. _Journal of Urban Economics_, 5(4), 471– 484. [https://doi.org/10.1016/0094-1190(78)90004-9]90004-9)</li><li id="ref-Griffith1996" data-num="16">[16]  Griffith, D. A. (1996). Spatial autocorrelation and eigenfunctions of the geographic weights matrix accompanying geo-referenced data. _Canadian Geographer_, 40(4), 351– 367. [https://doi.org/10.1111/j.1541-0064.1996.tb00462.x]</li><li id="ref-Griffith2000" data-num="17">[17]  Griffith, D. A. (2000). Eigenfunction properties and approximations of selected incidence matrices employed in spatial analyses. _Linear Algebra and its Applications_, 321(1–3), 95– 112. [https://doi.org/10.1016/s0024-3795(00)00031-8]00031-8)</li><li id="ref-Griffith2003" data-num="18">[18]  Griffith, D. A. (2003). Spatial autocorrelation and spatial filtering: Gaining understanding through theory and scientific visualization. Berlin, Germany: Springer.</li><li id="ref-Griffith2020" data-num="19">[19]  Griffith, D. A. (2020). Important considerations about space-time data: Modeling, scrutiny, and ratification. _Transactions in GIS_, 25(1), 291– 310. [https://doi.org/10.1111/tgis.12708]</li><li id="ref-Griffith2013" data-num="20">[20]  Griffith, D. A., &amp; Chun, Y. (2013). Spatial autocorrelation and spatial filtering. In M. M. Fischer &amp; P. Nijkamp (Eds.), Handbook of regional science (pp. 1477– 1507). Berlin, Germany: Springer. [https://doi.org/10.1007/978-3-642-23430-9_72]</li><li id="ref-Griffith2019" data-num="21">[21]  Griffith, D. A., Chun, Y., &amp; Li, B. (2019). Spatial regression analysis using eigenvector spatial filtering. London, UK: Academic Press.</li><li id="ref-Gyódi2021" data-num="22">[22]  Gyódi, K., &amp; Nawaro, Ł. (2021). Determinants of Airbnb prices in European cities: A spatial econometrics approach. _Tourism Management_, 86, 104319. [https://doi.org/10.1016/j.tourman.2021.104319]</li><li id="ref-https://www.kaggle.com/harlfoxem/housesalesprediction" data-num="23">[23] </li><li id="ref-Islam2021" data-num="24">[24]  Islam, M., Islam, K., Ahasan, R., Mia, M., &amp; Haque, M. (2021). A data-driven machine learning-based approach for urban land cover change modeling: A case of Khulna City Corporation area. _Remote Sensing Applications: Society and Environment_, 24, 100634. [https://doi.org/10.1016/j.rsase.2021.100634]</li><li id="ref-Janssen2001" data-num="25">[25]  Janssen, C., Söderberg, B., &amp; Zhou, J. (2001). Robust estimation of hedonic models of price and income for investment property. _Journal of Property Investment &amp; Finance_, 19(4), 342– 360. [https://doi.org/10.1108/eum0000000005789]</li><li id="ref-Jong1984" data-num="26">[26]  Jong, P., Sprenger, C., &amp; Veen, F. (1984). On extreme values of Moran's _I_ and Geary's _C_. _Geographical Analysis_, 16, 17– 24. [https://doi.org/10.1111/j.1538-4632.1984.tb00797.x]</li><li id="ref-LeSage2008" data-num="27">[27]  LeSage, J. (2008). An introduction to spatial econometrics. _Revue D'économie Industrielle_, 123(3), 19– 44. [https://doi.org/10.4000/rei.3887]</li><li id="ref-Li2020" data-num="28">[28]  Li, H., Cao, Y., Li, S., Zhao, J., &amp; Sun, Y. (2020). XGBoost model and its application to personal credit evaluation. _IEEE Intelligent Systems_, 35(3), 52– 61. [https://doi.org/10.1109/mis.2020.2972533]</li><li id="ref-Lim2016" data-num="29">[29]  Lim, W. T., Wang, L., Wang, Y., &amp; Chang, Q. (2016). Housing price prediction using neural networks. In Proceedings of the 12th International Conference on Natural Computation, Fuzzy Systems and Knowledge Discovery, Changsha, China (pp. 518– 522). Piscataway, NJ: IEEE. [https://doi.org/10.1109/fskd.2016.7603227]</li><li id="ref-Limsombunc2004" data-num="30">[30]  Limsombunc, V., Gan, C., &amp; Lee, M. (2004). House price prediction: Hedonic price model vs. artificial neural network. _American Journal of Applied Sciences_, 1(3), 193– 201. [https://doi.org/10.3844/ajassp.2004.193.201]</li><li id="ref-Miller1984" data-num="31">[31]  Miller, A. J. (1984). Selection of subsets of regression variables. _Journal of the Royal Statistical Society, Series A: General_, 147(3), 389. [https://doi.org/10.2307/2981576]</li><li id="ref-Montero2017" data-num="32">[32]  Montero, J., Mínguez, R., &amp; Fernández-Avilés, G. (2017). Erratum to: Housing price prediction: Parametric versus semi-parametric spatial hedonic models. _Journal of Geographical Systems_, 20(1), 107– 109. [https://doi.org/10.1007/s10109-017-0262-1]</li><li id="ref-Munkhdalai2019" data-num="33">[33]  Munkhdalai, L., Wang, L., Park, H. W., Ryu, K. H. (2019). Advanced neural network approach, its explanation with LIME for credit scoring application. In L. Munkhdalai, L. Wang, H. W. Park, K. H. Ryu, H. Keun, N. T. Nguyen, … B. Trawiński (Eds.), Intelligent information and database systems (Lecture Notes in Computer Science, Vol. 11432, pp. 407– 419). Cham, Switzerland: Springer. [https://doi.org/10.1007/978-3-030-14802-7_35]</li><li id="ref-Murakami2017" data-num="34">[34]  Murakami, D. (2017). Spatial regression modeling using the spmoran package: Boston housing price data examples. Preprint, arXiv:1703.04467.</li><li id="ref-Murakami2015" data-num="35">[35]  Murakami, D., &amp; Griffith, D. A. (2015). Random effects specifications in eigenvector spatial filtering: A simulation study. _Journal of Geographical Systems_, 17(4), 311– 331. [https://doi.org/10.1007/s10109-015-0213-7]</li><li id="ref-Murakami2018" data-num="36">[36]  Murakami, D., &amp; Griffith, D. A. (2018). Eigenvector spatial filtering for large data sets: Fixed and random effects approaches. _Geographical Analysis_, 51(1), 23– 49. [https://doi.org/10.1111/gean.12156]</li><li id="ref-Nayak2014" data-num="37">[37]  Nayak, S., Misra, B., &amp; Behera, H. (2014). Impact of data normalization on stock index forecasting. _International Journal of Computer Information Systems and Industrial Management Applications_, 6, 357– 369. Retrieved from [http://www.mirlabs.org/ijcisim/regular_papers_2014/IJCISIM_24.pdf]</li><li id="ref-Oh2019" data-num="38">[38]  Oh, J., Ham, D., Lee, Y., &amp; Kim, G. (2019). Short-term load forecasting using XGBoost and the analysis of hyperparameters. _Transactions of the Korean Institute of Electrical Engineers_, 68(9), 1073– 1078. [https://doi.org/10.5370/kiee.2019.68.9.1073]</li><li id="ref-Openshaw1984" data-num="39">[39]  Openshaw, S. (1984). The modifiable areal unit problem. Norwich, UK: Geo Books.</li><li id="ref-Park2015" data-num="40">[40]  Park, B., &amp; Bae, J. K. (2015). Using machine learning algorithms for housing price prediction: The case of Fairfax County, Virginia housing data. _Expert Systems with Applications_, 42(6), 2928– 2934. [https://doi.org/10.1016/j.eswa.2014.11.040]</li><li id="ref-Tiefelsdorf1995" data-num="41">[41]  Tiefelsdorf, M., &amp; Boots, B. (1995). The exact distribution of Moran's I. _Environment and Planning A: Economy and Space_, 27(6), 985– 999. [https://doi.org/10.1068/a270985]</li><li id="ref-Tobler1970" data-num="42">[42]  Tobler, W. R. (1970). A computer movie simulating urban growth in the Detroit region. _Economic Geography_, 46, 234– 240. [https://doi.org/10.2307/143141]</li><li id="ref-Wang2003" data-num="43">[43]  Wang, S.-C. (2003). Interdisciplinary computing in Java programming (Springer International Series in Engineering and Computer Science, Vol. 743). Boston, MA: Springer.</li><li id="ref-Wang2013" data-num="44">[44]  Wang, Y., Kockelman, K., &amp; Wang, X. (2013). Understanding spatial filtering for analysis of land use-transport data. _Journal of Transport Geography_, 31, 123– 131. [https://doi.org/10.1016/j.jtrangeo.2013.06.001]</li><li id="ref-Wu2017" data-num="45">[45]  Wu, J. (2017). Housing price prediction using support vector regression (Unpublished MS thesis). San Jose, CA: San Jose State University.</li><li id="ref-Zhang2019" data-num="46">[46]  Zhang, C., Di, L., Lin, L., &amp; Guo, L. (2019). Machine-learned prediction of annual crop planting in the U.S. Corn Belt based on historical crop planting maps. _Computers and Electronics in Agriculture_, 166, 104989. [https://doi.org/10.1016/j.compag.2019.104989]</li></ul>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/d83929a0.html">http://xishansnow.github.io/posts/d83929a0.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BB%BC%E8%BF%B0/">综述</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/">空间变系数模型</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E6%BB%A4%E6%B3%A2%E6%96%B9%E6%B3%95/">空间滤波方法</a></div><div class="post_share"><div class="social-share" data-image="/img/book_09.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/91b7308b.html"><img class="prev-cover" src="/img/book_01.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">spBayes--贝叶斯空间变系数模型的 R 软件包</div></div></a></div><div class="next-post pull-right"><a href="/posts/d603dce7.html"><img class="next-cover" src="/img/book_13.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">空间异质性类型及检验方法</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/d99f4eaf.html" title="空间滤波方法"><img class="cover" src="/img/008.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-01</div><div class="title">空间滤波方法</div></div></a></div><div><a href="/posts/2773ca0f.html" title="基于空间滤波的大型数据集空间变系数建模"><img class="cover" src="/img/coffe_03.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-16</div><div class="title">基于空间滤波的大型数据集空间变系数建模</div></div></a></div><div><a href="/posts/d603dce7.html" title="空间异质性类型及检验方法"><img class="cover" src="/img/book_13.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-07</div><div class="title">空间异质性类型及检验方法</div></div></a></div><div><a href="/posts/2c6ed7d4.html" title="空间局部化思维对于统计和社会的重要性"><img class="cover" src="/img/book_06.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-28</div><div class="title">空间局部化思维对于统计和社会的重要性</div></div></a></div><div><a href="/posts/42cfdcdb.html" title="空间变系数过程模型"><img class="cover" src="/img/book_05.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-20</div><div class="title">空间变系数过程模型</div></div></a></div><div><a href="/posts/91b7308b.html" title="spBayes--贝叶斯空间变系数模型的 R 软件包"><img class="cover" src="/img/book_01.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-08</div><div class="title">spBayes--贝叶斯空间变系数模型的 R 软件包</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6"><span class="toc-text">2 研究现状</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%9D%90%E6%96%99%E5%92%8C%E6%96%B9%E6%B3%95"><span class="toc-text">3 材料和方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%A0%94%E7%A9%B6%E5%8C%BA%E5%9F%9F%E5%92%8C%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-text">3.1 研究区域和数据预处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%8F%98%E9%87%8F%E9%80%89%E6%8B%A9"><span class="toc-text">3.2 变量选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E9%9A%8F%E6%9C%BA%E6%95%88%E5%BA%94%E7%89%B9%E5%BE%81%E5%80%BC%E7%A9%BA%E9%97%B4%E8%BF%87%E6%BB%A4"><span class="toc-text">3.3 随机效应特征值空间过滤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-XGBoost"><span class="toc-text">3.4 XGBoost</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-Support-vector-regressor"><span class="toc-text">3.5 Support vector regressor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-Artificial-neural-networks"><span class="toc-text">3.6 Artificial neural networks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-%E5%9F%BA%E4%BA%8E%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F%E7%A9%BA%E9%97%B4%E6%BB%A4%E6%B3%A2%E7%9A%84-XGBoost%E3%80%81SVR-%E5%92%8C-ANN"><span class="toc-text">3.7 基于特征向量空间滤波的 XGBoost、SVR 和 ANN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-8-%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87"><span class="toc-text">3.8 评估指标</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-ANALYSIS-AND-RESULTS"><span class="toc-text">4 ANALYSIS AND RESULTS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-CONCLUSIONS"><span class="toc-text">5 CONCLUSIONS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

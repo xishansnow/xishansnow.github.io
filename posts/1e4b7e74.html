@@ -1,0 +1,348 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>地理知识发现中的空间显式人工智能技术 | 西山晴雪的知识笔记</title><meta name="keywords" content="GeoAI,地理空间人工智能,灾害管理,空间信息抽取 时间信息抽取,空间显式模型"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="地理知识发现中的空间显式人工智能技术">
+<meta property="og:type" content="article">
+<meta property="og:title" content="地理知识发现中的空间显式人工智能技术">
+<meta property="og:url" content="http://xishansnow.github.io/posts/1e4b7e74.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="地理知识发现中的空间显式人工智能技术">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/book_14.png">
+<meta property="article:published_time" content="2021-04-09T12:50:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.041Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="GeoAI">
+<meta property="article:tag" content="地理空间人工智能">
+<meta property="article:tag" content="灾害管理">
+<meta property="article:tag" content="空间信息抽取 时间信息抽取">
+<meta property="article:tag" content="空间显式模型">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/book_14.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/1e4b7e74"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '地理知识发现中的空间显式人工智能技术',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/book_14.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">地理知识发现中的空间显式人工智能技术</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-09T12:50:00.000Z" title="发表于 2021-04-09 20:50:00">2021-04-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.041Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/">GeoAI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E6%A6%82%E8%A7%88/">概览</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>34分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>GeoAI：地理知识发现中的空间显式人工智能技术</h1>
+<p>【摘要】 近年随着深度学习技术的突飞猛进，相关技术在地理信息科学领域也得到大量研究和应用。但随着大家对问题的深入理解，逐步意识到这些机器学习方法在解决地学问题上有些捉襟见肘，特别是很多机器学习模型几乎不考虑地理位置的作用，把很多地学问题转变成了计算机科学问题，引起了业内很多专家的质疑。本文为加州大学 Krzysztof Janowicz 教授 2017 年在地理信息科学杂志 GeoAI 专刊上发表的一篇评论文章，明确提出在地理空间人工智能领域中，空间显示模型需要得到重视和发展。</p>
+<p>【原文摘要】无。</p>
+<p>【原文】Janowicz, K., et al. （2019）. “GeoAI: spatially explicit artificial intelligence techniques for geographic knowledge discovery and beyond.” International Journal of Geographical Information Science 34（4）: 625-636.</p>
+<p>【DOI】  <a target="_blank" rel="noopener" href="https://doi.org/10.1080/13658816.2019.1684500">https://doi.org/10.1080/13658816.2019.1684500</a></p>
+<h1>1 GeoAI 简介</h1>
+<p>人工智能（AI）技术的最新进展、高质量数据的大规模可获得性、以及有效处理这些数据的硬件和软件方面的进步，正在从计算机视觉和自然语言处理向自动驾驶和医疗保健等一系列领域转变。例如；高分辨率地理数据和高性能计算技术的可用性以及深度学习推动了快速准确的目标检测方面的进步。GeoAI 工作最近的例子包括：地形特征检测、密集建筑足迹、扫描历史地图信息提取、语义分类、空间插值、交通预测等 [此处所指案例均为专刊内的被录用的文章]。同样，机器学习和自然语言处理正在促进从非结构化（文本）数据中提取地理信息，如：新闻文章和维基百科（Hu 2018），以及多个地名词典中自然特征匹配等 （Acheson et al. in this issue）。</p>
+<p>同时，语义网技术、本体和链接数据正被用于改进地理信息检索和构建高级地理知识图（Ballatore 等人，2013 年；Regalia 等人，2019 年；Yan 等人，2019 年；Mai 等人，2019a），以及用于空间数据基础设施的语义服务（Jones 等人，2014 年）。多种技术的组合通过整合交通摄像头和其他传感器收集的实时信息，帮助自动驾驶车辆与智能交通系统集成（Seif 和 Hu，2016；Zang 等人，2017 年）。如这些例子所示，快速进展并不局限于特定的下游任务或数据类型。相反，我们正在观察人工智能技术如何渗透到科学的许多方面和活动中。</p>
+<p>在地理和地球科学中使用人工智能技术并不是什么新鲜事。Openshaws 1997 年出版的关于地理人工智能的书就是一个突出的例子（Openshaw And Openshaw 1997）。甚至在此之前，Couclelis（Couclelis 1986）和 Smith（Smith 1984）在 80 年代就讨论了人工智能在地理问题解决中的潜在作用。自早期以来所发生的变化不能仅仅归因于新颖的计算体系结构和先进的方法，如生成性对抗网络（Goodfellow 等人，2014 年）。</p>
+<p>目前人工智能技术的成功是由数据创建和共享的新文化造成的。过去十年收集和整理的数据呈指数级增长，不限于任何特定类型或媒介，而是多模式和高度异质。例如：由人类通过智能手机等近身设备主动或被动发送的数据。社交传感（Social sensing）在 80 年代是不可想象的，这既是由于技术限制，也是出于隐私方面的考虑。虽然遥感等领域从早期起就是大数据密集型领域，但非常高分辨率的仪器不仅提供了更多的数据，还极大地增加了可以区分的类别数量。同样，数百万近乎实时的汽车轨迹、图像、评论、推荐、新闻、学术文献和各种传感器观测信息的可用性，对那些依赖于大量（高质量）标签数据的人工智能技术来说，完全改变了游戏规则。</p>
+<p>然而，可能还有比纯粹的数据可获得性和先进方法加在一起更重要的东西，那就是文化的改变：</p>
+<p><strong>（1）数据开放文化。</strong></p>
+<p>与以前的开源一样，开放内容使大众可以获得数据。个人、机构和公司开始意识到，在孤岛中保护数据可能不如让访问它们更有好处。虽然数据很少以批量下载形式提供，但公司现在经常通过 API 共享他们数据。这在 20 年前是不可想象的。例如，Programmable Web 报告称，截至 2019 年，Web-API 超过 22,000 个，高于 2005 年的约 100 个 API。换句话说，该行业认为相对于新数据经济而言，数据被窃取的影响要更小。</p>
+<p><strong>（2）数据重用是新常态。</strong></p>
+<p>从当今角度来看，这似乎是一个微不足道的问题，但对于许多科学领域来说，大规模数据重用是一个新概念。设计实验、开发概念模型、确定测量尺度、选择抽样策略和收集数据是许多科学工作流程的核心部分。机会主义的数据重用和合成意味着放弃对这些步骤中的一些甚至全部的控制。与（重新）使用长期运行的、众所周知的、质量优化的、在技术上得到充分理解的地球观测卫星（如 Landsat 系列）图像相比，重复使用现场生态或社会科学数据是非常不同的。个人在收集这些数据时往往会考虑到特定的设置和研究问题。通常，附带的元数据不够详细，无法完全捕获理解数据集是否适合新用途所需的上下文信息。从本质上讲，所有元数据记录都是不完整的，因为无法预见未来的用途。对自动捕获尽可能多的上下文信息的数据来源和智能数据工作流研究的增加是对这一新现实的回应（Gil 等人，2007 年；Moreau 等人，2008）。</p>
+<p><strong>（3）新范式加入了经验、理论和计算范式</strong></p>
+<p>面向数据密集型开发的第四范式（Hey et al. 2009）突出了数据合成和分析日益重要的作用（Janowicz 等人，2015 年）。这意味着一个数据源可以用作另一个更难获取的数据源的代理。它还表明，组合多个数据源可能会支持对一个研究问题的更全面的理解，或者可能有助于缓解数据稀疏或代表性偏差的问题。举一个具体的例子， Jacobs et al. （2009）使用一个由数千个（低质量）网络摄像头组成的、随时可用的网络来确定春季叶片生长的开始。Gao et al. （2017）展示了如何利用来自各种来源的社交媒体来检测和描绘模糊的空间认知区域，以及如何提取出在人类感知上相似的区域。</p>
+<p>虽然这三个确定方面都不一定是新的，但新兴的数据文化肯定是新的。例如，考虑一下 Mike Goodchild 的以下观察：大多数利用自愿地理信息（VGI）的早期研究都是为了确认或复制之前提出的发现或理论。直到最近几年，VGI 才被用来揭示新的见解、质疑现有理论、甚至完全提出新的理论。事实上，根据网络科学等新的研究方向，研究人员正开始研究地理信息生态系统，例如通过地理信息观测站（Adams 等人，2014 年；Janowicz 等人，2014 年）。</p>
+<p>综上所述，GeoAI 作为空间数据科学的一个子领域，利用技术和数据文化的进步来支持创建更智能的地理信息，以及为各种下游任务提供方法、系统和服务。这些技术包括图像分类、目标检测、场景分割、模拟和插值、链接预测、（基于自然语言的）检索和知识问答、即时数据集成、地理知识丰化等等。</p>
+<h1>2 空间显式模型</h1>
+<p>理想情况下，将人工智能和数据科学的技术应用于地球和社会科学中的空间数据并不是一条单行道。最近的研究（Yan et al. 2017, 2018, 2019, Chu et al. 2019, Mac Aodha et al. 2019）已经表明，当应用于空间数据时，空间显式模型大大优于更一般的模型。有趣的是，为空间显式模型设计神经结构也可以被认为是引入了归纳偏好（ inductive bias）（Battaglia et al. 2018 年）。那么，空间显式模型到底是什么？它们有什么共同之处？我们如何将空间和时间方面集成到各种基于机器学习的技术中，这些模型需要多少空间数据才能发挥作用？</p>
+<p>有趣的是，虽然不乏空间显式的模型和方法来解决特定领域或应用程序的需求，但首先“是什么使模型在空间上显式”的问题受关注程度较少。值得注意的例子包括 Goodchild 和 Janelle （2004） 、Kuhn （2012）的工作。例如：如果一个人工智能模型满足以下检验中的一条，则可以称为空间显式模型（GoodChild 2001）：</p>
+<p>（1）不变性检验：在被研究现象发生位置改变时，空间显式模型的结果也是在变化的。</p>
+<p>（2）表征检验：空间显式模型在其实现中包含了所研究现象的空间表征形式（如：地理坐标、空间关系、地名等形式）。</p>
+<p>（3）模型公式检验：空间显式模型在其概念化和公式化中明确使用了空间概念（如：考虑空间邻域和方向、把空间属性引入深度学习模型的损失函数设计等）。</p>
+<p>（4）输出结果检验：空间显式模型的输入和输出包含的空间结构（或形式）不同（如：一个包含城市地理位置和人口的数据集，如果仅仅是基于人口数量进行城市排名，则由于输入和输出的空间结构相同，因而不属于空间显式模型；相反，如果要回答人口密度高的城市在空间上是否聚集在一起的问题，则由于输入输出的空间结构发生了变化，而称为空间显式模型）。</p>
+<p>然而，上述检验不能在实验中进行，也不能测量它们的程度或相关性。更具体地说：</p>
+<p>（1）在设计一个机器学习体系结构时，采用空间显式模型和空间隐式模型之间有什么权衡呢？在不需要增加体系结构复杂性的情况下，在给定足够数据的情况下，这些更通用的模型能解决问题吗？数据集的哪个部分必须是空间的，才能证明空间显式模型是正确的？如果数据可用性是唯一重要的变量，那些支持通用模型的人将不得不证明为什么需要在神经架构方面取得进展。而那些偏爱特定领域模型的人将不得不证明为什么开发更复杂的模型要优于提供更多标签的数据。</p>
+<p>（2）这些立场和它们之间的任何中间立场都必须解决这样一个问题：空间（和基于位置的）要素应该如何在跨域数据中得到表示？在知识图谱和链接数据日益蓬勃发展的当下，传统域（Field）模型和对象（object）模型的思考方式是否足够？</p>
+<p>（3）地理标识符通常在数据中心间扮演着将参与者、事件和对象连接在一起的关键角色（例如：Global Linked Data cloud）。因此，时空范围的数据（Silva 等人，2006 年；Adams 等人，2015）只会增加这一趋势，并使空间要素成为许多日常信息检索任务的一部分，例如新闻的语义注释。</p>
+<p>换言之，成功的 GeoAI 研究需要能够解释建立空间显式模型能够解决（地理）空间问题的原因。它还需要展示如何将符号主义基础上的知识图谱数据和方法轻松地集成到当今地理信息系统工作流程中（Mai 等人。2019a）。</p>
+<h1>3 知识问答和摘要</h1>
+<p>GeoAI 研究将有助于知识问答和更广泛的智能数字助理。这是因为之前讨论的空间数据（地名、空间关系等）的可用性和重要性越来越高，也是因为数字助理正迅速成为我们日常生活的一部分。这使系统能够访问更多的上下文信息，并使它们能够回答更个性化的问题。例如：未来用户可能不会询问埃菲尔铁塔的建造日期或开车到机场需要多长时间，而是询问他们的父母会去过的度假地点，一本关于他们目前驾车经过的地区的有声读物，或者仅仅是一家市中心但安静的酒店。这些和类似的问题需要额外的步骤，即识别用户的位置、到其他特征的距离、关于拓扑关系的推理、理解模糊认知区域等。因此，当前的方法（例如：那些直接利用句嵌入模型的方法，Arora 等人，2017；或其他形式的计算文本相似度的方法）可能达不到要求。</p>
+<p>虽然提出问题的方式与选择的方法有关，但许多更高层次挑战时不变的。例如：如何在回答更多开放式问题的同时总结地理信息（如：关于洛杉矶的重要事实）（Yan et al. ，2019 年）。从知识图谱角度来看，每个大城市都有数以万计的陈述。那么，一个城市到底有什么特别之处呢？对该问题的回答不能仅仅是技术性的；它必须解决“什么才是一个好的和公平的总结？”的问题。例如，在 Rodriguez 和 Egenhofer（2004）的启发下，人们可能会争辩说，总结必须同时考虑共性和变异性。这对于比较问题或涉及不同地区的问题尤为重要。举个具体例子：有关洛杉矶的问题答案可能会说，虽然洛杉矶在气候、海滩、加利福尼亚州等方面与附近的圣地亚哥市相似，但它的电影业是独一无二的。</p>
+<p>人们也可以从答案开始，并研究如何根据设计问题来发现和共享 GIS 功能（Scheider 等人，2019 年）。同样，人们可以重新思考与现代 GIS 的整个交互，并将其抽象到一个更高的层次，围绕要回答的科学问题，而不是这样做所涉及的技术步骤（Vahedi 等人，2016 年）。最后，人们可以研究如何放宽问题以得出近似或相关的答案（Wang 等人，2018 年；Mai 等人，2019b）。这样做的原因有很多，例如：当知识图的稀疏性导致无法回答初始问题时，或者当用户对用于表示数据的本体不够熟悉时。</p>
+<h1>4 社会感知</h1>
+<p>机器学习和人工智能方法在通常被称为社会感知的领域发挥着重要作用（ Aggarwal 和 Abdelzaher 2013；Liu 等人，2015 年；Janowicz 等人，2019 年）。它可以被定义为使用（用户生成的）数字内容来更好地理解人类动力学。</p>
+<p>社会感知已经被应用于一系列任务，从识别人类活动模式（Li 等人，2019 年）和探索社交网络结构，到城市规划解决方案（郑等，2014 年；Resch 等，2015；Zeile 和 Resch，2018），取得了不同程度的成功。社会感知过程涉及语义签名（Janowicz 等，2019 年）、多维数据签名（即空间、时间和主题特征）的创建，这些签名是从人们数字生活与其物理活动交互时留下的数字痕迹中提取的。这种数字痕迹越来越多地通过移动和物联网设备产生和收集。现在的移动设备上有很多传感器，意味着产生的数据不仅包括与一个人所在位置有关的信息，还包括环境温度、光度、噪音水平等属性。通过这些设备收集的大量数据，以及实际内容的异质性，使得这些数据特别适合通过 GeoAI 中的新技术进行分析（Martin 等，2018 年）。社会感知和语义签名为公共卫生（Chaix，2018）、活动预测（Regalia 等，2016）和隐私保护（Khan 等，2019 年）等领域做出了贡献。</p>
+<p>在许多社会感知研究中，语义签名往往植根于场所概念，使用场所作为参照系，通过场所来比较不同的活动、动态和社会互动。前面提到通过移动传感器收集的数字痕迹通常被称为被动数据收集，其上下文是从被动传感器推断出来的。另一方面，用户贡献的数据（如社交媒体签到、共享照片或博客帖子）涉及用户主动选择贡献与他们在物理世界中的社交互动相关的数据。这些数据以多种方式被分析，目的是预测人类活动模式（Scellato 等，2011 年），确定城市兴趣点的时间模式趋势（Sparks et al.），情理解人类情感（Svoray 等，2018 年；Kang 等，2019 年）或来自文本评论的不同社区的人类情绪（Hu 等，2019 年）、地点推荐系统（Xu et al.，2018）和城市可视化应用（McKenzie 等，2015 年）。虽然这些数据仍然被认为是社会感知框架的一部分，但与那些被动贡献的数据相比，它们有很大的不同，而且可以说更有偏置。</p>
+<p>随着行车传感器、计算机视觉和深度学习技术的发展，街道图像成为了解物理环境和社会环境的新数据来源。它能够使用语义分割的场景元素对城市环境进行可视化表示和探索（Zhang et al.，2018 年）。可以从街景图像中推断出人类时空活动信息，如交通流量（Zhang et al.，2019 年），社区人口统计信息（Gebru 等，2017 年），城市中人类安全感（Li 等，2015 年）等。此外，街景图像和三维建筑模型为城市设计和规划提供了数据支持。例如：已经开发出一种街道临街网络（SFN）深度学习方法来对城市街道层面的图像进行分类，并评估街道临街的质量（Law 等人）。</p>
+<h1>5 数据集、可复现性与可重复性</h1>
+<p>推进 GeoAI 研究需要高质量的地理空间数据集。许多人工智能模型，特别是深度神经网络，需要在大量标记良好的训练数据上进行训练。机器学习界早已认识到，模型的质量遵循“垃圾输入，垃圾输出”的原则，即训练出的模型与训练数据质量一样好坏。从这个角度来看，数据不再仅仅是计算工具要挖掘的资源，而是正在成为工具的一部分。</p>
+<p>高质量的数据集，如 ImageNet（Deng et al. 2009），已经成为开发新人工智能方法的关键推动因素。地理领域幸运的是有许多高质量的数据集，如：美国地质调查局的国家土地覆盖数据集（NLCD）、美国人口普查局社区调查（ACS）数据，更不用说许多可用的遥感图像、全球数字高程模型（DEM）和国家水文数据集（NHD）。</p>
+<p>随着数据文化的改变，越来越多公司也在共享他们的地理空间数据，例如：微软的美国建筑物数据、Yelp 的兴趣点（POI）数据、优步（Uber）和滴滴（Didi）的车辆轨迹数据等。这些共享的地理空间数据集可以成为开发未来 GeoAI 模型的有用资源。</p>
+<p>从可再现性和可复制性的角度来看，共享开发 GeoAI 模型所基于的数据集对于其他研究人员复制或复制研究论文中描述的模型是必要的。根据 Bollen 等人的说法（2015），可复现性是指其他研究人员使用相同的数据和程序复制先前研究结果的能力，而可复制性是指使用相同的程序但使用新数据复制先前研究结果的能力。由于数据正在成为模型的组成部分，如果不能访问模型作者使用的原始数据集，就不能简单地得出相同的模型。然而，在公共可访问的存储库上共享数据集给研究人员带来了额外的负担，因为一个干净、组织良好和仔细记录的数据集存储库需要付出大量的额外努力，而这在当前学术评估中往往得不到回报。此外，可能存在阻碍数据集有效共享的政策和隐私问题。然而，共享一小部分匿名数据集已经可以大大提高 GeoAI 研究的重现性和可复制性。由于深度神经网络的性能经常受到实现细节影响，例如：随机种子和参数初始化策略，因此所使用的体系结构的源代码可以以类似的方式共享。在这方面，我们很高兴地看到，这期 GeoAI 中的论文还分享了一个指向其 GitHub 存储库的链接，其中包含带注释的数据和源代码。</p>
+<p>可以探索两个方向来促进数据集和代码共享，目标是支持 GeoAI 研究的重现性和可复制性。</p>
+<p>首先，可以继续加强我们的空间数据基础设施（SDI），这些基础设施是共享地理空间资源的中央平台。可以将研究努力放在促进 SDI 上资源的搜索和发现上（Hu 等人，2015 年），就数据共享的最佳做法提供指导，并设计提高地理空间数据和元数据质量的自动化方法。</p>
+<p>其次，可以鼓励本领域顶级期刊上的研究论文和数据集的耦合。虽然这可以通过在一篇文章中共享可公开访问的存储库链接来实现，但现有的期刊可以提供数据集跟踪，或者可以专门为发布地理空间数据集的描述而建立新的期刊。在地理学领域之外已经有这样的数据集期刊，比如自然出版集团出版的《科学数据》。这些期刊文章可以给那些花时间和精力仔细收集、清理和共享数据集的研究人员更多的信任。另一方面，如何有效审查这些数据集描述文件，以及如何确保共享数据集的质量和维护，是需要解决的新挑战。</p>
+<h1>6 未来挑战</h1>
+<p>理想情况下，围绕 GeoAI 和更广泛的空间数据科学研究应该集中在几个重大挑战上。这样的“登月计划”在衡量一个社区的进步、向其他人解释一些特定研究方向如何有助于更大的图景、以及就一组共同优先事项达成一致方面发挥着重要作用。</p>
+<p>在这里，我们勾勒出这样一个“登月计划”：</p>
+<p><strong>到 2030 年，我们能不能开发出一个能通过特定领域测试的人工 GIS 分析员？换句话说，我们能否设计一个软件代理来回答用户与 GIS 相关的领域问题，了解如何收集所需数据、如何分析这些数据以及如何以合适形式显示结果？</strong></p>
+<p>想象一下，用户要求提供最适合社区太阳能电池板安装的可用空间时，人工智能 GIS 分析师使用 SDI 查找所需数据层，执行诸如日照分析之类的操作，并返回适宜性地图，这变得与人工分析人员没有区别。关键是让 GIS 向大众开放类似 Siri 的互动，而不是取代训练有素的 GIS 分析师进行复杂分析。</p>
+<p>几个大型项目（如：NSF 资助的 EarthCube、NSF 融合加速器的 Open Knowledge Networks）解决了人和机器可读和可推理数据库的挑战。Scheider 等人的上述研究（2019 年）和其他研究团队已经可以被视为对这次登月的贡献。</p>
+<p>在行业方面，ESRI 等公司长期以来一直在尝试为常见数据集和类型提供自动建议的分析和可视化选项。因此，虽然雄心勃勃，但如果 GeoAI 研究以今天的速度继续下去，设想中的人工智能 GIS 分析师是一个现实的目标。</p>
+<h1>7 总结与结论</h1>
+<p>在这篇社论中，我们谈及了对 GeoAI 研究的需求，并回顾了它的起源。<strong>我们概述了三个重要的研究方向，即：空间显式模型、问题回答和社会传感</strong>，讨论了对高质量数据集和提高可重复性的需求，并以 GeoAI 登月为例展示了未来十年的共同愿景。</p>
+<p>我们希望 GeoAI 和更广泛的空间数据科学能够将处理或处理时空信息的众多领域更紧密地联系在一起。</p>
+<p>最后，我们认为，伦理考虑应该是负责任的 GeoAI 研究的重要组成部分，无论是在个人研究人员层面，还是在整个社区层面都是如此。我们相信本期特刊的主题和技巧的广度很好地代表了 GeoAI 的最新技术进展。</p>
+<h1>参考文献</h1>
+<ol>
+<li>Acheson, E., Volpi, M., and Purves, R.S., in this issue. Machine learning for cross-gazetteer matching  of natural features. International Journal of Geographical Information Science, 1–27.</li>
+<li>Adams, B., et al., 2014. Geographic information observatories for supporting science. In: K. Janowicz, B. Adams, G. McKenzie, and T. Kauppinen, eds. Proceedings of the workshop on geographic  information observatories, 23 September 2014 Vienna, Austria, 32–39.</li>
+<li>Adams, B., McKenzie, G., and Gahegan, M., 2015. Frankenplace: interactive thematic mapping for adhoc exploratory search. In: Proceedings of the 24th international conference on world wide web. International World Wide Web Conferences Steering Committee. Florence, Italy: ACM, 12–22.</li>
+<li>Aggarwal, C.C. and Abdelzaher, T., 2013. Social sensing. In: A. C. Charu, ed. Managing and mining sensor data. Springer, 237–297.</li>
+<li>Arora, S., Liang, Y., and Ma, T., 2017. A simple but tough-to-beat baseline for sentence embeddings. In: Proceedings of the 5th international conference on learning representations. Palais des Congrès Neptune, Toulon: ACM.</li>
+<li>Ballatore, A., Bertolotto, M., and Wilson, D.C., 2013. Geographic knowledge extraction and semantic similarity in openstreetmap. Knowledge and Information Systems, 370 （1）, 61–81. doi:10.1007/s10115-012-0571-0</li>
+<li>Battaglia, P.W., et al… 2018. Relational inductive biases, deep learning, and graph networks. arXiv Preprint arXiv:1806.01261.</li>
+<li>Bollen, K., et al., 2015. Social, behavioral, and economic sciences perspectives on robust and reliable science. Report of the Subcommittee on Replicability in Science Advisory Committee to the National Science Foundation Directorate for Social, Behavioral, and Economic Sciences, 3 , 4 .</li>
+<li>Chaix, B., 2018. Mobile sensing in environmental health and neighborhood research. Annual Review of Public Health, 39, 367–384. doi:10.1146/annurev-publhealth-040617-013731</li>
+<li>Chu, G., et al., 2019. Geo-aware networks for fine grained recognition. arXiv Preprint arXiv:1906.01737.</li>
+<li>Couclelis, H., 1986. Artificial intelligence in geography: conjectures on the shape of things to come. The Professional Geographer, 380 （1）, 1–11. doi:10.1111/j.0033-0124.1986.00001.x</li>
+<li>Deng, J., et al., 2009. Imagenet: a large-scale hierarchical image database. In 2009 IEEE conference on computer vision and pattern recognition. IEEE, 248–255. doi:10.1037/a0016184</li>
+<li>Duan, W., et al., in this issue. Automatic alignment of contemporary vector data and georeferenced historical maps using reinforcement learning. International Journal of Geographical Information Science, page in this issue.</li>
+<li>Gao, S., et al., 2017. A data-synthesis-driven method for detecting and extracting vague cognitive regions. International Journal of Geographical Information Science, 310 （6）, 1245–1271.</li>
+<li>Gebru, T., et al., 2017. Using deep learning and google street view to estimate the demographic makeup of neighborhoods across the united states. Proceedings of the National Academy of Sciences, 1140 （50）, 13108–13113. doi:10.1073/pnas.1700035114</li>
+<li>Gil, Y., et al., 2007. Examining the challenges of scientific workflows. Computer, 400 （12）, 24–32. doi:10.1109/MC.2007.421</li>
+<li>Goodchild, M., 2001. Issues in spatially explicit modeling. In: D. C. Parker, T. Berger, and S. M. Manson, eds. Agent-based models of land-use and land-cover change report and review of an international workshop october 47. Irvine, CA, 12–15.</li>
+<li>Goodchild, M.F. and Janelle, D.G., 2004. Thinking spatially in the social sciences. Spatially Integrated Social Science, 3–17.</li>
+<li>Goodfellow, I., et al., 2014. Generative adversarial nets. In: Advances in neural information processing systems. P a l a i s d e s Congrès de Montréal, Montréal CANADA: Neural Information Processing Systems （NIPS）, 2672–2680.</li>
+<li>Guo, Z. and Feng, -C.-C., in this issue. Using multi-scale and hierarchical deep convolutional features for 3D semantic classification of tls point clouds. International Journal of Geographical Information Science, 1–20.</li>
+<li>Hey, A.J., et al., 2009. The fourth paradigm: data-intensive scientific discovery. Vol. 1. WA: Microsoft research Redmond.</li>
+<li>Hu, Y., et al., 2015. Metadata topic harmonization and semantic search for linked-data-driven geoportals: a case study using arcgis online. Transactions in GIS, 190 （3）, 398–416. doi:10.1111/tgis.12151</li>
+<li>Hu, Y., 2018. Geo-text data and data-driven geospatial semantics. Geography Compass, 120 （11）,e12404. doi:10.1111/gec3.12404</li>
+<li>Hu, Y., Deng, C., and Zhou, Z., 2019. A semantic and sentiment analysis on online neighborhood reviews for understanding the perceptions of people toward their living environments. Annals of the American Association of Geographers, 1 0 9 0 （ 4 ） , 1 0 5 2–1073. doi:10.1080/24694452.2018.1535886</li>
+<li>Jacobs, N., et al., 2009. The global network of outdoor webcams: properties and applications. In: Proceedings of the 17th ACM SIGSPATIAL international conference on advances in geographic information systems. New York, NY: ACM, 111–120.</li>
+<li>Janowicz, K., et al., 2014. Towards geographic information observatories. In: K. Janowicz, B. Adams, G. McKenzie, and T. Kauppinen, eds. Proceedings of the workshop on geographic information observatories, 23 September 2014 Vienna, Austria, 1–5.</li>
+<li>Janowicz, K., et al., 2015, Mar. Why the data train needs semantic rails. AI Magazine, 360 （1）, 5–14. doi:10.1609/aimag.v36i1.2560</li>
+<li>Janowicz, K., et al., 2019. Using semantic signatures for social sensing in urban environments. In: Mobility patterns, big data and transport analytics. Amsterdam, Netherlands: Elsevier, 31–54.</li>
+<li>Jones, J., et al., 2014. Making the web of data available via web feature services. In: Connecting a digital Europe through location and place. New York, NY: Springer, 341–361.</li>
+<li>Kang, Y., et al., 2019. Extracting human emotions at different places based on facial expressions and spatial clustering analysis. Transactions in GIS, 230 （3）, 450–480. doi:10.1111/tgis.12552</li>
+<li>Khan, F., et al., 2019. Mobile crowdsensing: a survey on privacy-preservation, task management, assignment models, and incentives mechanisms. Future Generation Computer Systems, 100, 456–doi:10.1016/j.future.2019.02.014</li>
+<li>Kuhn, W., 2012. Core concepts of spatial information for transdisciplinary research. International Journal of Geographical Information Science, 260 （12）, 2267–2276. doi:10.1080/13658816.2012.722637</li>
+<li>Law, S., et al., in this issue. Street-frontage-net: urban image classification using deep convolutional neural networks. International Journal of Geographical Information Science, 1–27.</li>
+<li>Li, M., et al., 2019. Reconstruction of human movement trajectories from large-scale low-frequency mobile phone data. Computers, Environment and Urban Systems, 77, 101346. doi:10.1016/j.compenvurbsys.2019.101346</li>
+<li>Li, W. and Hsu, C.-Y., in this issue. Automated terrain feature identification from remote sensing imagery: a deep learning approach. International Journal of Geographical Information Science, 1–24.</li>
+<li>Li, X., Zhang, C., and Li, W., 2015. Does the visibility of greenery increase perceived safety in urban areas? evidence from the place pulse 1.0 dataset. ISPRS International Journal of Geo-Information, 40 （3）, 1166–1183. doi:10.3390/ijgi4031166</li>
+<li>Liu, Y., et al., 2015. Social sensing: a new approach to understanding our socioeconomic environments. Annals of the Association of American Geographers, 1050 （3）, 512–530. doi:10.1080/00045608.2015.1018773</li>
+<li>Mac Aodha, O., Cole, E., and Perona, P., 2019. Presence-only geographical priors for fine-grained image classification. arXiv Preprint arXiv:1906.05272.</li>
+<li>Mai, G., et al., 2019a. Deeply integrating linked data with geographic information systems. Transactions in GIS, 230 （3）, 579–600. doi:10.1111/tgis.12538</li>
+<li>Mai, G., et al., 2019b. Relaxing unanswerable geographic questions using a spatially explicit knowledge graph embedding model. In: P. Kyriakidis, D. Hadjimitsis, D. Skarlatos, A. Mansourian, eds. The annual international conference on geographic information science. Berlin, Germany: Springer,21–39.</li>
+<li>Martin, H., et al., 2018. Graph convolutional neural networks for human activity purpose imputation. In: NIPS spatiotemporal workshop at the 32nd Annual conference on neural information processing systems （NIPS 2018）.</li>
+<li>McKenzie, G., et al., 2015. POI pulse: a multi-granular, semantic signature–based information observatory for the interactive visualization of big geosocial data. Cartographica: The International Journal for Geographic Information and Geovisualization, 500 （2）, 71–85. doi:10.3138/cart.50.2.2662</li>
+<li>Moreau, L., et al., 2008. The provenance of electronic data. Communications of the ACM, 510 （4）, 52. doi:10.1145/1330311.1330323</li>
+<li>Openshaw, S. and Openshaw, C., 1997. Artificial intelligence in geography. 1st ed. New York, NY: John Wiley &amp; Sons, Inc. ISBN 0471969915.</li>
+<li>Polson, N.G. and Sokolov, V.O., 2017. Deep learning for short-term traffic flow prediction. Transportation Research Part C: Emerging Technologies, 79, 1–17. doi:10.1016/j.trc.2017.02.024</li>
+<li>Regalia, B., et al., 2016. Crowdsensing smart ambient environments and services. Transactions in GIS,200 （3）, 0382–398. doi:10.1111/tgis.12233</li>
+<li>Regalia, B., Janowicz, K., and McKenzie, G., 2019. Computing and querying strict, approximate, and metrically refined topological relations in linked geographic data. Transactions in GIS, 230 （3）,601–619. doi:10.1111/tgis.12548</li>
+<li>Ren, Y., et al., in this issue. A hybrid integrated deep learning model for the prediction of citywide spatio-temporal flow volumes. International Journal of Geographical Information Science, 1–22.</li>
+<li>Resch, B., et al., 2015. Urban emotionsgeo-semantic emotion extraction from technical sensors, human sensors and crowdsourced data. In: Progress in location-based services 2014. Berlin,Germany: Springer, 199–212.</li>
+<li>Rodriguez, A.M. and Egenhofer, M.J., 2004. Comparing geospatial entity classes: an asymmetric and context-dependent similarity measure. International Journal of Geographical Information Science, 180 （3）, 229–256. doi:10.1080/13658810310001629592</li>
+<li>Scellato, S., Noulas, A., and Mascolo, C., 2011. Exploiting place features in link prediction on location-based social networks. In: Proceedings of the 17th ACM SIGKDD international conference on Knowledge discovery and data mining. San Diego, CA: ACM, 1046–1054.</li>
+<li>Scheider, S., Ballatore, A., and Lemmens, R., 2019. Finding and sharing gis methods based on the questions they answer. International Journal of Digital Earth, 120 （5）, 594–613. doi:10.1080/17538947.2018.1470688</li>
+<li>Seif, H.G. and Hu, X., 2016. Autonomous driving in the icityhd maps as a key challenge of the automotive industry. Engineering, 20 （2）, 159–162. doi:10.1016/J.ENG.2016.02.010</li>
+<li>Silva, M.J., et al., 2006. Adding geographic scopes to web resources. Computers, Environment and Urban Systems, 300 （4）, 378–399. doi:10.1016/j.compenvurbsys.2005.08.003</li>
+<li>Smith, T.R., 1984. Artificial intelligence and its applicability to geographical problem solving. The Professional Geographer, 360 （2）, 147–158. doi:10.1111/j.0033-0124.1984.00147.x</li>
+<li>Sparks, K., et al., in this issue. A global analysis of cities geosocial temporal signatures for points of interest hours of operation. International Journal of Geographical Information Science, 1–18.</li>
+<li>Svoray, T., et al., 2018. Demonstrating the effect of exposure to nature on happy facial expressions via flickr data: advantages of non-intrusive social network data analyses and geoinformatics methodologies. Journal  of  Environmental  Psychology, 5  8  , 9  3–100.  doi:10.1016/j. jenvp.2018.07.006</li>
+<li>Vahedi, B., Kuhn, W., and Ballatore, A., 2016. Question-based spatial computinga case study. In: Geospatial data in a changing world. Helsinki, Finland: Springer, 37–50.</li>
+<li>Wang, M.,et al.,2018. Towards empty answers in sparql: approximating querying with rdf embedding. In: International semantic web conference. Springer, 513–529. doi:10.1177/1753193417739248</li>
+<li>Xie, Y., et al., in this issue. A locally-constrained yolo framework for detecting small and densely distributed building footprints. International Journal of Geographical Information Science, 1–25.</li>
+<li>Xu, L., et al., 2018. Check in or not? a stochastic game for privacy preserving in point-of-interest recommendation system. IEEE Internet of Things Journal, 50 （5）, 4178–4190. doi:10.1109/ JIOT.2018.2847302</li>
+<li>Yan, B., et al., 2017. From itdl to place2vec: reasoning about place type similarity and relatedness by learning embeddings from augmented spatial contexts. In: Proceedings of the 25th ACM SIGSPATIAL international conference on advances in geographic information systems. Redondo Beach, CA: ACM, 35.</li>
+<li>Yan, B., et al.,2018. xnet+ sc: classifying places based on images by incorporating spatial contexts. In: S. Winter, A. Griffin and M. Sester, eds. 10th international conference on geographic information science （GIScience 2018）. Melbourne, Australia: Schloss Dagstuhl-Leibniz-Zentrum fuer Informatik.</li>
+<li>Yan, B., et al., 2019. A spatially explicit reinforcement learning model for geographic knowledge graph summarization. Transactions in GIS, 230 （3）, 620–640. doi:10.1111/tgis.12547</li>
+<li>Zang, A., et al., 2017. Accurate vehicle self-localization in high definition map dataset. In: S. Gao, J. Dai, G. He, Y. Xu, and X. Chen, eds. Proceedings of the 1st ACM SIGSPATIAL workshop on high precision maps and intelligent applications for autonomous vehicles. Redondo Beach, CA: ACM, 2.</li>
+<li>Zeile, P. and Resch, B., 2018. Combining biosensing technology and virtual environments for improved urban planning. GI_Forum, 1, 344–357. doi:10.1553/giscience</li>
+<li>Zhang, F., et al., 2018. Representing place locales using scene elements. Computers, Environment and Urban Systems, 71, 153–164. doi:10.1016/j.compenvurbsys.2018.05.005</li>
+<li>Zhang, F., et al., 2019. Social sensing from street-level imagery: a case study in learning spatio-temporal urban mobility patterns. ISPRS Journal of Photogrammetry and Remote Sensing, 153, 48– doi:10.1016/j.isprsjprs.2019.04.017</li>
+<li>Zheng, Y., et al., 2014. Diagnosing new york city’s noises with ubiquitous data. In Proceedings of the 2014 ACM international joint conference on pervasive and ubiquitous computing. Seattle, WA: ACM, 715–725.</li>
+<li>Zhu, D., et al., in this issue. Spatial interpolation using conditional generative adversarial neural networks. International Journal of Geographical Information Science, 1–24.</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/1e4b7e74.html">http://xishansnow.github.io/posts/1e4b7e74.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/GeoAI/">GeoAI</a><a class="post-meta__tags" href="/tags/%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">地理空间人工智能</a><a class="post-meta__tags" href="/tags/%E7%81%BE%E5%AE%B3%E7%AE%A1%E7%90%86/">灾害管理</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96-%E6%97%B6%E9%97%B4%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96/">空间信息抽取 时间信息抽取</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E6%98%BE%E5%BC%8F%E6%A8%A1%E5%9E%8B/">空间显式模型</a></div><div class="post_share"><div class="social-share" data-image="/img/book_14.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/61889a96.html"><img class="prev-cover" src="/img/010.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">➃   线性回归模型：样条回归</div></div></a></div><div class="next-post pull-right"><a href="/posts/66c1fa2d.html"><img class="next-cover" src="/img/book_14.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">GeoAI：社交媒体数据用于灾害管理的研究综述</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/66c1fa2d.html" title="GeoAI：社交媒体数据用于灾害管理的研究综述"><img class="cover" src="/img/book_14.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-09</div><div class="title">GeoAI：社交媒体数据用于灾害管理的研究综述</div></div></a></div><div><a href="/posts/1857a4e4.html" title="GeoAI 的近期研究总结与思考"><img class="cover" src="/img/coffe_11.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-22</div><div class="title">GeoAI 的近期研究总结与思考</div></div></a></div><div><a href="/posts/601b54e8.html" title="2021 年GeoAI 研讨会总结"><img class="cover" src="/img/coffe_06.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-27</div><div class="title">2021 年GeoAI 研讨会总结</div></div></a></div><div><a href="/posts/ae7bb62d.html" title="空间统计学概论"><img class="cover" src="/img/book_12.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-20</div><div class="title">空间统计学概论</div></div></a></div><div><a href="/posts/dfaef359.html" title="从自然语言文本中收割地理空间大数据"><img class="cover" src="/img/book_08.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-11</div><div class="title">从自然语言文本中收割地理空间大数据</div></div></a></div><div><a href="/posts/292f7d71.html" title="地理加权回归模型"><img class="cover" src="/img/coffe_09.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-10</div><div class="title">地理加权回归模型</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">GeoAI：地理知识发现中的空间显式人工智能技术</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">1 GeoAI 简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">2 空间显式模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">3 知识问答和摘要</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">4 社会感知</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">5 数据集、可复现性与可重复性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">6 未来挑战</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">7 总结与结论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">参考文献</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

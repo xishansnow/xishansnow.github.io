@@ -1,0 +1,494 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>信息抽取技术进展【2】 --命名实体识别及关系抽取 | 西山晴雪的知识笔记</title><meta name="keywords" content="知识图谱,知识抽取,命名实体识别,关系抽取"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="信息抽取技术研究进展">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息抽取技术进展【2】 --命名实体识别及关系抽取">
+<meta property="og:url" content="http://xishansnow.github.io/posts/52222f0e.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="信息抽取技术研究进展">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/coffe_10.png">
+<meta property="article:published_time" content="2021-03-25T08:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.038Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="知识图谱">
+<meta property="article:tag" content="知识抽取">
+<meta property="article:tag" content="命名实体识别">
+<meta property="article:tag" content="关系抽取">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/coffe_10.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/52222f0e"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '信息抽取技术进展【2】 --命名实体识别及关系抽取',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/coffe_10.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">信息抽取技术进展【2】 --命名实体识别及关系抽取</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-03-25T08:00:00.000Z" title="发表于 2021-03-25 16:00:00">2021-03-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.038Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/">基础理论知识</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">7.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>31分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1><strong>信息抽取技术进展【1】-- 概述</strong></h1>
+<p>【摘要 】从非结构化文本中提取对人类有意义的信息，是自由文本在DIKW金字塔中从数据层提升至知识层的关键性步骤，而其主要实现手段就是信息抽取，即将自由文本转换为结构化文本。本文对信息抽取技术做一简单介绍。</p>
+<p>【引自】李晶阳、牛广林等的**《万字综述：行业知识图谱构建最新进展》**等文章</p>
+<h1>1. 引言</h1>
+<p>​	从计算到感知再到认知的人工智能技术发展路径已经成为大多人工智能研究和应用专家的共识。机器具备认知智能，进而实现推理、归纳、决策甚至创作，在一定程度上需要一个充满知识的大脑。知识图谱 [<a href="#ref04">4</a>, <a href="#ref08">18</a>, <a href="#ref19">19</a>]，作为互联网时代越来越普及的语义知识形式化描述框架，已成为推动人工智能从感知能力向认知能力发展的重要途径。</p>
+<p>​	知识图谱的应用现在非常广泛：</p>
+<ul>
+<li>在通用领域
+<ul>
+<li>Google、百度等搜索公司利用其提供智能搜索服务，IBM Waston问答机器人、苹果的Siri语音助手和Wolfram Alpha都利用图谱来进行问题理解、推理和问答；</li>
+</ul>
+</li>
+<li>在各垂直领域
+<ul>
+<li>行业数据也在从大规模数据到图谱化知识快速演变，且基于图谱形式的行业知识，对智能客服、智能决策、智能营销等各类智能化服务进行赋能。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_d95db.png" alt=""></p>
+<p>​</p>
+<h1>2. 信息抽取的需求-- 知识图谱构建</h1>
+<p>​	随着Web2.0的出现，互联网中的文本数据不断增长，如何从这些数据中提取有用的信息非常重要。有效利用非结构化文本数据的一种可能方法是将其转换为结构化文本，这个过程被称为信息抽取（Information Extract，信息抽取）。信息抽取任务可以追溯到1970年，当时提出了一个名为JASPER的系统，该方法通过模板驱动方法和启发式方法来提取某些信息块[2]。信息抽取概念后来在1987年的消息理解会议（MUC）中得到了扩展，通常由不同的子问题组成，如：命名实体识别、关系提取等。</p>
+<p>​	信息抽取技术是构建知识图谱的基础支撑技术，可用于知识图谱的本体（or Schema）构建、知识库丰化、知识问答等多种应用场景。在实践中，知识图谱构建过程面临着很多挑战，而这些挑战都有赖于更为先进的信息抽取技术来解决。</p>
+<h2 id="需求与挑战1：-本体构建需求-–-如何自动或半自动地构建本体（schema）？">需求与挑战1： 本体构建需求 – 如何自动或半自动地构建本体（schema）？</h2>
+<ul>
+<li>知识图谱schema构建往往由对业务更加熟悉的业务专家来承担。尽管业务专家对业务更加擅长，但其对图谱及schema概念的理解和使用却有不小的启动成本，这直接导致业务专家无法快速从自身业务知识中抽象组织归纳出满足应用需求的图谱schema；</li>
+</ul>
+<h2 id="需求与挑战2：知识库丰化需求-–-低资源条件下如何有效获取知识？">需求与挑战2：<strong>知识库丰化需求 – 低资源条件下如何有效获取知识？</strong></h2>
+<ul>
+<li>区别于通用领域所积累的大规模有监督数据资源，大部分细分垂直领域所能提供用以进行信息抽取的有监督资源是有限的。如何在有监督资源有限的情况下，如何从模型和行业数据的角度来提升三元组抽取的效率和性能，是行业信息抽取的核心挑战。</li>
+</ul>
+<h2 id="需求与挑战3：多元异构需求-–-如何面对文档结构多样性难题？">需求与挑战3：<strong>多元异构需求 – 如何面对文档结构多样性难题？</strong></h2>
+<ul>
+<li>越来越多的垂直领域图谱应用场景是以文档为直接源数据来进行，如何有效的解析各种类型的文档数据，以及设计合理的<strong>文档级信息抽取</strong>模型，也在行业图谱构建的诸多挑战中占据越来越核心的的位置。</li>
+</ul>
+<h1>3. 直观理解信息抽取需求</h1>
+<p>​			知识图谱schema构建是构建知识图谱的首要步骤，但同时也是非常影响项目快速推进的环节之一。在基于知识图谱的应用在各类行业中落地的进程中，大部分行业没有接触过知识图谱，因而没有沉淀行业内的知识schema用以构建行业图谱。同时由于知识图谱的概念较新，行业业务专家需要一个从理解到熟练构建schema的过程，而此过程往往还需要算法人员的频繁介入。如此在一个新的行业中落地图谱相关的应用时，按照我们的项目经验，完整的schema构建往往需要消耗周级甚至月级的时间单位。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_97f66.png" alt=""></p>
+<p>​		在新的行业落地图谱应用时，为了节省图谱schema构建的时间和人力成本，需要一套半自动schema构建的方案，从而将schema构建的时间复杂度降到天级的时间单位。从信息抽取技术上来讲，面对一个新的行业，其业务知识的特点在于其开放性以及与过往领域知识的独立性，因此既需要开放信息抽取方法，也需要专门的技术方法支持。本文重点讨论开放信息抽取技术的。</p>
+<h1>4. 有关开放信息抽取的综述文献</h1>
+<p>由于信息抽取包含多个子任务，因此存在一些仅针对信息抽取自身的调查和综述，其中：</p>
+<h2 id="4-1-综述文献1【2018年】">4.1 综述文献1【2018年】</h2>
+<p>参考文献<a href="#ref74">[74]</a>中的调研工作聚焦于基于模式的信息抽取技术：</p>
+<ul>
+<li>主要利用语义、句法和定界符信息实现信息抽取</li>
+<li>研究整理了从自由文本和在线文本中抽取信息的各种系统
+<ul>
+<li>自由文本：
+<ul>
+<li>指普通的语法英语文本</li>
+<li>工具：LIEP，AutoSlog，PALKA，CRYSTAL，WebFoot、HASTEN等</li>
+</ul>
+</li>
+<li>在线文本：
+<ul>
+<li>包含语法、电文和非语法文本的混合文本</li>
+<li>工具：WHISK，RAP信息抽取R、SRV等</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-2-综述文献2【2019年】">4.2 综述文献2【2019年】</h2>
+<p>参考文献<a href="#ref75">[75]</a>中的调研工作将信息抽取的总体任务分解为五个主要任务：</p>
+<h4 id="（1）分词">（1）分词</h4>
+<ul>
+<li>
+<p>分词中的主要问题包括针对连字符、撇号、空格和句号的各种用法。这些问题通常通过采用规则库来解决。</p>
+</li>
+<li>
+<p>诸如中文之类的东方语言也带来了额外的挑战，这些挑战通常可以通过使用基于N-gram的模型和Viterbi算法来解决。</p>
+</li>
+</ul>
+<h4 id="（2）命名实体识别">（2）命名实体识别</h4>
+<ul>
+<li>NER任务，除了基于简单规则的技术外，在这方面采用的主要机器学习技术包括支持向量机（SVM），条件随机字段（CRF），最大熵马尔可夫模型（MEMM），HiddenMarkov模型（HMM）和决策树分类器（DTC）。</li>
+</ul>
+<h4 id="（3）关系抽取">（3）关系抽取</h4>
+<ul>
+<li>RE任务处理实体集之间关系的提取。执行RE的广泛使用的学习方法包括Markov模型（例如MEMM和CRF）以及上下文无关的语法。 HMM不用于此任务，因为此模型不适合捕获长期依赖关系。基于规则的方法也可以用于执行RE，其中语法信息的合并往往会提供更通用的规则。</li>
+</ul>
+<h4 id="（4）归一化">（4）归一化</h4>
+<ul>
+<li>通用性较低，需要领域相关信息支持，通常使用领域专家精心设计的转换规则和正则表达式来执行</li>
+</ul>
+<h4 id="（5）共指解析">（5）共指解析</h4>
+<ul>
+<li>通用性较低，需要领域相关信息支持，通过基于规则的方法、DTC和聚类技术等各种方法来完成的。</li>
+</ul>
+<p>上述调研工作主要集中在基于统计和基于规则的方法上，特别是在词向量（及其封装语义和句法信息的能力）出现之后，深度学习方法被广泛用于文本问题 。</p>
+<h2 id="4-3-综述文献3【2020年】">4.3 综述文献3【2020年】</h2>
+<p>参考文献<a href="#ref76">[76]</a>中的调研工作将信息抽取的</p>
+<h1>5. 开放信息抽取技术概览</h1>
+<p>​	<strong>开放信息抽取（OpenIE）是指机器通过阅读、整合和梳理没有固定实体和关系类型的开放自由文本，自动从中抽取出结构化知识。</strong></p>
+<p>​	一般来讲，OpenIE包含开放实体识别和开放实体关系抽取。由于schema构建涉及实体和关系，因此，这里的OpenIE特指开放实体关系抽取。</p>
+<p>​	举例来说，OpenIE从句子&quot;阿里巴巴是总部设立在中国杭州的一家科技公司&quot;中抽取出（“阿里巴巴”，“总部设立在”，“中国杭州”）和（“阿里巴巴”，“是”，“科技公司”）两个三元组。通常，OpenIE所抽取出的一般称SPO三元组，分别指Subject, Predicate, Object。</p>
+<p>​	此方向上的常用数据集包括FewRel <a href="#ref01">[1,2]</a>，NYT-FB <a href="#ref06">[6]</a>，OIE2016 <a href="#ref03">[3]</a> 等，评价指标是以预测的准确率，召回率和F1值为评价指标。</p>
+<h2 id="5-1-经典抽取方法"><strong>5.1 经典抽取方法</strong></h2>
+<p>​	较为经典OpenIE系统基本都是<strong>基于句法和语法规则加以相应的三元组判别器</strong>进行SPO抽取。以 <a href="#ref05">TextRunner[5]</a> 为例，其主要分为三个步骤：</p>
+<ul>
+<li>
+<p><strong>分类器训练</strong>：</p>
+<ul>
+<li>基于语法解析得到名词性短语，以短语间的词语为关系并进行规则筛选构建三元组正样本，以随机替换等方式构建负样本，人工构建特征训练贝叶斯分类器；</li>
+</ul>
+</li>
+<li>
+<p><strong>初步抽取</strong>：</p>
+<ul>
+<li>如上对句子中的名词性短语和关系进行抽取，根据分类器判别所抽取的三元组是否可信；</li>
+</ul>
+</li>
+<li>
+<p><strong>三元组筛选</strong>：</p>
+<ul>
+<li>对所抽取出的关系进行基于规则的归一化，并统计三元组的频次。</li>
+</ul>
+<p>随着深度学习的发展和相关数据集的不断丰富，近年来，OpenIE方向也出现了一些基于深度学习的有监督和无监督的方法。</p>
+</li>
+</ul>
+<h2 id="5-2-无监督抽取方法">5.2 <strong>无监督抽取方法</strong></h2>
+<h4 id="DRWE模型"><strong>DRWE模型</strong></h4>
+<p>​		<a href="#ref07">DRWE[7]</a> 模型（见下图）采用<strong>无监督的方法进行开放关系识别</strong>。具体来说，其利用一些已有的工具识别出句子中的关键实体与实体对以及最短依存路径，之后结合预训练的词向量、实体对之间的最短依存路径和实体类型构建特征向量并进行PCA降维，进而通过层次聚类得到最终的关系聚类结果。</p>
+<img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/image-20210325123926075.png" alt="image-20210325123926075" style="zoom:150%;" />
+<h4 id="RSN-模型"><strong>RSN 模型</strong></h4>
+<p>​	 <a href="#ref08">RSN模型[8]</a>（见下图）在已有的关系标注数据上，基于CNN模型训练了句子之间的语义匹配模型，并将此模型用于计算测试数据中句子之间的相似度矩阵，进而利用基于图的聚类算法Louvain进行不固定聚类类别的聚类。RSN模型在半监督、远程监督的关系识别任务上都取得了很好的效果。此类模型受限于已有实体识别和句法分析工具或者需要先验的标注数据进行更加精准的聚类，且其仅对关系进行聚类但没有进行显式的抽取。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/image-20210325124002849.png" alt="image-20210325124002849"></p>
+<h2 id="5-3-有监督抽取方法"><strong>5.3 有监督抽取方法</strong></h2>
+<h4 id="RnnOIE模型"><strong>RnnOIE模型</strong></h4>
+<p>​	<a href="#ref09">RnnOIE模型[9]</a>（见下图）采用有监督的方法，将OpenIE的SPO抽取建模为序列标注问题。具体来说，其将词的词向量和词性向量进行concat，输入到BiLSTM中，最终以softmax输出进行标签分类。近几年随着BERT的提出，大规模预训练模型带来了更好的泛化能力，Span Select的方法，因为其可以利用更多语义信息，渐渐开始超越了传统OpenIE上基于CRF的相关方法。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/image-20210325134533951.png" alt="image-20210325134533951"></p>
+<h4 id="RnnOIE-SupervisedRL模型"><strong>RnnOIE-SupervisedRL</strong>模型</h4>
+<p>​	由于大规模标注数据很难获取，**<a href="#ref73">RnnOIE-SupervisedRL[73]</a>**模型（见下图）首先基于句法和语义规则自动进行大规模抽取，在此数据上训练RnnOIE模型，得到初步的抽取模型。为了增强模型的准确性，RnnOIE-SupervisedRL对前述初步抽取模型，采用强化学习的训练机制进行了进一步训练，其reward是由抽取结果的基于head match的句法满足度和基于Bert的预训练模型给出的语义匹配度的乘积得到。</p>
+<p>​	实验证实，上述模型在OIE2016数据集上的F1值由20.4% 提升到了32.5%，两个子模型分别贡献了约4% 和8% 的提升。上述模型目前所考虑的SPO形式还较为简单，对于复杂情形（如包含一个SP，多个O的句子）的处理还需进行深入研究。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_65fc4.png" alt=""></p>
+<h2 id="5-4-生成式模型方法"><strong>5.4 生成式模型方法</strong></h2>
+<h4 id="Neural-OpenIE模型">Neural OpenIE模型</h4>
+<p>​	<a href="#ref11">Neural OpenIE[11]</a> 将Encoder-Decoder架构引入到OpenIE任务中来，从而将信息的抽取模式转化为信息的生成模式。此模式可以有效解决隐式Predicate抽取问题，比如从句子&quot;张三，90后，喜爱二次元&quot;中抽取出（张三，出生年代，90后），其中&quot;出生年代&quot;是隐式的Predicate。此类方法面临和前述有监督方法相同的复杂信息抽取和信息归一的困难。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_6a040.png" alt=""></p>
+<h1>6. 开放信息抽取的常用数据集</h1>
+<p>3信息抽取常用的数据集</p>
+<p>​		数据集是信息抽取任务的主要组成部分，因为它们用于训练和测试各种技术。 本节介绍主要基准数据集，这些数据广泛用于评估各种新技术。</p>
+<p>​		<strong>For detailed log of available datasets for NER in English and various other languages, visit <a target="_blank" rel="noopener" href="https://github.com/juand-r/entity-recognition-datasets">Github</a>.</strong></p>
+<h2 id="6-1-MUC预料库">6.1 MUC预料库</h2>
+<p>​	MUC（Message Understanding Conference  Corpus）专注于模板提取的任务，以识别命名实体（NE）、实体之间关系以及事件检测为主。 在后者中，此任务分为基于场景的模板提取，其中在某些事件的上下文中提取实体及其关系信息。 基于模板的提取，主要处理实体之间的RE任务。 在从MUC-2到此系列的一系列任务中，已经提供了模板，需要用算法填充。 而在MUC-1中，没有预定义模板，因此任务相当开放。 MUC-6和MUC-7通过分别添加NER和共指分辨率的任务来扩展了以前的版本。 MUC-3和MUC-4数据集是公开可用的，而MUC-6和MUC-7是专有的[3]。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_01.png" alt=""></p>
+<h2 id="6-2-ACE语料库">6.2 ACE语料库</h2>
+<p>​	ACE（Automatic Content Extraction corpus）由来自广播成绩单，新闻通讯社和报纸的数据构成，这些数据以英语，中文和阿拉伯语显示。 它是RE中使用最广泛的数据集。 该数据集分别包含训练和测试数据。 ACE词汇表由代表对象的实体，提及和关系，对对象的引用以及对象之间的关系组成。 在ACE中，提及具有三个级别：名称，名义表达和代词，ACE任务进一步分类为实体检测和跟踪（EDT），关系检测和表征（RDC），事件检测和特征化（EDC），实体链接（LNK）和时间戳记。 表2简要概述了随着时间的推移在ACE语料库上正在执行的各种ACE任务，以及所涉及的语言。 紧随其后的是文本分析会议中的知识库人口跟踪。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_02.png" alt=""></p>
+<h2 id="6-3-CoNLL语料库">6.3 CoNLL语料库</h2>
+<p>​	计算自然语言学习会议（CoNLL，Conference on Computational Natural Language Learning Corpus）主要关注自然语言理解。 在NER任务的上下文中，它处理四种主要类型的NE，包括位置名称，人员名称，组织名称和其他名称。 所有这些实体均从新闻专线进行注释。 表3列出了有关CoNLL数据集的详细信息。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_03.png" alt=""></p>
+<h2 id="6-4-OntoNotes语料库">6.4 OntoNotes语料库</h2>
+<p>​	OntoNotes数据集是在美国各地不同机构之间的共同努力下开发的。其目的是构建一个大型的带有人类注释的语料库，包含各种文本数据类型，包括不同语言的电话语音，广播，新闻，脱口秀等。 它已被广泛用于评估NER问题。 表4中提供了有关OntoNotes数据集的详细信息。每个新发行版均包含以前发行版中的数据。 因此，下表中的“源类型”列仅突出显示不属于先前发行版的新数据源。 由于数据源种类繁多，OntoNotes是NER的最大，最具挑战性的基准数据集之一，总共包含大约2,945,000个令牌。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_04.png" alt=""></p>
+<h2 id="6-5-Sem-Eval语料库">6.5 Sem-Eval语料库</h2>
+<p>​	Semantic Evaluation (Sem-Eval) Corpus是一年一度的研讨会，致力于解决面向语义的问题。 它的存储库包含广泛用于执行不同信息抽取任务的各种数据集。 广泛使用的任务包括2010年Sem-Eval的RE任务。2017年Sem-Eval的任务还包括着重于从科学文章中提取实体和关系。</p>
+<h2 id="6-6-其他语料库">6.6 其他语料库</h2>
+<p>​	存在各种医疗仓库。 广泛使用的存储库包括MEDLINE，PubMed和PubMed Central（PMC）等。</p>
+<ul>
+<li>
+<p>MEDLINE是国家医学图书馆的期刊引文数据库，其中载有约24M的生物学和生命科学期刊参考文献。</p>
+</li>
+<li>
+<p>PubMed包含来自各种生物医学文献资料库的超过2700万篇引文，其中包括在线书籍，生命科学期刊和MEDLINE。</p>
+</li>
+<li>
+<p>PMC载有针对生物医学和生命科学期刊文章的全文科学文章。</p>
+</li>
+<li>
+<p>GENIA数据集是面向信息抽取的任务中广泛使用的医学资源之一。 它包含手动标记的命名实体，包括各种化合物以及与蛋白质反应有关的各种生物学方向信息。 GENIA数据集基于GENIA本体，目前包含MEDLINE的2,000个摘要。除了医学数据集外，还组织了一些研讨会或任务来解决资源匮乏的语言的信息抽取问题。</p>
+</li>
+<li>
+<p>此外，表5列出了一些非英语资源以及简要说明。</p>
+</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_05.png" alt=""></p>
+<h1>7. 实践 – 半自动 schema 构建**</h1>
+<p>​	在基于知识图谱的问答（KBQA）中，我们实现了基于问句的半自动schema构建（从问题出发构建本体）。以公积金场景为例，下图展示了公积金图谱schema的一部分，算法做的是从用户的大量问句中抽取&quot;公积金&quot;为subject，“缴存”、“提取”、“启封&quot;为predicate。同时由于实际中涉及一些复合类型属性（compound value type），比如&quot;提取&quot;属性是复合类属性，因其含有限制属性&quot;提取地点&quot;和&quot;公积金用途”。如后面基于GNN的抽取图所示，算法是从问句集中抽取（公积金，抽取，租赁住房），再由业务方校验和进一步抽象为（公积金，抽取，公积金用途）。因此，算法最终要从问句中抽取出subject, predicate和constaint三部分，分别对应前述例子中的 “公积金”，&quot;抽取&quot;和 “租赁住房”。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_5d458.png" alt=""></p>
+<h2 id="（1）基于句法的-pipeline-式抽取"><strong>（1）基于句法的 pipeline 式抽取</strong></h2>
+<p>​	我们采用subject-predicate-constraint的pipeline抽取模型，方案逻辑大致为：首先对问句文本进行聚类(不固定聚类数目)，然后从每个聚类簇中抽取一个三元组（实体，主属性，限制条件/子属性值），其中实体，主属性，限制条件/子属性值为词汇或者短语，例如三元组（公积金，提取，租赁住房）。我们首先实现了以依存句法分析为核心的Deductive抽取流程（如下图所示），其中主要包括层次聚类，关键词/短语抽取与对齐，词性分布归纳，Subject、Predicate、Constraint抽取等模块。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_be2b4.png" alt=""></p>
+<p>▲ 基于句法的pipeline式抽取图</p>
+<h2 id="（2）基于-GNN-的抽取"><strong>（2）基于 GNN 的抽取</strong></h2>
+<p>​	我们发现上述方案没有很好的考虑各类依存句法逻辑之间的综合关系，且泛化性能有限。因此，在上述方案基础上，设计并实现了将聚类簇图结构化，并借鉴知识图谱上图卷积神经网络方法进行建模的方案。为了达到领域无关的效果，图结构中节点的embedding表示是基于词汇在簇词汇集中的位置onehot表示生成得到。从实际效果来看，基于GNN的模型相较于第一个版本的模型具有更好的泛化性和准召率。下图给出和（公积金，提取，租赁住房）相关的聚类簇图结构化的展示例子。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_c2b1e.png" alt=""></p>
+<p>▲ 基于GNN的抽取图</p>
+<h1>8. 小结**</h1>
+<p>​	从行业知识图谱的schema构建出发，本节介绍了开放信息抽取（OpenIE）与schema构建的之间的关系，并对OpenIE中的基于规则、基于监督数据以及基于生成式的模型进行了介绍。同时，本节还介绍了在KBQA场景下，由OpenIE启发，基于用户问句的半自动schema构建算法的简要介绍。虽然我们实现了基于问句的半自动schema构建的初步版本，但在真实落地中还存在很多挑战和困难，后续我们可能在如下方向进行深入探索：</p>
+<ul>
+<li>
+<p>复杂样本，如一个聚类簇包含一个SP，多个O的情形；</p>
+</li>
+<li>
+<p>将行业预训练语言模型引入来提升模型的泛化性；</p>
+</li>
+<li>
+<p>借助OpenIE中的生成式模型来抽取问句中隐含的属性或者条件信息，如&quot;我今年56了，能购买康宁保险吗？“中&quot;我今年56&quot;的隐含条件信息是&quot;年龄”。</p>
+</li>
+</ul>
+<p>​    知识图谱schema的构建完成类似于关系型数据库中的表名和表中的栏位名确定了，之后就需要向表中填充真实的数据。由于知识图谱由（实体，关系，实体）三元组构成，因此后续构建的关键在于实体识别和关系抽取。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_06.png" alt=""></p>
+<h1><strong>参考文献</strong></h1>
+<div id="ref01">1. Han, Hao Zhu, Pengfei Yu, ZiyunWang, Yuan Yao, Zhiyuan Liu, and Maosong Sun. 2018d. Fewrel: A largescale supervised few-shot relation classification dataset with state-of-the-art evaluation. In Proceedings of EMNLP, pages 4803--4809.</div>
+<div id="ref03">2. Tianyu Gao, Xu Han, Hao Zhu, Zhiyuan Liu, Peng Li, Maosong Sun, and Jie Zhou. 2019. FewRel 2.0: Towards more challenging few-shot relation classification. In Proceedings of EMNLP-IJCNLP, pages 6251--6256.</div>
+<div id="ref03">3. </div> [https://github.com/gabrielStanovsky/oie-benchmark](https://link.zhihu.com/?target=https%3A//github.com/gabrielStanovsky/oie-benchmark)
+<div id="ref04">4. 《知识图谱: 方法,实践与应用》，王昊奋 / 漆桂林 / 陈华钧 主编，电子工业出版社, 2019.</div>
+<div id="ref05">5. Yates, A.; Banko, M.; Broadhead, M.; Cafarella, M.; Etzioni,O.; and Soderland, S. 2007. Textrunner: Open information extraction on the web. In Proceedings of Human Language Technologies: The Annual Conference of the North American Chapter of the Association for Computational Linguistics (NAACL-HLT), 25--26..</div>
+<div id="ref06">6. Diego Marcheggiani and Ivan Titov. 2016. Discretestate variational autoencoders for joint discovery and factorization of relations. Transactions of ACL..</div>
+<div id="ref07">7. Elsahar, H., Demidova, E., Gottschalk, S., Gravier, C., & Laforest, F. (2017, May). Unsupervised open relation extraction. In European Semantic Web Conference (pp. 12-16). Springer, Cham..</div>
+<div id="ref08">8. Wu, R., Yao, Y., Han, X., Xie, R., Liu, Z., Lin, F., \... & Sun, M. (2019, November). Open relation extraction: Relational knowledge transfer from supervised data to unsupervised data. In EMNLP-IJCNLP (pp.219-228)..</div>
+<div id="ref09">9. Stanovsky, G., Michael, J., Zettlemoyer, L., & Dagan, I. (2018, June). Supervised open information extraction. In Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long Papers) (pp. 885-895)..</div>
+<div id="ref10">10.  Zhan, J., & Zhao, H. (2020, April). Span model for open information extraction on accurate corpus. In Proceedings of the AAAI Conference on Artificial Intelligence (Vol. 34, No. 05, pp. 9523-9530). </div>
+<div id="ref11">[11. Cui, L., Wei, F., & Zhou, M. (2018). Neural open information extraction. arXiv preprint arXiv:1805.04270.</div>
+<div id="ref12">12. Sameer Pradhan, Mitchell P. Marcus, Martha Palmer, Lance A. Ramshaw, Ralph M. Weischedel, and Nianwen Xue, editors. 2011. Proceedings of the Fifteenth Conference on Computational Natural Language Learning:Shared Task, CoNLL 2011, Portland, Oregon, USA, June 23-24, 2011. ACL.</div>
+<div id="ref13">13. Gina-Anne Levow. 2006. The third international Chinese language processing bakeoff: Word segmentation and named entity recognition. In Proceedings of the Fifth SIGHANWorkshop on Chinese Language Processing, pages 108--117, Sydney, Australia. Association for Computational Linguistics.</div>
+<div id="ref14">14. Nanyun Peng and Mark Dredze. 2015. Named entity recognition for Chinese social media with jointly trained embeddings. In EMNLP. pages 548--554.</div>
+<div id="ref15">15. Erik F. Tjong Kim Sang and Fien De Meulder. 2003. Introduction to the conll-2003 shared task: Languageindependent named entity recognition. In Proceedings of the Seventh Conference on Natural Language Learning, CoNLL 2003, Held in cooperation with HLT-NAACL 2003, Edmonton, Canada, May 31 - June 1, 2003, pages 142--147\.</div>
+<div id="ref16">16. George R Doddington, Alexis Mitchell, Mark A Przybocki, Stephanie M Strassel Lance A Ramshaw, and Ralph M Weischedel. 2005. The automatic content extraction (ace) program-tasks, data, and evaluation. In LREC, 2:1.</div>
+<div id="ref17">17. Sameer Pradhan, Alessandro Moschitti, Nianwen Xue, Hwee Tou Ng, Anders Bj¨orkelund, Olga Uryupina, Yuchen Zhang, and Zhi Zhong. 2013. Towards robust linguistic analysis using OntoNotes. In Proceedings of the Seventeenth Conference on Computational Natural Language Learning, pages 143--152, Sofia, Bulgaria.Association for Computational Linguistics.</div>
+<div id="ref18">18. 阮彤, 王梦婕, 王昊奋, & 胡芳槐. (2016). 垂直知识图谱的构建与应用研究. 知识管理论坛(3).</div>
+<div id="ref19">19. Wu, T.; Qi, G.; Li, C.; Wang, M. A Survey of Techniques for Constructing Chinese Knowledge Graphs and Their Applications. Sustainability 2018, 10, 3245.</div>
+<div id="ref20">20. Collobert, R., Weston, J., Bottou, L., Karlen, M., Kavukcuoglu, K., & Kuksa, P. (2011). Natural language processing (almost) from scratch. Journal of machine learning research, 12(ARTICLE), 2493-2537. </div>
+<div id="ref21">\[21\] Huang, Z., Xu, W., & Yu, K. (2015). Bidirectional LSTM-CRF models for sequence tagging. arXiv preprint arXiv:1508.01991.</div>
+<div id="ref22">22. Strubell, E., Verga, P., Belanger, D., & McCallum, A. (2017). Fast and accurate entity recognition with iterated dilated convolutions. arXiv preprint arXiv:1702.02098.</div>
+<div id="ref23">23. Devlin, J., Chang, M. W., Lee, K., & Toutanova, K. (2018). Bert: Pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805.</div>
+<div id="ref24">24. Zhang, Y., & Yang, J. (2018). Chinese ner using lattice lstm. arXiv preprint arXiv:1805.02023.</div>
+<div id="ref25">25. Gui, T., Ma, R., Zhang, Q., Zhao, L., Jiang, Y. G., & Huang, X. (2019, August). CNN-Based Chinese NER with Lexicon Rethinking. In IJCAI (pp. 4982-4988).</div>
+<div id="ref26">26. Li, X., Yan, H., Qiu, X., & Huang, X. (2020). FLAT: Chinese NER Using Flat-Lattice Transformer. arXiv preprint arXiv:2004.11795.</div>
+<div id="ref27">27. Li, X., Feng, J., Meng, Y., Han, Q., Wu, F., & Li, J. (2019). A unified mrc framework for named entity recognition. arXiv preprint arXiv:1910.11476.</div>
+<div id="ref28">28. Yuchen Lin, B., Lee, D. H., Shen, M., Moreno, R., Huang, X., Shiralkar, P., & Ren, X. (2020). TriggerNER: Learning with Entity Triggers as Explanations for Named Entity Recognition. arXiv, arXiv-2004. </div>
+<div id="ref29">\[29\] Zhang, X., Jiang, Y., Peng, H., Tu, K., & Goldwasser, D. (2017). Semi-supervised structured prediction with neural crf autoencoder. Association for Computational Linguistics (ACL).</div>
+<div id="ref30">30. Chen, M., Tang, Q., Livescu, K., & Gimpel, K. (2019). Variational sequential labelers for semisupervised learning. arXiv preprint arXiv:1906.09535.</div>
+<div id="ref31">31. Chen, J., Wang, Z., Tian, R., Yang, Z., & Yang, D. (2020). Local Additivity Based Data Augmentation for Semi-supervised NER. arXiv preprint arXiv:2010.01677.</div>
+<div id="ref32">32. Lakshmi Narayan, P. (2019). Exploration of Noise Strategies in Semi-supervised Named Entity Classification.</div>
+<div id="ref33">33. Alejandro Metke-Jimenez and Sarvnaz Karimi. 2015. Concept extraction to identify adverse drug reactions in medical forums: A comparison of algorithms. CoRR abs/1504.06936.</div>
+<div id="ref34">34. Xiang Dai, Sarvnaz Karimi, Ben Hachey, Cécile Paris. An Effective Transition-based Model for Discontinuous NER. ACL 2020: 5860-5870</div>
+<div id="ref35">35. Wei Lu and Dan Roth. 2015. Joint mention extraction and classification with mention hypergraphs. In Conference on Empirical Methods in Natural Language Processing, pages 857--867, Lisbon, Portugal.</div>
+<div id="ref36">36. Walker, C., Strassel, S., Medero, J., and Maeda, K. 2005. ACE 2005 multilingual training corpuslinguistic data consortium.</div>
+<div id="ref37">37. Szpakowicz, S. 2009. Semeval-2010 task 8: Multi-way classification of semantic relations between pairs of nominals. In Proceedings of the Workshop on Semantic Evaluations: Recent Achievements and Future Directions, pages 94--99. Association for Computational Linguistics.</div>
+<div id="ref38">38. Zhang, Yuhao and Zhong, Victor and Chen, Danqi and Angeli, Gabor and Manning, Christopher D. 2017. Position-aware Attention and Supervised Data Improve Slot Filling. In Proceedings of EMNLP. Pages 35-45.</div>
+<div id="ref39">39. Riedel, S., Yao, L., and McCallum, A. 2010. Modeling relations and their mentions without labeled text. In Joint European Conference on Machine Learning and Knowledge Discovery in Databases, pages 148-163. Springer.</div>
+<div id="ref40">40. Yuan Yao, Deming Ye, Peng Li, Xu Han, Yankai Lin, Zhenghao Liu, Zhiyuan Liu, Lixin Huang, Jie Zhou, and Maosong Sun. 2019. DocRED: A large-scale document-level relation extraction dataset. In Proceedings of ACL, pages 764--777.</div>
+<div id="ref41">41. Daojian Zeng, Kang Liu, Siwei Lai, Guangyou Zhou, and Jun Zhao. 2014. Relation classification via convolutional deep neural network. In Proceedings of COLING, pages 2335--2344.</div>
+<div id="ref42">42. Linlin Wang, Zhu Cao, Gerard De Melo, and Zhiyuan Liu. 2016. Relation classification via multi-level attention cnns. In Proceedings of ACL, pages 1298--1307.</div>
+<div id="ref43">43. Dongxu Zhang and Dong Wang. 2015. Relation classification via recurrent neural network. arXiv preprint arXiv:1508.01006.</div>
+<div id="ref44">44. Xu, Y., Mou, L., Li, G., Chen, Y., Peng, H., and Jin, Z. 2015. Classifying relations via long short term memory networks along shortest dependency paths. In proceedings of EMNLP, pages 1785--1794. </div>
+<div id="ref45">45. Shanchan Wu and Yifan He. 2019. Enriching pre-trained language model with entity information for relation classification.</div>
+<div id="ref46">46. Zhao, Y., Wan, H., Gao, J., and Lin, Y. 2019. Improving relation classification by entity pair graph. In Asian Conference on Machine Learning, pages 1156--1171.</div>
+<div id="ref47">47. Mike Mintz, Steven Bills, Rion Snow, and Dan Jurafsky. 2009. Distant supervision for relation extraction without labeled data. In Proceedings of ACL-IJCNLP, pages 1003--1011.</div>
+<div id="ref48">48. Mihai Surdeanu, Julie Tibshirani, Ramesh Nallapati, and Christopher D Manning. 2012. Multi-instance multi-label learning for relation extraction. In Proceedings of EMNLP, pages 455--465.</div>
+<div id="ref49">49. Daojian Zeng, Kang Liu, Yubo Chen, and Jun Zhao. 2015. Distant supervision for relation extraction via piecewise convolutional neural networks. In Proceedings of EMNLP, pages 1753--1762.</div>
+<div id="ref50">50. Yankai Lin, Shiqi Shen, Zhiyuan Liu, Huanbo Luan, and Maosong Sun. 2016. Neural relation extraction with selective attention over instances. In Proceedings of ACL, pages 2124--2133.</div>
+<div id="ref51">51. Yuhao Zhang, Peng Qi, and Christopher D. Manning. 2018. Graph convolution over pruned dependency trees improves relation extraction. In Proceedings of EMNLP, pages 2205--2215.</div>
+<div id="ref52">52. Guoliang Ji, Kang Liu, Shizhu He, Jun Zhao, et al. 2017. Distant supervision for relation extraction with sentence-level attention and entity descriptions. In AAAI, pages 3060--3066.</div>
+<div id="ref53">53. Bordes A, Usunier N, Garcia-Duran A, et al. 2013. Translating embeddings for modeling multi-relational data. Advances in neural information processing systems. pages 2787-2795.</div>
+<div id="ref54">54. Xu Han, Pengfei Yu, Zhiyuan Liu, Maosong Sun, and Peng Li. 2018. Hierarchical relation extraction with coarse-to-fine grained attention. In Proceedings of EMNLP, pages 2236--2245.</div>
+<div id="ref55">55. Ningyu Zhang, Shumin Deng, Zhanlin Sun, Guanying Wang, Xi Chen, Wei Zhang, and Huajun Chen. 2019. Longtail relation extraction via knowledge graph embeddings and graph convolution networks. In Proceedings of NAACL-HLT, pages 3016--3025.</div>
+<div id="ref56">56. Qin, P., Xu, W., and Wang, W. Y. 2018b. Robust distant supervision relation extraction via deep reinforcement learning. arXiv preprint arXiv:1805.09927.</div>
+<div id="ref57">57. Xiangrong Zeng, Shizhu He, Kang Liu, and Jun Zhao. 2018. Large scaled relation extraction with reinforcement learning. In Proceedings of AAAI, pages 5658--5665.</div>
+<div id="ref58">58. Jun Feng, Minlie Huang, Li Zhao, Yang Yang, and Xiaoyan Zhu. 2018. Reinforcement learning for relation classification from noisy data. In Proceedings of AAAI, pages 5779--5786.</div>
+<div id="ref59">59. Yi Wu, David Bamman, and Stuart Russell. 2017. Adversarial training for relation extraction. In Proceeding of EMNLP, pages 1778--1783.</div>
+<div id="ref60">60. Pengda Qin, Weiran Xu, William Yang Wang. 2018. DSGAN: Generative Adversarial Training for Distant Supervision Relation Extraction. In Proceeding of ACL, pages 496--505.</div>
+<div id="ref61">61. Livio Baldini Soares, Nicholas FitzGerald, Jeffrey Ling, and Tom Kwiatkowski. 2019. Matching the blanks: Distributional similarity for relation learning. In Proceedings of ACL, pages 2895--2905.</div>
+<div id="ref62">62. Meng Qu, Tianyu Gao, Louis-Pascal Xhonneux, Jian Tang. 2020. Few-shot Relation Extraction via Bayesian Meta-learning on Task Graphs. In Proceedings of ICML.</div>
+<div id="ref63">63. Suncong Zheng, Feng Wang, Hongyun Bao, Yuexing Hao,Peng Zhou, Bo Xu. 2017. Joint Extraction of Entities and Relations Based on a Novel Tagging Scheme. Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics, pages 1227--1236.</div>
+<div id="ref64">64. Wei, Zhepei and Su, Jianlin and Wang, Yue and Tian, Yuan and Chang, Yi. 2020 A Novel Cascade Binary Tagging Framework for Relational Triple Extraction}. In Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics}, pages 1476---1488.</div>
+<div id="ref65">65. Luan, Y., Wadden, D., He, L., Shah, A., Ostendorf, M., & Hajishirzi, H. (2019). A general framework for information extraction using dynamic span graphs. arXiv preprint arXiv:1904.03296.</div>
+<div id="ref66">66. Wadden, D., Wennberg, U., Luan, Y., & Hajishirzi, H. (2019). Entity, relation, and event extraction with contextualized span representations. arXiv preprint arXiv:1909.03546.</div>
+<div id="ref67">67. Sahu, S. K., et al. 2019. Inter-sentence Relation Extraction with Document-level Graph Convolutional Neural Network. Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics:4309--4316.</div>
+<div id="ref68">68. mLiu, B., Gao, H., Qi, G., Duan, S., Wu, T., & Wang, M. (2019, April). Adversarial Discriminative Denoising for Distant Supervision Relation Extraction. In International Conference on Database Systems for Advanced Applications (pp. 282-286). Springer, Cham.</div>
+<div id="ref69">69. Namboodiri, A. M., & Jain, A. K. (2007). Document structure and layout analysis. In Digital Document Processing (pp. 29-48). Springer, London.</div>
+<div id="ref70">70. Xu, Y., Li, M., Cui, L., Huang, S., Wei, F., & Zhou, M. (2020, August). Layoutlm: Pre-training of text and layout for document image understanding. In Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining (pp. 1192-1200).</div>
+<div id="ref71">71. Li, M., Xu, Y., Cui, L., Huang, S., Wei, F., Li, Z., & Zhou, M. (2020). DocBank: A Benchmark Dataset for Document Layout Analysis. arXiv preprint arXiv:2006.01038.</div>
+<div id="ref72">72. Ainslie, J., Ontanon, S., Alberti, C., Cvicek, V., Fisher, Z., Pham, P., \... & Yang, L. (2020, November). ETC: Encoding Long and Structured Inputs in Transformers. In Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP) (pp. 268-284).</div>
+<div id="ref73">73. Tang, J., Lu, Y., Lin, H., Han, X., Sun, L., Xiao, X., & Wu, H. (2020, November). Syntactic and Semantic-driven Learning for Open Information Extraction. In Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: Findings (pp. 782-792).</div>
+<div id="ref74">74. Han, Hao Zhu, Pengfei Yu, ZiyunWang, Yuan Yao, Zhiyuan Liu, and Maosong Sun. 2018d. Fewrel: A largescale supervised few-shot relation classification dataset with state-of-the-art evaluation. In Proceedings of EMNLP, pages 4803--4809.</div>
+<div id="ref75">75. Tianyu Gao, Xu Han, Hao Zhu, Zhiyuan Liu, Peng Li, Maosong Sun, and Jie Zhou. 2019. FewRel 2.0: Towards more challenging few-shot relation classification. In Proceedings of EMNLP-IJCNLP, pages 6251--6256.</div>
+<div id="ref76">76. Zara Nasar, Syed Waqar Jaffry, and Muhammad Kamran Malik. 2021. Named Entity Recognition and Relation Extraction: State-of-the-Art. ACM Comput. Surv. 54, 1, Article 20 (February 2021), 39 pages. https://doi.org/10.1145/3445965.</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/52222f0e.html">http://xishansnow.github.io/posts/52222f0e.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a><a class="post-meta__tags" href="/tags/%E7%9F%A5%E8%AF%86%E6%8A%BD%E5%8F%96/">知识抽取</a><a class="post-meta__tags" href="/tags/%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB/">命名实体识别</a><a class="post-meta__tags" href="/tags/%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/">关系抽取</a></div><div class="post_share"><div class="social-share" data-image="/img/coffe_10.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/4ce878e6.html"><img class="prev-cover" src="/img/book_03.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">信息抽取技术进展【2】 --命名实体识别技术</div></div></a></div><div class="next-post pull-right"><a href="/posts/de567878.html"><img class="next-cover" src="/img/book_03.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">数据、信息、知识与智慧----知识金字塔</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/9241f269.html" title="信息抽取技术进展【4】 -- 新的挑战"><img class="cover" src="/img/coffe_13.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-25</div><div class="title">信息抽取技术进展【4】 -- 新的挑战</div></div></a></div><div><a href="/posts/4ce878e6.html" title="信息抽取技术进展【2】 --命名实体识别技术"><img class="cover" src="/img/book_03.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-25</div><div class="title">信息抽取技术进展【2】 --命名实体识别技术</div></div></a></div><div><a href="/posts/53cc9671.html" title="信息抽取技术进展【3】 -- 关系抽取技术"><img class="cover" src="/img/book_09.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-25</div><div class="title">信息抽取技术进展【3】 -- 关系抽取技术</div></div></a></div><div><a href="/posts/9ebb1b2.html" title="领域知识图谱技术概览"><img class="cover" src="/img/coffe_11.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-15</div><div class="title">领域知识图谱技术概览</div></div></a></div><div><a href="/posts/bd450411.html" title="知识表示与知识图谱"><img class="cover" src="/img/coffe_10.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-15</div><div class="title">知识表示与知识图谱</div></div></a></div><div><a href="/posts/65b43396.html" title="Ontology、Taxonomy、Folksonomy和Thesauri的不同"><img class="cover" src="/img/book_17.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-15</div><div class="title">Ontology、Taxonomy、Folksonomy和Thesauri的不同</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">信息抽取技术进展【1】-- 概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">1. 引言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">2. 信息抽取的需求-- 知识图谱构建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E4%B8%8E%E6%8C%91%E6%88%981%EF%BC%9A-%E6%9C%AC%E4%BD%93%E6%9E%84%E5%BB%BA%E9%9C%80%E6%B1%82-%E2%80%93-%E5%A6%82%E4%BD%95%E8%87%AA%E5%8A%A8%E6%88%96%E5%8D%8A%E8%87%AA%E5%8A%A8%E5%9C%B0%E6%9E%84%E5%BB%BA%E6%9C%AC%E4%BD%93%EF%BC%88schema%EF%BC%89%EF%BC%9F"><span class="toc-text">需求与挑战1： 本体构建需求 – 如何自动或半自动地构建本体（schema）？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E4%B8%8E%E6%8C%91%E6%88%982%EF%BC%9A%E7%9F%A5%E8%AF%86%E5%BA%93%E4%B8%B0%E5%8C%96%E9%9C%80%E6%B1%82-%E2%80%93-%E4%BD%8E%E8%B5%84%E6%BA%90%E6%9D%A1%E4%BB%B6%E4%B8%8B%E5%A6%82%E4%BD%95%E6%9C%89%E6%95%88%E8%8E%B7%E5%8F%96%E7%9F%A5%E8%AF%86%EF%BC%9F"><span class="toc-text">需求与挑战2：知识库丰化需求 – 低资源条件下如何有效获取知识？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E4%B8%8E%E6%8C%91%E6%88%983%EF%BC%9A%E5%A4%9A%E5%85%83%E5%BC%82%E6%9E%84%E9%9C%80%E6%B1%82-%E2%80%93-%E5%A6%82%E4%BD%95%E9%9D%A2%E5%AF%B9%E6%96%87%E6%A1%A3%E7%BB%93%E6%9E%84%E5%A4%9A%E6%A0%B7%E6%80%A7%E9%9A%BE%E9%A2%98%EF%BC%9F"><span class="toc-text">需求与挑战3：多元异构需求 – 如何面对文档结构多样性难题？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">3. 直观理解信息抽取需求</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">4. 有关开放信息抽取的综述文献</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E7%BB%BC%E8%BF%B0%E6%96%87%E7%8C%AE1%E3%80%902018%E5%B9%B4%E3%80%91"><span class="toc-text">4.1 综述文献1【2018年】</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E7%BB%BC%E8%BF%B0%E6%96%87%E7%8C%AE2%E3%80%902019%E5%B9%B4%E3%80%91"><span class="toc-text">4.2 综述文献2【2019年】</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%88%86%E8%AF%8D"><span class="toc-text">（1）分词</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB"><span class="toc-text">（2）命名实体识别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96"><span class="toc-text">（3）关系抽取</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%884%EF%BC%89%E5%BD%92%E4%B8%80%E5%8C%96"><span class="toc-text">（4）归一化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%885%EF%BC%89%E5%85%B1%E6%8C%87%E8%A7%A3%E6%9E%90"><span class="toc-text">（5）共指解析</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%E7%BB%BC%E8%BF%B0%E6%96%87%E7%8C%AE3%E3%80%902020%E5%B9%B4%E3%80%91"><span class="toc-text">4.3 综述文献3【2020年】</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">5. 开放信息抽取技术概览</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%E7%BB%8F%E5%85%B8%E6%8A%BD%E5%8F%96%E6%96%B9%E6%B3%95"><span class="toc-text">5.1 经典抽取方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%E6%97%A0%E7%9B%91%E7%9D%A3%E6%8A%BD%E5%8F%96%E6%96%B9%E6%B3%95"><span class="toc-text">5.2 无监督抽取方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DRWE%E6%A8%A1%E5%9E%8B"><span class="toc-text">DRWE模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RSN-%E6%A8%A1%E5%9E%8B"><span class="toc-text">RSN 模型</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-%E6%9C%89%E7%9B%91%E7%9D%A3%E6%8A%BD%E5%8F%96%E6%96%B9%E6%B3%95"><span class="toc-text">5.3 有监督抽取方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RnnOIE%E6%A8%A1%E5%9E%8B"><span class="toc-text">RnnOIE模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RnnOIE-SupervisedRL%E6%A8%A1%E5%9E%8B"><span class="toc-text">RnnOIE-SupervisedRL模型</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-4-%E7%94%9F%E6%88%90%E5%BC%8F%E6%A8%A1%E5%9E%8B%E6%96%B9%E6%B3%95"><span class="toc-text">5.4 生成式模型方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Neural-OpenIE%E6%A8%A1%E5%9E%8B"><span class="toc-text">Neural OpenIE模型</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">6. 开放信息抽取的常用数据集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-MUC%E9%A2%84%E6%96%99%E5%BA%93"><span class="toc-text">6.1 MUC预料库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-ACE%E8%AF%AD%E6%96%99%E5%BA%93"><span class="toc-text">6.2 ACE语料库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-3-CoNLL%E8%AF%AD%E6%96%99%E5%BA%93"><span class="toc-text">6.3 CoNLL语料库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-4-OntoNotes%E8%AF%AD%E6%96%99%E5%BA%93"><span class="toc-text">6.4 OntoNotes语料库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-5-Sem-Eval%E8%AF%AD%E6%96%99%E5%BA%93"><span class="toc-text">6.5 Sem-Eval语料库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-6-%E5%85%B6%E4%BB%96%E8%AF%AD%E6%96%99%E5%BA%93"><span class="toc-text">6.6 其他语料库</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">7. 实践 – 半自动 schema 构建**</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%9F%BA%E4%BA%8E%E5%8F%A5%E6%B3%95%E7%9A%84-pipeline-%E5%BC%8F%E6%8A%BD%E5%8F%96"><span class="toc-text">（1）基于句法的 pipeline 式抽取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%9F%BA%E4%BA%8E-GNN-%E7%9A%84%E6%8A%BD%E5%8F%96"><span class="toc-text">（2）基于 GNN 的抽取</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">8. 小结**</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">参考文献</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

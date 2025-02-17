@@ -1,0 +1,644 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>RIME输入法方案配置手册 | 西山晴雪的知识笔记</title><meta name="keywords" content="软件安装与使用,Linux"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="RIME输入法方案配置手册">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RIME输入法方案配置手册">
+<meta property="og:url" content="http://xishansnow.github.io/posts/41ac964d.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="RIME输入法方案配置手册">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/coffe_11.png">
+<meta property="article:published_time" content="2022-04-02T08:30:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.045Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="软件安装与使用">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/coffe_11.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/41ac964d"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'RIME输入法方案配置手册',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/coffe_11.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">RIME输入法方案配置手册</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-04-02T08:30:00.000Z" title="发表于 2022-04-02 16:30:00">2022-04-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.045Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/">软件安装与使用</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/Linux/">Linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>18分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>Rime 输入法方案配置手册</h1>
+<p>##　一、 <code>Schema.yaml</code> 文件详解</p>
+<h3 id="1-1-开始之前">1.1 开始之前</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Rime schema</span><br><span class="line"># encoding: utf-8</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-描述档">1.2 描述档</h3>
+<ol>
+<li><code>name:</code> 方案的显示名偁〔即出现于方案选单中以示人的，通常为中文〕</li>
+<li><code>schema_id:</code> 方案内部名，在代码中引用此方案时以此名为正，通常由英文、数字、下划线组成</li>
+<li><code>author:</code> 发明人、撰写者。如果您对方案做出了修改，请保留原作者名，并将自己的名字加在后面</li>
+<li><code>description:</code> 请简要描述方案历史、码表来源、该方案规则等</li>
+<li><code>dependencies:</code> 如果本方案依赖于其它方案〔通常来说会依頼其它方案做为反查，抑或是两种或多种方案混用时〕</li>
+<li><code>version:</code> 版本号，在发布新版前请确保已陞版本号</li>
+</ol>
+<h4 id="示例"><strong>示例</strong></h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">schema:</span><br><span class="line">  name: &quot;苍颉检字法&quot;</span><br><span class="line">  schema_id: cangjie6</span><br><span class="line">  author:</span><br><span class="line">    - &quot;发明人 朱邦复先生、沉红莲女士&quot;</span><br><span class="line">  dependencies:</span><br><span class="line">    - luna_pinyin</span><br><span class="line">    - jyutping</span><br><span class="line">    - zyenpheng</span><br><span class="line">  description: |</span><br><span class="line">    第六代仓颉输入法</span><br><span class="line">    码表由雪斋、惜缘和crazy4u整理</span><br><span class="line">  version: 0.19</span><br></pre></td></tr></table></figure>
+<h3 id="1-3-开关">1.3 开关</h3>
+<p>通常包含以下数个：</p>
+<ol>
+<li><code>ascii_mode</code> 是中英文转换开关。默认<code>0</code>为中文，<code>1</code>为英文</li>
+<li><code>full_shape</code> 是全角符号／半角符号开关。注意，开启全角时英文字母亦为全角。<code>0</code>为半角，<code>1</code>为全角</li>
+<li><code>extended_charset</code> 是字符集开关。<code>0</code>为CJK基本字符集，<code>1</code>为CJK全字符集</li>
+</ol>
+<ul>
+<li>仅<code>table_translator</code>可用</li>
+</ul>
+<ol start="5">
+<li><code>ascii_punct</code> 是中西文标点转换开关，<code>0</code>为中文句读，<code>1</code>为西文标点。</li>
+<li><code>simplification</code> 是转化字开关。一般情况下与上同，<code>0</code>为不开启转化，<code>1</code>为转化。</li>
+</ol>
+<ul>
+<li><code>simplification</code>选项名偁可自定义，亦可添加多套替换用字方案：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- name: zh_cn</span><br><span class="line">  states: [&quot;汉字&quot;, &quot;汉字&quot;]</span><br><span class="line">  reset: 0</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- options: [ zh_trad, zh_cn, zh_mars ]</span><br><span class="line">  states:</span><br><span class="line">    - 字型 → 汉字</span><br><span class="line">    - 字型 → 汉字</span><br><span class="line">    - 字型 → 䕼茡</span><br><span class="line">  reset: 0</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>name</code>/<code>options</code>名：须与<code>simplifier</code>中<code>option_name</code>相同</li>
+<li><code>states</code>：可不写，如不写则此开关存在但不可见，可由快捷键操作</li>
+<li><code>reset</code>：设置默认状态〔<code>reset</code>可不写，此时切换窗口时不会重置到默认状态〕</li>
+</ul>
+<ol start="9">
+<li>字符集过滤。此选项没有默认名偁，须配合<code>charset_filter</code>使用。可单用，亦可添加多套字符集：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- name: gbk</span><br><span class="line">  states: [ 增广, 常用 ]</span><br><span class="line">  reset: 0</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- options: [ utf-8, big5hkscs, big5, gbk, gb2312 ]</span><br><span class="line">  states:</span><br><span class="line">    - 字集 → 全</span><br><span class="line">    - 字集 → 港台</span><br><span class="line">    - 字集 → 台</span><br><span class="line">    - 字集 → 大陆</span><br><span class="line">    - 字集 → 简体</span><br><span class="line">  reset: 0</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>name</code>/<code>options</code>名：须与<code>charset_filter``@</code>后的tag相同</li>
+<li>避免同时使用字符集过滤和<code>extended_charset</code></li>
+</ul>
+<h4 id="示例-2"><strong>示例</strong></h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">switches:</span><br><span class="line">  - name: ascii_mode</span><br><span class="line">    reset: 0</span><br><span class="line">    states: [&quot;中文&quot;, &quot;西文&quot;]</span><br><span class="line">  - name: full_shape</span><br><span class="line">    states: [&quot;半角&quot;, &quot;全角&quot;]</span><br><span class="line">  - name: extended_charset</span><br><span class="line">    states: [&quot;通用&quot;, &quot;增广&quot;]</span><br><span class="line">  - name: simplification</span><br><span class="line">    states: [&quot;汉字&quot;, &quot;汉字&quot;]</span><br><span class="line">  - name: ascii_punct</span><br><span class="line">    states: [&quot;句读&quot;, &quot;符号&quot;]</span><br></pre></td></tr></table></figure>
+<h3 id="1-4-引擎">1.4 引擎</h3>
+<ul>
+<li>以下<strong>加粗</strong>项为可细配者，_斜体_者为不常用者</li>
+</ul>
+<p>引擎分四组：</p>
+<h4 id="一、processors">一、<code>processors</code></h4>
+<ul>
+<li>这批组件处理各类按键消息</li>
+</ul>
+<ol>
+<li><code>ascii_composer</code> 处理西文模式及中西文切</li>
+<li><strong><code>recognizer</code></strong> 与<code>matcher</code>搭配，处理符合特定规则的输入码，如网址、反查等<code>tags</code></li>
+<li><strong><code>key_binder</code></strong> 在特定条件下将按键绑定到其他按键，如重定义逗号、句号为候选翻页、开关快捷键等</li>
+<li><strong><code>speller</code></strong> 拼写处理器，接受字符按键，编辑输入</li>
+<li><strong><code>punctuator</code></strong> 句读处理器，将单个字符按键直接映射为标点符号或文字</li>
+<li><code>selector</code> 选字处理器，处理数字选字键〔可以换成别的哦〕、上、下候选定位、换页</li>
+<li><code>navigator</code> 处理输入栏内的光标移动</li>
+<li><code>express_editor</code> 编辑器，处理空格、回车上屏、回退键</li>
+<li><em><code>fluid_editor</code></em> 句式编辑器，用于以空格断词、回车上屏的【注音】、【语句流】等输入方案，替换<code>express_editor</code></li>
+<li><em><code>chord_composer</code></em> 和絃作曲家或曰并击处理器，用于【宫保拼音】等多键并击的输入方案</li>
+<li><code>lua_processor</code> 使用<code>lua</code>自定义按键，后接<code>@</code>+<code>lua</code>函数名</li>
+</ol>
+<ul>
+<li><code>lua</code>函数名即用户文件夹内<code>rime.lua</code>中函数名，参数为<code>(key, env)</code></li>
+</ul>
+<h4 id="二、segmentors">二、<code>segmentors</code></h4>
+<ul>
+<li>这批组件识别不同内容类型，将输入码分段并加上<code>tag</code></li>
+</ul>
+<ol>
+<li><code>ascii_segmentor</code> 标识西文段落〔譬如在西文模式下〕字母直接上屛</li>
+<li><code>matcher</code> 配合<code>recognizer</code>标识符合特定规则的段落，如网址、反查等，加上特定<code>tag</code></li>
+<li><strong><code>abc_segmentor</code></strong> 标识常规的文字段落，加上<code>abc</code>这个<code>tag</code></li>
+<li><code>punct_segmentor</code> 标识句读段落〔键入标点符号用〕加上<code>punct</code>这个<code>tag</code></li>
+<li><code>fallback_segmentor</code> 标识其他未标识段落</li>
+<li><strong><code>affix_segmentor</code></strong> 用户自定义<code>tag</code></li>
+</ol>
+<ul>
+<li>此项可加载多个实例，后接<code>@</code>+<code>tag</code>名</li>
+</ul>
+<ol start="8">
+<li><em><code>lua_segmentor</code></em> 使用<code>lua</code>自定义切分，后接<code>@</code>+<code>lua</code>函数名</li>
+</ol>
+<h4 id="三、translators">三、<code>translators</code></h4>
+<ul>
+<li>这批组件翻译特定类型的编码段为一组候选文字</li>
+</ul>
+<ol>
+<li><code>echo_translator</code> 没有其他候选字时，回显输入码〔输入码可以<code>Shift</code>+<code>Enter</code>上屛〕</li>
+<li><code>punct_translator</code> 配合<code>punct_segmentor</code>转换标点符号</li>
+<li><strong><code>table_translator</code></strong> 码表翻译器，用于仓颉、五笔等基于码表的输入方案<br>
+- 此项可加载多个实例，后接<code>@</code>+翻译器名〔如：<code>cangjie</code>、<code>wubi</code>等〕7. <strong><code>script_translator</code></strong> 脚本翻译器，用于拼音、粤拼等基于音节表的输入方案<br>
+- 此项可加载多个实例，后接<code>@</code>+翻译器名〔如：<code>pinyin</code>、<code>jyutping</code>等〕11. <em><code>reverse_lookup_translator</code></em> 反查翻译器，用另一种编码方案查码</li>
+<li><strong><code>lua_translator</code></strong> 使用<code>lua</code>自定义输入，例如动态输入当前日期、时间，后接<code>@</code>+<code>lua</code>函数名</li>
+</ol>
+<ul>
+<li><code>lua</code>函数名即用户文件夹内<code>rime.lua</code>中函数名，参数为<code>(input, seg, env)</code></li>
+<li>可以<code>env.engine.context:get_option(&quot;option_name&quot;)</code>方式绑定到<code>switch</code>开关／<code>key_binder</code>快捷键</li>
+</ul>
+<h4 id="四、filters">四、<code>filters</code></h4>
+<ul>
+<li>这批组件过滤翻译的结果</li>
+</ul>
+<ol>
+<li><code>uniquifier</code> 过滤重复的候选字，有可能来自**<code>simplifier</code>**</li>
+<li><code>cjk_minifier</code> 字符集过滤〔仅用于<code>script_translator</code>，使之支持<code>extended_charset</code>开关〕</li>
+<li><strong><code>single_char_filter</code></strong> 单字过滤器，如加载此组件，则屛敝词典中的词组〔仅<code>table_translator</code>有效〕</li>
+<li><strong><code>simplifier</code></strong> 用字转换</li>
+<li><strong><code>reverse_lookup_filter</code></strong> 反查滤镜，以更灵活的方式反查，Rime1.0后替代_<code>reverse_lookup_translator</code>_</li>
+</ol>
+<ul>
+<li>此项可加载多个实例，后接<code>@</code>+滤镜名〔如：<code>pinyin_lookup</code>、<code>jyutping_lookup</code>等〕</li>
+</ul>
+<ol start="7">
+<li><strong><code>charset_filter</code></strong> 字符集过滤</li>
+</ol>
+<ul>
+<li>后接<code>@</code>+字符集名〔如：<code>utf-8</code>(无过滤)、<code>big5</code>、<code>big5hkscs</code>、<code>gbk</code>、<code>gb2312</code>〕</li>
+</ul>
+<ol start="9">
+<li><strong><code>lua_filter</code></strong> 使用<code>lua</code>自定义过滤，例如过滤字符集、调整排序，后接<code>@</code>+<code>lua</code>函数名</li>
+</ol>
+<ul>
+<li><code>lua</code>函数名即用户文件夹内<code>rime.lua</code>中函数名，参数为<code>(input, env)</code></li>
+<li>可以<code>env.engine.context:get_option(&quot;option_name&quot;)</code>方式绑定到<code>switch</code>开关／<code>key_binder</code>快捷键</li>
+</ul>
+<h4 id="示例-3"><strong>示例</strong></h4>
+<p>cangjie6.schema.yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">engine:</span><br><span class="line">  processors:</span><br><span class="line">    - ascii_composer</span><br><span class="line">    - recognizer</span><br><span class="line">    - key_binder</span><br><span class="line">    - speller</span><br><span class="line">    - punctuator</span><br><span class="line">    - selector</span><br><span class="line">    - navigator</span><br><span class="line">    - express_editor</span><br><span class="line">  segmentors:</span><br><span class="line">    - ascii_segmentor</span><br><span class="line">    - matcher</span><br><span class="line">    - affix_segmentor@pinyin</span><br><span class="line">    - affix_segmentor@jyutping</span><br><span class="line">    - affix_segmentor@pinyin_lookup</span><br><span class="line">    - affix_segmentor@jyutping_lookup</span><br><span class="line">    - affix_segmentor@reverse_lookup</span><br><span class="line">    - abc_segmentor</span><br><span class="line">    - punct_segmentor</span><br><span class="line">    - fallback_segmentor</span><br><span class="line">  translators:</span><br><span class="line">    - punct_translator</span><br><span class="line">    - table_translator</span><br><span class="line">    - script_translator@pinyin</span><br><span class="line">    - script_translator@jyutping</span><br><span class="line">    - script_translator@pinyin_lookup</span><br><span class="line">    - script_translator@jyutping_lookup</span><br><span class="line">    - lua_translator@get_date</span><br><span class="line">  filters:</span><br><span class="line">    - simplifier@zh_simp</span><br><span class="line">    - uniquifier</span><br><span class="line">    - cjk_minifier</span><br><span class="line">    - charset_filter@gbk</span><br><span class="line">    - reverse_lookup_filter@middle_chinese</span><br><span class="line">    - reverse_lookup_filter@pinyin_reverse_lookup</span><br><span class="line">    - reverse_lookup_filter@jyutping_reverse_lookup</span><br><span class="line">    - lua_filter@single_char_first</span><br></pre></td></tr></table></figure>
+<h3 id="1-5-细项配置">1.5 细项配置</h3>
+<ul>
+<li>凡<code>comment_format</code>、<code>preedit_format</code>、<code>speller/algebra</code>所用之正则表达式，请参阅<a target="_blank" rel="noopener" href="http://www.boost.org/doc/libs/1_49_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html">「Perl正则表达式」</a></li>
+</ul>
+<p><strong>引擎中所举之加粗者均可在下方详细描述，格式为：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name:</span><br><span class="line">  branches: configurations</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name:</span><br><span class="line">  branches:</span><br><span class="line">    - configurations</span><br></pre></td></tr></table></figure>
+<h4 id="一、speller">一、<code>speller</code></h4>
+<ol>
+<li><code>alphabet:</code> 定义本方案输入键</li>
+<li><code>initials:</code> 定义仅作始码之键</li>
+<li><code>finals:</code> 定义仅作末码之键</li>
+<li><code>delimiter:</code> 上屛时的音节间分音符</li>
+<li><code>algebra:</code> 拼写运算规则，由之算出的拼写汇入<code>prism</code>中</li>
+<li><code>max_code_length:</code> 形码最大码长，超过则顶字上屛〔<code>number</code>〕</li>
+<li><code>auto_select:</code> 自动上屛〔<code>true</code>或<code>false</code>〕</li>
+<li><code>auto_select_pattern:</code> 自动上屏规则，以正则表达式描述，当输入串可以被匹配时自动顶字上屏。</li>
+<li><code>use_space:</code> 以空格作输入码〔<code>true</code>或<code>false</code>〕</li>
+</ol>
+<ul>
+<li><code>speller</code>的演算包含：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">xform --改写〔不保留原形〕</span><br><span class="line">derive --衍生〔保留原形〕</span><br><span class="line">abbrev --简拼〔出字优先级较上两组更低〕</span><br><span class="line">fuzz --畧拼〔此种简拼仅组词，不出单字〕</span><br><span class="line">xlit --变换〔适合大量一对一变换〕</span><br><span class="line">erase --删除</span><br></pre></td></tr></table></figure>
+<h5 id="示例-4"><strong>示例</strong></h5>
+<p>luna_pinyin.schema.yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">speller:</span><br><span class="line">  alphabet: zyxwvutsrqponmlkjihgfedcba</span><br><span class="line">  delimiter: &quot; &#x27;&quot;</span><br><span class="line">  algebra:</span><br><span class="line">    - erase/^xx$/</span><br><span class="line">    - abbrev/^([a-z]).+$/$1/</span><br><span class="line">    - abbrev/^([zcs]h).+$/$1/</span><br><span class="line">    - derive/^([nl])ve$/$1ue/</span><br><span class="line">    - derive/^([jqxy])u/$1v/</span><br><span class="line">    - derive/un$/uen/</span><br><span class="line">    - derive/ui$/uei/</span><br><span class="line">    - derive/iu$/iou/</span><br><span class="line">    - derive/([aeiou])ng$/$1gn/</span><br><span class="line">    - derive/([dtngkhrzcs])o(u|ng)$/$1o/</span><br><span class="line">    - derive/ong$/on/</span><br><span class="line">    - derive/ao$/oa/</span><br><span class="line">    - derive/([iu])a(o|ng?)$/a$1$2/</span><br></pre></td></tr></table></figure>
+<h4 id="二、segmentor">二、<code>segmentor</code></h4>
+<ul>
+<li><code>segmentor</code>配合<code>recognizer</code>标记出<code>tag</code>。这里会用到<code>affix_segmentor</code>和<code>abc_translator</code></li>
+<li><code>tag</code>用在<code>translator</code>、<code>reverse_lookup_filter</code>、<code>simplifier</code>中用以标定各自作用范围</li>
+<li>如果不需要用到<code>extra_tags</code>则不需要单独配置<code>segmentor</code></li>
+</ul>
+<ol>
+<li><code>tag:</code> 设置其<code>tag</code></li>
+<li><code>prefix:</code> 设置其前缀标识，可不塡，不塡则无前缀</li>
+<li><code>suffix:</code> 设置其尾缀标识，可不塡，不塡则无尾缀</li>
+<li><code>tips:</code> 设置其输入前提示符，可不塡，不塡则无提示符</li>
+<li><code>closing_tips:</code> 设置其结束输入提示符，可不塡，不塡则无提示符</li>
+<li><code>extra_tags:</code> 为此<code>segmentor</code>所标记的段落插上其它<code>tag</code></li>
+</ol>
+<p><strong>当<code>affix_segmentor</code>和<code>translator</code>重名时，两者可併在一处配置，此处1-5条对应下面19-23条。<code>abc_segmentor</code>仅可设<code>extra_tags</code></strong></p>
+<h5 id="示例-5"><strong>示例</strong></h5>
+<p>cangjie6.schema.yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">reverse_lookup:</span><br><span class="line">  tag: reverse_lookup</span><br><span class="line">  prefix: &quot;`&quot;</span><br><span class="line">  suffix: &quot;;&quot;</span><br><span class="line">  tips: &quot;【反查】&quot;</span><br><span class="line">  closing_tips: &quot;【苍颉】&quot;</span><br><span class="line">  extra_tags:</span><br><span class="line">    - pinyin_lookup</span><br><span class="line">    - jyutping_lookup</span><br></pre></td></tr></table></figure>
+<h4 id="三、translator">三、<code>translator</code></h4>
+<ul>
+<li>每个方案有一个主<code>translator</code>，在引擎列表中不以<code>@</code>+翻译器名定义，在细项配置时直接以<code>translator:</code>命名。以下加粗项为可在主<code>translator</code>中定义之项，其它可在副〔以<code>@</code>+翻译器名命名〕<code>translator</code>中定义</li>
+</ul>
+<ol>
+<li><strong><code>enable_charset_filter:</code></strong> 是否开启字符集过滤〔仅<code>table_translator</code>有效。启用<code>cjk_minifier</code>后可适用于<code>script_translator</code>〕</li>
+<li><strong><code>enable_encoder:</code></strong> 是否开启自动造词〔仅<code>table_translator</code>有效〕</li>
+<li><strong><code>encode_commit_history:</code></strong> 是否对已上屛词自动成词〔仅<code>table_translator</code>有效〕</li>
+<li><strong><code>max_phrase_length:</code></strong> 最大自动成词词长〔仅<code>table_translator</code>有效〕</li>
+<li><strong><code>enable_completion:</code></strong> 提前显示尚未输入完整码的字〔仅<code>table_translator</code>有效〕</li>
+<li><strong><code>sentence_over_completion:</code></strong> 在无全码对应字而仅有逐键提示时也开启智能组句〔仅<code>table_translator</code>有效〕</li>
+<li><strong><code>strict_spelling:</code></strong> 配合<code>speller</code>中的<code>fuzz</code>规则，仅以畧拼码组词〔仅<code>table_translator</code>有效〕</li>
+<li><strong><code>disable_user_dict_for_patterns:</code></strong> 禁止某些编码录入用户词典</li>
+<li><strong><code>enable_sentence:</code></strong> 是否开启自动造句</li>
+<li><strong><code>enable_user_dict:</code></strong> 是否开启用户词典〔用户词典记录动态字词频、用户词〕</li>
+</ol>
+<ul>
+<li>以上选塡<code>true</code>或<code>false</code></li>
+</ul>
+<ol start="12">
+<li><strong><code>dictionary:</code></strong> 翻译器将调取此字典文件</li>
+<li><strong><code>prism:</code></strong> 设置由此主翻译器的<code>speller</code>生成的棱镜文件名，或此副编译器调用的棱镜名</li>
+<li><strong><code>user_dict:</code></strong> 设置用户词典名</li>
+<li><strong><code>db_class:</code></strong> 设置用户词典类型，可设<code>tabledb</code>〔文本〕或<code>userdb</code>〔二进制〕</li>
+<li><strong><code>preedit_format:</code></strong> 上屛码自定义</li>
+<li><strong><code>comment_format:</code></strong> 提示码自定义</li>
+<li><strong><code>spelling_hints:</code></strong> 设置多少字以内候选标注完整带调拼音〔仅<code>script_translator</code>有效〕</li>
+<li><strong><code>initial_quality:</code></strong> 设置此翻译器出字优先级</li>
+<li><code>tag:</code> 设置此翻译器针对的<code>tag</code>。可不塡，不塡则仅针对<code>abc</code></li>
+<li><code>prefix:</code> 设置此翻译器的前缀标识，可不塡，不塡则无前缀</li>
+<li><code>suffix:</code> 设置此翻译器的尾缀标识，可不塡，不塡则无尾缀</li>
+<li><code>tips:</code> 设置此翻译器的输入前提示符，可不塡，不塡则无提示符</li>
+<li><code>closing_tips:</code> 设置此翻译器的结束输入提示符，可不塡，不塡则无提示符</li>
+<li><code>contextual_suggestions:</code> 是否使用语言模型优化输出结果〔需配合<code>grammar</code>使用〕</li>
+<li><code>max_homophones:</code> 最大同音簇长度〔需配合<code>grammar</code>使用〕</li>
+<li><code>max_homographs:</code> 最大同形簇长度〔需配合<code>grammar</code>使用〕</li>
+</ol>
+<h5 id="示例-6"><strong>示例</strong></h5>
+<p>cangjie6.schema.yaml 苍颉主翻译器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">translator:</span><br><span class="line">  dictionary: cangjie6</span><br><span class="line">  enable_charset_filter: true</span><br><span class="line">  enable_sentence: true</span><br><span class="line">  enable_encoder: true</span><br><span class="line">  encode_commit_history: true</span><br><span class="line">  max_phrase_length: 5</span><br><span class="line">  preedit_format:</span><br><span class="line">    - xform/^([a-z ])$/$1｜\U$1\E/</span><br><span class="line">    - xform/(?&lt;=[a-z])\s(?=[a-z])//</span><br><span class="line">    - &quot;xlit|ABCDEFGHIJKLMNOPQRSTUVWXYZ|日月金木水火土竹戈十大中一弓人心手口尸廿山女田止卜片|&quot;</span><br><span class="line">  comment_format:</span><br><span class="line">    - &quot;xlit|abcdefghijklmnopqrstuvwxyz~|日月金木水火土竹戈十大中一弓人心手口尸廿山女田止卜片・|&quot;</span><br><span class="line">  disable_user_dict_for_patterns:</span><br><span class="line">    - &quot;^z.$&quot;</span><br><span class="line">  initial_quality: 0.75</span><br></pre></td></tr></table></figure>
+<p>cangjie6.schema.yaml 拼音副翻译器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">pinyin:</span><br><span class="line">  tag: pinyin</span><br><span class="line">  dictionary: luna_pinyin</span><br><span class="line">  enable_charset_filter: true</span><br><span class="line">  prefix: &#x27;P&#x27; #须配合recognizer</span><br><span class="line">  suffix: &#x27;;&#x27; #须配合recognizer</span><br><span class="line">  preedit_format:</span><br><span class="line">    - &quot;xform/([nl])v/$1ü/&quot;</span><br><span class="line">    - &quot;xform/([nl])ue/$1üe/&quot;</span><br><span class="line">    - &quot;xform/([jqxy])v/$1u/&quot;</span><br><span class="line">  tips: &quot;【汉拼】&quot;</span><br><span class="line">  closing_tips: &quot;【苍颉】&quot;</span><br></pre></td></tr></table></figure>
+<p>pinyin_simp.schema.yaml 拼音・简化字主翻译器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">translator:</span><br><span class="line">  dictionary: luna_pinyin</span><br><span class="line">  prism: luna_pinyin_simp</span><br><span class="line">  preedit_format:</span><br><span class="line">    - xform/([nl])v/$1ü/</span><br><span class="line">    - xform/([nl])ue/$1üe/</span><br><span class="line">    - xform/([jqxy])v/$1u/</span><br></pre></td></tr></table></figure>
+<p>luna_pinyin.schema.yaml 朙月拼音用户短语</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">custom_phrase: #这是一个table_translator</span><br><span class="line">  dictionary: &quot;&quot;</span><br><span class="line">  user_dict: custom_phrase</span><br><span class="line">  db_class: tabledb</span><br><span class="line">  enable_sentence: false</span><br><span class="line">  enable_completion: false</span><br><span class="line">  initial_quality: 1</span><br></pre></td></tr></table></figure>
+<h4 id="四、reverse-lookup-filter">四、<code>reverse_lookup_filter</code></h4>
+<ul>
+<li>此滤镜须挂在<code>translator</code>上，不影响该<code>translator</code>工作</li>
+</ul>
+<ol>
+<li><code>tags:</code> 设置其作用范围</li>
+<li><code>overwrite_comment:</code> 是否覆盖其他提示</li>
+<li><code>dictionary:</code> 反查所得提示码之码表</li>
+<li><code>comment_format:</code> 自定义提示码格式</li>
+</ol>
+<h5 id="示例-7"><strong>示例</strong></h5>
+<p>cangjie6.schema.yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pinyin_reverse_lookup: #该反查滤镜名</span><br><span class="line">  tags: [ pinyin_lookup ] #挂在这个tag所对应的翻译器上</span><br><span class="line">  overwrite_comment: true</span><br><span class="line">  dictionary: cangjie6 #反查所得为苍颉码</span><br><span class="line">  comment_format:</span><br><span class="line">    - &quot;xform/$/〕/&quot;</span><br><span class="line">    - &quot;xform/^/〔/&quot;</span><br><span class="line">    - &quot;xlit|abcdefghijklmnopqrstuvwxyz |日月金木水火土竹戈十大中一弓人心手口尸廿山女田止卜片、|&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="五、simplifier">五、<code>simplifier</code></h4>
+<ol>
+<li><code>option_name:</code> 对应<code>switches</code>中设置的切换项名</li>
+<li><code>opencc_config:</code> 用字转换配置文件</li>
+</ol>
+<ul>
+<li>位于：<code>rime_dir/opencc/</code>，自带之配置文件含：</li>
+</ul>
+<ol>
+<li>
+<p>繁转简〔默认〕：<code>t2s.json</code></p>
+</li>
+<li>
+<p>繁转台湾：<code>t2tw.json</code></p>
+</li>
+<li>
+<p>繁转香港：<code>t2hk.json</code></p>
+</li>
+<li>
+<p>简转繁：<code>s2t.json</code></p>
+</li>
+<li>
+<p><code>tags:</code> 设置转换范围</p>
+</li>
+<li>
+<p><code>tips:</code> 设置是否提示转换前的字，可塡<code>none</code>〔或不塡〕、<code>char</code>〔仅对单字有效〕、<code>all</code></p>
+</li>
+<li>
+<p><code>show_in_comment:</code> 设置是否仅将转换结果显示在备注中</p>
+</li>
+<li>
+<p><em><code>excluded_types:</code></em> 取消特定范围〔一般为_<code>reverse_lookup_translator</code>_〕转化用字</p>
+</li>
+</ol>
+<h5 id="示例-8"><strong>示例</strong></h5>
+<p>修改自 luna_pinyin_kunki.schema</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">zh_tw:</span><br><span class="line">  option_name: zh_tw</span><br><span class="line">  opencc_config: t2tw.json</span><br><span class="line">  tags: [ abc ] #abc对应abc_segmentor</span><br><span class="line">  tips: none</span><br></pre></td></tr></table></figure>
+<h4 id="六、chord-composer">六、<code>chord_composer</code>_</h4>
+<ul>
+<li>并击把键盘分两半，相当于两块键盘。两边同时击键，系统默认在其中一半上按的键先于另一半，由此得出上屛码</li>
+</ul>
+<ol>
+<li><code>alphabet:</code> 字母表，包含用于并击的按键。击键虽有先后，形成并击时，一律以字母表顺序排列</li>
+<li><code>algebra:</code> 拼写运算规则，将一组并击编码转换为拼音音节</li>
+<li><code>output_format:</code> 并击完成后套用的式样，追加隔音符号</li>
+<li><code>prompt_format:</code> 并击过程中套用的式样，加方括弧</li>
+</ol>
+<h5 id="示例-9"><strong>示例</strong></h5>
+<p>combo_pinyin.schema.yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">chord_composer:</span><br><span class="line">  # 字母表，包含用于并击的按键</span><br><span class="line">  # 击键虽有先后，形成并击时，一律以字母表顺序排列</span><br><span class="line">  alphabet: &quot;swxdecfrvgtbnjum ki,lo.&quot;</span><br><span class="line">  # 拼写运算规则，将一组并击编码转换为拼音音节</span><br><span class="line">  algebra:</span><br><span class="line">    # 先将物理按键字符对应到宫保拼音键位中的拼音字母</span><br><span class="line">    - &#x27;xlit|swxdecfrvgtbnjum ki,lo.|sczhlfgdbktpRiuVaNIUeoE|&#x27;</span><br><span class="line">    # 以下根据宫保拼音的键位分别变换声母、韵母部分</span><br><span class="line">    # 组合声母</span><br><span class="line">    - xform/^zf/zh/</span><br><span class="line">    - xform/^cl/ch/</span><br><span class="line">    - xform/^fb/m/</span><br><span class="line">    - xform/^ld/n/</span><br><span class="line">    - xform/^hg/r/</span><br><span class="line">    ……</span><br><span class="line">    # 声母独用时补足隠含的韵母</span><br><span class="line">    - xform/^([bpf])$/$1u/</span><br><span class="line">    - xform/^([mdtnlgkh])$/$1e/</span><br><span class="line">    - xform/^([mdtnlgkh])$/$1e/</span><br><span class="line">    - xform/^([zcsr]h?)$/$1i/</span><br><span class="line">  # 并击完成后套用的式样，追加隔音符号</span><br><span class="line">  output_format:</span><br><span class="line">    - &quot;xform/^([a-z]+)$/$1&#x27;/&quot;</span><br><span class="line">  # 并击过程中套用的式样，加方括弧</span><br><span class="line">  prompt_format:</span><br><span class="line">    - &quot;xform/^(.*)$/[$1]/&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="七、lua">七、<code>lua</code></h4>
+<ul>
+<li>请参攷<a target="_blank" rel="noopener" href="https://github.com/hchunhui/librime-lua">hchunhui/librime-lua</a> 以寻求更多灵感。</li>
+</ul>
+<ol>
+<li><code>lua_translator</code></li>
+<li><code>lua_filter</code></li>
+<li><code>lua_processor</code></li>
+<li><code>lua_segmentor</code></li>
+</ol>
+<h5 id="示例-10"><strong>示例</strong></h5>
+<p>rime.lua</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function get_date(input, seg, env)</span><br><span class="line">  --- 以 show_date 为开关名或 key_binder 中 toggle 的对象</span><br><span class="line">  on = env.engine.context:get_option(&quot;show_date&quot;)</span><br><span class="line">  if (on and input == &quot;date&quot;) then</span><br><span class="line">    --- Candidate(type, start, end, text, comment)</span><br><span class="line">    yield(Candidate(&quot;date&quot;, seg.start, seg._end, os.date(&quot;%Y年%m月%d日&quot;), &quot; 日期&quot;))</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h4 id="八、其它">八、其它</h4>
+<ul>
+<li>包括<code>recognizer</code>、<code>key_binder</code>、<code>punctuator</code>。<strong>标点</strong>、<strong>快捷键</strong>、<strong>二三选重</strong>、<strong>特殊字符</strong>等均于此设置</li>
+</ul>
+<ol>
+<li>
+<p><strong><code>import_preset:</code></strong> 由外部统一文件导入</p>
+</li>
+<li>
+<p><code>grammar:</code> 下设：</p>
+<ul>
+<li><code>language:</code> 取值<code>zh-han[ts]-t-essay-bg[wc]</code></li>
+<li><code>collocation_max_length:</code> 最大搭配长度（整句输入可忽畧此项）</li>
+<li><code>collocation_min_length:</code> 最小搭配长度（整句输入可忽畧此项）</li>
+</ul>
+</li>
+<li>
+<p><code>recognizer:</code> 下设<code>patterns:</code> 配合<code>segmentor</code>的<code>prefix</code>和<code>suffix</code>完成段落划分、<code>tag</code>分配</p>
+<ul>
+<li>前字段可以为以<code>affix_segmentor@someTag</code>定义的<code>Tag</code>名，或者<code>punct</code>、<code>reverse_lookup</code>两个内设的字段。其它字段不调用输入法引擎，输入即输出〔如<code>url</code>等字段〕</li>
+</ul>
+</li>
+<li>
+<p><code>key_binder:</code> 下设<code>bindings:</code> 设置功能性快捷键</p>
+<ul>
+<li>
+<p>每一条<code>binding</code>可能包含：<code>accept</code>实际所按之键、<code>send</code>输出效果、<code>toggle</code>切换开关和<code>when</code>作用范围〔<code>send</code>和<code>toggle</code>二选一〕</p>
+</li>
+<li>
+<p><code>toggle</code>可用字段包含各开关名</p>
+</li>
+<li>
+<p><code>when</code>可用字段包含：</p>
+</li>
+</ul>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">paging	翻䈎用</span><br><span class="line">has_menu	操作候选项用</span><br><span class="line">composing	操作输入码用</span><br><span class="line">always	全域</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>accept</code>和<code>send</code>可用字段除A-Za-z0-9外，还包含以下键板上实际有的键：</li>
+</ul>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line">BackSpace	退格</span><br><span class="line">Tab	水平定位符</span><br><span class="line">Linefeed	换行</span><br><span class="line">Clear	清除</span><br><span class="line">Return	回车</span><br><span class="line">Pause	暂停</span><br><span class="line">Sys_Req	印屏</span><br><span class="line">Escape	退出</span><br><span class="line">Delete	删除</span><br><span class="line">Home	原位</span><br><span class="line">Left	左箭头</span><br><span class="line">Up	上箭头</span><br><span class="line">Right	右箭头</span><br><span class="line">Down	下箭头</span><br><span class="line">Prior、Page_Up	上翻</span><br><span class="line">Next、Page_Down	下翻</span><br><span class="line">End	末位</span><br><span class="line">Begin	始位</span><br><span class="line">Shift_L	左Shift</span><br><span class="line">Shift_R	右Shift</span><br><span class="line">Control_L	左Ctrl</span><br><span class="line">Control_R	右Ctrl</span><br><span class="line">Meta_L	左Meta</span><br><span class="line">Meta_R	右Meta</span><br><span class="line">Alt_L	左Alt</span><br><span class="line">Alt_R	右Alt</span><br><span class="line">Super_L	左Super</span><br><span class="line">Super_R	右Super</span><br><span class="line">Hyper_L	左Hyper</span><br><span class="line">Hyper_R	右Hyper</span><br><span class="line">Caps_Lock	大写锁</span><br><span class="line">Shift_Lock	上档锁</span><br><span class="line">Scroll_Lock	滚动锁</span><br><span class="line">Num_Lock	小键板锁</span><br><span class="line">Select	选定</span><br><span class="line">Print	打印</span><br><span class="line">Execute	执行</span><br><span class="line">Insert	插入</span><br><span class="line">Undo	还原</span><br><span class="line">Redo	重做</span><br><span class="line">Menu	菜单</span><br><span class="line">Find	蒐寻</span><br><span class="line">Cancel	取消</span><br><span class="line">Help	帮助</span><br><span class="line">Break	中断</span><br><span class="line">space</span><br><span class="line">exclam	!</span><br><span class="line">quotedbl	&quot;</span><br><span class="line">numbersign	#</span><br><span class="line">dollar	$</span><br><span class="line">percent	%</span><br><span class="line">ampersand	&amp;</span><br><span class="line">apostrophe	&#x27;</span><br><span class="line">parenleft	(</span><br><span class="line">parenright	)</span><br><span class="line">asterisk	*</span><br><span class="line">plus	+</span><br><span class="line">comma	,</span><br><span class="line">minus	-</span><br><span class="line">period	.</span><br><span class="line">slash	/</span><br><span class="line">colon	:</span><br><span class="line">semicolon	;</span><br><span class="line">less	&lt;</span><br><span class="line">equal	=</span><br><span class="line">greater	&gt;</span><br><span class="line">question	?</span><br><span class="line">at	@</span><br><span class="line">bracketleft	[</span><br><span class="line">backslash	</span><br><span class="line">bracketright	]</span><br><span class="line">asciicircum	^</span><br><span class="line">underscore	_</span><br><span class="line">grave	`</span><br><span class="line">braceleft	&#123;</span><br><span class="line">bar	|</span><br><span class="line">braceright	&#125;</span><br><span class="line">asciitilde	~</span><br><span class="line">KP_Space	小键板空格</span><br><span class="line">KP_Tab	小键板水平定位符</span><br><span class="line">KP_Enter	小键板回车</span><br><span class="line">KP_Delete	小键板删除</span><br><span class="line">KP_Home	小键板原位</span><br><span class="line">KP_Left	小键板左箭头</span><br><span class="line">KP_Up	小键板上箭头</span><br><span class="line">KP_Right	小键板右箭头</span><br><span class="line">KP_Down	小键板下箭头</span><br><span class="line">KP_Prior、KP_Page_Up	小键板上翻</span><br><span class="line">KP_Next、KP_Page_Down	小键板下翻</span><br><span class="line">KP_End	小键板末位</span><br><span class="line">KP_Begin	小键板始位</span><br><span class="line">KP_Insert	小键板插入</span><br><span class="line">KP_Equal	小键板等于</span><br><span class="line">KP_Multiply	小键板乘号</span><br><span class="line">KP_Add	小键板加号</span><br><span class="line">KP_Subtract	小键板减号</span><br><span class="line">KP_Divide	小键板除号</span><br><span class="line">KP_Decimal	小键板小数点</span><br><span class="line">KP_0	小键板0</span><br><span class="line">KP_1	小键板1</span><br><span class="line">KP_2	小键板2</span><br><span class="line">KP_3	小键板3</span><br><span class="line">KP_4	小键板4</span><br><span class="line">KP_5	小键板5</span><br><span class="line">KP_6	小键板6</span><br><span class="line">KP_7	小键板7</span><br><span class="line">KP_8	小键板8</span><br><span class="line">KP_9	小键板9</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>editor</code>用以订制操作键〔不支持<code>import_preset:</code>〕，键板键名同<code>key_binder/bindings</code>中的<code>accept</code>和<code>send</code>，效果定义如下：</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">confirm	上屏候选项</span><br><span class="line">commit_comment	上屏候选项备注</span><br><span class="line">commit_raw_input	上屏原始输入</span><br><span class="line">commit_script_text	上屏变换后输入</span><br><span class="line">commit_composition	语句流单字上屏</span><br><span class="line">revert	撤消上次输入</span><br><span class="line">back	按字符回退</span><br><span class="line">back_syllable	按音节回退</span><br><span class="line">delete_candidate	删除候选项</span><br><span class="line">delete	向后删除</span><br><span class="line">cancel	取消输入</span><br><span class="line">noop	空</span><br></pre></td></tr></table></figure>
+<ol start="7">
+<li><code>punctuator:</code> 下设<code>full_shape:</code>和<code>half_shape:</code>分别控制全角模式下的符号和半角模式下的符号，另有<code>use_space:</code>空格顶字〔<code>true</code>或<code>false</code>〕
+<ul>
+<li>每条标点项可加<code>commit</code>直接上屏和<code>pair</code>交替上屏两种模式，默认为选单模式</li>
+</ul>
+</li>
+</ol>
+<h5 id="示例-11"><strong>示例</strong></h5>
+<p>修改自 cangjie6.schema.yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">key_binder:</span><br><span class="line">  import_preset: default</span><br><span class="line">  bindings:</span><br><span class="line">    - &#123;accept: semicolon, send: 2, when: has_menu&#125; #分号选第二重码</span><br><span class="line">    - &#123;accept: apostrophe, send: 3, when: has_menu&#125; #引号选第三重码</span><br><span class="line">    - &#123;accept: &quot;Control+1&quot;, select: .next, when: always&#125;</span><br><span class="line">    - &#123;accept: &quot;Control+2&quot;, toggle: full_shape, when: always&#125;</span><br><span class="line">    - &#123;accept: &quot;Control+3&quot;, toggle: simplification, when: always&#125;</span><br><span class="line">    - &#123;accept: &quot;Control+4&quot;, toggle: extended_charset, when: always&#125;</span><br><span class="line">editor:</span><br><span class="line">bindings:</span><br><span class="line">Return: commit_comment</span><br><span class="line">punctuator:</span><br><span class="line">import_preset: symbols</span><br><span class="line">half_shape:</span><br><span class="line">&quot;&#x27;&quot;: &#123;pair: [&quot;「&quot;, &quot;」&quot;]&#125; #第一次按是「，第二次是」</span><br><span class="line">&quot;(&quot;: [&quot;〔&quot;, &quot;［&quot;] #弹出选单</span><br><span class="line">.: &#123;commit: &quot;。&quot;&#125; #无选单，直接上屛。优先级最高</span><br></pre></td></tr></table></figure>
+<h3 id="1-6-其它">1.6 其它</h3>
+<ul>
+<li>Rime还为每个方案提供选单和一定的外观订制能力</li>
+<li>通常情况下<code>menu</code>在<code>default.yaml</code>中定义〔或用户修改档<code>default.custom.yaml</code>〕，<code>style</code>在<code>squirrel.yaml</code>或<code>weasel.yaml</code>〔或用户修改档<code>squirrel.custom.yaml</code>或<code>weasel.custom.yaml</code>〕</li>
+</ul>
+<h4 id="示例-12"><strong>示例</strong></h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">  alternative_select_labels: [ ①, ②, ③, ④, ⑤, ⑥, ⑦, ⑧, ⑨ ]  # 修改候选标籤</span><br><span class="line">  alternative_select_keys: ASDFGHJKL #如编码字符占用数字键则须另设选字键</span><br><span class="line">  page_size: 5 #选单每䈎显示个数</span><br></pre></td></tr></table></figure>
+<h2 id="Dict-yaml-详解"><code>Dict.yaml</code> 详解</h2>
+<ul>
+<li></li>
+</ul>
+<h3 id="开始之前">开始之前</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Rime dict</span><br><span class="line"># encoding: utf-8</span><br><span class="line">〔你还可以在这注释字典来源、变动记录等〕</span><br></pre></td></tr></table></figure>
+<h3 id="描述档">描述档</h3>
+<ol>
+<li><code>name:</code> 内部字典名，也即<code>schema</code>所引用的字典名，确保与文件名相一致</li>
+<li><code>version:</code> 如果发布，请确保每次改动陞版本号</li>
+</ol>
+<h4 id="示例-13"><strong>示例</strong></h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name: &quot;cangjie6.extended&quot;</span><br><span class="line">version: &quot;0.1&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="配置">配置</h3>
+<ol>
+<li>
+<p><code>sort:</code> 字典<strong>初始</strong>排序，可选<code>original</code>或<code>by_weight</code></p>
+</li>
+<li>
+<p><code>use_preset_vocabulary:</code> 是否引入「八股文」〔含字词频、词库〕</p>
+</li>
+<li>
+<p><code>max_phrase_length:</code> 配合<code>use_preset_vocabulary:</code>，设置导入词条最大词长</p>
+</li>
+<li>
+<p><code>min_phrase_weight:</code> 配合<code>use_preset_vocabulary:</code>，设置导入词条最小词频</p>
+</li>
+<li>
+<p><code>columns:</code> 定义码表以<code>Tab</code>分隔出的各列，可设<code>text</code>【文本】、<code>code</code>【码】、<code>weight</code>【权重】、<code>stem</code>【造词码】</p>
+</li>
+<li>
+<p><code>import_tables:</code> 加载其它外部码表</p>
+</li>
+<li>
+<p><code>encoder:</code> 形码造词规则</p>
+</li>
+<li>
+<p><code>exclude_patterns:</code></p>
+</li>
+<li>
+<p><code>rules:</code> 可用<code>length_equal:</code>和<code>length_in_range:</code>定义。大写字母表示字序，小写字母表示其所跟随的大写字母所以表的字中的编码序</p>
+</li>
+<li>
+<p><code>tail_anchor:</code> 造词码包含结构分割符〔仅用于仓颉〕</p>
+</li>
+<li>
+<p><code>exclude_patterns</code> 取消某编码的造词资格</p>
+</li>
+</ol>
+<h4 id="示例-14"><strong>示例</strong></h4>
+<p>cangjie6.extended.dict.yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">sort: by_weight</span><br><span class="line">use_preset_vocabulary: false</span><br><span class="line">import_tables:</span><br><span class="line">  - cangjie6 #单字码表由cangjie6.dict.yaml导入</span><br><span class="line">columns: #此字典为纯词典，无单字编码，仅有字和词频</span><br><span class="line">  - text #字／词</span><br><span class="line">  - weight #字／词频</span><br><span class="line">encoder:</span><br><span class="line">  exclude_patterns:</span><br><span class="line">    - &#x27;^z.*$&#x27;</span><br><span class="line">  rules:</span><br><span class="line">    - length_equal: 2 #对于二字词</span><br><span class="line">      formula: &quot;AaAzBaBbBz&quot; #取第一字首尾码、第二字首次尾码</span><br><span class="line">    - length_equal: 3 #对于三字词</span><br><span class="line">      formula: &quot;AaAzBaYzZz&quot; #取第一字首尾码、第二字首尾码、第三后缀码</span><br><span class="line">    - length_in_range: [4, 5] #对于四至五字词</span><br><span class="line">      formula: &quot;AaBzCaYzZz&quot; #取第一字首码，第二后缀码、第三字首码、倒数第二后缀码、最后一后缀码</span><br><span class="line">  tail_anchor: &quot;&#x27;&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="码表">码表</h3>
+<ul>
+<li>以<code>Tab</code>分隔各列，各列依<code>columns:</code>定义排列。</li>
+</ul>
+<h4 id="示例-15"><strong>示例</strong></h4>
+<p>cangjie6.dict.yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">columns:</span><br><span class="line">  - text #第一列字／词</span><br><span class="line">  - code #第二列码</span><br><span class="line">  - weight #第三列字／词频</span><br><span class="line">  - stem #第四列造词码</span><br></pre></td></tr></table></figure>
+<p>cangjie6.dict.yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">个	owjr	246268	ow&#x27;jr</span><br><span class="line">看	hqbu	245668</span><br><span class="line">中	l	243881</span><br><span class="line">呢	rsp	242970</span><br><span class="line">来	doo	235101</span><br><span class="line">吗	rsqf	221092</span><br><span class="line">为	bhnf	211340</span><br><span class="line">会	owfa	209844</span><br><span class="line">她	vpd	204725</span><br><span class="line">与	xyc	203975</span><br><span class="line">给	vfor	193007</span><br><span class="line">等	hgdi	183340</span><br><span class="line">这	yymr	181787</span><br><span class="line">用	bq	168934	b&#x27;q</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/41ac964d.html">http://xishansnow.github.io/posts/41ac964d.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/">软件安装与使用</a><a class="post-meta__tags" href="/tags/Linux/">Linux</a></div><div class="post_share"><div class="social-share" data-image="/img/coffe_11.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/f7d9b307.html"><img class="prev-cover" src="/img/coffe_06.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">主动学习与深度贝叶斯网络（图像分类任务）</div></div></a></div><div class="next-post pull-right"><a href="/posts/6811304.html"><img class="next-cover" src="/img/book_17.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">RIME配置指南</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/f7905162.html" title="Linux 环境配置文件处理流程"><img class="cover" src="/img/coffe_11.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-10</div><div class="title">Linux 环境配置文件处理流程</div></div></a></div><div><a href="/posts/7ea2da9d.html" title="Youyun"><img class="cover" src="/img/book_10.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-01</div><div class="title">Youyun</div></div></a></div><div><a href="/posts/6811304.html" title="RIME配置指南"><img class="cover" src="/img/book_17.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-02</div><div class="title">RIME配置指南</div></div></a></div><div><a href="/posts/9a60fb94.html" title="音乐文件 Cue 切割方法"><img class="cover" src="/img/010.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-02</div><div class="title">音乐文件 Cue 切割方法</div></div></a></div><div><a href="/posts/d3f42a0f.html" title="nmcli网络配置命令"><img class="cover" src="/img/book_03.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-18</div><div class="title">nmcli网络配置命令</div></div></a></div><div><a href="/posts/5c4624dd.html" title="pyton、node.js、hexo配置指南"><img class="cover" src="/img/book_01.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-13</div><div class="title">pyton、node.js、hexo配置指南</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">Rime 输入法方案配置手册</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%BC%80%E5%A7%8B%E4%B9%8B%E5%89%8D"><span class="toc-text">1.1 开始之前</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%8F%8F%E8%BF%B0%E6%A1%A3"><span class="toc-text">1.2 描述档</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%BC%80%E5%85%B3"><span class="toc-text">1.3 开关</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-2"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E5%BC%95%E6%93%8E"><span class="toc-text">1.4 引擎</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E3%80%81processors"><span class="toc-text">一、processors</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E3%80%81segmentors"><span class="toc-text">二、segmentors</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E3%80%81translators"><span class="toc-text">三、translators</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B%E3%80%81filters"><span class="toc-text">四、filters</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-3"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E7%BB%86%E9%A1%B9%E9%85%8D%E7%BD%AE"><span class="toc-text">1.5 细项配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E3%80%81speller"><span class="toc-text">一、speller</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-4"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E3%80%81segmentor"><span class="toc-text">二、segmentor</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-5"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E3%80%81translator"><span class="toc-text">三、translator</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-6"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B%E3%80%81reverse-lookup-filter"><span class="toc-text">四、reverse_lookup_filter</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-7"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%94%E3%80%81simplifier"><span class="toc-text">五、simplifier</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-8"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%AD%E3%80%81chord-composer"><span class="toc-text">六、chord_composer_</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-9"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%83%E3%80%81lua"><span class="toc-text">七、lua</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-10"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E5%85%B6%E5%AE%83"><span class="toc-text">八、其它</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-11"><span class="toc-text">示例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6-%E5%85%B6%E5%AE%83"><span class="toc-text">1.6 其它</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-12"><span class="toc-text">示例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dict-yaml-%E8%AF%A6%E8%A7%A3"><span class="toc-text">Dict.yaml 详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E4%B9%8B%E5%89%8D"><span class="toc-text">开始之前</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%8F%E8%BF%B0%E6%A1%A3"><span class="toc-text">描述档</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-13"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-text">配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-14"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A0%81%E8%A1%A8"><span class="toc-text">码表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-15"><span class="toc-text">示例</span></a></li></ol></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

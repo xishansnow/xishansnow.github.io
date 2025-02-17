@@ -1,0 +1,909 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>空间大数据引擎综述文章：大数据时代的空间数据引擎 | 西山晴雪的知识笔记</title><meta name="keywords" content="空间数据库,分布式空间数据库,空间填充曲线,多维空间索引"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="空间大数据引擎综述文章：大数据时代的空间数据引擎">
+<meta property="og:type" content="article">
+<meta property="og:title" content="空间大数据引擎综述文章：大数据时代的空间数据引擎">
+<meta property="og:url" content="http://xishansnow.github.io/posts/855e2dea.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="空间大数据引擎综述文章：大数据时代的空间数据引擎">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/coffe_05.png">
+<meta property="article:published_time" content="2020-05-01T04:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.045Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="空间数据库">
+<meta property="article:tag" content="分布式空间数据库">
+<meta property="article:tag" content="空间填充曲线">
+<meta property="article:tag" content="多维空间索引">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/coffe_05.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/855e2dea"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '空间大数据引擎综述文章：大数据时代的空间数据引擎',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/coffe_05.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">空间大数据引擎综述文章：大数据时代的空间数据引擎</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-05-01T04:00:00.000Z" title="发表于 2020-05-01 12:00:00">2020-05-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.045Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/">GeoAI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%BC%95%E6%93%8E/">时空大数据引擎</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">9.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>28分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src="https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js"></script>
+<script src="/js/attachTooltips.js"></script>
+<link rel="stylesheet" href="/css/tippy.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>大数据时代的空间数据引擎</h1>
+<p>【摘要】本文是有关分布式空间数据库相关空间大数据库技术的综述性文章，主要包括几个方面：（1）目前三种主要的分布式空间数据库类型；（2）目前三种重要的分布式空间数据库的实现途径；（3）六个分布式数据库重点考虑的技术点，其中核心是空间索引模型、查询方法和查询语言；（4）三类主要的空间索引模型；（5）空间运算及空间查询方法，有关具体查询算法和空间索引模型密切相关，本文不做过多细节展开；（6）空间查询语言，由于目前不是本人关注重点，暂略，待后面补充。希望通过本文的介绍，让同学们能够对当前分布式空间数据库的技术现状有所了解，更多技术细节请参考文中列出的链接或参考文献，自信深入阅读。</p>
+<h2 id="一、分布式空间数据库的三种类型">一、分布式空间数据库的三种类型</h2>
+<p>根据目前空间大数据存储、组织和计算的现状，初步梳理如下：</p>
+<h3 id="3-1-以专业应用为重点，基于并行数据库的系统"><strong>3.1 以专业应用为重点，基于并行数据库的系统</strong></h3>
+<ul>
+<li>
+<p>以Parallel Secondo、Paradise、Sphinx为代表</p>
+</li>
+<li>
+<p>重点解决的是如何在并行数据库（如：Exodus、Impala等）中实现空间数据的高效组织</p>
+</li>
+<li>
+<p>此类系统的分布式能力来源于数据库本身</p>
+</li>
+<li>
+<p>此类分布式空间数据库受限于并行数据库本身的弹性和可扩展性。</p>
+<blockquote>
+<p>参考资料：</p>
+<p><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6413613&isnumber=6413550">Parallel Secondo</a></p>
+<p><a target="_blank" rel="noopener" href="https://dl.acm.org/doi/abs/10.1145/253260.253342">Paradise</a></p>
+<p><a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/2820783.2820869">Sphinx</a></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="3-2-以海量空间数据组织为重点，以分布式文件系统或分布式数据库为基础的系统"><strong>3.2 以海量空间数据组织为重点，以分布式文件系统或分布式数据库为基础的系统</strong></h3>
+<ul>
+<li>
+<p>此类以GeoMesa、SpatialHadoop、HadoopGIS等为代表</p>
+</li>
+<li>
+<p>重点解决的是分布式集群环境下的数据存储与组织问题</p>
+</li>
+<li>
+<p>组织和管理的主体是过去的不再需要更新的时空数据</p>
+</li>
+<li>
+<p>其基础大多为分布式的NoSQL数据库，如：HBase,、Accumulo、 Cassandra、 Kafka、Elastic Search、MongoDB等分布式数据库</p>
+</li>
+<li>
+<p>或者直接在HDFS等分布式文件系统支撑下设计自己的存储机制（SpatialHadoop和HadoopGIS都属于这一类，GeoMesa也有自己的文件系统支持）</p>
+</li>
+<li>
+<p>研究重点是如何适应上述分布式存储系统或分布式数据库，实现空间数据的分区存储、分级索引，同时提供诸如点查询、范围查询、邻近查询、空间Join等分布式空间数据检索功能。</p>
+</li>
+<li>
+<p>由于此类空间数据引擎主要解决的是“海量存储”的问题，因此，其关键技术点是在如何优化数据在多个节点的外围存储设备中合理分布的问题，如：硬盘等</p>
+</li>
+<li>
+<p>其优点是可以存储、组织和管理巨量的空间数据</p>
+</li>
+<li>
+<p>缺点是在做任何数据分析时，输入数据、中间成果、输出结果都要从HDFS文件系统中读取数据，而且HDFS文件系统自身存在块容量大、只能追加、不允许更新的缺点，所以此类空间数据库难以适应数据快速更新（如：物联网传感器数据、车流数据等）、和需要近实时做空间分析和计算的场景要求。</p>
+<blockquote>
+<p>参考资料：</p>
+<p><a target="_blank" rel="noopener" href="http://spatialhadoop.cs.umn.edu/">SpatialHadoop</a></p>
+<p><a href="www.geomesa.org">GeoMesa</a></p>
+<p><a target="_blank" rel="noopener" href="http://bmidb.cs.stonybrook.edu/hadoopgis/index">HadoopGIS</a></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="（3）以响应速度为重点，以内存计算框架和分布式存储为技术特点的系统"><strong>（3）以响应速度为重点，以内存计算框架和分布式存储为技术特点的系统</strong></h3>
+<ul>
+<li>
+<p>此类以GeoSpark、SpatialIgnite、Simba、GeoTrellis等为代表，GeoTrellis是个挺有意思的系统，它以栅格数据为主。</p>
+</li>
+<li>
+<p>重点解决在内存计算处理框架下，如何提升空间数据的分布式计算能力</p>
+</li>
+<li>
+<p>其基础大多为Spark、Ignite、Redis 、Kudu、Storm等内存计算框架</p>
+</li>
+<li>
+<p>提供内存对象创建、数据导入、分区存储、分级索引</p>
+</li>
+<li>
+<p>提供诸如点查询、范围查询、邻近查询、空间join等基于分布式查询和计算功能</p>
+</li>
+<li>
+<p>优点是在内存中存储和索引，检索、访问和计算速度非常快，对于快速处理应用适应性较好</p>
+</li>
+<li>
+<p>缺点是处理结果最终还是要进入永久存储中，因此需要批量读入内存才能使用</p>
+</li>
+<li>
+<p>此类系统主要为高性能计算系统提供快速空间数据检索、访问和基础空间分析支持。</p>
+<blockquote>
+<p>参考资料：</p>
+<p><a target="_blank" rel="noopener" href="http://geospark.datasyslab.org/">GeoSpark</a>  — 基于Spark的内存存储与计算框架</p>
+<p><a target="_blank" rel="noopener" href="https://ignite.apache.org/">SpatialIgnite</a>  — 基于Ignite的内存存储与计算框架</p>
+<p><a target="_blank" rel="noopener" href="http://www.cs.utah.edu/~dongx/simba/">Simba</a>  — 基于Spark的内存存储与计算框架</p>
+<p><a target="_blank" rel="noopener" href="https://geotrellis.io/">GeoTrellis</a>  — 基于Spark的内存存储与计算框架，以栅格数据模型为主</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/20200501131804.png" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img2020-05-02%2017-23-47%20%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png" alt=""></p>
+<h2 id="二、分布式空间数据库的三种架构形式">二、分布式空间数据库的三种架构形式</h2>
+<p>分布式空间数据库的架构和实现形式，大致可以分为三类：</p>
+<h3 id="（1）On-top-类型"><strong>（1）On top 类型</strong></h3>
+<ul>
+<li>此类引擎是较早的一类，如：SJMR、K-Means等</li>
+<li>主要研究命题在于如何利用MapReduce实现各种空间逻辑运算，对底层存储和索引机制关心较少，更多出于分布式空间分析的算法研究而设计</li>
+<li>优点在于实现简单</li>
+<li>缺点在于数据的组织和访问性能相对较差。</li>
+</ul>
+<h3 id="（2）Built-from-scratch类型">（2）Built from scratch类型</h3>
+<ul>
+<li>
+<p>为轨迹数据、遥感数据、地球科学数据等特殊任务而从底层分布式存储开始做起的空间数据引擎</p>
+</li>
+<li>
+<p>如：EarthDB, TrajStore等</p>
+</li>
+<li>
+<p>其优势在于更大的灵活性、专业性</p>
+</li>
+<li>
+<p>缺点在于维护成本太高，尤其是同时实现空间数据与非空间数据的混合处理时，性能较差。</p>
+<blockquote>
+<p>参考资料：</p>
+<p><a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/2447481.2447483">EarthDB</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.computer.org/csdl/proceedings-article/icde/2010/05447829/12OmNyr8Yck">TrajStore</a></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="（3）Built-inside类型">（3）Built inside类型</h3>
+<ul>
+<li>
+<p>结合Hadoop/Spark等体系框架，在分布式存储（如：HDFS）、分布式检索与计算(如：MapReduce）、分布式数据库（如：HBase、Accumulo）等不同层次上实现相应组件</p>
+<ul>
+<li>例如：</li>
+<li>GeoMesa利用空间填充曲线，在HBase基础上，实现空间数据检索和访问接口；</li>
+<li>SpatialHadoop直接在HDFS上建立数据存储模型和空间索引结构，并提供数据检索和访问接口；</li>
+<li>GeoSpark在Spark的RDD模型基础上建立内存空间数据引擎等。</li>
+</ul>
+</li>
+<li>
+<p>主要功能：海量空间大数据的分布式存储索引、分布式查询检索、分布式空间分析、分布式可视化可视化实现等功能。</p>
+<blockquote>
+<p>参考资料：</p>
+<p><a target="_blank" rel="noopener" href="http://spatialhadoop.cs.umn.edu/">SpatialHadoop</a></p>
+<p><a href="www.geomesa.org">GeoMesa</a></p>
+<p><a target="_blank" rel="noopener" href="http://bmidb.cs.stonybrook.edu/hadoopgis/index">HadoopGIS</a></p>
+<p><a target="_blank" rel="noopener" href="http://geospark.datasyslab.org/">GeoSpark</a></p>
+</blockquote>
+</li>
+</ul>
+<p>上述三种类型中，Built Inside类型由于实现相对简单，而且不失灵活性，是目前普遍采用的一种方式。</p>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/20200501131822.png" alt=""></p>
+<h2 id="三、分布式空间数据库的核心技术">三、分布式空间数据库的核心技术</h2>
+<pre><code>空间数据库主要涉及以下核心技术问题：
+</code></pre>
+<h3 id="3-1-数据模型">3.1  数据模型</h3>
+<pre><code>主要涉及矢量、栅格等。原来大多数空间数据引擎都有自己的数据模型，自OGC和ISO提出了ISO 19125国际标准（一个定义了点、线、面、多点、多线、多面、TIN等通用二维几何体的格式、存储、访问方法的国际标准）后，数据存储和交换的模型逐步得到了统一。
+</code></pre>
+<blockquote>
+<p>关于ISO 19125 Simple Feature Access 标准：</p>
+<p>Part I：</p>
+<p>该部分规定了基础几何实体的定义、模型和表达方法。</p>
+<ul>
+<li>定义了常见的点、线、链、环、面、表面、TIN等几何实体模型</li>
+<li>定义了几何实体模型应当具备的基本属性函数（如：维度、几何类型、空间参考系、求外包等）</li>
+<li>定义了几何实体模型两两之间应当具备的空间关系判定函数（如：相等、相离、相交、相接、包含、重叠等）</li>
+<li>定义了几何实体模型应当具备的常见空间分析函数（如：距离、缓冲区、凸外包、交运算、并运算、差运算等）</li>
+<li>定义了空间数据Well-known Text Representation的文本格式和二进制格式</li>
+</ul>
+<p>PartII：</p>
+<p>该部分定义了以SQL为基础的空间要素表、几何实体和空间参考系等相关信息的管理方案，共由四种表组成基本架构：</p>
+<ul>
+<li>一张 GEOMETRY_COLUMNS 表：</li>
+<li>该表是个空间数据库的元数据表，描述了数据库中所有可用的空间要素表和它们的几何属性；</li>
+<li>每一行由&lt;要素表分类，要素表方案，要素表名称，几何列名称，几何表存储方案，几何表名称，几何类型，坐标范围，参考系等…&gt;等列定义</li>
+<li>一张 SPATIAL_REF_SYS 表：</li>
+<li>数据库中参考系列表</li>
+<li>该表描述了数据库中可用的参考坐标系统和转换参数；</li>
+<li>每行由（参考系ID，国际标准坐标系名称、国际标准坐标系ID，WKT描述的坐标系参数信息）等列定义</li>
+<li>若干张 FEATURE_TABLE 表：</li>
+<li>空间要素的集合，以表结构形式定义，其中：各列表示空间要素的属性，各行分别表示一个特定的要素，Geometry是空间要素表的最重要属性，其中存储的是几何表中几何实体的ID；</li>
+<li>若干张 GEOMETRY_TABLE 表：</li>
+<li>几何表中存储的是采用SQL数值类型或二进制类型存储的几何对象</li>
+<li>每一行代表一个几何对象，由&lt;GID, YMIN, YMAX, XMIN, XMAX, WKB_GEOMETRY&gt;六元组定义（还有另外一种归一化的表达方式，略）；</li>
+</ul>
+<p>同时，该标准定义了数据库系统应该实现的基本空间关系运算</p>
+<ul>
+<li>各种类型空间对象的基本属性Routines，如：多边形对象的外环、内环等</li>
+<li>空间对象之间空间关系计算的Routines</li>
+<li>如：ST_Equals, ST_Disjoint, ST_Intersects, ST_Touches, ST_Crosses, ST_Within, ST_Contains, ST_Overlaps and ST_Relate 等</li>
+</ul>
+<p>参考资料：</p>
+<p><a target="_blank" rel="noopener" href="http://www.opengeospatial.org/standards/sfa">ISO 19125 Part I </a></p>
+<p><a target="_blank" rel="noopener" href="http://www.opengeospatial.org/standards/sfs">ISO 19125 Part II</a></p>
+<p>相关开源库：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://www.tsusiatsoftware.net/">JTS Topology Suite</a> (Java)： 完成了ISO 19125标准几乎所有的功能。</li>
+<li><a target="_blank" rel="noopener" href="https://trac.osgeo.org/geos">GEOS</a> (C/C++ port of JTS)： 基于JTS实现的C++封装库。</li>
+<li><a target="_blank" rel="noopener" href="https://pypi.org/project/Shapely/">Shapely</a> (Python)：基于JTS的python封装库</li>
+<li><a target="_blank" rel="noopener" href="https://gdal.org/">GDAL</a> (C/C++)： 各种栅格和矢量地理空间数据格式的读取和转换库。</li>
+</ul>
+</blockquote>
+<h3 id="3-2-存储模型与实现机制">3.2  存储模型与实现机制</h3>
+<pre><code>  目前的主要还是基于文件系统或数据库，随着分布式技术的广泛应用，存储也从单机的文件系统和数据库（如：NTFS、EXT、ZFS等），过渡到了分布式文件系统和数据库（如：GFS、HDFS、HBase、Accumulo、AsterixDB等），再到分布式内存文件系统和数据库（如：Spark、Storm、Ingite、等），并出现了对象存储等新的模型和机制。
+</code></pre>
+<p>（1）存储模型</p>
+<ul>
+<li>大体分为有索引的模型和无索引的模型</li>
+<li>但分布式空间数据库的主流还是有索引的存储模型</li>
+</ul>
+<p>（2）分布式空间数据库的存储主要有五种实现机制：</p>
+<ul>
+<li>
+<p>直接基于分布式文件系统，自己设计数据模型和索引方案，如：SpatialHadoop、HadoopGIS等都是基于HDFS、GFS等</p>
+</li>
+<li>
+<p>基于传统数据库系统的分布式版本，主要支持原有的关系数据库模型：如：Oracle、ElasticSearch等都支持分布式部署</p>
+</li>
+<li>
+<p>基于并行数据库，主要用于遥感数据、地球数值数据等科学数据，如：EarthDB基于SciDB数据库</p>
+</li>
+<li>
+<p>基于分布式数据库系统：如：GeoMesa、GeoWave的设计基本都基于HBase、Accumulo、AsterixDB等</p>
+</li>
+<li>
+<p>基于分布式内存文件系统或数据库系统：如： GeoSpark、SIMBA、GeoTrellis基于Spark、SpatialIgnite基于Apache Ignite等</p>
+<blockquote>
+<ul>
+<li>需要注意的是，最近几年出现了一个名为Alluxio的虚拟分布式文件系统，作为HDFS等分布式文件系统的缓冲层，以内存文件系统的方式，底层支持HDFS等文件系统的数据注入和缓存，向上支持Spark等分布式计算引擎，值得研究。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h3 id="3-3-索引模型">3.3  索引模型</h3>
+<p>索引模型是空间数据库的核心，其目的是通过对空间对象的某种编排，使得各类检索（重点是时空检索）的时效性有较大提升。不太严肃地说，索引数据和元数据类似，是有关数据加速的数据。</p>
+<p>判断一个索引模型好坏的核心指标：</p>
+<ul>
+<li>
+<p>功能是否全面：</p>
+<ul>
+<li>范围查询、临近查询、连接查询等的实现度</li>
+</ul>
+</li>
+<li>
+<p>指标是否满足：</p>
+<ul>
+<li>
+<p>算法的复杂度分析：插入、删除、更新、查询的时间和算法复杂度的理论分析</p>
+</li>
+<li>
+<p>查询的准确性：同样样本情况下的查全率、查准率指标</p>
+</li>
+<li>
+<p>查询的效率：对于外部索引，主要体现为物理I/O次数，而不是时间</p>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/20200501131832.png" alt=""></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>有关索引模型的更详细情况，参见[第四节 空间索引模型](#四、 空间索引模型)。</p>
+<h3 id="3-4-查询算法">3.4  查询算法</h3>
+<p>（1）查询算法的实现方式</p>
+<p>与数据存储模型绑定的，根据存储模型的不同，实现方式上主要是三种：</p>
+<ul>
+<li>
+<p>基于并行扫描的算法</p>
+<ul>
+<li>如：在HDFS分布式文件系统中，由于其只能追加记录，不能修改和删除记录的特点，有些分布式空间数据引擎就把问题简单化处理，利用Map/Reduce的分布式并行特性提高检索效率，而在块内采用按照key顺序扫描的方法进行检索，或者设计各种Bloom Filter，实现对数据的过滤。理论上该方法只能提升并行带来的效率，且对集群节点的压力较大，属于比较早期的设计。</li>
+</ul>
+</li>
+<li>
+<p>基于分区的算法</p>
+<ul>
+<li>部分分布式空间数据引擎，对扫描方式做了优化，将重点放在如何对数据进行合理的分区问题上。例如：按照某个行键对数据进行分块，然后利用HASH等技术，索引到键值所在的数据块。该领域研究的重点方向之一是如何适应数据的分布特性，通过合理地规划分区解决数据倾斜问题。</li>
+</ul>
+</li>
+<li>
+<p>基于索引的算法（重点讨论）</p>
+<ul>
+<li>前两种方法都是在数据集上直接做空间查询，直接返回结果集；第三种是在索引上做查询，获得索引指向的分区，然后再对分区进行处理，获得最终结果；此外，基于索引数据本身，还能获得很多意外的好处，比如：数据的分区统计、数据的分布特性分析、数据的聚簇性分析等。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>注：</p>
+<p>在分布式存储系统中，需要了解几个基本的术语：</p>
+<ul>
+<li>扇区（Sector）：存储设备物理上的最小I/O单位，例如：硬盘的一个扇区通常为512Byte</li>
+<li>页（Page）：由操作系统定义的、逻辑上的最小I/0单位，如：Windows系统和Linux默认页大小为4KB（即8个连续的扇区），页的特点是：页内连续存储，页间随机存储。因此，页配置越大，同样大小的文件占用的页数就越小，物理I/O的次数就越小，读写速度就越快，页内碎片多，页间碎片少；反之，页配置越小，同样大小的文件占用的页数就越多，物理I/O的次数就越大，读写速度就会变慢，但页内碎片小，页间碎片多。</li>
+<li>块（Block）：由 分布式文件系统定义的逻辑上的最小I/O单位，如：HDFS中Block的大小默认为128MB（连续的），通常可以通过对分布式文件系统的参数设置调整该值。</li>
+<li>文件（File）：分布式文件系统中，一个文件是由多个Block组成，每个Block可能存储在集群中的不同节点上，为保证可靠性，每个Block 可能在其他节点上有多个备份。</li>
+<li>分区（Partition）：分区是业务逻辑术语，在空间数据库中通常和某个特定的空间划分相关联，即某个空间划分内的数据存储在一个分区中。在分布式数据库系统中，分区通常以一个或多个文件的形式存在。</li>
+</ul>
+</blockquote>
+<p>（2）三类重要的查询算法</p>
+<ul>
+<li>范围查询算法：
+<ul>
+<li>点查询：</li>
+<li>范围查询：</li>
+</ul>
+</li>
+<li>邻近查询算法：
+<ul>
+<li>NN、kNN等给定查询点，返回数据集中最邻近的若干记录。</li>
+</ul>
+</li>
+<li>空间连接查询算法：
+<ul>
+<li>一元连接查询：在数据集内部，依据相交、包含等空间拓扑关系查询关联的其他记录</li>
+<li>二元连接查询：在两个数据集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mtext>、</mtext><mi>S</mi></mrow><annotation encoding="application/x-tex">R、S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord cjk_fallback">、</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 中，依据相交、包含等空间拓扑关系，输出空间关联的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><mi>r</mi><mo separator="true">,</mo><mi>s</mi><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">&lt;r,s&gt;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span> 对</li>
+<li>多元连接查询：在多个数据集<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>R</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><msub><mi>R</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">R_1,R_2,..R_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">..</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 中，依据相交、包含等空间拓扑关系，输出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><msub><mi>r</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>r</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><msub><mi>r</mi><mi>n</mi></msub><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">&lt;r_1,r_2,..r_n&gt;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">..</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span>元组</li>
+<li>最近邻连接查询：</li>
+<li>kNN连接查询：</li>
+</ul>
+</li>
+</ul>
+<p>有关查询算法的更详细情况，参见<a href="#%E4%BA%94%E3%80%81%E7%A9%BA%E9%97%B4%E6%9F%A5%E8%AF%A2%E6%96%B9%E6%B3%95">空间查询方法</a></p>
+<h3 id="3-5-查询语言">3.5  查询语言</h3>
+<p>（暂略）</p>
+<h3 id="3-6-对空间关系计算、空间分析和可视化的支持">3.6  对空间关系计算、空间分析和可视化的支持</h3>
+<p>除了数据组织和检索能力外，如何利用系统已有的分布式特性，实现对空间大数据挖掘、时空分析和可视化也逐步成为分布式空间数据库的研究热点问题，部分能力也成为了分布式空间数据的内置能力，而分布式空间数据库的外延逐步扩大。典型如：</p>
+<ul>
+<li>时空分析：
+<ul>
+<li>如：并行的缓冲区分析、叠加分析、数据聚合等</li>
+</ul>
+</li>
+<li>空间数据挖掘：
+<ul>
+<li>如：并行的空间K均值分类、空间异常数据检测、空间位置协同模式挖掘等</li>
+</ul>
+</li>
+<li>时空数据可视化：
+<ul>
+<li>如：并行的可视化数据处理、可视化数据生成（矢量瓦片、删格瓦片动态生成等）</li>
+</ul>
+</li>
+</ul>
+<h2 id="四、空间索引模型">四、空间索引模型</h2>
+<h3 id="4-1-空间索引的基础知识">4.1  空间索引的基础知识</h3>
+<p><strong>（1）三种不同物理介质的空间索引</strong></p>
+<ul>
+<li>
+<p>一种是内存时空索引，主要用于对内存中的空间对象快速检索和访问，解决的核心问题是内存中的时间和空间复杂度问题</p>
+</li>
+<li>
+<p>另外一种是外部时空索引，主要用于对外围存储设备（主要指硬盘）中的存储的空间对象进行快速检索和访问，其本质是如何有效地减少物理IO的次数（<strong>重点讨论</strong>）</p>
+</li>
+<li>
+<p>另外需要指出的是，随着固态存储的广泛应用，目前有大量有关在固态存储设备上实现多维索引和存储的技术方法。</p>
+</li>
+</ul>
+<p><strong>（2）常见的空间索引方法</strong></p>
+<pre><code>空间索引技术是多维空间索引技术的一个子集，技术发展脉络也清晰表明，在地理信息技术领域出现的各种空间索引技术，大多是计算机科学领域多维空间索引技术的变种。目前，多维索引技术主要分为三种类型：
+</code></pre>
+<ul>
+<li><strong>基于空间划分的索引模型</strong>
+<ul>
+<li>特点：在二维、三维或者四维时空中进行区间划分，而后为每一个区间建立存储和索引</li>
+<li>此类索引的建立是依据在二维、三维或四维空间中的某种划分方式展开的，在索引结构上通常采用树状结构，非叶子节点指向其子划分节点，叶子节点指向存储位置。</li>
+<li>典型如：R树、四叉树、Kd树、X树等。</li>
+<li>优点：空间聚簇性好，理论上物理I/O效率能够较优</li>
+</ul>
+</li>
+<li>缺点：索引更新比较麻烦，对数据分布的变化适应性不足，对数据分布变化不大的历史数据非常有用。</li>
+<li><strong>基于降维的索引模型</strong>
+<ul>
+<li>特点：通过降维将二维、三维或四维时空中的点映射到一维空间后，然后在一维空间中进行排序和多叉划分，从而将多维问题降解为一维问题。</li>
+</ul>
+</li>
+<li>此类索引的建立，是采用一些巧妙的映射方法，将二维或三维空间映射到一维空间中，从而使空间数据能够利用计算机的线性存储特征和数值的排序特性
+<ul>
+<li>在数据结构上常采用B+树等</li>
+<li>优点：大部分表形式的数据库系统都能直接使用，（如：MySQL、MangoDB等），便于依据一维键值动态调整分区存储的大小</li>
+<li>缺点： 由于在一维空间中无法严格满足聚簇性要求，一个在多维空间中的范围查询，会被分解为多个一维空间中的范围查询，在临近查询时也存在类似的问题。</li>
+<li>常用的降维技术包括：空间填充曲线（Z序、Hilbert等）、Pyramid技术、iMinMax等。</li>
+</ul>
+</li>
+<li><strong>基于多维Hash函数的索引模型</strong>
+<ul>
+<li>特点：通过某个Hash函数，将多维空间中某个包围盒中的所有点，映射到一个索引键值上。</li>
+<li>此类索引需要设计比较好的多维Hash函数，而其中最简单的方式，就是等经纬度划分。</li>
+<li>在每个索引键值下，有N多个可能的数据点构成的数据集，为提升检索效率，通常内部也需要做排序。</li>
+<li>优点：计算简单</li>
+<li>缺点：数据分布不均匀时，每个键值下的数据集大小不同，会造成数据检索效率不一致的问题。</li>
+<li>常用的Hash函数：GeoHash（采用Z序作为降维函数）、GridFile、Flood等。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>参考资料：</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/20200501131839.png" alt=""></p>
+<h3 id="4-2-分布式空间索引的布局">4.2 分布式空间索引的布局</h3>
+<p><strong>（1）分布式空间数据引擎的特点</strong></p>
+<pre><code>	与传统基于DBMS的空间数据引擎不同，分布式空间数据引擎组织管理的数据分布在多个节点上，以往集中式的索引技术方案在分布式空间数据存储体系中，难以直接使用。特别是在谷歌三大论文发表和Hadoop开源项目之后，分布式数据存储的技术体系也基本定型，大数据块、只能追加不能更新等新的存储特点，也对分布式空间数据引擎带来了新的挑战。
+
+此外，由于海量数据的特点，使得索引数据本身也变得非常庞大，如何合理的组织和存储索引数据，也是分布式空间数据引擎要解决的核心问题。
+</code></pre>
+<p><strong>（2）分布式空间数据引擎的索引布局</strong></p>
+<pre><code>	分布式空间数据索引不仅涉及到节点内部的空间索引问题，还涉及到分布式节点之间的空间数据编排问题。因此，目前成熟的分布式空间数据引擎，通常采用**全局索引**和**本地索引**两级布局形式。		
+</code></pre>
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/20200501131855.png" style="zoom:50%;">
+<p><strong>（1）全局索引</strong></p>
+<ul>
+<li>目的：确定如何在不同计算机之间，依据空间数据的分布特性，合理划分、调整和分配分区（Partition，通常每个分区存储为一个文件），使得访问者能够根据检索范围，快速捕获相应的分区集合（Partitions Set），进而为基于分区的分布式并行检索提供支撑。</li>
+<li>部署：一般部署在master节点上，当空间数据集为静态数据集时，客户端可以将该全局索引缓存到本地，以加快检索效率。</li>
+<li>动态性：全局索引的动态性是由数据集的动态性决定的。
+<ul>
+<li>对于静态数据集，批量构建分区和全局索引，通过bulk load等技术优化内存与存储之间的调度;</li>
+<li>对于动态数据集，需要动态更新全局索引。</li>
+<li>需要注意的是，动态索引在HDFS的Written Once and Never Modified特点下，维护起来是一个相当麻烦的事情，必须采用LSM等技术定期对磁盘中的索引文件进行合并和压缩。这也是目前开源的分布式空间数据引擎主要处理历史数据的原因，当数据动态性比较强时，为规避上述问题，大部分分布式空间数据引擎会直接采用HBase作为存储引擎（HBase内部实现了LSM），或者使用Spark、Storm、Ignite等分布式内存引擎。</li>
+</ul>
+</li>
+<li>带来的好处：
+<ul>
+<li>便于查询处理器将查询范围外的分区修剪掉，即在分区层面实现一次过滤（Filtering）；</li>
+<li>空间相邻的分区可以存储在一起，便于一些分布式计算的实施，例如：Join操作。</li>
+</ul>
+</li>
+<li>问题：
+<ul>
+<li>存在不同地区的数据倾斜问题，如何在节点有限的分布式系统中，灵活、智能地处理不同地区的负载均衡问题，是一个目前的研究热点问题，见<a href="#4.3%E5%88%86%E5%B8%83%E5%BC%8F%E7%A9%BA%E9%97%B4%E7%B4%A2%E5%BC%95%E7%9A%84%E6%9E%84%E5%BB%BA">分布式空间索引的创建</a>。</li>
+<li></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/20200501131904.png" alt=""></p>
+<p><strong>（2）本地索引</strong></p>
+<ul>
+<li>目的：在每个节点内部或分区内部组织空间对象</li>
+<li>本质：对空间对象的集合进行某种形式的编排，使得在节点内部或分区内部检索速度更快</li>
+<li>部署：通常本地索引数据会和分区数据一块儿，部署在各slave节点上</li>
+</ul>
+<p><strong>全局索引</strong>和<strong>本地索引</strong>都会用到R-tree、Quad-tree、KD-tree、Z-Curve等空间索引技术。</p>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/20200501131910.png" alt=""></p>
+<p><strong>（3）关于分区的数量</strong></p>
+<p>现有的分布式空间数据库大致存在三种分区方式：</p>
+<ul>
+<li>根据集群中slave节点的数量决定分区数量  ，每个节点对应一个分区;</li>
+<li>根据分布式文件系统的Block决定分区数量，每个Block对应一个分区;</li>
+<li>用户自定义分区，此情况下分区成为Block的集合，可以考虑不同分区不同Block数，或不同分区相同Block数等多种方式，优点是用户可以自己灵活定义和优化。</li>
+</ul>
+<p><strong>（4）关于聚集索引和非聚集索引</strong></p>
+<p>聚集索引和非聚集索引是数据库领域的专业术语，但对于如何构建索引非常重要。</p>
+<ul>
+<li>
+<p>聚集型索引</p>
+<ul>
+<li>指数据记录在物理上严格按照索引顺序存储的一种索引形态，例如：关系型数据库中，通常依据主键值做聚集索引; Key-Value数据库通常依据Key值做聚集索引。</li>
+</ul>
+</li>
+<li>
+<p>非聚集型索引</p>
+<ul>
+<li>指数据记录在物理存储上和索引顺序无关的一种索引形态，例如：关系型数据库中，对某些字段建立的辅助索引（Secondary Index）大多是非聚集型索引，其存储还是依据主键聚集的。</li>
+</ul>
+</li>
+<li>
+<p><strong>注意：</strong></p>
+<ul>
+<li>填充曲线的应用建议采用聚集索引，因为只有这样才能发挥其聚簇性的技术优势，减少物理I/O数量。</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-3-分布式空间索引的构建">4.3 分布式空间索引的构建</h3>
+<p><strong>（1）均匀分区</strong></p>
+<ul>
+<li>不考虑数据的空间分布特征，直接按照统一的网格进行空间划分</li>
+<li>不同网格的数据存储在不同节点上，节点内部建立本地索引</li>
+<li>优势：简单，甚至不需要全局索引，对均匀分布的数据比较有优势</li>
+<li>缺点：当存在数据倾斜时，负载不均衡</li>
+</ul>
+<p><strong>（2）非均匀分区</strong></p>
+<ul>
+<li>
+<p>依据数据的空间分布特征，灵活做空间划分，空间划分的尺度不一定相同</p>
+</li>
+<li>
+<p>通常分为三步：</p>
+<ul>
+<li>第一步：空间分布的抽样（downsize）
+<ul>
+<li>对空间数据集进行小比例随机抽样（如：1%），生成点对象抽样数据集（线和面会被抽象到点）</li>
+<li>用抽样数据集表征整体的空间分布特征，能够有效降低生成空间划分方案的复杂度</li>
+</ul>
+</li>
+<li>第二步：生成空间划分方案（space subdivision）
+<ul>
+<li>任务：依据抽样数据集，策划空间划分方案</li>
+<li>方法：将整个空间依据抽样数据集划分为n个分区，平衡每个分区中的数据量。</li>
+<li>具体技术：R-树、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>R</mi><mo>+</mo></msup></mrow><annotation encoding="application/x-tex">R^+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7713em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7713em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">+</span></span></span></span></span></span></span></span></span></span></span>数、四叉树、KD树、空间填充曲线（Z序或Hilbert曲线）</li>
+<li>注意：某些技术无法做到全空间覆盖、某些技术可能存在空间上的重叠，需要单独做优化处理</li>
+</ul>
+</li>
+<li>第三步：建立分区索引（partitioning）
+<ul>
+<li>对整个数据集进行顺序扫描处理，根据第二步生成的分区方案，将数据记录分别填充到n个分区单元中去;</li>
+<li>由于抽样数据集是点集形式，因此此处可能会出现“线”或“多边形”跨分区的情况，通常的做法是将其在各分区中都存储一份，进而会出现重复存储，这最终可能会造成检索准确率下降的问题。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>（3）自适应分区</strong></p>
+<ul>
+<li>前面两种索引主要用于静态索引的生成，自适应索引主要面向动态索引。</li>
+<li>如前所述，在实现方式上，大多数分布式空间数据引擎都规避了该问题。</li>
+<li>比较多采用的方式，是利用空间填充曲线，将多维空间映射到一维空间，然后以一维空间中的值作为分布式数据库（如：HBase、Accumulo等）的主键做聚集索引，分区的动态性和自适应性完全由分布式数据库自身LSM的split和merge来实现。</li>
+<li>部分时空轨迹数据库根据自身数据特点（历史数据不会再变更），采用了时间离散化的方式实现索引的动态化，其基本思路是将时间切分成若干不相交的时间区间，每个时间区间内单独建空间索引，从而保证每个时间区间内的分区存储是最优化的。</li>
+<li>注意：此处可以思考利用空间填充曲线，在一维空间中处理时空轨迹数据是否存在问题。</li>
+</ul>
+<h2 id="五、空间查询方法">五、空间查询方法</h2>
+<h3 id="5-1-空间运算是空间查询的基础">5.1 空间运算是空间查询的基础</h3>
+<pre><code>  在空间数据库中，空间查询条件的描述，通常是以空间拓扑关系的形式表达的，因此要了解空间查询，必须先了解基础的空间关系计算。
+</code></pre>
+<p>例如：</p>
+<ul>
+<li>查找离学校最近5km的火锅店
+<ul>
+<li>实现过程：以北大为多边形对象做5km的<code>缓冲区</code>运算–&gt;用缓冲区和火锅店数据集做<code>交</code>或<code>包含</code>运算</li>
+</ul>
+</li>
+<li>查找海淀区内的所有书店
+<ul>
+<li>实现过程：获取海淀区多边形–&gt;用海淀区多边形与书店数据集做<code>交</code>或<code>包含</code>运算。</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-2-两类基础空间运算">5.2 两类基础空间运算</h3>
+<p>用于支撑空间查询的基础空间运算，主要包括两类：</p>
+<ul>
+<li>一是空间拓扑关系的元运算，
+<ul>
+<li>用于支撑基于空间拓扑关系的查询。例如：
+<ul>
+<li>“海淀区内林地”，基于海淀区多边形与林地多边形数据集的交运算</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>二是空间分析的元运算
+<ul>
+<li>用于支撑空间分析类型的查询。例如：
+<ul>
+<li>计算距离：“距离学校最近的三家火锅店”，基于<code>距离计算</code>实现。</li>
+<li>计算缓冲区：“清河周边1km内的绿化带”，基于<code>缓冲区计算</code>实现。</li>
+<li>计算面积：“北京市面积小于5平方公里的公园”，基于<code>面积计算</code>实现。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-3-空间拓扑关系的元运算">5.3  空间拓扑关系的元运算</h3>
+<ul>
+<li>
+<p>空间拓扑关系计算</p>
+<p>大部分空间查询应当支持9交运算集合（OGC标准支持）中最常被使用、已命名的10种空间断言（Predicates)，断言返回值为真或假，用于辅助查询算法判断当前对象是否满足空间查询条件。</p>
+<ul>
+<li>
+<p>基础计算：</p>
+<ul>
+<li>Equals(a,b)  –  是否相等</li>
+<li>Disjoint(a,b) –  是否相离</li>
+<li>Touches(a,b) – 是否邻接</li>
+<li>Contains(a,b) – 是否包含（边界不允许相交）</li>
+<li>Covers(a,b) – 是否覆盖</li>
+</ul>
+</li>
+<li>
+<p>派生计算（可由上述运算推导得出）：</p>
+<ul>
+<li>Intersects(a,b)  — 是否相交，Intersects(a,b)= not Disjoint(a,b)）</li>
+<li>Within(a,b) —  a是否在b内，Within(a,b) = Contains(b,a)）</li>
+<li>CoveredBy(a,b) — a是否被b包含，CoveredBy(a,b)= Coveres(b,a)</li>
+</ul>
+</li>
+<li>
+<p>拓扑关系</p>
+<ul>
+<li>Crosses(a,b)  — a是否穿过b（a与b的维度不同，或a和b同为线）</li>
+<li>Overlaps(a,b) — a是否与b存在重叠（a与b维度相同）</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img2020-05-02%2019-55-55%20%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png" alt=""></p>
+</li>
+</ul>
+<blockquote>
+<p>关于9交运算</p>
+<ul>
+<li>什么是9交运算模型</li>
+<li>DE-9IM是一种拓扑模型，也是描述二维空间中几何对象空间关系的标准，具有旋转、平移、变换不变性。</li>
+<li>该计算模型采用矩阵方式区分几何对象之间的不同空间关系类型，理论上能够通过两个空间对象的内部、边界和外部是否相交，表达两者之间512种可能的拓扑关系，不过传统上通常只使用其中类似“相交”、“邻接“、“包含”等10种。</li>
+</ul>
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img2020-05-02 19-58-44.png" style="zoom: 50%;">
+点/线/面的内部、边界和外部定义
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/imgimg2020-05-02 20-13-32.png" style="zoom:50%;">
+9交计算矩阵
+<ul>
+<li>
+<p>什么是空间断言（Spatial Predicate）</p>
+</li>
+<li>
+<p>判断两个空间对象是否属于某种特定的空间关系的布尔函数</p>
+</li>
+</ul>
+</blockquote>
+<h3 id="5-4-空间分析的元运算">5.4 空间分析的元运算</h3>
+<ul>
+<li>主要应当实现距离、维度、包络、长度、面积、缓冲区、凸包等运算</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img2020-05-02%2019-46-12%20%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png" alt=""></p>
+<h3 id="5-5-空间检索的两个阶段">5.5 空间检索的两个阶段</h3>
+<p>基于索引的空间检索一般要经过过滤（Filtering）和精化（Refine）两个阶段：</p>
+<ul>
+<li>
+<p>过滤（Filtering）</p>
+<ul>
+<li>也被称为粗检索，其作用是过滤掉肯定不在结果集中的数据，对于分布式空间数据引擎而言，就是将肯定不包含查询结果的分区先过滤掉，剩下可能包含查询结果的分区候选集。因此，对于分布式空间数据引擎来说，过滤通常是基于全局索引的。</li>
+</ul>
+</li>
+<li>
+<p>精化（Refine）</p>
+<ul>
+<li>精化也被称为精检索，其作用是在候选的分区中，通过顺序扫描或本地索引，筛选出符合空间查询条件的数据记录，即最终结果集。</li>
+</ul>
+</li>
+</ul>
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/20200501131920.png" style="zoom: 33%;">
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img2020-05-02%2019-51-47%20%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png" style="zoom: 67%;">
+<h3 id="5-6-分布式空间查询的实现">5.6 分布式空间查询的实现</h3>
+<p>过滤和精化两个步骤，在分布式空间查询系统中，处于MapReduce的不同阶段：</p>
+<ul>
+<li>
+<p>过滤：通常发生在Map之前，即过滤阶段无法实现并行。</p>
+</li>
+<li>
+<p>精化：过滤产生的候选分区集合，可按照分区实施Map，各Map获得的中间结果，最终通过Reduce合并成最终成果文件。</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img2020-05-04%2015-14-21%20%E5%88%9B%E5%BB%BA%E7%9A%84%E6%88%AA%E5%9B%BE.png" alt=""></p>
+<h2 id="六、空间查询语言">六、空间查询语言</h2>
+<ul>
+<li>待定</li>
+</ul>
+<h2 id="七、空间大数据的应用支持">七、空间大数据的应用支持</h2>
+<pre><code>分布式空间数据库的主要目的是实现海量空间数据的组织管理和高效查询，但由于其基础支撑环境是分布式计算环境，同时很多空间数据处理、分析和可视化功能依赖于底层数据存储和索引支持（如：计算和存储的本地化要求），所以越来越多的功能也被置于分布式空间数据系统中，由此形成近年逐步发展成熟的云GIS系统。
+</code></pre>
+<blockquote>
+<p>针对越来越多空间信息处理业务转移到了服务端（如：服务端实现的Overlay、Union、Intersects等），OGC2015年正式发布了<a target="_blank" rel="noopener" href="http://www.ogc.org/standards/wps">WPS（Web Processing Server）接口标准</a>，用于控制和协调客户端和服务器端之间的服务发布、服务请求、服务协同等。</p>
+</blockquote>
+<pre><code>  此外，空间大数据的范畴越来越广（典型如：移动轨迹数据、微博数据、物联网传感器数据等），衍生出很多传统地理信息系统很少涉及到的时空大数据分析需求，由此带来时空大数据分析和挖掘的新兴浪潮。其中，大量时空数据的分析和挖掘工作也依赖于空间数据引擎的分布式计算环境和本地化存储优势。因此，可以毫不夸张的说，掌握了分布式空间数据库的核心技术能力，就掌握了敲开时空大数据分析和挖掘大门的钥匙。
+</code></pre>
+<h2 id="参考资料：">参考资料：</h2>
+<p>（1）基于可分布式部署的传统关系型数据库或全文数据库，其实现机制和单机数据库区别不大，请参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://shilang1220.github.io/distributedspatialdatabase/2020/05/02/%E5%85%A8%E6%96%87%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E5%A4%9A%E7%BB%B4%E6%95%B0%E6%8D%AE%E6%A3%80%E7%B4%A2%E6%95%88%E7%8E%87%E7%9A%84%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95/">全文数据库中多维数据检索效率的提升方法</a></li>
+</ul>
+<p>（2）基于HDFS、GFS、Accumulo等分布式数据库实现，主要面向静态数据或历史数据的海量存储需求，对高时效性动态数据支持能力不足，请参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://shilang1220.github.io/distributedspatialdatabase/2020/05/03/%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E5%AE%9E%E7%8E%B0%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%92%8C%E6%A3%80%E7%B4%A2%E6%96%B9%E6%B3%95/">分布式数据库中实现空间数据存储和检索方法</a></li>
+<li><a target="_blank" rel="noopener" href="https://shilang1220.github.io/2020/05/03/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%AD%E5%AE%9E%E7%8E%B0%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%92%8C%E6%A3%80%E7%B4%A2%E6%96%B9%E6%B3%95/">分布式文件系统中实现空间数据存储和检索方法</a></li>
+</ul>
+<p>（3）基于Spark、Storm、Ignite、Alluxio等分布式内存文件系统或分布式存储引擎，主要面向高时效性时空数据的处理需求，请参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://shilang1220.github.io/2020/05/10/%E5%88%86%E5%B8%83%E5%BC%8F%E5%86%85%E5%AD%98%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E5%AE%9E%E7%8E%B0%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%92%8C%E6%A3%80%E7%B4%A2%E7%9A%84%E6%96%B9%E6%B3%95">分布式内存数据库中实现空间数据存储和检索的方法</a></li>
+</ul>
+<p>（4）分布式空间数据库以工程技术问题为主，但其中空间降维部分理论性较强，请参见：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://shilang1220.github.io/distributedspatialdatabase/2020/05/04/%E5%9F%BA%E4%BA%8E%E7%A9%BA%E9%97%B4%E5%A1%AB%E5%85%85%E6%9B%B2%E7%BA%BF%E7%9A%84%E9%99%8D%E7%BB%B4%E6%96%B9%E6%B3%95/">基于空间填充曲线的降维方法</a></li>
+<li><a target="_blank" rel="noopener" href="https://shilang1220.github.io/distributedspatialdatabase/2020/05/05/%E7%A9%BA%E9%97%B4%E5%A1%AB%E5%85%85%E6%9B%B2%E7%BA%BF%E7%9A%84%E8%81%9A%E7%B0%87%E6%80%A7%E5%88%86%E6%9E%90/">空间填充曲线的聚簇性分析</a></li>
+<li><a target="_blank" rel="noopener" href="https://shilang1220.github.io/distributedspatialdatabase/2020/05/08/%E5%8F%A6%E5%A4%96%E4%B8%80%E7%B1%BB%E5%A4%9A%E7%BB%B4%E7%A9%BA%E9%97%B4%E5%90%91%E4%B8%80%E7%BB%B4%E5%80%BC%E7%A9%BA%E9%97%B4%E8%BD%AC%E6%8D%A2%E7%9A%84%E6%96%B9%E6%B3%95/">另外一类多维空间向一维值空间转换的方法</a></li>
+</ul>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/855e2dea.html">http://xishansnow.github.io/posts/855e2dea.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E5%BA%93/">空间数据库</a><a class="post-meta__tags" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E5%BA%93/">分布式空间数据库</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E5%A1%AB%E5%85%85%E6%9B%B2%E7%BA%BF/">空间填充曲线</a><a class="post-meta__tags" href="/tags/%E5%A4%9A%E7%BB%B4%E7%A9%BA%E9%97%B4%E7%B4%A2%E5%BC%95/">多维空间索引</a></div><div class="post_share"><div class="social-share" data-image="/img/coffe_05.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/e2d0ac93.html"><img class="prev-cover" src="/img/book_11.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">基于全文数据库构建分布式空间数据库</div></div></a></div><div class="next-post pull-right"><a href="/posts/c0855b65.html"><img class="next-cover" src="/img/010.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">基于分布式文件系统实现空间数据引擎</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/e2d0ac93.html" title="基于全文数据库构建分布式空间数据库"><img class="cover" src="/img/book_11.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-02</div><div class="title">基于全文数据库构建分布式空间数据库</div></div></a></div><div><a href="/posts/c0855b65.html" title="基于分布式文件系统实现空间数据引擎"><img class="cover" src="/img/010.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-01</div><div class="title">基于分布式文件系统实现空间数据引擎</div></div></a></div><div><a href="/posts/33cc33f8.html" title="分布式空间数据库「 3 」"><img class="cover" src="/img/009.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-03</div><div class="title">分布式空间数据库「 3 」</div></div></a></div><div><a href="/posts/bc8cc658.html" title="基于空间填充曲线的降维方法"><img class="cover" src="/img/coffe_05.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-04</div><div class="title">基于空间填充曲线的降维方法</div></div></a></div><div><a href="/posts/7de1d91d.html" title="非零范围空间对象的索引方法--XZ序曲线索引"><img class="cover" src="/img/book_20.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-06</div><div class="title">非零范围空间对象的索引方法--XZ序曲线索引</div></div></a></div><div><a href="/posts/6f1c5727.html" title="基于列族数据库构建分布式空间数据库"><img class="cover" src="/img/book_01.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-03</div><div class="title">基于列族数据库构建分布式空间数据库</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">大数据时代的空间数据引擎</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%89%E7%A7%8D%E7%B1%BB%E5%9E%8B"><span class="toc-text">一、分布式空间数据库的三种类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%BB%A5%E4%B8%93%E4%B8%9A%E5%BA%94%E7%94%A8%E4%B8%BA%E9%87%8D%E7%82%B9%EF%BC%8C%E5%9F%BA%E4%BA%8E%E5%B9%B6%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%B3%BB%E7%BB%9F"><span class="toc-text">3.1 以专业应用为重点，基于并行数据库的系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%BB%A5%E6%B5%B7%E9%87%8F%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%BB%84%E7%BB%87%E4%B8%BA%E9%87%8D%E7%82%B9%EF%BC%8C%E4%BB%A5%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%88%96%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%BA%E5%9F%BA%E7%A1%80%E7%9A%84%E7%B3%BB%E7%BB%9F"><span class="toc-text">3.2 以海量空间数据组织为重点，以分布式文件系统或分布式数据库为基础的系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E4%BB%A5%E5%93%8D%E5%BA%94%E9%80%9F%E5%BA%A6%E4%B8%BA%E9%87%8D%E7%82%B9%EF%BC%8C%E4%BB%A5%E5%86%85%E5%AD%98%E8%AE%A1%E7%AE%97%E6%A1%86%E6%9E%B6%E5%92%8C%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E4%B8%BA%E6%8A%80%E6%9C%AF%E7%89%B9%E7%82%B9%E7%9A%84%E7%B3%BB%E7%BB%9F"><span class="toc-text">（3）以响应速度为重点，以内存计算框架和分布式存储为技术特点的系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%89%E7%A7%8D%E6%9E%B6%E6%9E%84%E5%BD%A2%E5%BC%8F"><span class="toc-text">二、分布式空间数据库的三种架构形式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89On-top-%E7%B1%BB%E5%9E%8B"><span class="toc-text">（1）On top 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89Built-from-scratch%E7%B1%BB%E5%9E%8B"><span class="toc-text">（2）Built from scratch类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89Built-inside%E7%B1%BB%E5%9E%8B"><span class="toc-text">（3）Built inside类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF"><span class="toc-text">三、分布式空间数据库的核心技术</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="toc-text">3.1  数据模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6"><span class="toc-text">3.2  存储模型与实现机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E7%B4%A2%E5%BC%95%E6%A8%A1%E5%9E%8B"><span class="toc-text">3.3  索引模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E6%9F%A5%E8%AF%A2%E7%AE%97%E6%B3%95"><span class="toc-text">3.4  查询算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80"><span class="toc-text">3.5  查询语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-%E5%AF%B9%E7%A9%BA%E9%97%B4%E5%85%B3%E7%B3%BB%E8%AE%A1%E7%AE%97%E3%80%81%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90%E5%92%8C%E5%8F%AF%E8%A7%86%E5%8C%96%E7%9A%84%E6%94%AF%E6%8C%81"><span class="toc-text">3.6  对空间关系计算、空间分析和可视化的支持</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%A9%BA%E9%97%B4%E7%B4%A2%E5%BC%95%E6%A8%A1%E5%9E%8B"><span class="toc-text">四、空间索引模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E7%A9%BA%E9%97%B4%E7%B4%A2%E5%BC%95%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-text">4.1  空间索引的基础知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%88%86%E5%B8%83%E5%BC%8F%E7%A9%BA%E9%97%B4%E7%B4%A2%E5%BC%95%E7%9A%84%E5%B8%83%E5%B1%80"><span class="toc-text">4.2 分布式空间索引的布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%88%86%E5%B8%83%E5%BC%8F%E7%A9%BA%E9%97%B4%E7%B4%A2%E5%BC%95%E7%9A%84%E6%9E%84%E5%BB%BA"><span class="toc-text">4.3 分布式空间索引的构建</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E7%A9%BA%E9%97%B4%E6%9F%A5%E8%AF%A2%E6%96%B9%E6%B3%95"><span class="toc-text">五、空间查询方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E7%A9%BA%E9%97%B4%E8%BF%90%E7%AE%97%E6%98%AF%E7%A9%BA%E9%97%B4%E6%9F%A5%E8%AF%A2%E7%9A%84%E5%9F%BA%E7%A1%80"><span class="toc-text">5.1 空间运算是空间查询的基础</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E4%B8%A4%E7%B1%BB%E5%9F%BA%E7%A1%80%E7%A9%BA%E9%97%B4%E8%BF%90%E7%AE%97"><span class="toc-text">5.2 两类基础空间运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E7%A9%BA%E9%97%B4%E6%8B%93%E6%89%91%E5%85%B3%E7%B3%BB%E7%9A%84%E5%85%83%E8%BF%90%E7%AE%97"><span class="toc-text">5.3  空间拓扑关系的元运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90%E7%9A%84%E5%85%83%E8%BF%90%E7%AE%97"><span class="toc-text">5.4 空间分析的元运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E7%A9%BA%E9%97%B4%E6%A3%80%E7%B4%A2%E7%9A%84%E4%B8%A4%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="toc-text">5.5 空间检索的两个阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-%E5%88%86%E5%B8%83%E5%BC%8F%E7%A9%BA%E9%97%B4%E6%9F%A5%E8%AF%A2%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-text">5.6 分布式空间查询的实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E7%A9%BA%E9%97%B4%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80"><span class="toc-text">六、空间查询语言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E7%A9%BA%E9%97%B4%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E5%BA%94%E7%94%A8%E6%94%AF%E6%8C%81"><span class="toc-text">七、空间大数据的应用支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99%EF%BC%9A"><span class="toc-text">参考资料：</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

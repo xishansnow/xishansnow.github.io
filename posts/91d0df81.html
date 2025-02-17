@@ -1,0 +1,648 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>NLP预训练模型【1】 -- 总览 | 西山晴雪的知识笔记</title><meta name="keywords" content="自然语言处理,分布式表示,词嵌入,预训练模型,Pre-train"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="预训练模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NLP预训练模型【1】 -- 总览">
+<meta property="og:url" content="http://xishansnow.github.io/posts/91d0df81.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="预训练模型">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/book_07.png">
+<meta property="article:published_time" content="2021-03-27T02:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.038Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="自然语言处理">
+<meta property="article:tag" content="分布式表示">
+<meta property="article:tag" content="词嵌入">
+<meta property="article:tag" content="预训练模型">
+<meta property="article:tag" content="Pre-train">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/book_07.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/91d0df81"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'NLP预训练模型【1】 -- 总览',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/book_07.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">NLP预训练模型【1】 -- 总览</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-03-27T02:00:00.000Z" title="发表于 2021-03-27 10:00:00">2021-03-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.038Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/">基础理论知识</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">8.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>29分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>NLP预训练模型【1】 – 总览</h1>
+<p>【摘要】预训练模型( Pre-trained Models )的出现将NLP带入了一个全新时代。2020年3月，邱锡鹏老师发表了关于NLP预训练模型的综述《Pre-trained Models for Natural Language Processing: A Survey》<a href="#ref_1"><sup>1</sup></a>，系统地对预训练模型进行了归纳分类。</p>
+<p>本文引自公众号「高能AI」</p>
+<hr>
+<h2 id="〇-全文脑图">〇. 全文脑图</h2>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_fc0b6.jpg" alt=""></p>
+<h2 id="一、为什么要进行预训练？">一、为什么要进行预训练？</h2>
+<p>​	深度学习时代，为充分训练深层模型参数并防止过拟合，通常需要更多标注数据喂养。在NLP领域，标注数据是一个昂贵资源。预训练模型从大量无标注数据中进行预训练使许多NLP任务获得显著的性能提升。总的来看，预训练模型的优势包括：</p>
+<ol>
+<li>在庞大的无标注数据上进行预训练可以获取更通用的语言表示，并有利于下游任务；</li>
+<li>为模型提供了一个更好的初始化参数，在目标任务上具备更好的泛化性能、并加速收敛；</li>
+<li>是一种有效的正则化手段，避免在小数据集上过拟合（一个随机初始化的深层模型容易对小数据集过拟合）。</li>
+</ol>
+<h2 id="二、什么是词嵌入和分布式表示？预训练模型与分布式表示的关系？">二、什么是词嵌入和分布式表示？预训练模型与分布式表示的关系？</h2>
+<p><strong><u>（1）词嵌入</u></strong></p>
+<ul>
+<li>
+<p>词嵌入是自然语言处理中语言模型与表征学习技术的统称。</p>
+</li>
+<li>
+<p>概念上而言，词嵌入是指把一个维数为所有词数量的高维空间嵌入到一个维数低得多的连续向量空间中，每个单词或词组被映射为实数域上的向量</p>
+</li>
+<li>
+<p>词嵌入是一种分布式表示，向量的每一维度都没有实际意义，而整体代表一个具体概念</p>
+</li>
+</ul>
+<p><strong><u>（2）分布式表示</u></strong></p>
+<ul>
+<li>分布式表示相较于传统的独热编码（one-hot）而言，表示具备更强的表示能力</li>
+<li>独热编码存在维度灾难和语义鸿沟（不能进行相似度计算）等问题</li>
+<li>传统分布式表示方法根据全局语料进行训练，是机器学习时代的产物，包括：矩阵分解（SVD/LSA）、LDA等。</li>
+</ul>
+<p><strong><u>（3）预训练模型</u></strong></p>
+<ul>
+<li>预训练模型属于分布式表示的范畴，本文的预训练模型主要介绍深度学习时代、自NNLM<a href="#ref_2"><sup>2</sup></a>以来的现代词嵌入。</li>
+</ul>
+<h2 id="三、预训练模型有哪两大范式？对比不同的预训练编码器？">三、预训练模型有哪两大范式？对比不同的预训练编码器？</h2>
+<p>预训练模型的发展经历从“浅层的词嵌入”到“深层编码”两个阶段，对应预训练模型两大范式：<strong>「浅层词嵌入」<strong>和</strong>「预训练编码器」</strong>。</p>
+<h3 id="3-1-浅层词嵌入（-Non-Contextual-Embeddings-）"><strong>3.1 浅层词嵌入（</strong> Non-Contextual Embeddings**）**</h3>
+<h4 id="（1）主要特点">（1）主要特点</h4>
+<p>这一类预训练模型范式是我们通常所说的“词向量”，其主要特点是：</p>
+<ul>
+<li>学习到的是上下文独立的静态词嵌入</li>
+<li>主要代表为NNLM<a href="#ref_2"><sup>2</sup></a>、word2vec（CBOW<a href="#ref_3"><sup>3</sup></a>、Skip-Gram<a href="#ref_3"><sup>3</sup></a>）、Glove<a href="#ref_4"><sup>4</sup></a>等</li>
+<li>这类词嵌入通常采取浅层网络进行训练，而应用于下游任务时，整个模型的其余部分仍需要从头开始学习。</li>
+<li>因此，对于这一范式的预训练模型没有必要采取深层神经网络进行训练，采取浅层网络加速训练也可以产生好的词嵌入<a href="#ref_3"><sup>3</sup></a>。</li>
+</ul>
+<h4 id="（2）主要缺点：">（2）主要缺点：</h4>
+<ul>
+<li>词嵌入与上下文无关，每个单词的嵌入向量始终是相同，因此不能解决一词多义的问题。</li>
+<li>通常会出现OOV问题，为了解决这个问题，相关文献提出了字符级表示或sub-word表示，如CharCNN<a href="#ref_5"><sup>5</sup></a> 、FastText<a href="#ref_6"><sup>6</sup></a> 和Byte-Pair Encoding <a href="#ref_7"><sup>7</sup></a>。</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_9335c.png" alt=""></p>
+<center>图1: 常见的3种浅层词嵌入对比：NNLM、word2vec、Glove</center>
+<p>​	上图给出了三种常见的浅层词嵌入之间的对比，Glove可以被看作是更换了目标函数和权重函数的全局word2vec。此外，相关文献也提出了句子和文档级别的嵌入方式，如Skip-thought<a href="#ref_8"><sup>8</sup></a> 、Context2Vec<a href="#ref_9"><sup>9</sup></a> 等。</p>
+<h3 id="3-2-预训练编码器（Contextual-Embeddings）"><strong>3.2 预训练编码器（<strong>Contextual Embeddings</strong>）</strong></h3>
+<p>​	第二类预训练模型范式为预训练编码器，主要目的是通过一个预训练的编码器能够输出上下文相关的词向量，解决一词多义的问题。</p>
+<p>​    这一类预训练编码器输出的向量称之为「上下文相关的词嵌入」。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_b238c.png" alt=""></p>
+<center>图2: NLP编码器对比</center>
+<p>​	图2给出了NLP各种编码器间的对比。预训练模型中预训练编码器通常采用LSTM和Transformer（Transformer-XL），其中Transformer又依据其attention-mask方式分为Transformer-Encoder和Transformer-Decoder两部分。此外，Transformer也可看作是一种图神经网络GNN<a href="#ref_10"><sup>10</sup></a>。</p>
+<p>​	这一类「预训练编码器」范式的预训练模型主要代表有<strong>ELMO</strong><a href="#ref_11"><sup>11</sup></a>、<strong>GPT-1</strong><a href="#ref_12"><sup>12</sup></a>、<strong>BERT</strong><a href="#ref_13"><sup>13</sup></a>、<strong>XLNet</strong><a href="#ref_14"><sup>14</sup></a>等。</p>
+<h2 id="四、预训练模型按照任务类型如何分类？">四、预训练模型按照任务类型如何分类？</h2>
+<h3 id="4-1-预训练模型的分类">4.1 预训练模型的分类</h3>
+<p>​	预训练模型按照任务类型可分为2大类：监督学习和无监督学习/自监督学习。</p>
+<ul>
+<li>监督学习：
+<ul>
+<li>在NLP-预训练模型中的主要代表就是<strong>CoVe</strong><a href="#ref_15"><sup>15</sup></a>，CoVe作为机器翻译的encoder部分可以应用于多种NLP下游任务。除了CoVe外，NLP中的绝大多数预训练模型属于自监督学习。</li>
+</ul>
+</li>
+<li>自监督学习
+<ul>
+<li>是无监督学习的一种方法<a href="#ref_16"><sup>16</sup></a>，自监督学习<a href="#ref_17"><sup>17</sup></a>主要是利用辅助任务从大规模的无监督数据中挖掘自身的监督信息，通过这种构造的监督信息对网络进行训练，从而可以学习到对下游任务有价值的表征。因此，从“构造监督信息”这个角度来看，自监督也可看作是监督学习和无监督学习的一种融合<a href="#ref_1"><sup>1</sup></a>。严格地讲，从是否由人工标注来看，自监督学习属于无监督学习的范畴。</li>
+</ul>
+</li>
+<li>监督学习中的工作流程
+<ul>
+<li>首先在大量<strong>有标签数据</strong>上进行预训练（Pretrain），得到预训练的模型，然后对于新的下游任务（Downstream task），将预训练学习到的参数（比如：输出层之前的层）进行迁移，在新的有标签任务上进行「微调（Finetune）」，从而得到一个能适应新任务的网络。</li>
+</ul>
+</li>
+<li>自监督学习中的工作流程
+<ul>
+<li>首先在大量<strong>无标签数据</strong>上通过pretext来训练网络（自动在数据中构造监督信息），得到预训练模型，然后对于新的下游任务，迁移预训练得到的参数后，在新的有标签数据上进行微调即可。</li>
+</ul>
+</li>
+</ul>
+<img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_f218b.webp" style="zoom: 50%;" />
+<img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/software/git_8bbf3.webp" style="zoom:50%;" />
+<h3 id="4-2-自监督学习有哪些重要的方法？">4.2 自监督学习有哪些重要的方法？</h3>
+<p>对于自监督学习而言，存在三个方面挑战：</p>
+<ol>
+<li>对于大量的无标签数据，如何进行表征/表示学习？</li>
+<li>从数据的本身出发，如何设计有效的辅助任务pretext？</li>
+<li>对于自监督学习到的表征，如何来评测它的有效性？</li>
+</ol>
+<p>其中第3点可以通过迁移学习的下游任务性能来体现，而前两者是选择自监督方法的关键。综合各种自监督学习的分类方式，可以将NLP-预训练模型在自监督学习中分为两种类型<a href="#ref_16"><sup>16</sup></a><a href="#ref_17"><sup>17</sup></a>：</p>
+<ul>
+<li>基于上下文（Context Based）</li>
+<li>基于对比（Contrastive Based）。</li>
+</ul>
+<h3 id="4-3-基于上下文（Context-Based）的自监督学习方法"><strong>4.3 基于上下文（Context Based）的自监督学习方法</strong></h3>
+<p>​	基于上下文的自监督学习方法基于数据本身上下文信息构造辅助任务，例如：通过前后的词来预测中间的词，或者通过中间的词来预测前后的词。</p>
+<blockquote>
+<p>类似的任务在计算机视觉领域中也很常见，例如：（1）将无标签图像拆解成9部分，通过预训练实现任意图片9部分的自动拼接[93]；（2）通过对无标签图像的与训练，抠掉输入图像中任意子区域时，模型能够对被抠掉的部分进行自动补全[94]；（3）通过对有颜色图像的预训练，实现对无色灰度图的自动上色[95]</p>
+</blockquote>
+<p>在NLP中我们通常引入语言模型作为训练目标。预训练模型中的语言模型主要分为三大类：</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_fc0b5.png" alt=""></p>
+<h4 id="第一类：自回归语言模型（Language-Model）"><strong>第一类：自回归语言模型（Language Model）</strong></h4>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>p</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo separator="true">,</mo><mi>T</mi><mo stretchy="false">)</mo><mo>=</mo><munderover><mo>∏</mo><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><mi>T</mi></munderover><mrow><mi>p</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>t</mi></msub><mi mathvariant="normal">∣</mi><msub><mi>x</mi><mrow><mn>0</mn><mo>:</mo><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(x_1,T)=\prod\limits_{t=1}^T{p(x_t|x_{0:t-1})}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.0954em;vertical-align:-1.2671em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283em;"><span style="top:-1.8829em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∏</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2671em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0</span><span class="mrel mtight">:</span><span class="mord mathnormal mtight">t</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></span></p>
+<ul>
+<li>
+<p>优点：</p>
+<ul>
+<li>语言模型联合概率的无偏估计，即传统的语言模型，考虑被预测单词之间的相关性，天然适合处理自然生成任务</li>
+</ul>
+</li>
+<li>
+<p>缺点：</p>
+<ul>
+<li>联合概率按照文本序列<strong>顺序拆解</strong>（从左至右分解），无法获取双向上下文信息表征；</li>
+</ul>
+</li>
+<li>
+<p>代表模型：</p>
+<ul>
+<li>ELMO、GPT-1、GPT-2<a href="#ref_18"><sup>18</sup></a>、ULMFiT<a href="#ref_19"><sup>19</sup></a>、SiATL<a href="#ref_20"><sup>20</sup></a>；</li>
+</ul>
+</li>
+</ul>
+<h4 id="第二类：自编码语言模型（Denoise-Auto-Encoder）"><strong>第二类：自编码语言模型（Denoise Auto Encoder）</strong></h4>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>p</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo separator="true">,</mo><mi>T</mi><mo stretchy="false">)</mo><mo>≈</mo><munderover><mo>∑</mo><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><mi>T</mi></munderover><mrow><msub><mi>m</mi><mi>t</mi></msub><mi>l</mi><mi>o</mi><mi>g</mi><mi>p</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>t</mi></msub><mi mathvariant="normal">∣</mi><mover accent="true"><mi>x</mi><mo>~</mo></mover><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(x_1,T)\approx\sum\limits_{t=1}^T{m_tlogp(x_t|\tilde{x})}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.0954em;vertical-align:-1.2671em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283em;"><span style="top:-1.8829em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2671em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">x</span></span><span style="top:-3.35em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">~</span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></span></p>
+<ul>
+<li>
+<p>优点：</p>
+<ul>
+<li>本质为<strong>降噪自编码</strong>特征表示，通过引入噪声[MASK]构建<strong>MLM</strong>(Masked language model)，获取双向上下文信息表征（本文将自编码语言模型统一称为<strong>DAE</strong>，旨在采用部分损坏的输入，恢复原始的未失真输入）；如果当前token被预测，则 $ m_{t}=1 $  否则  $ m_{t}=0 $ ，$ \tilde{x} $  为原始文本被替换后的输入。</li>
+</ul>
+</li>
+<li>
+<p>缺点：</p>
+<ul>
+<li>引入独立性假设，为<strong>语言模型联合概率的有偏估计</strong>，没有考虑预测token之间的相关性；</li>
+<li>预训练时的「MASK」噪声在finetune阶段不会出现，造成两阶段不匹配问题；为解决这一问题，在15%被预测的token中，80%被替换为「MASK」，10%被随机替换，10%被替换为原词。</li>
+</ul>
+</li>
+<li>
+<p>代表模型：</p>
+<ul>
+<li>BERT、MASS <a href="#ref_21"><sup>21</sup></a>、T5<a href="#ref_22"><sup>22</sup></a>、RoBERTa<a href="#ref_23"><sup>23</sup></a>、UniLM<a href="#ref_24"><sup>24</sup></a>、XLM<a href="#ref_25"><sup>25</sup></a>、SpanBERT<a href="#ref_26"><sup>26</sup></a>、ERNIE-Baidu<a href="#ref_27"><sup>27</sup></a><a href="#ref_28"><sup>28</sup></a>、E-BERT<a href="#ref_29"><sup>29</sup></a>、ERNIE-THU<a href="#ref_30"><sup>30</sup></a>、BART<a href="#ref_31"><sup>31</sup></a>。</li>
+</ul>
+</li>
+</ul>
+<p>​    <strong>BERT</strong><a href="#ref_13"><sup>13</sup></a>是自编码语言模型的一个典型代表，但其采用的MLM策略和Transformer-Encoder结构，导致其不适合直接处理生成任务。为了解决这一问题，也可采用基于<strong>Seq2Seq MLM</strong>方法：encoder部分采取masked策略，而decoder部分以自回归方式预测encoder部分被mask的token。此外，还有很多基于自编码语言模型的预训练模型提出了不同的MLM增强策略，称之为Enhanced Masked Language Modeling (<strong>E-MLM</strong>) <a href="#ref_1"><sup>1</sup></a>。</p>
+<p>上述DAE具体的预训练模型方法见图4。</p>
+<h4 id="第三类：排列语言模型（Permuted-Language-Model，PLM）"><strong>第三类：排列语言模型（Permuted Language Model，PLM）</strong></h4>
+<p>排列语言模型综合了LM和DAE-LM两者的优点。严格来讲，PLM和LM是标准的自回归语言模型（注：PLM是一种广义的自回归方法<a href="#ref_14"><sup>14</sup></a>），而MLM不是一个标准的语言模型，其引入独立性假设，<strong>隐式地学习</strong>预测token（mask部分本身的强相关性）之间的关系。</p>
+<p>如果衡量序列中被建模的依赖关系的数量，标准的自回归语言模型可以达到上界，不依赖于任何独立假设。LM和PLM能够通过自回归方式来<strong>显式地学习</strong>预测token之间的关系。然而，LM无法对双向上下文进行表征，借鉴NADE<a href="#ref_32"><sup>32</sup></a>的思想，PLM将这种传统的自回归语言模型（LM）进行推广，将顺序拆解变为<strong>随机拆解</strong>（从左至右分解），产生上下文相关的双向特征表示。</p>
+<p>​	PLM最为典型的代表就是<strong>XLNet</strong><a href="#ref_14"><sup>14</sup></a>，这是对标准语言模型的一个复兴<a href="#ref_33"><sup>33</sup></a>：提出一个框架来连接标准语言模型建模方法和预训练方法。</p>
+<p>​	一个关键问题：</p>
+<ul>
+<li>
+<p>为什么PLM可以实现双向上下文的建模？**PLM的本质就是语言模型联合概率的多种分解机制的体现，<strong>其将LM的顺序拆解推广到</strong>随机拆解。**PLM没有改变原始文本序列的自然位置，只是定义了token预测的顺序。PLM只是针对语言模型建模不同排列下的因式分解排列，并不是词的位置信息的重新排列。</p>
+<p>最后，我们对基于上述三类语言模型的预训练模型进行总结：</p>
+</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/image-20210326234806591.png" alt="image-20210326234806591"><center> <strong>图4: 基于上下文（Context Based）的3种语言模型预训练模型总结</strong> </center></p>
+<h3 id="4-3-基于对比（Contrastive-Based）的自监督模型"><strong>4.3 基于对比（Contrastive Based）的自监督模型</strong></h3>
+<p>​	基于对比（Contrastive Based），不同于<strong>Context Based</strong>主要基于数据本身的上下文信息构造辅助任务，Contrastive Based主要利用样本间的约束信息构造辅助任务，这类方法也是Contrastive learning<a href="#ref_34"><sup>34</sup></a>（CTL）。</p>
+<p>​	CTL假设观察到的文本对（正样本）在语义上比随机采样的文本（负样本）更相似。CTL背后的原理是「在对比中学习」。相较于语言建模，CTL的计算复杂度更低，因而在预训练中是理想的替代训练标准。</p>
+<p>​	CTL通过构建正样本（positive）和负样本（negative），然后度量正负样本的距离来实现自监督学习<a href="#ref_17"><sup>17</sup></a>:可以使用点积的方式构造距离函数，然后构造一个softmax分类器，以正确分类正样本和负样本。鼓励相似性度量函数将较大的值分配给正例，将较小的值分配给负例：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mtable rowspacing="0.16em" columnspacing="1em"><mtr><mtd class ="mtr-glue"></mtd><mtd><mstyle scriptlevel="0" displaystyle="true"><mrow><msub><mi mathvariant="script">L</mi><mi>N</mi></msub><mo>=</mo><mo>−</mo><msub><mi mathvariant="double-struck">E</mi><mrow><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo>+</mo><mo separator="true">,</mo><mi>y</mi><mo>−</mo></mrow></msub><mrow><mo fence="true">[</mo><mi>log</mi><mo>⁡</mo><mo>+</mo><mfrac><mrow><mi>exp</mi><mo>⁡</mo><mo>+</mo><mrow><mo fence="true">(</mo><mi>s</mi><mrow><mo fence="true">(</mo><mi>x</mi><mo separator="true">,</mo><msup><mi>y</mi><mo lspace="0em" rspace="0em">+</mo></msup><mo fence="true">)</mo></mrow><mo fence="true">)</mo></mrow></mrow><mrow><mi>exp</mi><mo>⁡</mo><mo>+</mo><mrow><mo fence="true">(</mo><mi>s</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><msup><mi>y</mi><mo lspace="0em" rspace="0em">+</mo></msup><mo stretchy="false">)</mo><mo>+</mo><mo fence="true">)</mo></mrow><mo>+</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></munderover><mo>+</mo><mi>exp</mi><mo>⁡</mo><mo>+</mo><mrow><mo fence="true">(</mo><mi>s</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><msubsup><mi>y</mi><mi>j</mi><mo lspace="0em" rspace="0em">−</mo></msubsup><mo stretchy="false">)</mo><mo fence="true">)</mo></mrow></mrow></mfrac><mo fence="true">]</mo></mrow><mo>+</mo></mrow></mstyle></mtd><mtd class ="mtr-glue"></mtd><mtd class ="mml-eqn-num"></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin
+{equation}
+\mathcal{L}_{N}=-\mathbb{E}_{x,y+,y-}\left[\log+\frac{\exp+\left(s\left(x,y^{+}\right)\right)}{\exp+\left(s(x,y^{+})+\right)+\sum_{j=1}^{N-1}+\exp+\left(s(x,y_{j}^{-})\right)}\right]+\end
+{equation}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.057em;vertical-align:-1.2785em;"></span><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.7785em;"><span style="top:-3.7785em;"><span class="pstrut" style="height:3.75em;"></span><span class="mord"><span class="mord"><span class="mord mathcal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">−</span><span class="mord"><span class="mord mathbb">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2583em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span><span class="mord mtight">+</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span><span class="mord mtight">−</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">[</span></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">+</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4483em;"><span style="top:-2.1288em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop">exp</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">+</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord mathnormal">s</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6973em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">+</span></span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord">+</span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9812em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4358em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">+</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">exp</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">+</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size1">(</span></span><span class="mord mathnormal">s</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8115em;"><span style="top:-2.4231em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span style="top:-3.1031em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.413em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size1">)</span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop">exp</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">+</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7713em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">+</span></span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.307em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size4">]</span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">+</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2785em;"><span></span></span></span></span></span></span></span><span class="tag"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.7785em;"><span style="top:-3.7785em;"><span class="pstrut" style="height:3.75em;"></span><span class="eqn-num"></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2785em;"><span></span></span></span></span></span></span></span></span></p>
+<p>相似性度量函数通常可采取两种方式：$ s(x,y)=f_{enc(x)}^{T}f_{enc(x)}$ 或 $ s(x,y)=f_{enc}(x\oplus+y) $</p>
+<h4 id="第一类：-Deep-InfoMax-DIM"><strong>第一类： Deep InfoMax (DIM)</strong></h4>
+<p>​	DIM方法来源于CV领域，对于全局的特征（编码器最终的输出）和局部特征（编码器中间层的特征），DIM需要判断全局特征和局部特征是否来自同一图像<a href="#ref_17"><sup>17</sup></a>。<strong>InfoWord</strong> <a href="#ref_35"><sup>35</sup></a>将DIM引入到NLP中，用Mutual Information的一个下界InfoNCE来重新解释BERT和XLNET的objective，并提出一个新的DIM objective以最大化一个句子的global representation和其中一个ngram的local representation之间的Mutual Information。</p>
+<h4 id="第二类：Replaced-Token-Detection-RTD"><strong>第二类：Replaced Token Detection (RTD)</strong></h4>
+<p>​	噪声对比估计（Noise-Contrastive Estimation，NCE）<a href="#ref_36"><sup>36</sup></a>通过训练一个二元分类器来区分真实样本和假样本，可以很好的训练词嵌入。RTD于与NCE相同，根据上下文语境来预测token是否替换 。</p>
+<ul>
+<li><strong>word2vec</strong><a href="#ref_3"><sup>3</sup></a>中的negative sampling可看作是RTD，负样本从词表中进行带权采样。</li>
+<li><strong>ELECTRA</strong><a href="#ref_37"><sup>37</sup></a>提出了一种新的预训练任务框架，构建生成器-判别器，生成器通过MLM任务对被mask的token进行预测，迭代器判断原始句子中的每个token是否被replace过。生成器相当于对输入进行了筛选，使判别器的任务更难，从而学习到更好的表示。生成器-判别器共享embedding，生成器部分采用small-bert，判别器部分对每一个token采用sigmoid计算loss。finetune阶段只采用判别器部分。RTD也被看作解决MLM中「MASK」在预训练和finetune间差异的一种手段。</li>
+<li><strong>WKLM</strong><a href="#ref_38"><sup>38</sup></a>在实体level进行替换，替换为具有相同实体类型的实体名称。</li>
+</ul>
+<h4 id="第三类：Next-Sentence-Prediction-NSP"><strong>第三类：Next Sentence Prediction (NSP)</strong></h4>
+<p>​	NSP区分两个输入句子是否为训练语料库中的连续片段，第二个句子50%为第一句子实际的连续片段，50%从其他语料随机选择。NSP可以引导模型理解两个输入句子之间的关系，从而使对此信息敏感的下游任务受益，如QA任务。而RoBERTa<a href="#ref_23"><sup>23</sup></a>表明：NSP在对单个文档中的文本块进行训练时，去除NSP任务或在下游任务上可以稍微提高性能。</p>
+<h4 id="第四类：Sentence-Order-Prediction-SOP"><strong>第四类：Sentence Order Prediction (SOP)</strong></h4>
+<p>​	SOP使用同一文档中的两个连续片段作为正样本，而相同的两个连续片段互换顺序作为负样本。NSP融合了主题预测和相关性预测，主题预测更容易，这使得模型进行预测时仅依赖于主题学习。与NSP不同，SOP使用同一文档中的两个连续段作为正样本，但顺序互换为负样本。采取SOP任务的预训练模型有ALBERT<a href="#ref_39"><sup>39</sup></a>、StructBERT<a href="#ref_40"><sup>40</sup></a>、BERTje<a href="#ref_41"><sup>41</sup></a>。</p>
+<p>​	图5对上述基于对比（Contrastive Based）的四类预训练模型进行了总结：</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/image-20210326235013242.png" alt="image-20210326235013242"></p>
+<center> 图5: 基于对比（Contrastive Based）的预训练模型总结</center>
+<h2 id="五、预训练模型有哪些拓展？">五、预训练模型有哪些拓展？</h2>
+<h3 id="5-1-引入知识"><strong>5.1 引入知识</strong></h3>
+<p>预训练模型通常从通用大型文本语料库中学习通用语言表示，但是缺少特定领域的知识。预训练模型中设计一些辅助的预训练任务，将外部知识库中的领域知识整合到预训练模型中被证明是有效的<a href="#ref_1"><sup>1</sup></a>。</p>
+<ul>
+<li><strong>ERNIE-THU</strong><a href="#ref_30"><sup>30</sup></a>将在知识图谱中预先训练的实体嵌入与文本中相应的实体提及相结合，以增强文本表示。由于语言表征的预训练过程和知识表征过程有很大的不同，会产生两个独立的向量空间。为解决上述问题，在有实体输入的位置，将实体向量和文本表示通过非线性变换进行融合，以融合词汇、句法和知识信息。</li>
+<li><strong>LIBERT</strong><a href="#ref_42"><sup>42</sup></a>（语言知识的BERT）通过附加的语言约束任务整合了语言知识。</li>
+<li><strong>SentiLR</strong><a href="#ref_43"><sup>43</sup></a>集成了每个单词的情感极性，以将MLM扩展到标签感知MLM（LA-MLM），ABSA任务上都达到SOTA。</li>
+<li><strong>SenseBERT</strong><a href="#ref_44"><sup>44</sup></a> 不仅能够预测被mask的token，还能预测它们在给定语境下的实际含义。使用英语词汇数据库WordNet作为标注参照系统，预测单词在语境中的实际含义，显著提升词汇消歧能力。</li>
+<li><strong>KnowBERT</strong><a href="#ref_45"><sup>45</sup></a> 与实体链接模型以端到端的方式合并实体表示。</li>
+<li><strong>KG-BERT</strong><a href="#ref_46"><sup>46</sup></a>显示输入三元组形式，采取两种方式进行预测：构建三元组识别和关系分类，共同优化知识嵌入和语言建模目标。这些工作通过实体嵌入注入知识图的结构信息。</li>
+<li><strong>K-BERT</strong><a href="#ref_47"><sup>47</sup></a>将从KG提取的相关三元组显式地注入句子中，以获得BERT的扩展树形输入。</li>
+<li><strong>K-Adapter</strong><a href="#ref_48"><sup>48</sup></a>通过针对不同的预训练任务独立地训练不同的适配器来注入多种知识，从而可以不断地注入知识，以解决注入多种知识时可能会出现灾难性遗忘问题。</li>
+<li>此外，这类预训练模型还有WKLM<a href="#ref_38"><sup>38</sup></a>、KEPLER<a href="#ref_49"><sup>49</sup></a>和<a href="#ref_50"><sup>50</sup></a>等。</li>
+</ul>
+<h3 id="5-2-模型压缩"><strong>5.2 模型压缩</strong></h3>
+<p>由于预训练的语言模型通常包含至少数亿个参数，因此很难将它们部署在现实应用程序中的在线服务和资源受限的设备上。模型压缩是减小模型尺寸并提高计算效率的有效方法。</p>
+<p>5种预训练模型的压缩方法为：</p>
+<ul>
+<li>
+<p><strong>pruning（剪枝）</strong>：将模型中影响较小的部分舍弃。</p>
+<ul>
+<li>如Compressing BERT<a href="#ref_51"><sup>51</sup></a>，还有结构化剪枝LayerDrop <a href="#ref_52"><sup>52</sup></a>，其在训练时进行Dropout，预测时再剪掉Layer，不像知识蒸馏需要提前固定student模型的尺寸大小。</li>
+</ul>
+</li>
+<li>
+<p><strong>quantization（量化）</strong>：将高精度模型用低精度来表示；</p>
+<ul>
+<li>如Q-BERT<a href="#ref_53"><sup>53</sup></a>和Q8BERT<a href="#ref_54"><sup>54</sup></a>，量化通常需要兼容的硬件。</li>
+</ul>
+</li>
+<li>
+<p><strong>parameter sharing（参数共享）</strong>：相似模型单元间的参数共享；</p>
+<ul>
+<li>ALBERT<a href="#ref_39"><sup>39</sup></a>主要是通过矩阵分解和跨层参数共享来做到对参数量的减少。</li>
+</ul>
+</li>
+<li>
+<p><strong>module replacing（模块替换）</strong>：</p>
+<ul>
+<li>BERT-of-Theseus<a href="#ref_55"><sup>55</sup></a>根据伯努利分布进行采样，决定使用原始的大模型模块还是小模型，只使用task loss。</li>
+</ul>
+</li>
+<li>
+<p><strong>knowledge distillation（知识蒸馏）</strong>：通过一些优化目标从大型、知识丰富、fixed的teacher模型学习一个小型的student模型。蒸馏机制主要分为3种类型：</p>
+<ul>
+<li>从软标签蒸馏：DistilBERT <a href="#ref_56"><sup>56</sup></a>、EnsembleBERT<a href="#ref_57"><sup>57</sup></a></li>
+<li>从其他知识蒸馏：TinyBERT<a href="#ref_58"><sup>58</sup></a>、BERT-PKD、MobileBERT<a href="#ref_59"><sup>59</sup></a> 、 MiniLM<a href="#ref_60"><sup>60</sup></a> 、DualTrain<a href="#ref_61"><sup>61</sup></a></li>
+<li>蒸馏到其他结构：Distilled-BiLSTM<a href="#ref_62"><sup>62</sup></a></li>
+<li><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/NER_8521e.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<center> **图6: 不同的知识蒸馏预训练模型** </center>
+<h3 id="5-3-多模态"><strong>5.3 多模态</strong></h3>
+<p>随着预训练模型在NLP领域的成功，许多研究者开始关注多模态领域的预训练模型，主要为通用的视觉和语言特征编码表示而设计。多模态的预训练模型在一些庞大的跨模式数据语料库（带有文字的语音、视频、图像）上进行了预训练，如带有文字的语音、视频、图像等，主要有VideoBERT<a href="#ref_63"><sup>63</sup></a>、CBT<a href="#ref_64"><sup>64</sup></a> 、UniViLM<a href="#ref_65"><sup>65</sup></a>、 ViL-BERT<a href="#ref_66"><sup>66</sup></a> 、 LXMERT<a href="#ref_67"><sup>67</sup></a>、 VisualBERT <a href="#ref_68"><sup>68</sup></a>、 B2T2<a href="#ref_69"><sup>69</sup></a> 、Unicoder-VL<a href="#ref_70"><sup>70</sup></a> 、UNITER <a href="#ref_71"><sup>71</sup></a>、 VL-BERT<a href="#ref_72"><sup>72</sup></a> 、 SpeechBERT<a href="#ref_73"><sup>73</sup></a>。</p>
+<h3 id="5-4-领域预训练"><strong>5.4 领域预训练</strong></h3>
+<p>大多数预训练模型都在诸如Wikipedia的通用语料中训练，而在领域化的特定场景会收到限制。如基于生物医学文本的BioBERT<a href="#ref_74"><sup>74</sup></a>，基于科学文本的SciBERT<a href="#ref_75"><sup>75</sup></a>，基于临床文本的Clinical-BERT<a href="#ref_76"><sup>76</sup></a>。一些工作还尝试将预训练模型适应目标领域的应用，如医疗实体标准化<a href="#ref_77"><sup>77</sup></a>、专利分类PatentBERT <a href="#ref_78"><sup>78</sup></a>、情感分析SentiLR<a href="#ref_79"><sup>79</sup></a>关键词提取<a href="#ref_80"><sup>80</sup></a>。</p>
+<h3 id="5-5-多语言和特定语言"><strong>5.5 多语言和特定语言</strong></h3>
+<p>学习跨语言共享的多语言文本表示形式对于许多跨语言的NLP任务起着重要的作用。</p>
+<ul>
+<li><strong>Multilingual-BERT</strong><a href="#ref_81"><sup>81</sup></a>在104种Wikipedia文本上进行MLM训练（共享词表），每个训练样本都是单语言文档，没有专门设计的跨语言目标，也没有任何跨语言数据，M-BERT也可以很好的执行跨语言任务。</li>
+<li><strong>XLM</strong><a href="#ref_25"><sup>25</sup></a>通过融合跨语言任务（翻译语言模型）改进了M-BERT，该任务通过拼接平行语料句子对进行MLM训练。</li>
+<li><strong>Unicoder</strong><a href="#ref_82"><sup>82</sup></a>提出了3种跨语言预训练任务：1)cross-lingual word recovery；2) cross-lingual paraphrase classification;3) cross-lingual masked language model.</li>
+</ul>
+<p>虽然多语言的预训练模型在跨语言上任务表现良好，但用单一语言训练的预训练模型明显好于多语言的预训练模型。此外一些单语言的预训练模型被提出：BERT-wwm<a href="#ref_83"><sup>83</sup></a>， ZEN<a href="#ref_84"><sup>84</sup></a>, NEZHA<a href="#ref_85"><sup>85</sup></a> , ERNIE-Baidu<a href="#ref_27"><sup>27</sup></a><a href="#ref_28"><sup>28</sup></a>, BERTje<a href="#ref_86"><sup>86</sup></a>, CamemBERT<a href="#ref_87"><sup>87</sup></a>, FlauBERT <a href="#ref_88"><sup>88</sup></a>, RobBERT <a href="#ref_89"><sup>89</sup></a>。</p>
+<h2 id="六、如何对预训练模型进行迁移学习？">六、如何对预训练模型进行迁移学习？</h2>
+<p>预训练模型从大型语料库中获取通用语言知识，如何有效地将其知识适应下游任务是一个关键问题。迁移学习的方式主要有归纳迁移（顺序迁移学习、多任务学习）、领域自适应（转导迁移）、跨语言学习等。</p>
+<p>NLP中预训练模型的迁移方式是顺序迁移学习。</p>
+<h3 id="6-1-如何迁移？"><strong>6.1 如何迁移？</strong></h3>
+<p>1）选择合适的<strong>预训练任务</strong></p>
+<ul>
+<li>语言模型是预训练模型是最为流行的预训练任务；同的预训练任务有其自身的偏置，并且对不同的任务会产生不同的效果。例如：NSP任务可以使诸如问答（QA）和自然语言推论（NLI）之类的下游任务受益。</li>
+</ul>
+<p>2）选择合适的<strong>模型架构</strong></p>
+<ul>
+<li>例如BERT采用的MLM策略和Transformer-Encoder结构，导致其不适合直接处理生成任务。</li>
+</ul>
+<p>3）选择合适的<strong>数据</strong></p>
+<ul>
+<li>下游任务的数据应该近似于预训练模型的预训练任务，现在已有有很多现成的预训练模型可以方便地用于各种特定领域或特定语言的下游任务。</li>
+</ul>
+<p>4）选择合适的<strong>layers</strong>进行transfer</p>
+<ul>
+<li>主要包括Embedding迁移、top layer迁移和all layer迁移。如word2vec和Glove可采用Embedding迁移，BERT可采用top layer迁移，Elmo可采用all layer迁移。</li>
+</ul>
+<p>5）<strong>特征集成</strong>还是<strong>fine-tune</strong>？</p>
+<ul>
+<li>对于特征集成预训练参数是freeze的，而fine-tune是unfreeze的。特征集成方式却需要特定任务的体系结构，fine-tune方法通常比特征提取方法更为通用和方便。</li>
+</ul>
+<h3 id="6-2-fine-tune策略"><strong>6.2 fine-tune策略</strong></h3>
+<p>通过更好的微调策略进一步激发预训练模型性能</p>
+<ul>
+<li>
+<p>两阶段fine-tune策略：</p>
+<ul>
+<li>如第一阶段对中间任务或语料进行finetune，第二阶段再对目标任务fine-tune。第一阶段通常可根据特定任务的数据继续进行fine-tune预训练。</li>
+</ul>
+</li>
+<li>
+<p>多任务fine-tune：</p>
+<ul>
+<li>MTDNN<a href="#ref_90"><sup>90</sup></a>在多任务学习框架下对BERT进行了fine-tune，这表明多任务学习和预训练是互补的技术。</li>
+</ul>
+</li>
+<li>
+<p>采取额外的适配器：</p>
+<ul>
+<li>fine-tune的主要缺点是其参数效率低，每个下游任务都有自己的fine-tune参数。因此，更好的解决方案是在固定原始参数的同时，将一些可fine-tune的适配器注入预训练模型。</li>
+</ul>
+</li>
+<li>
+<p>逐层阶段：</p>
+<ul>
+<li>逐渐冻结而不是同时对所有层进行fine-tune，也是一种有效的fine-tune策略。</li>
+</ul>
+</li>
+</ul>
+<h2 id="七、预训练模型还有哪些问题需要解决？">七、预训练模型还有哪些问题需要解决？</h2>
+<p>（本部分来自<a href="#ref_91"><sup>91</sup></a>，有删减和修正）</p>
+<p>虽然预训练模型已经在很多NLP任务中显示出了他们强大的能力，然而由于语言的复杂性，仍存在诸多挑战。综述论文给出了五个未来预训练模型发展方向的建议。</p>
+<h3 id="7-1-预训练模型的上限"><strong>7.1 预训练模型的上限</strong></h3>
+<p>目前，预训练模型并没有达到其上限。大多数的预训练模型可通过使用更长训练步长和更大数据集来提升其性能。目前NLP中的SOTA也可通过加深模型层数来更进一步提升。这将导致更加高昂的训练成本。因此，一个更加务实的方向是在现有的软硬件基础上，设计出更高效的模型结构、自监督预训练任务、优化器和训练技巧等。例如， ELECTRA <a href="#ref_37"><sup>37</sup></a>就是此方向上很好的一个解决方案。</p>
+<h3 id="7-2-面向任务的预训练和模型压缩"><strong>7.2 面向任务的预训练和模型压缩</strong></h3>
+<p>在实践中，不同的目标任务需要预训练模型拥有不同功能。而预训练模型与下游目标任务间的差异通常在于两方面：模型架构与数据分布。尽管较大的预训练模型通常情况下会带来更好的性能表现，但在低计算资源下如何使用是一个实际问题。例如，对于NLP的预训练模型来说，对于模型压缩的研究只是个开始，Transformer的全连接架构也使得模型压缩具有挑战性。</p>
+<h3 id="7-3-预训练模型的架构设计"><strong>7.3 预训练模型的架构设计</strong></h3>
+<p>对于预训练模型，Transformer已经被证实是一个高效的架构。然而Transformer最大的局限在于其计算复杂度（输入序列长度的平方倍）。受限于GPU显存大小，目前大多数预训练模型无法处理超过512个token的序列长度。打破这一限制需要改进Transformer的结构设计，例如Transformer-XL<a href="#ref_92"><sup>92</sup></a>。</p>
+<h3 id="7-4-finetune中的知识迁移"><strong>7.4 finetune中的知识迁移</strong></h3>
+<p>finetune是目前将预训练模型的知识转移至下游任务的主要方法，但效率却很低，每个下游任务都需要有特定的finetune参数。一个可以改进的解决方案是固定预训练模型的原始参数，并为特定任务添加小型的finetune适配器，这样就可以使用共享的预训练模型服务于多个下游任务。</p>
+<h3 id="7-5-预训练模型的解释性与可靠性"><strong>7.5 预训练模型的解释性与可靠性</strong></h3>
+<p>预训练模型的可解释性与可靠性仍然需要从各个方面去探索，它能够帮助我们理解预训练模型的工作机制，为更好的使用及性能改进提供指引。</p>
+<h2 id="总结">总结</h2>
+<ol>
+<li>本文定义了预训练模型两大范式：浅层词嵌入和预训练编码器。不同于原文，XLNet在原综述论文中被归为Transformer-Encoder，本文认为将其归为Transformer-XL更合适。</li>
+<li>本文预训练模型按照自监督学习的分类不同于原文。本文按照基于上下文（Context Based）和基于对比（Contrastive Based）两种方式归类；将原文的LM、MLM、DAE、PLM归为Context Based；</li>
+<li>本文将原文MLM和DAE统一为DAE；</li>
+<li>其他：1）在3.1.2的E-MLM段落中，可以将StructBERT拿出来，只放在SOP；2）3.1.5对ELECTRA的描述，应采取ELECTRA原文中的主要方法（参数共享），两阶段的方法只是一种实验尝试；3）在puring部分可以补充LayerDrop；4）应将UniLM归为MLM；；</li>
+</ol>
+<h2 id="参考文献">参考文献</h2>
+<ol>
+<li>
+<div id = "ref_1"> Pre-trained Models for Natural Language Processing: A Survey </div> https://arxiv.org/abs/2003.08271v2
+</li>
+</ol>
+<p>2.<div id = "ref_2">  A neural probabilistic language model. </div><br>
+3.<div id = "ref_3">  Distributed representations of words and phrases and their compositionality. </div><br>
+4.<div id = "ref_4">  GloVe: Global vectors for word representation.</div><br>
+5.<div id = "ref_5">  Character-aware neural language models. </div><br>
+6.<div id = "ref_6">  Enriching word vectors with subword information. </div><br>
+7.<div id = "ref_7">  Neural machine translation of rare words with subword units. </div><br>
+8.<div id = "ref_8"> Skip-thought vectors </div><br>
+9.<div id = "ref_9"> Context2Vec: Learning generic context embedding with bidirec- tional LSTM. </div><br>
+10.<div id = "ref_10"> <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/110805093">https://zhuanlan.zhihu.com/p/110805093</a> </div><br>
+11.<div id = "ref_11"> Deep contextualized word representations. </div><br>
+12.<div id = "ref_12"> Improving language understanding by generative pre-training. </div><br>
+13.<div id = "ref_13"> BERT: pre-training of deep bidirectional trans- formers for language understanding </div><br>
+14.<div id = "ref_14"> XLnet: Generalized Autoregressive Pretraining for Language Understanding </div><br>
+15.<div id = "ref_15"> Learned in translation: Contextualized word vectors. </div><br>
+16.<div id = "ref_16"> Self-supervised Visual Feature Learning with Deep Neural Networks: A Survey </div><br>
+17.<div id = "ref_17"> Self-supervised Learning 再次入门 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/108906502">https://zhuanlan.zhihu.com/p/108906502</a> </div><br>
+18.<div id = "ref_18"> Language models are unsuper- vised multitask learners </div><br>
+19.<div id = "ref_19"> ULMFiT：Universal Language Model Fine-tuning) </div><br>
+20.<div id = "ref_20"> SiATL：An Embarrassingly Simple Approach for Transfer Learning from Pretrained Language Models </div><br>
+21.<div id = "ref_21"> MASS: masked sequence to sequence pre-training for language generation. </div><br>
+22.<div id = "ref_22"> Exploring the limits of transfer learning with a uni- fied text-to-text transformer </div><br>
+23.<div id = "ref_23"> RoBERTa: A ro- bustly optimized BERT pretraining approach </div><br>
+24.<div id = "ref_24"> Unified language model pre-training for natural language un- derstanding and generation. </div><br>
+25.<div id = "ref_25"> Cross-lingual lan- guage model pretraining. </div><br>
+26.<div id = "ref_26"> SpanBERT: Improving pre- training by representing and predicting spans. </div><br>
+27.<div id = "ref_27"> ERNIE: enhanced representation through knowledge integration </div><br>
+28.<div id = "ref_28"> ERNIE 2.0: A continual pre-training framework for language understanding </div><br>
+29.<div id = "ref_29"> BERT is not a knowledge base (yet): Factual knowledge vs. name-based reasoning in unsupervised QA </div><br>
+30.<div id = "ref_30"> ERNIE: enhanced language representation with informative entities </div><br>
+31.<div id = "ref_31"> BART: denoising sequence-to- sequence pre-training for natural language generation, transla- tion, and comprehension. </div><br>
+32.<div id = "ref_32"> Neural autoregressive distribution estimation </div><br>
+33.<div id = "ref_33"> 他们创造了横扫NLP的XLNet：专访CMU博士杨植麟 </div><br>
+34.<div id = "ref_34"> A theoretical analysis of contrastive unsupervised representation learning. </div><br>
+35.<div id = "ref_35"> A mutual information maximization perspective of language representation learning </div><br>
+36.<div id = "ref_36"> Noise-contrastive estimation: A new estimation principle for unnormalized sta- tistical models. </div><br>
+37.<div id = "ref_37"> ELECTRA: Pre-training text encoders as discriminators rather than generators </div><br>
+38.<div id = "ref_38"> Pretrained encyclopedia: Weakly supervised knowledge-pretrained language model </div><br>
+39.<div id = "ref_39"> ALBERT: A lite BERT for self-supervised learning of language representations. </div><br>
+40.<div id = "ref_40"> StructBERT: Incorporating language struc- tures into pre-training for deep language understanding </div><br>
+41.<div id = "ref_41"> BERTje: A dutch BERT model </div><br>
+42.<div id = "ref_42"> Informing unsupervised pre- training with external linguistic knowledge </div><br>
+43.<div id = "ref_43"> Sentilr: Linguistic knowledge enhanced lan- guage representation for sentiment analysis </div><br>
+44.<div id = "ref_44"> SenseBERT: Driving some sense into BERT </div><br>
+45.<div id = "ref_45"> Knowledge enhanced contextual word representations </div><br>
+46.<div id = "ref_46"> KG-BERT: BERT for Knowledge Graph Completion </div><br>
+47.<div id = "ref_47"> K-BERT: Enabling lan- guage representation with knowledge graph </div><br>
+48.<div id = "ref_48"> K-adapter: Infusing knowledge into pre-trained models with adapters </div><br>
+49.<div id = "ref_49"> KEPLER: A unified model for knowledge embedding and pre-trained language representation </div><br>
+50.<div id = "ref_50"> Enhancing pre-trained language representations with rich knowledge for machine reading comprehension. </div><br>
+51.<div id = "ref_51"> Compressing BERT: Studying the effects of weight pruning on transfer learning </div><br>
+52.<div id = "ref_52"> REDUCING TRANSFORMER DEPTH ON DEMAND WITH STRUCTURED DROPOUT </div><br>
+53.<div id = "ref_53"> Q- BERT: Hessian based ultra low precision quantization of BERT. </div><br>
+54.<div id = "ref_54"> Q8BERT: Quantized 8bit BERT. </div><br>
+55.<div id = "ref_55"> BERT-of-Theseus: Compressing BERT by pro- gressive module replacing </div><br>
+56.<div id = "ref_56"> DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter. </div><br>
+57.<div id = "ref_57"> MT-DNN：Improving Multi-Task Deep Neural Networks via Knowledge Distillation for Natural Language Understanding </div><br>
+58.<div id = "ref_58"> TinyBERT: Distilling BERT for natural language understanding </div><br>
+59.<div id = "ref_59"> MobileBERT: Task-agnostic com- pression of BERT by progressive knowledge transfer </div><br>
+60.<div id = "ref_60"> MiniLM: Deep self-attention distillation for task-agnostic compression of pre-trained transformers. </div><br>
+61.<div id = "ref_61"> Extreme language model compression with optimal subwords and shared projections </div><br>
+62.<div id = "ref_62"> Distilling task-specific knowledge from BERT into simple neural networks </div><br>
+63.<div id = "ref_63"> VideoBERT: A joint model for video and language representation learning </div><br>
+64.<div id = "ref_64"> Contrastive bidirectional transformer for temporal representation learning </div><br>
+65.<div id = "ref_65"> Univilm: A unified video and language pre-training model for multimodal under- standing and generation. </div><br>
+66.<div id = "ref_66"> ViL- BERT: Pretraining task-agnostic visiolinguistic representa- tions for vision-and-language tasks. </div><br>
+67.<div id = "ref_67"> LXMERT: learning cross- modality encoder representations from transformers. </div><br>
+68.<div id = "ref_68"> VisualBERT: A simple and performant base- line for vision and language. </div><br>
+69.<div id = "ref_69"> Fusion of detected objects in text for visual question answering. </div><br>
+70.<div id = "ref_70"> Unicoder-vl: A universal encoder for vision and language by cross-modal pre-training </div><br>
+71.<div id = "ref_71"> UNITER: learning universal image-text representations. </div><br>
+72.<div id = "ref_72"> VL-BERT: pre-training of generic visual- linguistic representations </div><br>
+73.<div id = "ref_73"> SpeechBERT: Cross-modal pre-trained language model for end-to-end spoken question answering. </div><br>
+74.<div id = "ref_74"> BioBERT: a pre-trained biomedical language representation model for biomedical text mining. </div><br>
+75.<div id = "ref_75"> SciBERT: A pre- trained language model for scientific text </div><br>
+76.<div id = "ref_76"> Clin- icalBERT: Modeling clinical notes and predicting hospital readmission. </div><br>
+77.<div id = "ref_77"> BERT-based rank- ing for biomedical entity normalization. </div><br>
+78.<div id = "ref_78"> PatentBERT: Patent clas- sification with fine-tuning a pre-trained BERT model. </div><br>
+79.<div id = "ref_79"> SentiLR: Linguistic knowledge enhanced lan- guage representation for sentiment analysis. </div><br>
+80.<div id = "ref_80"> Progress notes clas- sification and keyword extraction using attention-based deep learning models with BERT. </div><br>
+81.<div id = "ref_81"> <a target="_blank" rel="noopener" href="https://github.com/google-research/bert/blob/master/multilingual.md">https://github.com/google-research/bert/blob/master/multilingual.md</a> </div><br>
+82.<div id = "ref_82"> Unicoder: A universal language encoder by pre-training with multiple cross-lingual tasks. </div><br>
+83.<div id = "ref_83"> Pre-training with whole word masking for chinese BERT </div><br>
+84.<div id = "ref_84"> ZEN: pre-training chinese text encoder enhanced by n-gram representations. </div><br>
+85.<div id = "ref_85"> NEZHA: Neural contextualized representa- tion for chinese language understanding </div><br>
+86.<div id = "ref_86"> BERTje: A dutch BERT model. </div><br>
+87.<div id = "ref_87"> CamemBERT: a tasty french language model </div><br>
+88.<div id = "ref_88"> FlauBERT: Unsupervised language model pre-training for french </div><br>
+89.<div id = "ref_89"> Rob-BERT: a dutch RoBERTa-based language model. </div><br>
+90.<div id = "ref_90"> Multi-task deep neural networks for natural language understanding. </div><br>
+91.<div id = "ref_91"> <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/114785639">https://zhuanlan.zhihu.com/p/114785639</a> </div><br>
+92.<div id = "ref_92"> Transformer-XL: Atten- tive language models beyond a fixed-length context. </div><br>
+93.<div id = "ref_93">  Carl Doersch, Abhinav Gupta, and Alexei A. Efros. Unsupervised Visual Representation Learning by Context Prediction. In ICCV 2015 </div><br>
+94.<div id = "ref_94"> Deepak Pathak et al. Context Encoders: Feature Learning by Inpainting. In CVPR 2016. </div><br>
+95.<div id = "ref_95"> Zhang, R., Isola, P., &amp; Efros, A. A. Colorful image colorization. In ECCV 2016. </div></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/91d0df81.html">http://xishansnow.github.io/posts/91d0df81.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">自然语言处理</a><a class="post-meta__tags" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E8%A1%A8%E7%A4%BA/">分布式表示</a><a class="post-meta__tags" href="/tags/%E8%AF%8D%E5%B5%8C%E5%85%A5/">词嵌入</a><a class="post-meta__tags" href="/tags/%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B/">预训练模型</a><a class="post-meta__tags" href="/tags/Pre-train/">Pre-train</a></div><div class="post_share"><div class="social-share" data-image="/img/book_07.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/62387f04.html"><img class="prev-cover" src="/img/coffe_05.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">NLP预训练模型【2】 -- 离散表示与分布式表示</div></div></a></div><div class="next-post pull-right"><a href="/posts/9241f269.html"><img class="next-cover" src="/img/coffe_13.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">信息抽取技术进展【4】 -- 新的挑战</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/62387f04.html" title="NLP预训练模型【2】 -- 离散表示与分布式表示"><img class="cover" src="/img/coffe_05.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-27</div><div class="title">NLP预训练模型【2】 -- 离散表示与分布式表示</div></div></a></div><div><a href="/posts/fdefe867.html" title="NLP预训练模型【3】 -- seq2seq与LSTM等基础编解码器 "><img class="cover" src="/img/book_18.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-27</div><div class="title">NLP预训练模型【3】 -- seq2seq与LSTM等基础编解码器 </div></div></a></div><div><a href="/posts/e3e5968d.html" title="NLP预训练模型【4】 -- 注意力机制"><img class="cover" src="/img/coffe_09.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-27</div><div class="title">NLP预训练模型【4】 -- 注意力机制</div></div></a></div><div><a href="/posts/b1d51740.html" title="NLP预训练模型【6】 -- BERT"><img class="cover" src="/img/005.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-27</div><div class="title">NLP预训练模型【6】 -- BERT</div></div></a></div><div><a href="/posts/aaa88aa5.html" title="NLP预训练模型【7】 -- XLNet"><img class="cover" src="/img/book_01.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-27</div><div class="title">NLP预训练模型【7】 -- XLNet</div></div></a></div><div><a href="/posts/695def74.html" title="NLP预训练模型【5】 --  Transformer "><img class="cover" src="/img/book_08.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-27</div><div class="title">NLP预训练模型【5】 --  Transformer </div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">NLP预训练模型【1】 – 总览</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%87-%E5%85%A8%E6%96%87%E8%84%91%E5%9B%BE"><span class="toc-text">〇. 全文脑图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%BF%9B%E8%A1%8C%E9%A2%84%E8%AE%AD%E7%BB%83%EF%BC%9F"><span class="toc-text">一、为什么要进行预训练？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E8%AF%8D%E5%B5%8C%E5%85%A5%E5%92%8C%E5%88%86%E5%B8%83%E5%BC%8F%E8%A1%A8%E7%A4%BA%EF%BC%9F%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E8%A1%A8%E7%A4%BA%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%9F"><span class="toc-text">二、什么是词嵌入和分布式表示？预训练模型与分布式表示的关系？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E6%9C%89%E5%93%AA%E4%B8%A4%E5%A4%A7%E8%8C%83%E5%BC%8F%EF%BC%9F%E5%AF%B9%E6%AF%94%E4%B8%8D%E5%90%8C%E7%9A%84%E9%A2%84%E8%AE%AD%E7%BB%83%E7%BC%96%E7%A0%81%E5%99%A8%EF%BC%9F"><span class="toc-text">三、预训练模型有哪两大范式？对比不同的预训练编码器？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%B5%85%E5%B1%82%E8%AF%8D%E5%B5%8C%E5%85%A5%EF%BC%88-Non-Contextual-Embeddings-%EF%BC%89"><span class="toc-text">3.1 浅层词嵌入（ Non-Contextual Embeddings**）**</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E4%B8%BB%E8%A6%81%E7%89%B9%E7%82%B9"><span class="toc-text">（1）主要特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E4%B8%BB%E8%A6%81%E7%BC%BA%E7%82%B9%EF%BC%9A"><span class="toc-text">（2）主要缺点：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E9%A2%84%E8%AE%AD%E7%BB%83%E7%BC%96%E7%A0%81%E5%99%A8%EF%BC%88Contextual-Embeddings%EF%BC%89"><span class="toc-text">3.2 预训练编码器（Contextual Embeddings）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E6%8C%89%E7%85%A7%E4%BB%BB%E5%8A%A1%E7%B1%BB%E5%9E%8B%E5%A6%82%E4%BD%95%E5%88%86%E7%B1%BB%EF%BC%9F"><span class="toc-text">四、预训练模型按照任务类型如何分类？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-text">4.1 预训练模型的分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E8%87%AA%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E6%9C%89%E5%93%AA%E4%BA%9B%E9%87%8D%E8%A6%81%E7%9A%84%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="toc-text">4.2 自监督学习有哪些重要的方法？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%9F%BA%E4%BA%8E%E4%B8%8A%E4%B8%8B%E6%96%87%EF%BC%88Context-Based%EF%BC%89%E7%9A%84%E8%87%AA%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95"><span class="toc-text">4.3 基于上下文（Context Based）的自监督学习方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%B1%BB%EF%BC%9A%E8%87%AA%E5%9B%9E%E5%BD%92%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%EF%BC%88Language-Model%EF%BC%89"><span class="toc-text">第一类：自回归语言模型（Language Model）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%B1%BB%EF%BC%9A%E8%87%AA%E7%BC%96%E7%A0%81%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%EF%BC%88Denoise-Auto-Encoder%EF%BC%89"><span class="toc-text">第二类：自编码语言模型（Denoise Auto Encoder）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%B1%BB%EF%BC%9A%E6%8E%92%E5%88%97%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%EF%BC%88Permuted-Language-Model%EF%BC%8CPLM%EF%BC%89"><span class="toc-text">第三类：排列语言模型（Permuted Language Model，PLM）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%9F%BA%E4%BA%8E%E5%AF%B9%E6%AF%94%EF%BC%88Contrastive-Based%EF%BC%89%E7%9A%84%E8%87%AA%E7%9B%91%E7%9D%A3%E6%A8%A1%E5%9E%8B"><span class="toc-text">4.3 基于对比（Contrastive Based）的自监督模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%B1%BB%EF%BC%9A-Deep-InfoMax-DIM"><span class="toc-text">第一类： Deep InfoMax (DIM)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%B1%BB%EF%BC%9AReplaced-Token-Detection-RTD"><span class="toc-text">第二类：Replaced Token Detection (RTD)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%B1%BB%EF%BC%9ANext-Sentence-Prediction-NSP"><span class="toc-text">第三类：Next Sentence Prediction (NSP)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%B1%BB%EF%BC%9ASentence-Order-Prediction-SOP"><span class="toc-text">第四类：Sentence Order Prediction (SOP)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E6%9C%89%E5%93%AA%E4%BA%9B%E6%8B%93%E5%B1%95%EF%BC%9F"><span class="toc-text">五、预训练模型有哪些拓展？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%BC%95%E5%85%A5%E7%9F%A5%E8%AF%86"><span class="toc-text">5.1 引入知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9"><span class="toc-text">5.2 模型压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E5%A4%9A%E6%A8%A1%E6%80%81"><span class="toc-text">5.3 多模态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E9%A2%86%E5%9F%9F%E9%A2%84%E8%AE%AD%E7%BB%83"><span class="toc-text">5.4 领域预训练</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E5%A4%9A%E8%AF%AD%E8%A8%80%E5%92%8C%E7%89%B9%E5%AE%9A%E8%AF%AD%E8%A8%80"><span class="toc-text">5.5 多语言和特定语言</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%A6%82%E4%BD%95%E5%AF%B9%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E8%BF%9B%E8%A1%8C%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%EF%BC%9F"><span class="toc-text">六、如何对预训练模型进行迁移学习？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%A6%82%E4%BD%95%E8%BF%81%E7%A7%BB%EF%BC%9F"><span class="toc-text">6.1 如何迁移？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-fine-tune%E7%AD%96%E7%95%A5"><span class="toc-text">6.2 fine-tune策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E8%BF%98%E6%9C%89%E5%93%AA%E4%BA%9B%E9%97%AE%E9%A2%98%E9%9C%80%E8%A6%81%E8%A7%A3%E5%86%B3%EF%BC%9F"><span class="toc-text">七、预训练模型还有哪些问题需要解决？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%8A%E9%99%90"><span class="toc-text">7.1 预训练模型的上限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-%E9%9D%A2%E5%90%91%E4%BB%BB%E5%8A%A1%E7%9A%84%E9%A2%84%E8%AE%AD%E7%BB%83%E5%92%8C%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9"><span class="toc-text">7.2 面向任务的预训练和模型压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-text">7.3 预训练模型的架构设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-4-finetune%E4%B8%AD%E7%9A%84%E7%9F%A5%E8%AF%86%E8%BF%81%E7%A7%BB"><span class="toc-text">7.4 finetune中的知识迁移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%A7%A3%E9%87%8A%E6%80%A7%E4%B8%8E%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="toc-text">7.5 预训练模型的解释性与可靠性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

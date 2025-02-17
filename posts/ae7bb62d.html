@@ -1,0 +1,980 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>空间统计学概论 | 西山晴雪的知识笔记</title><meta name="keywords" content="GeoAI,空间统计学,空间相关性,空间异质性,空间依赖性"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="空间统计学概论">
+<meta property="og:type" content="article">
+<meta property="og:title" content="空间统计学概论">
+<meta property="og:url" content="http://xishansnow.github.io/posts/ae7bb62d.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="空间统计学概论">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/book_12.png">
+<meta property="article:published_time" content="2021-04-20T02:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.018Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="GeoAI">
+<meta property="article:tag" content="空间统计学">
+<meta property="article:tag" content="空间相关性">
+<meta property="article:tag" content="空间异质性">
+<meta property="article:tag" content="空间依赖性">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/book_12.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/ae7bb62d"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '空间统计学概论',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/book_12.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">空间统计学概论</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-20T02:00:00.000Z" title="发表于 2021-04-20 10:00:00">2021-04-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.018Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/">GeoAI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E7%B1%BB/">综述类</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>空间统计学概论</h1>
+<h1>1 统计学的两大流派</h1>
+<h3 id="（1）频率学派">（1）频率学派</h3>
+<p>认为模型的待估计参数是一个未知的常数，而样本是随机的，通过对随机样本的分析，可以计算获得参数的值。</p>
+<ul>
+<li>
+<p>基本思想（对事件建模）</p>
+<ul>
+<li>「随机事件本身具有某种客观的随机性」，需要研究一系列工具来刻画「事件」本身</li>
+<li>事件A在独立重复试验中发生的频率趋于极限 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> ，那么极限 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 就是该事件的概率</li>
+</ul>
+</li>
+<li>
+<p>参数估计时</p>
+<ul>
+<li>主要是对模型做假设，但不对参数的分布做假设</li>
+<li>求参数符合样本的最优化解，通过正则化解决过拟合问题</li>
+<li>如：极大似然估计、最小交叉熵、最小二乘估计…</li>
+</ul>
+</li>
+<li>
+<p>预测时</p>
+<ul>
+<li>预测的结果：参数支持下确定的结果</li>
+<li>结果不确定性的量化：通过方差来量化不确定性</li>
+</ul>
+</li>
+<li>
+<p>核心体现为最优化问题</p>
+<ul>
+<li>需要通过最优化算法求得参数的数值解</li>
+</ul>
+</li>
+<li>
+<p>代表性模型</p>
+<ul>
+<li>SVM等各种统计机器学习方法、前馈神经网络…</li>
+</ul>
+</li>
+</ul>
+<h3 id="（2）贝叶斯学派">（2）贝叶斯学派</h3>
+<p>​	认为模型的待估计参数是一个随机变量，而样本是固定的，通过对样本的学习不断更新经验，能够使对参数的分布认识更准确。</p>
+<ul>
+<li>
+<p><strong>基本思想（对人的知识建模）</strong></p>
+<ul>
+<li>「随机事件」是因「观察者」知识状态中尚未包含该事件的结果而导致，需要通过观察证据来推断该事件的结果</li>
+<li>即同一事件，对于「知情者」而言时确定事件，对于不知情者而言是「随机事件」</li>
+<li>需要构建一套比较完备的框架用来描述最能服务于理性推断这一目的的「猜的过程」</li>
+</ul>
+</li>
+<li>
+<p><strong>参数估计</strong></p>
+<ul>
+<li>既需要对模型做出假设，也需要对参数分布做出假设</li>
+<li>由参数的先验分布更新得到参数的后验分布，如：最大后验估计。</li>
+</ul>
+</li>
+<li>
+<p>预测</p>
+<ul>
+<li>预测的结果是：参数分布下预期结果的期望。</li>
+<li>通过计算后验分布来量化不确定性</li>
+</ul>
+</li>
+<li>
+<p>核心体现为积分问题</p>
+<ul>
+<li>计算后验分布时需要求解联合概率分布P(X)，而P(X）的求解难度很大，通常通过抽样和积分实现</li>
+</ul>
+</li>
+<li>
+<p>代表性模型</p>
+<ul>
+<li><strong>朴素贝叶斯分类器</strong>、<strong>隐马尔可夫模型</strong>、<strong>深度信念网络等</strong>有向图（贝叶斯网络）模型</li>
+<li><strong>最大熵模型</strong>、<strong>条件随机场</strong>、<strong>玻尔兹曼机</strong>、<strong>受限玻尔兹曼机</strong>等无向图（马尔可夫网络）模型…</li>
+</ul>
+</li>
+</ul>
+<h3 id="（3）两者的区别">（3）两者的区别</h3>
+<ul>
+<li>区别1：通常贝叶斯估计需要对参数（视为隐变量）的分布做先验假设；而频率派不需要做参数的概率分布假设。</li>
+<li>区别2：频率派方法通过评估方差（求差异）来量化模型参数点估计的不确定性；而贝叶斯派通过在模型参数的先验分布假设下，对不同采样做积分（求概率）来量化不确定性。</li>
+<li>区别3：频率派使用p值做检验，而贝叶斯派用贝叶斯因子</li>
+</ul>
+<h3 id="（4）两者的优缺点">（4）两者的优缺点</h3>
+<ul>
+<li>贝叶斯方法通常在有限的训练数据下泛化良好，但当训练样本大时受制于计算开销</li>
+<li>贝叶斯方法需对模型参数做先验分布假设，可能是人类主观判断影响预测的一个源头</li>
+</ul>
+<h1>2 空间统计的常用假设</h1>
+<h3 id="（1）空间数据的统计视角">（1）空间数据的统计视角</h3>
+<ul>
+<li>
+<p>理解空间数据可抽象为一种随机过程</p>
+<ul>
+<li>所有空间对象或特征一起构成一个空间随机过程</li>
+<li>空间数据是对论域内所有或部分空间对象（或特征）的一次采样</li>
+<li>当随机变量是向量形式时，可以视为多变量的空间随机过程</li>
+</ul>
+</li>
+<li>
+<p>理解研究随机过程通常需要做一些基本假设</p>
+<ul>
+<li>利用统计学方法研究随机过程，通常需要做一些基本的假设，概率模型的建立受假设约束</li>
+</ul>
+</li>
+<li>
+<p>理解空间随机过程有一些自身独特的假设</p>
+<ul>
+<li>空间相关性假设</li>
+<li>空间异质性假设</li>
+<li>各向异性假设</li>
+</ul>
+</li>
+</ul>
+<h3 id="（2）为什么要做假设？">（2）为什么要做假设？</h3>
+<p>如果不做一些前提假设，随机过程就真地变成了“随机”模型了，导致无法建立模型。为了建模方便，通常会将根据随机过程的特点，将其纳入一个假设框架范围内进行建模、估计和预测。</p>
+<h3 id="（3）几种常见的假设">（3）几种常见的假设</h3>
+<ul>
+<li>
+<p>事件独立性假设</p>
+<ul>
+<li>
+<p>论域内随机变量之间相互是否独立？常见假设如：</p>
+<ul>
+<li>独立性假设：相互之间独立</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>齐次马尔可夫假设：相互之间遵循同样阶次的依赖关系，如：一阶马尔可夫假设会假设随机变量仅仅和直接邻居相关，而二阶马尔可夫假设则假设随机变量和邻居的邻居也可以相关<br>
+- 条件独立假设：某些随机变量的集合A，在随机变量C发生的情况下，与随机变量B相互独立<br>
+- …</p>
+</li>
+<li>
+<p>概率分布假设</p>
+<ul>
+<li>
+<p>论域内的随机变量是否呈某种概率分布：常见假设如：</p>
+<ul>
+<li>0均值高斯分布：假设模型参数（待估随机变量）呈高斯分布，且均值为0</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>等方差高斯分布：假设模型参数（待估随机变量）呈高斯分布，且不同参数的统计方差相同<br>
+- 变方差高斯分布：假设模型参数（待估随机变量）呈高斯分布，且不同参数的统计方差不同<br>
+- …</p>
+</li>
+<li>
+<p>平稳性假设</p>
+<ul>
+<li>
+<p>论域内的随机变量之间或者随机变量的概率分布函数间是否存在特定的关系？</p>
+<ul>
+<li>
+<p>强平稳性假设：所有随机变量具有同样的概率分布，例如：高斯分布假设中具有相同的均值，相同的协方差（与具体位置无关）</p>
+</li>
+<li>
+<p>弱平稳性假设（二阶平稳性假设）：所有随机变量具有相似的概率分布，例如：高斯分布假设中，其均值相同，但任意两个随机变量的协方差（二阶矩）仅和它们之间的距离及方向有关（但与具体位置无关）</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>各向同性假设</p>
+<ul>
+<li>
+<p>随机变量的联合概率分布是否和方向有关？</p>
+</li>
+<li>
+<p>。。。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="（4）以线性回归为例">（4）以线性回归为例</h3>
+<ul>
+<li>
+<p>随机抽样假设</p>
+<ul>
+<li>变量是通过对总体的随机抽样产生的</li>
+</ul>
+</li>
+<li>
+<p>变量独立假设</p>
+<ul>
+<li>自变量之间没有明确的线性关系</li>
+</ul>
+</li>
+<li>
+<p>线性关系假设</p>
+<ul>
+<li>因变量是自变量和误差项的线性函数</li>
+</ul>
+</li>
+<li>
+<p>误差项条件零均值假设</p>
+<ul>
+<li>误差项的均值为0</li>
+</ul>
+</li>
+<li>
+<p>误差项同方差假设</p>
+<ul>
+<li>误差项的方差为一个固定不变的值，且不受自变量影响</li>
+</ul>
+</li>
+</ul>
+<h1>3 空间统计的三大问题</h1>
+<h3 id="（1）空间相关性问题">（1）空间相关性问题</h3>
+<ul>
+<li>
+<p>原因：</p>
+</li>
+<li>
+<p>虽然上述假设空间随机变量相互独立，但实际中随机变量在空间上的依赖性普遍存在</p>
+</li>
+<li>
+<p>地理学第一定律：“万物皆相关，越近相关性越大”</p>
+<ul>
+<li>如何量化空间相关性？</li>
+<li>空间相关性体现出何种模式？</li>
+</ul>
+</li>
+</ul>
+<h3 id="（2）空间异质性问题">（2）空间异质性问题</h3>
+<ul>
+<li>
+<p>原因：</p>
+</li>
+<li>
+<p>虽然空间随机过程被假设为平稳随机过程，但实际中非平稳性普遍存在</p>
+<ul>
+<li>随着空间变化，随机变量间的关系也可能出现变化</li>
+</ul>
+</li>
+<li>
+<p>地理学第二定理：“空间异质性”</p>
+<ul>
+<li>
+<p>总体特征</p>
+<ul>
+<li>研究范围越小，空间异质性越弱，研究范围越大，空间异质性越突出</li>
+</ul>
+</li>
+<li>
+<p>常见类型1：不同地区，特征之间的关系发生了变化</p>
+<ul>
+<li>例1：不同地区中，多元随机变量或特征之间的因果关系明显不同</li>
+<li>地理加权回归、其他特定空间机制等</li>
+</ul>
+</li>
+<li>
+<p>常见类型2：不同地区，概率分布特性发生了变化（如方差不同）</p>
+<ul>
+<li>例2：不同地区中，某个随机变量或特征的方差出现显著不同</li>
+<li>处理方法：克里金法</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="（3）空间各向异性问题">（3）空间各向异性问题</h3>
+<ul>
+<li>
+<p>实际中各向异性普遍存在，并且对任务可能产生比较大的影响</p>
+<ul>
+<li>实际这方面研究较少</li>
+</ul>
+</li>
+</ul>
+<h1>4 空间统计的常见任务</h1>
+<h3 id="（1）空间模式分析">（1）空间模式分析</h3>
+<h3 id="（2）空间插值任务">（2）空间插值任务</h3>
+<h3 id="（3）空间预测任务">（3）空间预测任务</h3>
+<p>空间预测是指给定某些随机变量的情况下，预测出其他随机变量的值或者分布。从这个意义上来说，空间插值任务属于空间预测任务的范畴，但空间插值任务更多是指一种自回归任务，即通过因变量来预测因变量。空间预测还涉及到通过其他自变量来预测因变量的问题，例如：通过某个空间单位内其他随机（自）变量来预测本单位的某个因变量；如果存在空间交互效应，则可能需要通过相邻空间单位内其他自变量来预测本单位的因变量等。</p>
+<p>与传统统计机器学习类似，空间预测任务也可以根据因变量的类型，空间回归任务和空间分类任务。</p>
+<h3 id="（4）空间聚类任务">（4）空间聚类任务</h3>
+<p>无样本参与下的聚类任务</p>
+<p>有样本参与下的空间聚类任务</p>
+<h3 id="（5）因子分析任务">（5）因子分析任务</h3>
+<h3 id=""></h3>
+<h1>5 空间数据的统计模型</h1>
+<p>从统计学意义上，通常把空间想象解释为随机过程，而空间数据是随机过程的一次观测值。</p>
+<h2 id="5-1-空间过程与空间数据">5.1 空间过程与空间数据</h2>
+<h3 id="（1）空间过程">（1）空间过程</h3>
+<p>令 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">ℜ</mi></mrow><annotation encoding="application/x-tex">\Re</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">ℜ</span></span></span></span> 为实数的整体，令 $ \mathbf{s} \in \Re^{d}$ 是维数为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span></span></span></span>（通常是 $ d = 2 $ 或 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn></mrow><annotation encoding="application/x-tex">3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span> ）的欧式空间中一个位置，并令$ \mathbf{Y}(\mathbf{s})$ 是位置 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">s</mi></mrow><annotation encoding="application/x-tex">\mathbf{s}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord mathbf">s</span></span></span></span> 处的随机变量（可能是多维变量）。则**<u>空间过程</u>**被定义为集合 $ { \mathbf{Y}(\mathbf{s}):\mathbf{s} \in D } \left(D \subset \Re ^ {d} \right)$ ，  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">d=2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> 对应于二维空间坐标，$ d = 3 $ 对应于三维空间。</p>
+<h3 id="（2）空间数据">（2）空间数据</h3>
+<p>​	**<u>空间数据</u>**是对空间过程 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">{</mo><mi>Y</mi><mo stretchy="false">(</mo><mi mathvariant="bold">s</mi><mo stretchy="false">)</mo><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{Y(\mathbf{s})\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="mopen">(</span><span class="mord mathbf">s</span><span class="mclose">)}</span></span></span></span> 的一次观测，其中，位置 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">s</mi></mrow><annotation encoding="application/x-tex">\mathbf{s}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord mathbf">s</span></span></span></span> 处的观测值为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">y</mi><mo stretchy="false">(</mo><mi mathvariant="bold">s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{y(s)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf" style="margin-right:0.01597em;">y</span><span class="mopen">(</span><span class="mord mathbf">s</span><span class="mclose">)</span></span></span></span></span> 。</p>
+<h2 id="5-2-统计学意义下的空间数据类型">5.2 统计学意义下的空间数据类型</h2>
+<p>根据上述“空间过程是由多个空间位置对应的随机变量构成的集合”、“空间数据是空间随机过程的一次观测值”的定义，可以从统计学意义上，将常见的空间数据分为以下三类：</p>
+<h3 id="（1）点数据">（1）点数据</h3>
+<ul>
+<li>数学定义： 空间点数据 $ \mathbf{y(s)}$ 是从空间过程 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">Y</mi><mo stretchy="false">(</mo><mi mathvariant="bold">s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{Y(s)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf" style="margin-right:0.02875em;">Y</span><span class="mopen">(</span><span class="mord mathbf">s</span><span class="mclose">)</span></span></span></span></span>  获得的实现值，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">s</mi></mrow><annotation encoding="application/x-tex">\mathbf{s}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord mathbf">s</span></span></span></span> 在一个连续的固定空间域 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">D</mi></mrow><annotation encoding="application/x-tex">\mathbf{D}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord mathbf">D</span></span></span></span> 内</li>
+<li>另外一种理解：空间为连续的场或面，例如：海拔、DEM等</li>
+<li>英文：Geostatistical Data, Point-Referenced Data</li>
+<li>点参考数据是**“地统计学”** 研究的重点对象，因此也可称为“<strong>地统计数据</strong>”</li>
+</ul>
+<img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/spatial_statistics_2021042112092392.webp" style="zoom:50%;" />
+<h3 id="（2）面元数据">（2）面元数据</h3>
+<ul>
+<li>数学定义：空间面元数据 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">y</mi><mo stretchy="false">(</mo><mi mathvariant="bold">s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{y(s)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf" style="margin-right:0.01597em;">y</span><span class="mopen">(</span><span class="mord mathbf">s</span><span class="mclose">)</span></span></span></span></span> 是从空间过程 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">Y</mi><mo stretchy="false">(</mo><mi mathvariant="bold">s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{Y(s)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf" style="margin-right:0.02875em;">Y</span><span class="mopen">(</span><span class="mord mathbf">s</span><span class="mclose">)</span></span></span></span></span> 获得的实现值，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">s</mi></mrow><annotation encoding="application/x-tex">\mathbf{s}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord mathbf">s</span></span></span></span> 在固定域 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">D</mi></mrow><annotation encoding="application/x-tex">\mathbf{D}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord mathbf">D</span></span></span></span> 的可数子域上变化。</li>
+<li>另外一种理解：规则的或不规则的面形状数据，例如，按行政区划收集的社会经济数据、像素级卫星遥感图像数据。</li>
+<li>英文：Areal Data，Lattice Data</li>
+<li>面元数据是**“空间计量经济学”<strong>、</strong>“定量地理学”** 等研究的重点对象</li>
+</ul>
+<img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/spatial_statistics_20210421121003e4.webp" style="zoom:50%;" />
+<h3 id="（3）点模式数据">（3）点模式数据</h3>
+<ul>
+<li>数学定义：空间点模式数据 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">y</mi><mo stretchy="false">(</mo><mi mathvariant="bold">s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{y(s)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf" style="margin-right:0.01597em;">y</span><span class="mopen">(</span><span class="mord mathbf">s</span><span class="mclose">)</span></span></span></span></span> 是从空间过程 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">Y</mi><mo stretchy="false">(</mo><mi mathvariant="bold">s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{Y(s)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf" style="margin-right:0.02875em;">Y</span><span class="mopen">(</span><span class="mord mathbf">s</span><span class="mclose">)</span></span></span></span></span> 获得的实现值，空间过程 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">Y</mi><mo stretchy="false">(</mo><mi mathvariant="bold">s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{Y(s)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf" style="margin-right:0.02875em;">Y</span><span class="mopen">(</span><span class="mord mathbf">s</span><span class="mclose">)</span></span></span></span></span> 与随机事件发生的位置 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">s</mi></mrow><annotation encoding="application/x-tex">\mathbf{s}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord mathbf">s</span></span></span></span> 相关，但是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">D</mi></mrow><annotation encoding="application/x-tex">\mathbf{D}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord mathbf">D</span></span></span></span> 本身是随机的。</li>
+<li>重要区别：与前两种数据类型最大的不同在于，点模式数据将变量的位置视为随机，而前两者将变量的值视为随机。</li>
+<li>另一种理解：事件数据，如：犯罪案件等。</li>
+<li>英文：Point Pattern Data</li>
+<li>点模式数据是“空间计量经济学”、“定量地理”、“城市规划”、“政府管理”等领域研究的重点对象</li>
+</ul>
+<img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/spatial_statistics_20210421121113ed.webp" style="zoom:50%;" />
+<h1>6 点参考（地统计）数据</h1>
+<h3 id="（1）分析对象：点参考数据">（1）分析对象：点参考数据</h3>
+<ul>
+<li>常用于地统计学</li>
+</ul>
+<h3 id="（2）常用假设">（2）常用假设</h3>
+<ul>
+<li>随机过程假设、高斯分布假设、弱平稳性假设</li>
+</ul>
+<h3 id="（3）三性讨论">（3）三性讨论</h3>
+<ul>
+<li>
+<p>空间相关性</p>
+<ul>
+<li>
+<p>引入协方差和变异函数处理空间相关性问题</p>
+<ul>
+<li>这种相关性由变异函数定义</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>变异函数表示了随机场中任意两点之间的变异情况</p>
+</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/spatial_statistics_20210420171434ba.webp" alt=""></p>
+<ul>
+<li>
+<p>空间异质性</p>
+<ul>
+<li>引入各种回归模型，或对随机变量的方差建立模型</li>
+</ul>
+</li>
+<li>
+<p>空间各向异性</p>
+<ul>
+<li>分方向计算变异函数，得到各向异性的表征</li>
+</ul>
+</li>
+</ul>
+<h3 id="（4）常用探索性分析工具">（4）常用探索性分析工具</h3>
+<ul>
+<li>均值、方差、等值线、散点图、盒图</li>
+<li>方向变异函数图、玫瑰图、经验变异函数等值线图</li>
+</ul>
+<h3 id="（5）主要空间统计任务">（5）主要空间统计任务</h3>
+<ul>
+<li>空间插值</li>
+<li>克里金空间预测模型：克里金（Krigging)插值
+<ul>
+<li>传统空间预测模型：径向基函数、IDW、核密度…</li>
+</ul>
+</li>
+</ul>
+<h3 id="（6）传统统计任务">（6）传统统计任务</h3>
+<ul>
+<li>多变量回归分析</li>
+<li>主成分分析</li>
+<li>聚类分析</li>
+</ul>
+<h3 id="（7）常用软件">（7）常用软件</h3>
+<ul>
+<li>SGeMS、ISATIS、ArcGIS</li>
+</ul>
+<h3 id="（8）推荐阅读">（8）推荐阅读</h3>
+<ul>
+<li>空间统计部分见《地统计学》、传统多元统计部分见《多元统计》</li>
+</ul>
+<h1>7 面元数据</h1>
+<h3 id="（1）分析对象">（1）分析对象</h3>
+<p>面元数据，部分方法适用于点参考数据</p>
+<h3 id="（2）常用假设-2">（2）常用假设</h3>
+<ul>
+<li>基于随机过程假设、高斯分布假设、弱平稳性假设</li>
+<li>检验（如果上述假设不存在，则“事出无常必有因”）</li>
+</ul>
+<h3 id="（3）三性讨论-2">（3）三性讨论</h3>
+<ul>
+<li>
+<p>空间相关性（基于距离）</p>
+<ul>
+<li>
+<p>引入莫兰指数等对空间依赖的程度进行量化</p>
+<ul>
+<li>全局莫兰指数、吉尔里指数和局部莫兰指数</li>
+</ul>
+</li>
+<li>
+<p>引入空间权重矩阵处理空间相关性</p>
+<ul>
+<li>所有面元两两之间的某种距离，通常代表两者之间单向的影响程度</li>
+<li>权重值设定的合理性问题和自动化问题</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>空间异质性（基于位置）</p>
+<ul>
+<li>引入地理加权回归处理空间异质性</li>
+</ul>
+</li>
+<li>
+<p>空间各向异性</p>
+<ul>
+<li>分方向讨论自相关性</li>
+</ul>
+</li>
+</ul>
+<h3 id="（4）常用探索性分析工具-2">（4）常用探索性分析工具</h3>
+<ul>
+<li>
+<p><strong>可视化探索工具</strong></p>
+</li>
+<li>
+<p>基于面元绘制的分阶图</p>
+</li>
+<li>
+<p><strong>空间自相关性探索工具</strong></p>
+</li>
+<li>
+<p>目的：测量面元间的空间相关性，用于判断面数据存在何种分布模式（空间随机分布、空间离散分布、空间聚集分布）</p>
+</li>
+<li>
+<p>全局指数</p>
+<ul>
+<li>
+<p>全局Moran’s I 莫兰指数</p>
+<pre><code>  - 相邻单元数据值和平均值之间关系的比较
+  - 值域是-1到1之间，0表示随机分布，1表示完全地正相关，而-1表示完全地负相关
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>全局Geary’s C指数</p>
+<ul>
+<li>相邻单元本身数据值之间关系的直接比较<br>
+- 值域在0到2之间，其中0表示完全地正相关，而2表示完全地负相关，1表示随机分布</li>
+<li>Getis-Ord G指数
+<ul>
+<li>冷热点量化指数，至于在-1到+1之间，趋向于+1表示存在热点，趋向于-1表示存在冷点</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>局部指数</p>
+<ul>
+<li>局部Moran’s I莫兰指数</li>
+</ul>
+</li>
+<li>
+<p><strong>各向异性探索工具</strong></p>
+</li>
+<li>
+<p>方向协方差图</p>
+</li>
+<li>
+<p>空间滤波器（Smoother）</p>
+<ul>
+<li>
+<p>目的</p>
+<ul>
+<li>用于面元数据的平滑处理</li>
+</ul>
+</li>
+<li>
+<p>主要滤波器</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="（5）主要任务模型">（5）主要任务模型</h3>
+<ul>
+<li>
+<p>空间模式分析</p>
+</li>
+<li>
+<p>冷热点（聚类）分析</p>
+<ul>
+<li>
+<p>Anselin Local Moran’s I</p>
+<ul>
+<li>仅仅一个孤立的高值不会构成热点，说白了就是，单个要素以及它的邻居都是高值才算是热点</li>
+</ul>
+</li>
+<li>
+<p>Getis-Ord Gi*</p>
+<ul>
+<li>识别具有统计学上的显著性的空间异常值</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>空间回归模型</p>
+<ul>
+<li>
+<p>目的：根据样本在空间条件约束下，判断在空间约束下不同随机变量（属性）间的因果关系</p>
+</li>
+<li>
+<p>空间同质性</p>
+<ul>
+<li>不同随机变量之间的因果关系（模型参数），在空间上不会因为位置的变化而表现不一致</li>
+</ul>
+</li>
+<li>
+<p>经典回归模型</p>
+<pre><code>  - y=X*β + ε
+</code></pre>
+<ul>
+<li>
+<p>引入空间权重矩阵模型</p>
+<ul>
+<li>
+<p>自变量空间滞后模型：用自变量的空间滞后反映空间依赖</p>
+<ul>
+<li>y=X<em>β + W</em>X*θ + ε</li>
+</ul>
+</li>
+<li>
+<p>空间误差模型：用误差项的空间滞后反映空间依赖</p>
+<ul>
+<li>y=X<em>β + μ； μ = λ</em>W*μ + ε</li>
+</ul>
+</li>
+<li>
+<p>空间滞后模型：用因变量的空间滞后反映空间依赖</p>
+<ul>
+<li>y=ρ<em>W</em>y + X*β  + ε</li>
+</ul>
+</li>
+<li>
+<p>广义嵌套空间模型：</p>
+<ul>
+<li>y=ρ<em>W</em>y + X<em>β  +W</em>X<em>θ + μ ； μ = λ</em>W2*μ +  ε</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>空间异质性</p>
+<ul>
+<li>不同随机变量之间的关系，受空间结构或关系影响（即存在空间依赖）</li>
+</ul>
+</li>
+<li>
+<p>主要模型</p>
+<ul>
+<li>
+<p>地理加权回归（GWR)</p>
+<ul>
+<li>
+<p>将坐标信息纳入回归模型，空间上每个位置的模型参数均不同，而且整体上表现为平滑曲面</p>
+<ul>
+<li>y=X*β(μ，v) + ε</li>
+</ul>
+</li>
+<li>
+<p>半参数地理加权回归</p>
+</li>
+<li>
+<p>将GWR中的所有变量分为两类：局部变量和全局变量</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>传统属性预测模型</p>
+</li>
+</ul>
+<h3 id="（6）常用软件">（6）常用软件</h3>
+<ul>
+<li>GeoDa、GWR4、PySAL</li>
+</ul>
+<h3 id="（7）推荐阅读">（7）推荐阅读</h3>
+<ul>
+<li>空间计量经济学（主要为横截面数据，非面板数据）、空间统计学</li>
+</ul>
+<h1>8 点模式数据</h1>
+<h3 id="（1）分析对象-2">（1）分析对象</h3>
+<p>点模式数据，又可分为三种子类型：</p>
+<ul>
+<li>
+<p>未标记的点模式数据</p>
+<ul>
+<li>不区分点的类型，主要任务是用统计学方法理解和描述点之间的交互，以解释点位置间的交互作用</li>
+</ul>
+</li>
+<li>
+<p>有分类标记的点模式数据</p>
+<ul>
+<li>点数据分为几类，主要任务是用统计学方法解释不同类型点之间的相关性，以及空间尺度、范围对相关性的影响</li>
+</ul>
+</li>
+<li>
+<p>有数量标记的点模式数据</p>
+<ul>
+<li>点数据不仅有类别还是数值变量，主要任务是用统计学方法解释不同数值点之间的相关性，以及空间尺度、范围对相关性的影响</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/articles/spatial_statistics_2021042017365451.webp" alt=""></p>
+<h3 id="（2）常用假设-3">（2）常用假设</h3>
+<ul>
+<li>
+<p>完全空间随机性假设（CSR）</p>
+<ul>
+<li>
+<p>随机过程假设</p>
+<ul>
+<li>研究区域中的每一个事件是以等概率发生在区域的任意位置上的， 并且独立于空间位置和其他的事件</li>
+</ul>
+</li>
+<li>
+<p>泊松分布假设</p>
+<ul>
+<li>面积为|A|的平面区域A中的事件数量服从均值为 λ|A|的泊松分布（λ表示强度，每个单区域内的事件数量）；</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>检验</p>
+<ul>
+<li>如果不满足上述假设，则“事出无常必有因”，表明存在某种机制或成因导致了事件模式的出现，我们需要探索它的成因</li>
+</ul>
+</li>
+</ul>
+<h3 id="（3）基本问题">（3）基本问题</h3>
+<ul>
+<li>
+<p>点的分布属于哪种模式（有助于探索模式成因）</p>
+<ul>
+<li>
+<p>空间点是随机分布的</p>
+</li>
+<li>
+<p>空间点是非随机分布的</p>
+<ul>
+<li>空间点是离散（均匀）分布的</li>
+<li>空间点是聚集分布的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>不同类型的点模式之间是否存在关系？存在什么关系？</p>
+<ul>
+<li>例如：商场的分布是否影响了餐饮的分布</li>
+</ul>
+</li>
+<li>
+<p>不同时间的点模式之间存在什么关系</p>
+</li>
+</ul>
+<h3 id="（4）常用探索性工具">（4）常用探索性工具</h3>
+<ul>
+<li>
+<p>点模式的基本统计量</p>
+<ul>
+<li>
+<p>位置估计</p>
+<ul>
+<li>平均中心</li>
+<li>加权平均中心</li>
+<li>中位数中心</li>
+<li>最小距离中心</li>
+</ul>
+</li>
+<li>
+<p>方向性</p>
+<ul>
+<li>圆概率误差</li>
+<li>标准差椭圆</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>基于密度的点模式分析工具（总体趋势）</p>
+<ul>
+<li>
+<p>样方计数</p>
+<ul>
+<li>将研究的区域划分为规则的正方形网格区域，统计落入每个网格中点的数量，并与CSR假设作比较</li>
+</ul>
+</li>
+<li>
+<p>核密度估计</p>
+<ul>
+<li>研究区域中每个点都有事件密度，通过核函数在样本点基础上生成光滑的密度直方图</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>基于距离的点模式分析工具（局部效应）</p>
+<ul>
+<li>
+<p>常见工具</p>
+</li>
+<li>
+<p>最近邻指数</p>
+<ul>
+<li>用最邻近的点对之间的距离描述分布模式，然后与已知模式（如随机模式）间平均距离做比较</li>
+</ul>
+</li>
+<li>
+<p>Getis-Ord Gi*</p>
+<ul>
+<li>识别具有统计学上的显著性的空间异常值</li>
+</ul>
+</li>
+<li>
+<p>Anselin Local Moran’s I</p>
+<ul>
+<li>仅仅一个孤立的高值不会构成热点，说白了就是，单个要素以及它的邻居都是高值才算是热点</li>
+</ul>
+</li>
+<li>
+<p>F函数、K函数…</p>
+</li>
+</ul>
+</li>
+<li>
+<p>基于模拟仿真的点模式分析工具</p>
+<ul>
+<li>蒙特卡洛方法、边界模拟法…</li>
+</ul>
+</li>
+</ul>
+<h3 id="（5）推荐阅读">（5）推荐阅读</h3>
+<ul>
+<li>Statistical Analysis and Modelling of Spatial Point Patterns (Statistics in Practice) (2008)</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/ae7bb62d.html">http://xishansnow.github.io/posts/ae7bb62d.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/GeoAI/">GeoAI</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E5%AD%A6/">空间统计学</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E7%9B%B8%E5%85%B3%E6%80%A7/">空间相关性</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E5%BC%82%E8%B4%A8%E6%80%A7/">空间异质性</a><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E4%BE%9D%E8%B5%96%E6%80%A7/">空间依赖性</a></div><div class="post_share"><div class="social-share" data-image="/img/book_12.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/da0ad2c3.html"><img class="prev-cover" src="/img/coffe_05.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"> 显著性检验  </div></div></a></div><div class="next-post pull-right"><a href="/posts/55c68dc2.html"><img class="next-cover" src="/img/coffe_13.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">➅   Probit 模型</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/2f0fe298.html" title="空间思维及贝叶斯方法"><img class="cover" src="/img/book_11.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-28</div><div class="title">空间思维及贝叶斯方法</div></div></a></div><div><a href="/posts/45409750.html" title="点参考数据的贝叶斯建模软件spBayes"><img class="cover" src="/img/003.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-28</div><div class="title">点参考数据的贝叶斯建模软件spBayes</div></div></a></div><div><a href="/posts/234c04d2.html" title="多尺度地理加权回归"><img class="cover" src="/img/005.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-15</div><div class="title">多尺度地理加权回归</div></div></a></div><div><a href="/posts/176d3170.html" title="空间随机场及其建模方法"><img class="cover" src="/img/006.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-18</div><div class="title">空间随机场及其建模方法</div></div></a></div><div><a href="/posts/625b667d.html" title="Cressie 的最新空间统计论述"><img class="cover" src="/img/book_14.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-23</div><div class="title">Cressie 的最新空间统计论述</div></div></a></div><div><a href="/posts/b9f71b0a.html" title="贝叶斯分层模型"><img class="cover" src="/img/book_07.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-13</div><div class="title">贝叶斯分层模型</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">空间统计学概论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">1 统计学的两大流派</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E9%A2%91%E7%8E%87%E5%AD%A6%E6%B4%BE"><span class="toc-text">（1）频率学派</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AD%A6%E6%B4%BE"><span class="toc-text">（2）贝叶斯学派</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E4%B8%A4%E8%80%85%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">（3）两者的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%884%EF%BC%89%E4%B8%A4%E8%80%85%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-text">（4）两者的优缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">2 空间统计的常用假设</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E7%BB%9F%E8%AE%A1%E8%A7%86%E8%A7%92"><span class="toc-text">（1）空间数据的统计视角</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%81%9A%E5%81%87%E8%AE%BE%EF%BC%9F"><span class="toc-text">（2）为什么要做假设？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%9A%84%E5%81%87%E8%AE%BE"><span class="toc-text">（3）几种常见的假设</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%884%EF%BC%89%E4%BB%A5%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%B8%BA%E4%BE%8B"><span class="toc-text">（4）以线性回归为例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">3 空间统计的三大问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E7%A9%BA%E9%97%B4%E7%9B%B8%E5%85%B3%E6%80%A7%E9%97%AE%E9%A2%98"><span class="toc-text">（1）空间相关性问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E7%A9%BA%E9%97%B4%E5%BC%82%E8%B4%A8%E6%80%A7%E9%97%AE%E9%A2%98"><span class="toc-text">（2）空间异质性问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E7%A9%BA%E9%97%B4%E5%90%84%E5%90%91%E5%BC%82%E6%80%A7%E9%97%AE%E9%A2%98"><span class="toc-text">（3）空间各向异性问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">4 空间统计的常见任务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E7%A9%BA%E9%97%B4%E6%A8%A1%E5%BC%8F%E5%88%86%E6%9E%90"><span class="toc-text">（1）空间模式分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E7%A9%BA%E9%97%B4%E6%8F%92%E5%80%BC%E4%BB%BB%E5%8A%A1"><span class="toc-text">（2）空间插值任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E7%A9%BA%E9%97%B4%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1"><span class="toc-text">（3）空间预测任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%884%EF%BC%89%E7%A9%BA%E9%97%B4%E8%81%9A%E7%B1%BB%E4%BB%BB%E5%8A%A1"><span class="toc-text">（4）空间聚类任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%885%EF%BC%89%E5%9B%A0%E5%AD%90%E5%88%86%E6%9E%90%E4%BB%BB%E5%8A%A1"><span class="toc-text">（5）因子分析任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text"></span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">5 空间数据的统计模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%E7%A9%BA%E9%97%B4%E8%BF%87%E7%A8%8B%E4%B8%8E%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE"><span class="toc-text">5.1 空间过程与空间数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E7%A9%BA%E9%97%B4%E8%BF%87%E7%A8%8B"><span class="toc-text">（1）空间过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE"><span class="toc-text">（2）空间数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%E7%BB%9F%E8%AE%A1%E5%AD%A6%E6%84%8F%E4%B9%89%E4%B8%8B%E7%9A%84%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">5.2 统计学意义下的空间数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E7%82%B9%E6%95%B0%E6%8D%AE"><span class="toc-text">（1）点数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E9%9D%A2%E5%85%83%E6%95%B0%E6%8D%AE"><span class="toc-text">（2）面元数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E7%82%B9%E6%A8%A1%E5%BC%8F%E6%95%B0%E6%8D%AE"><span class="toc-text">（3）点模式数据</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">6 点参考（地统计）数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%88%86%E6%9E%90%E5%AF%B9%E8%B1%A1%EF%BC%9A%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE"><span class="toc-text">（1）分析对象：点参考数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%B8%B8%E7%94%A8%E5%81%87%E8%AE%BE"><span class="toc-text">（2）常用假设</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E4%B8%89%E6%80%A7%E8%AE%A8%E8%AE%BA"><span class="toc-text">（3）三性讨论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%884%EF%BC%89%E5%B8%B8%E7%94%A8%E6%8E%A2%E7%B4%A2%E6%80%A7%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7"><span class="toc-text">（4）常用探索性分析工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%885%EF%BC%89%E4%B8%BB%E8%A6%81%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E4%BB%BB%E5%8A%A1"><span class="toc-text">（5）主要空间统计任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%886%EF%BC%89%E4%BC%A0%E7%BB%9F%E7%BB%9F%E8%AE%A1%E4%BB%BB%E5%8A%A1"><span class="toc-text">（6）传统统计任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%887%EF%BC%89%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6"><span class="toc-text">（7）常用软件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%888%EF%BC%89%E6%8E%A8%E8%8D%90%E9%98%85%E8%AF%BB"><span class="toc-text">（8）推荐阅读</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">7 面元数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%88%86%E6%9E%90%E5%AF%B9%E8%B1%A1"><span class="toc-text">（1）分析对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%B8%B8%E7%94%A8%E5%81%87%E8%AE%BE-2"><span class="toc-text">（2）常用假设</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E4%B8%89%E6%80%A7%E8%AE%A8%E8%AE%BA-2"><span class="toc-text">（3）三性讨论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%884%EF%BC%89%E5%B8%B8%E7%94%A8%E6%8E%A2%E7%B4%A2%E6%80%A7%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7-2"><span class="toc-text">（4）常用探索性分析工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%885%EF%BC%89%E4%B8%BB%E8%A6%81%E4%BB%BB%E5%8A%A1%E6%A8%A1%E5%9E%8B"><span class="toc-text">（5）主要任务模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%886%EF%BC%89%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6"><span class="toc-text">（6）常用软件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%887%EF%BC%89%E6%8E%A8%E8%8D%90%E9%98%85%E8%AF%BB"><span class="toc-text">（7）推荐阅读</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">8 点模式数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%881%EF%BC%89%E5%88%86%E6%9E%90%E5%AF%B9%E8%B1%A1-2"><span class="toc-text">（1）分析对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%B8%B8%E7%94%A8%E5%81%87%E8%AE%BE-3"><span class="toc-text">（2）常用假设</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%883%EF%BC%89%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98"><span class="toc-text">（3）基本问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%884%EF%BC%89%E5%B8%B8%E7%94%A8%E6%8E%A2%E7%B4%A2%E6%80%A7%E5%B7%A5%E5%85%B7"><span class="toc-text">（4）常用探索性工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%885%EF%BC%89%E6%8E%A8%E8%8D%90%E9%98%85%E8%AF%BB"><span class="toc-text">（5）推荐阅读</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

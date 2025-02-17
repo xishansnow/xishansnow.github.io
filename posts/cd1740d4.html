@@ -1,0 +1,1593 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>非结构化文本的地理定位 | 西山晴雪的知识笔记</title><meta name="keywords" content="地理知识图谱,GeoParsing,GeoCoding,地名解析,地名识别,地理信息抽取,地理定位,GeoReferencing,地理编码方法"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="非结构化文本的地理定位 【摘要】根据前文介绍，地理信息抽取是构建地理知识图谱的核心，而对非结构文本的地理定位是地理信息抽取技术的核心。本文对非结构文本的地理定位研究现状进行了梳理。鉴于国内地理信息科学和计算机信息科学为两个学科，而地理定位属于跨学科、研究难度偏大的命题，国内比较深度或成体系的研究较少，因此本文主要针对国际相关研究情况。 【原文】 【DOI】 1. 文本中的地理引用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="非结构化文本的地理定位">
+<meta property="og:url" content="http://xishansnow.github.io/posts/cd1740d4.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="非结构化文本的地理定位 【摘要】根据前文介绍，地理信息抽取是构建地理知识图谱的核心，而对非结构文本的地理定位是地理信息抽取技术的核心。本文对非结构文本的地理定位研究现状进行了梳理。鉴于国内地理信息科学和计算机信息科学为两个学科，而地理定位属于跨学科、研究难度偏大的命题，国内比较深度或成体系的研究较少，因此本文主要针对国际相关研究情况。 【原文】 【DOI】 1. 文本中的地理引用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/coffe_02.png">
+<meta property="article:published_time" content="2020-05-28T02:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.041Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="地理知识图谱">
+<meta property="article:tag" content="GeoParsing">
+<meta property="article:tag" content="GeoCoding">
+<meta property="article:tag" content="地名解析">
+<meta property="article:tag" content="地名识别">
+<meta property="article:tag" content="地理信息抽取">
+<meta property="article:tag" content="地理定位">
+<meta property="article:tag" content="GeoReferencing">
+<meta property="article:tag" content="地理编码方法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/coffe_02.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/cd1740d4"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '非结构化文本的地理定位',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/coffe_02.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">非结构化文本的地理定位</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-05-28T02:00:00.000Z" title="发表于 2020-05-28 10:00:00">2020-05-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.041Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">地理知识图谱</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E7%9F%A5%E8%AF%86%E8%8E%B7%E5%8F%96%E4%B8%8E%E8%9E%8D%E5%90%88/">知识获取与融合</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/%E7%9F%A5%E8%AF%86%E8%8E%B7%E5%8F%96%E4%B8%8E%E8%9E%8D%E5%90%88/%E5%9C%B0%E7%90%86%E6%96%87%E6%9C%AC%E4%B8%8E%E7%A4%BE%E4%BA%A4%E5%AA%92%E4%BD%93/">地理文本与社交媒体</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">15.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>74分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>非结构化文本的地理定位</h1>
+<p>【摘要】根据前文介绍，地理信息抽取是构建地理知识图谱的核心，而对非结构文本的地理定位是地理信息抽取技术的核心。本文对非结构文本的地理定位研究现状进行了梳理。鉴于国内地理信息科学和计算机信息科学为两个学科，而地理定位属于跨学科、研究难度偏大的命题，国内比较深度或成体系的研究较少，因此本文主要针对国际相关研究情况。</p>
+<p>【原文】</p>
+<p>【DOI】</p>
+<h2 id="1-文本中的地理引用">1. 文本中的地理引用</h2>
+<ul>
+<li>
+<p><strong>地理引用（Geoeferences）</strong></p>
+<ul>
+<li>文本中对位置的指称（形式上为文本片段）被称为地理引用，也称<strong>位置引用</strong>、<strong>位置标识</strong>、<strong>地理标签</strong>。</li>
+</ul>
+</li>
+<li>
+<p>**地理引用的案例：**地理引用的形式多样，例如，以下形式都可以定位北京大学：</p>
+<ul>
+<li>
+<p>北京市海淀区颐和园路5号 – 北京大学的通信地址</p>
+</li>
+<li>
+<p>北京大学  –  北京大学的地名</p>
+</li>
+<li>
+<p>100871 – 北京大学的中国邮政编码</p>
+</li>
+<li>
+<p>X8P4+Q8   –  北京大学的谷歌开放位置码</p>
+</li>
+<li>
+<p>39.986913,116.3036799 – 北京大学的经纬度</p>
+</li>
+<li>
+<p>此外，还有很多在专业领域编制的具有空间位置含义的编码，如：北京大学的不动产单元登记码、北京大学的城市管理网格码等，均可以纳入地理引用的范围。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>人们总是期望地理引用具有如下属性：</strong></p>
+<ul>
+<li>明确性 ----  在某个给定的参考框架内，地理引用只专指一个位置，但地名等很难做到</li>
+<li>共知性  ---- 地理引用应当在使用它们的人之间能够共享，且他们清楚其地理含义</li>
+<li>时间不变性 ---- 地理引用应尽可能在时间上保持不变，但事实上，地名、行政区划等经常变化</li>
+<li>此外，地理引用通常与隐式的粒度相关，例如：偏远村庄的通信地址显然会采用比1米精度更粗的粒度</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-文本的地理定位">2.  文本的地理定位</h2>
+<ul>
+<li><strong>地理定位（GeoReferencing）</strong>
+<ul>
+<li>将文本中的地理引用转换为物理空间中的某个位置（如：经纬度坐标）的任务，被成为地理定位</li>
+<li>地理定位将文本片段形式的地理引用，转换为特定物理空间中的位置，使其成为计算机能够识别的坐标值或空间实体，从而赋予了其地理语义</li>
+<li>识别文本中的地理引用有助于理解该文本的地理上下文，进而区分其与文本核心主题之间的关联度</li>
+</ul>
+</li>
+<li>地理信息抽取任务中：
+<ul>
+<li>地理定位的起点是自然语言文本形式的文档或文本
+<ul>
+<li>包含经度/纬度坐标、地名、地理区域（如国家）等各种形式的地理引用</li>
+</ul>
+</li>
+<li>地理定位的终点是给出其在物理空间中的坐标值</li>
+<li>地理信息抽取追求的是自动执行该任务，这也是GIR的核心挑战</li>
+<li>目前大多数GIR聚焦在地名引用和地址引用的地理定位问题上，尽管地理引用的类型非常多</li>
+</ul>
+</li>
+<li><strong>地理定位的过程</strong>
+<ul>
+<li>**地理解析（GeoParsing）：**识别文本中地理引用的过程，可以理解为从文本中识别出地理引用的过程；</li>
+<li>**地理编码（GeoCoding）：**解析地理引用的过程，可以理解为将上述地理引用解释为点、线、面等空间对象实体的过程，显然包含两个子过程
+<ul>
+<li>获取地理引用所对应地理实体的唯一标识符</li>
+<li>根据地理实体唯一标识符获取其空间几何描述</li>
+</ul>
+</li>
+<li><strong>文档范围的地理定位</strong>：
+<ul>
+<li>上述工作面向文档级别的地理定位问题</li>
+<li>在其基础上，有学者研究文档中不同范围（如：段落）的地理定位问题</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-地理解析技术">3. 地理解析技术</h2>
+<h3 id="3-1-地理解析任务解释">3.1 地理解析任务解释</h3>
+<ul>
+<li>地理解析的基本任务是确定候选的地理引用。</li>
+<li>（文本中地理应用类型很多，目前比较多的研究聚焦在地名上，其也被称为地名解析或地名识别）</li>
+<li>该任务与信息提取领域的命名实体识别（NER）相当，即为文本中每个单词或单词组分配一组预定义的类别或实体，类别包括：位置、人员或组织的名称、时间、日期和货币金额的数字表达式等。</li>
+<li>地理解析任务的输出是候选的地理引用列表，也是后期地理编码任务的输入。</li>
+</ul>
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E5%91%BD%E5%90%8D%E5%AE%9E%E4%BD%93%E8%AF%86%E5%88%AB%E6%A1%88%E4%BE%8B.jpg" style="zoom:67%;" />
+<p>​		例如：上表中的文本显示了命名实体识别系统的典型输出（其中：org指组织，loc之位置）。大多数NER系统都是由分词、词性标注、实体匹配等构成的处理流水线。</p>
+<ul>
+<li>
+<p>在NER中，以前许多工作都是提取相当国家、州、省、城市等粗粒度的实体</p>
+</li>
+<li>
+<p>目前更详细位置的地名识别研究也越来越广泛（Uryupina，2003；Axelrod，2003）</p>
+</li>
+<li>
+<p>在地名识别中必须处理和解决语义歧义的问题</p>
+<ul>
+<li>例如：“仙人指”指的是一个神仙的指头，还是一个地点。</li>
+</ul>
+</li>
+<li>
+<p>此类问题中同一个名称可能属于多个不同于地名类别，通常也被称为引用类歧义或地理/非地理歧义（Amitay等人，2004）。</p>
+</li>
+</ul>
+<h3 id="3-2-地理解析的基本做法">3.2 地理解析的基本做法</h3>
+<ul>
+<li>大多数地理解析方法将已知地名词典（Hill，2000））、组织和人员列表与机器学习技术结合起来，或者与利用周围环境要素构建的规则结合起来</li>
+<li>无论何种地理解析方法，<strong>构建全面又准确的地名辞典都是其基础工作</strong>
+<ul>
+<li><strong>重要性与基础性</strong>
+<ul>
+<li>构建既地名辞典是一项基础性且具有挑战性的任务（Sehgal等人，2006年；Martins，2011年；Recchia和Louwerse，2013年）</li>
+</ul>
+</li>
+<li><strong>多辞典融合的发展趋势</strong>
+<ul>
+<li>建立高质量地名辞典逐步倾向于合并多个来源地名辞典数据，对地理解析而言，这是一项非常重要的任务（Manguinhas等人，2008年；Smart等人，2010年）</li>
+</ul>
+</li>
+<li><strong>民间/官方融合的发展趋势</strong>
+<ul>
+<li>自然语言中的地名用法不限于官方或行政用途，因此，地名辞典还应包含当地地名（民间地名）及其空间足迹（Keßler等人，2009年；Jones等人，2008年）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-3-地理解析的主要方法类型">3.3 地理解析的主要方法类型</h3>
+<p>​	三类地理解析方法（Leidner和Lieberman，2011）：</p>
+<ul>
+<li>基于列表查找的方法</li>
+<li>基于知识或规则的方法</li>
+<li>基于机器学习的方法</li>
+</ul>
+<h3 id="3-4-基于列表查找的地理解析法">3.4 基于列表查找的地理解析法</h3>
+<p>列表查找是识别地理引用的最基本方法。</p>
+<ul>
+<li><strong>工作原理：</strong>
+<ul>
+<li>从事先生成的地名、地址、邮政编码、电话号码等列表中查找已知的实体</li>
+</ul>
+</li>
+<li><strong>实现方法：</strong>
+<ul>
+<li>基于字符串的匹配</li>
+</ul>
+</li>
+<li><strong>优点：</strong>
+<ul>
+<li>简单、快速、独立于语言</li>
+<li>已知地名辞典列表的质量比其规模影响更大</li>
+<li>例如：Mikheev等人（1999）通过从中央情报局的世界概览中收集5000个位置，并根据MUC-7数据进行评估，位置列表查找性能可达到90-94%的准确率、75-85%的召回率。</li>
+</ul>
+</li>
+<li><strong>缺点：</strong>
+<ul>
+<li>无法确定在地名辞典中没有的新实体</li>
+<li>必须人工决定如何与列表中的条目匹配（例如：允许部分匹配还是坚持完全匹配）</li>
+<li>无法解决一词多义问题（例如：芝加哥可代表美国城市，也可代表流行音乐团体名称，列表法难以保证其总是以地理语义出现）；</li>
+<li>地理引用通常以不同的形式出现，列表中必须同时包含其所有名称的变种才能提高识别精度</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-5-基于知识或规则的地理解析法">3.5 基于知识或规则的地理解析法</h3>
+<ul>
+<li>
+<p><strong>工作原理：</strong></p>
+<ul>
+<li>通过规则或知识，有效利用上下文环境，提高地理引用的解析能力的方法。</li>
+<li>例如：在句子“Keep up on your reading with audio books”中，使用地名辞典的方法可能会将“on”、“reading”和“books”错误地分别识别为越南、英国和美国路易斯安那州的位置。然而，实际上这些条目没有地理意义，此时利用周围的上下文，会显著提高识别精度。</li>
+</ul>
+</li>
+<li>
+<p><strong>实现方法：</strong></p>
+<ul>
+<li>用语法来定义和表达上下文关系，符合语法要求的词或词组，被识别为地理引用</li>
+<li>语法表达方式：通过定义封装规则的<strong>正则表达式</strong>，采用文本匹配方式执行
+<ul>
+<li>常见基于正则表达式的模式匹配工具包括：lex、flex、fgrep等</li>
+</ul>
+</li>
+<li><strong>证据（上下文中用于支撑该语法规则的内容，被成为证据）：</strong>
+<ul>
+<li>
+<p><strong>内部证据（规则）：</strong></p>
+<ul>
+<li>文本中通常有某种内在的结构或短语可以表明它们是地名</li>
+<li>此类特征包括大写、前缀或后缀（如：公司标志）、地名列表等</li>
+<li>例如：
+<ul>
+<li>内部证据规则设定为：“CapWord + { Street，Boulevard，Avenue，Crescent，Road }”，则利用该规则可以捕获“Portobello Street”和“Sunset Boulevard”等地理引用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>外部证据（规则）：</strong></p>
+<ul>
+<li>文本中可能存在上下文证据能够表明单词或短语是什么类型的实体
+<ul>
+<li>例如：“President Washington chopped the tree”，“President”是明确的外部证据，表明“Washington”是一个人的名字，而不是一个地方</li>
+</ul>
+</li>
+<li>通过建立上下文规则来帮助区分命名实体的类别，例如：
+<ul>
+<li><strong>正例：</strong>“North of CapWord” 规则有助于识别“CapWord”为一个地名</li>
+<li><strong>反例：</strong>“Firstname + Location”，其中Firstname与常用人名辞典匹配，Location与地名辞典匹配，符合该规则的“Location”，可以推断为假的地理引用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>优点：</strong></p>
+<ul>
+<li>因为有证据的支撑，准确率较列表查找方法更高</li>
+<li>能够找到一些新的地理词汇</li>
+</ul>
+</li>
+<li>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>难以处理无法用正则表达式显式表达的非规则化地理引用</li>
+<li>规则无法穷举，太多的规则影响效率</li>
+<li>将大小写作为识别规则是常见方法，但对于中文不适用</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-6-基于机器学习的地理解析法">3.6 基于机器学习的地理解析法</h3>
+<ul>
+<li>
+<p><strong>工作原理：</strong></p>
+<ul>
+<li>在旧的NER系统中，规则通常是手工创建的</li>
+<li>大多数现代方法使用机器学习方法从以前的已分类训练集中捕获上下文信息特征，进而实现自动归纳规则，并用于地理解析</li>
+</ul>
+</li>
+<li>
+<p><strong>实现方法：</strong></p>
+<ul>
+<li>隐马尔可夫模型</li>
+<li>决策树</li>
+<li>最大熵</li>
+<li>神经网络</li>
+</ul>
+</li>
+<li>
+<p><strong>方法案例：</strong></p>
+<ul>
+<li>Curran和Clark（2003）使用了最大熵来标记来独立于语言的特征，包括：词性、前后命名实体列表、单词是否为名字或姓氏等。根据CoNLL2003 NE任务的数据，Curran和Clark的F1分数分别为87.7%（英语）、71%（德语）和83.2%（荷兰语）</li>
+</ul>
+</li>
+<li>
+<p>两个核心问题：</p>
+<ul>
+<li>训练数据问题</li>
+<li>分类器的泛化能力问题</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-7-半结构化数据的地理解析">3.7 半结构化数据的地理解析</h3>
+<p>​		许多研究者还讨论了半结构化web内容的地理定位问题（McCurley，2001；Borges et al.，2003；Morimoto，2003）。例如：</p>
+<ul>
+<li>Borges等人2003年使用Wrapper归纳法从网页中提取地址</li>
+<li>Wrapper是一种严重依赖于文档格式和标记语言来归纳IE模式的系统，每种格式都需要编写Wrapper</li>
+<li>工作原理：通过对已标注的网页样本集进行分析，获取网页文本结构、HTML标记等与地理引用之间的关系，并导出相应的正则表达式，并基于该表达式创建通用的Wrapper，以提取新网页中的地理引用</li>
+<li>本质上是通过学习，建立了一种提取规则，而该规则仅依赖于网页结构和标记，不依赖于地名本身</li>
+</ul>
+<h2 id="4-地理编码技术">4. 地理编码技术</h2>
+<p>​		确定候选的地理引用列表后，后续任务是在地理知识库（例如：地名词典或本体）的上下文中，找到与之向对应的标识符，该标识符一般具有唯一性和地理语义，且与某个度量空间相关联的。（Buscaldi，2011年； Leidner，2008年； Leidner和Lieberman，2011年； Andogah等人，2012年）。 例如：可以为英国西南部的地名“Bath”分配地理坐标（51.3794N，-2.3656W）。</p>
+<h3 id="4-1-地理编码面临的问题">4.1 地理编码面临的问题</h3>
+<p>对地名进行地理编码的常见问题是引用歧义（或地理歧义）：</p>
+<p><strong>（1）一词多地</strong></p>
+<p>​	所标识的地名可能仅指向地名词典中具有相同名称的多个位置之一。 例如：</p>
+<p>​	名称“ Chapeltown”是指以下列表中的哪一个？</p>
+<ul>
+<li>南约克郡（英国）</li>
+<li>兰开夏郡（英国）</li>
+<li>肯特县（美国）</li>
+<li>帕诺拉县（美国）中的位置</li>
+</ul>
+<p><strong>（2）一地多词</strong></p>
+<p>​	不同（或替代）地名可能用于引用相同的位置。例如：</p>
+<ul>
+<li>“London”和“Londres”都为伦敦</li>
+<li>非正式地名或民间地名，例如“NewYork”也可以称为“Big Apple”、“中央电视台办公大楼”也可以成为“大裤衩”</li>
+</ul>
+<h3 id="4-2-地理编码的主要技术方法">4.2 地理编码的主要技术方法</h3>
+<p><strong>（1）地理编码的目的</strong></p>
+<ul>
+<li>地理编码的目标是为每个歧义地名从一组候选位置中选择一个最匹配的位置。</li>
+</ul>
+<p><strong>（2）地理编码的实现原理</strong></p>
+<ul>
+<li>通常利用启发式或内建规则，建立地理引用与外部资源（如：地名词典）之间的映射，进而获得空间坐标</li>
+<li>例如：
+<ul>
+<li>利用与位置相关的其他知识（例如：人口统计、土地表面积、对地点类型的偏好等）来解决歧义</li>
+<li>采用已知语言或地理属性约束映射规则：
+<ul>
+<li><strong>单一地理引用文档：</strong> 明确在整个文本中引用的地名位置保持不变（Leidner，2008年）</li>
+<li><strong>托伯勒定律（Tobler，1970）</strong>：相互靠近的事物之间的联系相较于不靠近的事物而言，联系更为密切。基于启发式的方法通常简单、高效，并且在多个领域中执行得很好（Leidner，2008年）。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>（3）四大类典型地名消歧方法</strong></p>
+<p>地名消歧方法分为三大类：</p>
+<ul>
+<li>基于规则和知识的方法：利用外部知识资源寻找歧义线索，例如：人口统计数据、频率最高的查询统计等</li>
+<li>基于机器学习的方法：利用数据驱动或训练集</li>
+<li>基于空间距离测度的方法：涉及计算空间距离或语义相似度的方法</li>
+</ul>
+<h3 id="4-3-基于规则和知识的方法">4.3 基于规则和知识的方法</h3>
+<p><strong>（1）工作原理：</strong></p>
+<p>​		在词法或句法匹配基础上，通过其他知识或资源寻找歧义线索，结合相关线索从地名辞典中找出最近似的地名或地址，进而给出相应的空间坐标。</p>
+<p><strong>（2）案例分析：</strong></p>
+<p>​		考虑下表中来自Wikipedia的伦敦（英国）和伦敦（加拿大）的示例。 假设在地理解析阶段，“伦敦”已被确定为地点； 下一步是使用地名词典或本体库将其置于物理空间中。 假设已经获得对GeoNames全球地名数据库的访问权限，并将伦敦查找为居住地，结果会发现67个可能的位置，包括：英国的伦敦、加拿大的伦敦、美国的几次伦敦事件等。</p>
+<p>![](<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/2020-05-28">https://raw.githubusercontent.com/shilang1220/imageBed/master/img/2020-05-28</a> 13-24-42的屏幕截图.png)</p>
+<p><strong>（3）解决办法：</strong></p>
+<ul>
+<li>
+<p><strong>办法1：根据外部世界知识为模棱两可的位置指定默认位置</strong></p>
+<ul>
+<li>原理：
+<ul>
+<li>采用人口、GDP、面积等，作为判别近似地名的外部知识（Andogah等，2012）</li>
+</ul>
+</li>
+<li>输入：
+<ul>
+<li>包含其他知识的地名辞典，如：GeoNames包含有关城市的人口数据</li>
+</ul>
+</li>
+<li>测度：
+<ul>
+<li>将人口最多的城市作为默认歧义消除规则</li>
+</ul>
+</li>
+<li>输出：
+<ul>
+<li>根据GeoNames，人口最多的英国伦敦将是最终结果</li>
+</ul>
+</li>
+<li><strong>注意事项：</strong>
+<ul>
+<li><strong>通常情况下，当所有其他消除地名歧义的方法都失败时，才会使用默认的意义启发法</strong></li>
+<li>例如：基于人口知识对表中第二个案例不起作用，因为无论上下文如何，最终都将返回英国伦敦</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>办法2：利用上下文线索消除地理歧义</strong></p>
+<ul>
+<li>原理：
+<ul>
+<li>将上下文中的某些线索作为证据，通过组合的某种测度来识别最为近似的地名</li>
+</ul>
+</li>
+<li>输入：
+<ul>
+<li>输入1：同一文本段（例如：段落）中或整个文档中提到的其他地名
+<ul>
+<li>例如：在第一个示例中出现“英格兰”或在第二个示例中出现“安大略”和伦敦是包含关系</li>
+</ul>
+</li>
+<li>输入2： 地名词典（例如：地名词库TGN）中相关层次结构的信息
+<ul>
+<li>例如： 世界&gt;欧洲&gt;英国&gt;英格兰&gt;大伦敦&gt;伦敦和世界&gt;北美和中美洲&gt;加拿大&gt;安大略省&gt;伦敦</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>测度：
+<ul>
+<li>计算“地名辞典里层次结构中的单词”与“歧义地名前后单词”之间的文本相似性</li>
+<li>计算“地名辞典里层次结构中的单词”与“歧义地名前后单词”之间的某种距离度量（如：本体距离）（Amitay等  ，2004）</li>
+</ul>
+</li>
+<li>输出：
+<ul>
+<li>地名辞典中文本最相似的地名、或者距离度量值最小的地名</li>
+</ul>
+</li>
+<li>案例：
+<ul>
+<li>Buscaldi，2011年</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-4-基于机器学习的方法">4.4 基于机器学习的方法</h3>
+<ul>
+<li>
+<p><strong>问题的提出：</strong></p>
+<ul>
+<li>基于知识或规则的方法也有局限性，相关地名单词的出现可能不足以成功消除歧义；</li>
+<li>一种替代方法是在地名的本地上下文中同时考虑非地理名称（Overell和Rüger，2008年）。</li>
+</ul>
+</li>
+<li>
+<p><strong>工作原理：</strong></p>
+<ul>
+<li>基于特定非地理单词通常会在特定位置的上下文中出现这一假设，使用地名单词周围所有单词进行消歧，利用机器学习方法获得同时出现概率最大的单词，进而扩大了证据的范围</li>
+<li>例如：在有关波特兰的文字中，“龙虾”一词将间接暗示缅因州的波特兰，而不是俄勒冈州或密歇根州。</li>
+</ul>
+</li>
+<li>
+<p><strong>输入：</strong></p>
+<ul>
+<li>输入１：地名引用周边某个范围内的所有单词（通常为名词）</li>
+<li>输入2： 之前利用监督或非监督方法获取的地名与单词互相关语言模型（如：互相关矩阵）</li>
+</ul>
+</li>
+<li>
+<p>测度：</p>
+<ul>
+<li>上下文中单词与地名辞典中语言模型的相似度</li>
+</ul>
+</li>
+<li>
+<p><strong>输出：</strong></p>
+<ul>
+<li>地名辞典中，多词相关性最大的地名</li>
+</ul>
+</li>
+<li>
+<p><strong>案例：</strong></p>
+<ul>
+<li>Speriosu和Baldridge（2013年）使用带有地理标签的Wikipedia文章训练了一种监督学习算法，使用周围文档中的所有单词进行消歧。</li>
+<li>该案例将“待判别的地理引用及其上下文词”与“该地名在地名辞典中利用样本生成的语言模型”进行匹配</li>
+<li>地名词典中匹配度最高的地名，为最优候选</li>
+</ul>
+</li>
+<li>
+<p><strong>本质：</strong></p>
+<ul>
+<li>该方法将上下文线索作为特征捕获，并将问题视为监督学习或分类任务</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-5-基于地图（空间）的方法">4.5 基于地图（空间）的方法</h3>
+<ul>
+<li>
+<p>问题的提出：</p>
+<ul>
+<li>上述方法的基本原理还是基于词法或句法的相似性分析，并未使用空间语义</li>
+<li>需要提前训练语言模型，可能会受样本集的偏置影响，只能限定于某一类语料</li>
+</ul>
+</li>
+<li>
+<p>基本原理：</p>
+<ul>
+<li>基于“文档中的位置在空间上是自相关”的这一假设，使用歧义地名上下文中的地点坐标来进行歧义消除</li>
+</ul>
+</li>
+<li>
+<p>输入：</p>
+<ul>
+<li>上下文中的所有地名地址</li>
+<li>地名辞典</li>
+</ul>
+</li>
+<li>
+<p>测度：</p>
+<ul>
+<li>候选地名与上下文中所有地名（在地名辞典中）的坐标形成空间距离</li>
+<li>正确的位置将使其与歧义对象之间的距离最小化（Smith和Crane，2001年）</li>
+</ul>
+</li>
+<li>
+<p>输出：</p>
+<ul>
+<li>空间距离测度最小的地名</li>
+<li>例如：上表第二个示例中，伦敦的平均位置将在空间上更接近“西南安大略”、“魁北克市-温莎走廊”、“多伦多”、“安大略省”、“底特律”和“密歇根州” ，因此可将其判别为加拿大的伦敦。</li>
+</ul>
+</li>
+<li>
+<p>案例：</p>
+<ul>
+<li>莱德纳（Leidner，2008）为歧义名称的所有候选位置计算距离，并使用空间最小度量选择最接近的位置</li>
+<li>明确地名的实例特别有效，它提供了更强力的证据来证明歧义地名（Li等人，2003； Rauch等人，2003）</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-6-其他问题">4.6 其他问题</h3>
+<ul>
+<li>
+<p>非点状要素的地理编码问题</p>
+<ul>
+<li>如何为无法分配点坐标的要素（例如：泰晤士河）</li>
+</ul>
+</li>
+<li>
+<p>历史地名的地理编码问题</p>
+<ul>
+<li>如何为历史地名作地理编码</li>
+<li>例如：Smith and Mann在2003年表明，与当前新闻报道相比，历史文档地理编码成功率要低得多</li>
+</ul>
+</li>
+<li>
+<p>精细粒度地名的地理编码问题</p>
+<ul>
+<li>在更精细粒度下进行地理编码时，还会遇到其他挑战</li>
+<li>例如：Pasley等人2007年表明，与区域和城市尺度的数据相比，街道水平显示出更高的歧义度</li>
+</ul>
+</li>
+<li>
+<p>地名辞典的问题</p>
+<ul>
+<li>地名辞典的质量直接影响地理编码的准确率和精度
+<ul>
+<li>Clough于2005年的研究表明，与使用特定国家/地区的地名进行歧义消除相比，使用全球覆盖但质量参差不齐的资源（如GeoNames）效果要差很多。（Graham等，2015年； Ahlers，2013年）</li>
+</ul>
+</li>
+<li>结合多种地理资源（地名辞典或本体库）更有可能提高消除歧义的能力</li>
+<li>对多种地理资源进行汇总或选择合适的资源本身也是一个实体对齐的研究课题（Smart等人，2010年）</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-文本地理范围的解析">5. 文本地理范围的解析</h2>
+<p><strong>（1）定义</strong></p>
+<ul>
+<li>Andogah等人（2012年）将文档的地理范围定义为“文档所涉及的地理区域或面积”</li>
+<li>地理范围解析是将地理范围<strong>自动分配</strong>给文档的过程</li>
+</ul>
+<p><strong>（2）假设前提</strong></p>
+<ul>
+<li>与更一般的文档相比，许多文档与特定区域内的人们相关
+<ul>
+<li>例如：英国广播公司（BBC）有关英国的新闻页面与来自英国而不是全世界的人相关性更高</li>
+</ul>
+</li>
+</ul>
+<p><strong>（3）相关分类</strong></p>
+<ul>
+<li>
+<p>Ding等人（Ding等，2000年）计算了Web资源（例如网页）的地理范围，以确定目标受众（如：某个城市、国家或世界的居民）</p>
+</li>
+<li>
+<p>Wang等于2005进一步将网络资源的位置分为三类：</p>
+<ul>
+<li>提供者位置
+<ul>
+<li>提供者位置描述了拥有网络资源的提供商（例如组织或个人）的物理位置，例如，从特定区域内的黄页中识别服务提供商（Himmelstein，2005）</li>
+</ul>
+</li>
+<li>内容位置
+<ul>
+<li>内容位置描述了Web资源的内容所在的位置</li>
+</ul>
+</li>
+<li>服务位置
+<ul>
+<li>服务位置描述了Web资源到达的地理范围。 例如，谢菲尔德市议会提供的有关缴纳议会税的信息可能仅与谢菲尔德居民有关； 英国政府网站上有关签证的信息将在全球范围内推广。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>（4）实现方法</strong></p>
+<ul>
+<li>根据主要位置或文档中所有位置的加权平均值来定义文档地理范围</li>
+<li>基于文档中的位置排名选择
+<ul>
+<li>例如：出现频次最多的地理引用</li>
+</ul>
+</li>
+</ul>
+<p><strong>（5）案例</strong></p>
+<ul>
+<li>Web-a-Where，NewsStand和STEWARD均涉及到文档定位问题</li>
+</ul>
+<h2 id="6-基于语言模型的隐性位置建模">6. 基于语言模型的隐性位置建模</h2>
+<p><strong>（1）问题的提出</strong></p>
+<ul>
+<li>与显式坐标相关的各种资源不同，机器学习方法的日趋成熟以及对更通用方法的需求在大数据时代催生了一些新的方法。这些方法不是探索文本中明确包含的地名，而是寻求学习在文本中更泛化的位置描述方式。</li>
+</ul>
+<p><strong>（2）主要原理</strong></p>
+<ul>
+<li>给定与坐标相关联的大量文档（例如：带有地理标签的Flickr标题，Wikipedia或Tweets等），识别与特定空间区域相关联的单词集， 构建面向区域的单词频率语言模型</li>
+</ul>
+<p><strong>（3）主要方法</strong></p>
+<ul>
+<li>Ahern等人（Ahern等，2007）使用k-means聚类和tf-idf修正，从Flickr标签中选择重要的关键词，然后将其分配给单元粒度不同的纬度/经度网格，从而形成浏览系统的基础。该浏览系统用于对地理上特定概念（由语言模型识别）和相关照片进行地理探索。</li>
+<li>其他早期应用程序则涉及对没有坐标的Flickr图像进行地理配准。其主要思想是使照片的标签与最相似的语言模型匹配，从而与地理位置匹配，并采用朴素贝叶斯机器学习方法完成。</li>
+<li>Crandall等人于2009年采用了基于均值漂移聚类的空间细分方法，并使用贝叶斯和支持向量机机器学习方法，使用文本标签和SIFT视觉特征。</li>
+<li>O’Hare和Murdock，2013年解决了使用贝叶斯方法对Flickr照片进行地理编码的相同问题，仅使用文本证据来证明与多个尺度的常规网格单元相关的语言模型。 在如何分配照片所在单元格的问题，也使用了与目标单元格相邻的网格单元格语言模型。</li>
+<li>Kinsella等人（2011年）使用语言建模方法来定位推文及其用户，并尝试使用K-L散度和贝叶斯概率将推文与位置进行匹配。 他们发现，在最好的粒度级别上，语言模型明显优于基于地名词典的地理编码方法，这显然是由于用户在推文中包含本地化地名的可能性较高。</li>
+<li>Wing和Baldridge，2011年将语言模型方法应用到Wikipedia上。他们基于地理标签和落在1度地理网格单元中的文档，通过计算基于文档的语言模型和基于单元的语言模型之间的K-L散度来估计该单元的语言模型。同时他们还研究了利用贝叶斯方法为单元语言模型建模。</li>
+<li>Roller等人（2012年）进一步开发了该方法，采用聚类方法提供不同大小的网格单元，并通过修改最终匹配步骤，将网格定位点确定为训练集中Wikipedia文章坐标的质心，而非单元格的几何中心。</li>
+<li>Laere等人，2014年，对Flickr，Twitter和Wikipedia使用k-medoid聚类创建更丰富的语言模型。他们在训练数据中对经过地理编码的资源进行了筛选，最终对Wikipedia文章的地理编码结果有了显著改善。并且，在Wikipedia文章的地理编码中，“点”相关的位置（如建筑物）的地理编码结果，比空间上更宽泛的对象（如河流）质量更高。</li>
+<li>Melo和Martins在2017年的最新评论中报告了多种方法的结果，其中英语Twitter和Wikipedia数据集的中位数范围为2.2-640 km，平均值在83-2854 km之间。</li>
+</ul>
+<p><strong>（4）技术特点</strong></p>
+<ul>
+<li>这些方法显示出很好的潜力，并具有一些非常好的结果。</li>
+<li>似乎更适合于：
+<ul>
+<li>对没有特定位置的地名进行地理编码</li>
+<li>对名称很少的资源进行地理编码（例如某些微博）</li>
+<li>汇总整个文档集合的地理分布</li>
+</ul>
+</li>
+</ul>
+<p><strong>（5）最新进展</strong></p>
+<ul>
+<li>
+<p>DeLozier等人（2015年）提出TopoCluster方法，使用语言建模对地名词典中不存在的地名进行地理定位</p>
+<ul>
+<li>使用NER方法识别可能为地名的单词及其上下文单词（例如：前后各10个单词）</li>
+<li>事先为地名词典中的所有地名生成其在地球上某个网格内出现的概率或频次</li>
+<li>地理编码时：
+<ul>
+<li>如果地名词典中存在该地名，则确定为该地名所在网格或最靠近的网格</li>
+<li>否则，利用上下文中单词的网格出现概率，来计算最可能与未知地名相关联的网格位置</li>
+</ul>
+</li>
+<li>实验表明，该方法地名定位效果优于Speriosu和Baldridge的方法</li>
+</ul>
+</li>
+<li>
+<p>Gritta等人（2017年）的最新论文比较了几种最先进的地名解析方法</p>
+</li>
+<li>
+<p>包括：TopoCluster、Edinburgh Geoparser（Grover等人，2010）、GeoTxt（Karimzadeh等人，2013）、 Yahoo！PlaceSpotter和CLAVIN</p>
+</li>
+<li>
+<p>基于Wikipedia和GeoNames创建了语料库，并利用上述方法进行地理定位</p>
+</li>
+<li>
+<p>结果Yahoo！PlaceSpotter和Edinburgh Geoparser的性能均优于TopoCluster</p>
+</li>
+</ul>
+<h2 id="7-发展趋势与挑战">7. 发展趋势与挑战</h2>
+<ul>
+<li><strong>地理解析</strong>
+<ul>
+<li>中文分词和中文命名实体识别等传统挑战</li>
+<li>中文地理空间上下文与中文命名实体识别结合，提升地理解析精度</li>
+</ul>
+</li>
+<li><strong>地理编码</strong>
+<ul>
+<li>空间相似性测度的最佳方法（如：Janowicz等人提出的地理空间语义相似度）</li>
+<li>适应上下文的相关性排序方法</li>
+</ul>
+</li>
+</ul>
+<h2 id="8-总结">8. 总结</h2>
+<p>​		本文讨论了地理定位中的两个核心过程：地理解析和地理编码。从目前的发展趋势来看，两项任务都需要使用上下文信息和地名辞典支撑，以消除歧义并使其成为真正具备空间语义。另外，还讨论了文档地理范围计算、隐性位置建模计算等相关概念。</p>
+<p>​		文中给出的一些案例，特别是针对机器学习方法的测试结论中，大多数差异似乎是由特定领域的方法定制所导致，可能的影响因素包括：不同语言类型、不同语言性质和丰富性、不同地名索引、不同地理配准的粒度要求等。 因此，似乎领域专业知识是研究人员的地理定位技术工具包中不可或缺的一个部分（Leveling，2015）。</p>
+<h2 id="参考文献：">参考文献：</h2>
+<p>Adams, B., G. McKenzie, and M. Gahegan. 2015. “Frankenplace: Interactive Thematic<br>
+Mapping for Ad Hoc Exploratory Search”. In: Proceedings of the 24th International<br>
+Conference on World Wide Web. WWW ’15. Florence, Italy: International World Wide<br>
+Web Conferences Steering Committee. 12–22. doi: 10.1145/2736277.2741137. url:<br>
+<a target="_blank" rel="noopener" href="https://doi.org/10.1145/2736277.2741137">https://doi.org/10.1145/2736277.2741137</a>.</p>
+<p>Ahern, S., M. Naaman, R. Nair, and J. H. Yang. 2007. “World explorer: visualizing aggregate<br>
+data from unstructured text in geo-referenced collections”. In: Proceedings of the 7th<br>
+ACM/IEEE-CS joint conference on Digital libraries. ACM. 1–10.</p>
+<p>Ahlers, D. 2013. “Assessment of the accuracy of geonames gazetteer data”. In: Proceedings<br>
+of the 7th Workshop on Geographic Information Retrieval. ACM. 74–81.<br>
+Ahmed, S. M. Z., C. McKnight, and C. Oppenheim. 2006. “A user-centred design and evalua-<br>
+tion of IR interfaces”. Journal of Librarianship and Information Science. 38(3): 157–172.<br>
+doi: 10.1177/0961000606063882. eprint: <a target="_blank" rel="noopener" href="https://doi.org/10.1177/0961000606063882">https://doi.org/10.1177/0961000606063882</a>.<br>
+url: <a target="_blank" rel="noopener" href="https://doi.org/10.1177/0961000606063882">https://doi.org/10.1177/0961000606063882</a>.</p>
+<p>Allan, J., B. Croft, A. Moffat, and M. Sanderson. 2012. “Frontiers, Challenges, and Op-<br>
+portunities for Information Retrieval: Report from SWIRL 2012 the Second Strate-<br>
+gic Workshop on Information Retrieval in Lorne”. In: ACM SIGIR Forum. Vol. 46.<br>
+No. 1. New York, NY, USA: ACM. 2–32. doi: 10.1145/2215676.2215678. url: http:<br>
+<a target="_blank" rel="noopener" href="//doi.acm.org/10.1145/2215676.2215678">//doi.acm.org/10.1145/2215676.2215678</a>.</p>
+<p>Alonso, O. and S. Mizzaro. 2009. “Can we get rid of TREC assessors? Using Mechanical Turk<br>
+for relevance assessment”. In: SIGIR 2009 Workshop on The Future of IR Evaluation.<br>
+15–16.</p>
+<p>Aloteibi, S. and M. Sanderson. 2014. “Analyzing geographic query reformulation: An<br>
+exploratory study”. Journal of the Association for Information Science and Technology.<br>
+65(1): 13–24. doi: 10.1002/asi.22961. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1002/asi.22961">http://dx.doi.org/10.1002/asi.22961</a>.<br>
+Amitay, E., N. Har’El, R. Sivan, and A. Soffer. 2004. “Web-a-where: Geotagging Web<br>
+Content”. In: Proceedings of the 27th Annual International ACM SIGIR Conference<br>
+on Research and Development in Information Retrieval. SIGIR ’04. Sheffield, United<br>
+Kingdom: ACM. 273–280. doi: 10.1145/1008992.1009040. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10">http://doi.acm.org/10</a>.<br>
+1145/1008992.1009040.</p>
+<p>Andogah, G. 2011. Geographically Constrained Information Retrieval: Geographically Intel-<br>
+ligent Information Retrieval. Germany: LAP Lambert Academic Publishing.<br>
+Andogah, G., G. Bouma, and J. Nerbonne. 2012. “Every Document Has a Geographical<br>
+Scope”. Data Knowl. Eng. 81-82(Nov.): 1–20. doi: 10.1016/j.datak.2012.07.002. url:<br>
+<a target="_blank" rel="noopener" href="http://dx.doi.org/10.1016/j.datak.2012.07.002">http://dx.doi.org/10.1016/j.datak.2012.07.002</a>.</p>
+<p>Andrade, L. and M. J. Silva. 2006. “Relevance Ranking for Geographic IR.” In: In Proceedings<br>
+of GIR’06.94</p>
+<p>Armitage, L. H. and P. G. B. Enser. 1997. “Analysis of user need in image archives”.<br>
+Journal of Information Science. 23(4): 287–299. doi: 10.1177/016555159702300403.<br>
+eprint: <a target="_blank" rel="noopener" href="https://doi.org/10.1177/016555159702300403">https://doi.org/10.1177/016555159702300403</a>. url: <a target="_blank" rel="noopener" href="https://doi.org/10.1177/">https://doi.org/10.1177/</a><br>
+016555159702300403.</p>
+<p>Axelrod, A. E. 2003. “On Building a High Performance Gazetteer Database”. In: Proceedings<br>
+of the HLT-NAACL 2003 Workshop on Analysis of Geographic References - Volume 1.<br>
+HLT-NAACL-GEOREF ’03. Stroudsburg, PA, USA: Association for Computational<br>
+Linguistics. 63–68. doi: 10.3115/1119394.1119404. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.3115/">http://dx.doi.org/10.3115/</a><br>
+1119394.1119404.</p>
+<p>Baeza-Yates, R. A. and B. A. Ribeiro-Neto. 2011. Modern Information Retrieval - the<br>
+concepts and technology behind search, Second edition. Pearson Education Ltd., Harlow,<br>
+England. url: <a target="_blank" rel="noopener" href="http://www.mir2ed.org/">http://www.mir2ed.org/</a>.</p>
+<p>Bailey, P., P. Thomas, N. Craswell, A. P. D. Vries, I. Soboroff, and E. Yilmaz. 2008.<br>
+“Relevance assessment: are judges exchangeable and does it matter”. In: Proceedings of<br>
+the 31st annual international ACM SIGIR conference on Research and development in<br>
+information retrieval. ACM. 667–674.</p>
+<p>Bird, S., E. Klein, and E. Loper. 2009. Natural Language Processing with Python. 1st.<br>
+O’Reilly Media, Inc.</p>
+<p>Borges, K. A. V., A. H. F. Laender, C. B. Medeiros, and A. S. D. Silva. 2003. “The web<br>
+as a data source for spatial databases”. In: In Anais do V Brazilian Symposium on<br>
+Geoinformatics, Campos do Jordão.</p>
+<p>Borlund, P. 2009. “User-Centred Evaluation of Information Retrieval Systems”. In: Infor-<br>
+mation Retrieval: Searching in the 21st Century. Ed. by A. Göker and D. J. John Wiley<br>
+&amp; Sons. 21–37.</p>
+<p>Borlund, P. and P. Ingwersen. 1997. “The development of a method for the evaluation of<br>
+interactive information retrieval systems”. Journal of documentation. 53(3): 225–250.</p>
+<p>Brisaboa, N. R., M. R. Luaces, Á. S. Places, and D. Seco. 2010. “Exploiting geographic<br>
+references of documents in a geographical information retrieval system using an ontology-<br>
+based index”. GeoInformatica. 14(3): 307–331.</p>
+<p>Brooke, J. 1996. “SUS: a quick and dirty usability scale”. In: Usability evaluation in industry.<br>
+Ed. by P. Jordan, B. Thomas, B. Weerdmeester, and I. McClelland.</p>
+<p>Brown, T., J. Baldridge, M. Esteva, and W. Xu. 2012. “The substantial words are in<br>
+the ground and sea: computationally linking text and geography”. Texas Studies in<br>
+Literature and Language. 54(3): 324–339.</p>
+<p>Bucher, B., P. Clough, H. Joho, R. Purves, and A. K. Syed. 2005. “Geographic IR sys-<br>
+tems: requirements and evaluation”. Proceedings of the 22nd International Cartographic<br>
+Conference. 201(2005): 11–16.</p>
+<p>Bugayevskiy, L. and J. Snyder. 1995. Map Projections: A Working Manual. CRC Press.<br>
+95Buscaldi, D. 2011. “Approaches to Disambiguating Toponyms”. SIGSPATIAL Special. 3(2):<br>
+16–19. doi: 10.1145/2047296.2047300. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/2047296">http://doi.acm.org/10.1145/2047296</a>.<br>
+2047300.</p>
+<p>Cai, G. 2002. “GeoVSM: An Integrated Retrieval Model for Geographic Information”.<br>
+In: Geographic Information ScienceSecond International Conference, GIScience 2002.<br>
+Springer. 70–85.</p>
+<p>Cai, G. 2011. “Relevance Ranking in Geographical Information Retrieval”. SIGSPATIAL<br>
+Special. 3(2): 33–36. doi: 10.1145/2047296.2047304. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/">http://doi.acm.org/10.1145/</a><br>
+2047296.2047304.</p>
+<p>Carbonell, J. and J. Goldstein. 1998. “The Use of MMR, Diversity-based Reranking for<br>
+Reordering Documents and Producing Summaries”. In: Proceedings of the 21st Annual<br>
+International ACM SIGIR Conference on Research and Development in Information<br>
+Retrieval. SIGIR ’98. Melbourne, Australia: ACM. 335–336. doi: 10.1145/290941.291025.<br>
+url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/290941.291025">http://doi.acm.org/10.1145/290941.291025</a>.</p>
+<p>Cardoso, N. 2011. “Evaluating Geographic Information Retrieval”. SIGSPATIAL Special.<br>
+3(2): 46–53.</p>
+<p>Carvalho, V. R., M. Lease, and E. Yilmaz. 2011. “Crowdsourcing for search evaluation”.<br>
+SIGIR Forum. 44: 17–22.</p>
+<p>Case, D. O. and L. M. Given. 2016. Looking for Information: A Survey of Research on<br>
+Information Seeking, Needs, and Behavior. Studies in Information. Emerald Group<br>
+Publishing Limited.</p>
+<p>Chapelle, O., D. Metlzer, Y. Zhang, and P. Grinspan. 2009. “Expected Reciprocal Rank<br>
+for Graded Relevance”. In: Proceedings of the 18th ACM Conference on Information<br>
+and Knowledge Management. CIKM ’09. Hong Kong, China: ACM. 621–630. doi:<br>
+10.1145/1645953.1646033. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/1645953.1646033">http://doi.acm.org/10.1145/1645953.1646033</a>.</p>
+<p>Chen, L., G. Cong, C. S. Jensen, and D. Wu. 2013. “Spatial keyword query processing:<br>
+an experimental evaluation”. In: Proceedings of the 39th international conference on<br>
+Very Large Data Bases. PVLDB’13. Trento, Italy: VLDB Endowment. 217–228. url:<br>
+<a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=2448948.2448955">http://dl.acm.org/citation.cfm?id=2448948.2448955</a>.</p>
+<p>Chen, Y., T. Suel, and A. Markowetz. 2006. “Efficient query processing in geographic web<br>
+search engines”. In: SIGMOD Conference. 277–288.</p>
+<p>Chin, J. P., V. A. Diehl, and K. L. Norman. 1988. “Development of an Instrument Measuring<br>
+User Satisfaction of the Human-computer Interface”. In: Proceedings of the SIGCHI<br>
+Conference on Human Factors in Computing Systems. CHI ’88. Washington, D.C., USA:<br>
+ACM. 213–218. doi: 10.1145/57167.57203. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/57167">http://doi.acm.org/10.1145/57167</a>.<br>
+57203.</p>
+<p>Choi, J., C. Hauff, O. V. L. Olivier, and B. Thomee. 2015. “The placing task at mediaeval<br>
+2015”. In: MediaEval 2015, Wurzen, Germany, 14-15 September 2015; Ceur Workshop<br>
+Proceedings 1436, 2015. CEUR.</p>
+<p>Christoforaki, M., J. He, C. Dimopoulos, A. Markowetz, and T. Suel. 2011. “Text vs. Space:<br>
+Efficient Geo-search Query Processing”. In: Proceedings of the 20th ACM International<br>
+Conference on Information and Knowledge Management. CIKM ’11. Glasgow, Scotland,<br>
+UK: ACM. 423–432. doi: 10.1145/2063576.2063641. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/">http://doi.acm.org/10.1145/</a><br>
+2063576.2063641.</p>
+<p>Cleverdon, C. W. 1991. “The significance of the Cranfield tests on index languages”. In:<br>
+Proceedings of the 14th annual international ACM SIGIR conference on Research and<br>
+development in information retrieval. SIGIR ’91. 3–12.</p>
+<p>Cleverdon, C. W., J. Mills, and M. Keen. 1966. “Factors determining the performance of<br>
+indexing systems”. Aslib Cranfield Research Project Cranfield England.</p>
+<p>Clough, P. 2005. “Extracting Metadata for Spatially-aware Information Retrieval on the<br>
+Internet”. In: Proceedings of the 2005 Workshop on Geographic Information Retrieval.<br>
+GIR ’05. Bremen, Germany: ACM. 25–30. doi: 10.1145/1096985.1096992. url: http:<br>
+<a target="_blank" rel="noopener" href="//doi.acm.org/10.1145/1096985.1096992">//doi.acm.org/10.1145/1096985.1096992</a>.</p>
+<p>Clough, P. D., H. Joho, and R. Purves. 2006. “Judging the Spatial Relevance of Documents<br>
+for GIR”. In: Advances in Information Retrieval: 28th European Conference on IR<br>
+Research, ECIR 2006, London, UK, April 10-12, 2006. Proceedings. Ed. by M. Lalmas,<br>
+A. MacFarlane, S. Rüger, A. Tombros, T. Tsikrika, and A. Yavlinsky. Berlin, Heidelberg:<br>
+Springer Berlin Heidelberg. 548–552. doi: 10.1007/11735106_62. url: <a target="_blank" rel="noopener" href="https://doi.org/">https://doi.org/</a><br>
+10.1007/11735106_62.</p>
+<p>Clough, P. and M. Sanderson. 2013. “Evaluating the performance of information retrieval<br>
+systems using test collections.” Information Research. 18(2).</p>
+<p>Cohn, A. G. and N. M. Gotts. 1996. “The ’Egg-Yolk’ Representation Of Regions with Inde-<br>
+terminate Boundaries”. In: Proceedings, GISDATA Specialist Meeting on Geographical<br>
+Objects with Undetermined Boundaries. Francis Taylor. 171–187.<br>
+Cole, C. 2011. “A Theory of Information Need for Information Retrieval That Connects</p>
+<p>Information to Knowledge”. J. Am. Soc. Inf. Sci. Technol. 62(7): 1216–1231. doi:<br>
+10.1002/asi.21541. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1002/asi.21541">http://dx.doi.org/10.1002/asi.21541</a>.</p>
+<p>Cong, G. and C. S. Jensen. 2016. “Querying Geo-Textual Data: Spatial Keyword Queries<br>
+and Beyond”. In: Proceedings of the 2016 International Conference on Management of<br>
+Data. SIGMOD ’16. San Francisco, California, USA: ACM. 2207–2212. doi: 10.1145/<br>
+2882903.2912572. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/2882903.2912572">http://doi.acm.org/10.1145/2882903.2912572</a>.</p>
+<p>Cong, G., C. S. Jensen, and D. Wu. 2009. “Efficient Retrieval of the Top-k Most Relevant<br>
+Spatial Web Objects”. Proc. VLDB Endow. 2(1): 337–348. doi: 10.14778/1687627.</p>
+<p>url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.14778/1687627.1687666">http://dx.doi.org/10.14778/1687627.1687666</a>.</p>
+<p>Coventry, K. R. and S. C. Garrod. 2004. Saying, Seeing and Acting: The Psychological<br>
+Semantics of Spatial Prepositions. Essays in Cognitive Psychology. Taylor &amp; Francis.</p>
+<p>Crandall, D., L. Backstrom, D. Huttenlocher, and J. Kleinberg. 2009. “Mapping the world’s<br>
+photos”. In: Proceedings of the 18th International Conference on World Wide Web. ACM.<br>
+761–770.</p>
+<p>Curran, J. R. and S. Clark. 2003. “Language Independent NER Using a Maximum Entropy<br>
+Tagger”. In: Proceedings of the Seventh Conference on Natural Language Learning<br>
+at HLT-NAACL 2003 - Volume 4. CONLL ’03. Edmonton, Canada: Association for<br>
+Computational Linguistics. 164–167. doi: 10.3115/1119176.1119200. url: <a target="_blank" rel="noopener" href="http://dx.doi">http://dx.doi</a>.<br>
+org/10.3115/1119176.1119200.</p>
+<p>De Felipe, I., V. Hristidis, and N. Rishe. 2008. “Keyword Search on Spatial Databases”.<br>
+In: Proceedings of the 2008 IEEE 24th International Conference on Data Engineering.<br>
+ICDE ’08. Washington, DC, USA: IEEE Computer Society. 656–665. doi: 10.1109/<br>
+ICDE.2008.4497474. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1109/ICDE.2008.4497474">http://dx.doi.org/10.1109/ICDE.2008.4497474</a>.</p>
+<p>De Sabbata, S., O. Alonso, and S. Mizzaro. 2012. “Classical vs. crowdsourcing surveys for<br>
+eliciting geographic relevance criteria”. In: IIR 2012 Italian Information Retrieval Work-<br>
+shop. Ed. by G. Amati, C. Carpineto, and G. Semeraro. CEUR Workshop Proceedings.<br>
+No. 835. Dipartimento di Informatica (DIB), Università di Bari “Aldo Moro”. 65–72.<br>
+url: <a target="_blank" rel="noopener" href="https://doi.org/10.5167/uzh-66808">https://doi.org/10.5167/uzh-66808</a>.</p>
+<p>De Sabbata, S. and T. Reichenbacher. 2010. “A Probabilistic Model of Geographic Rel-<br>
+evance”. In: Proceedings of the 6th Workshop on Geographic Information Retrieval.<br>
+GIR ’10. Zurich, Switzerland: ACM. 23:1–23:2. doi: 10.1145/1722080.1722109. url:<br>
+<a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/1722080.1722109">http://doi.acm.org/10.1145/1722080.1722109</a>.</p>
+<p>De Sabbata, S. and T. Reichenbacher. 2012. “Criteria of geographic relevance: an experi-<br>
+mental study”. International Journal of Geographical Information Science. 26(8): 1495–<br>
+1520.</p>
+<p>DeLozier, G., J. Baldridge, and L. London. 2015. “Gazetteer-independent Toponym Reso-<br>
+lution Using Geographic Word Profiles”. In: Proceedings of the Twenty-Ninth AAAI<br>
+Conference on Artificial Intelligence. AAAI’15. Austin, Texas: AAAI Press. 2382–2388.<br>
+url: <a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=2886521.2886652">http://dl.acm.org/citation.cfm?id=2886521.2886652</a>.</p>
+<p>Derungs, C. and R. S. Purves. 2014. “From text to landscape: locating, identifying and<br>
+mapping the use of landscape features in a Swiss Alpine corpus”. International Journal of<br>
+Geographical Information Science. 28(6): 1272–1293. doi: 10.1080/13658816.2013.772184.<br>
+eprint: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1080/13658816.2013.772184">http://dx.doi.org/10.1080/13658816.2013.772184</a>. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10">http://dx.doi.org/10</a>.<br>
+1080/13658816.2013.772184.</p>
+<p>Derungs, C. and R. S. Purves. 2016. “Mining nearness relations from an n-grams Web<br>
+corpus in geographical space”. Spatial Cognition &amp; Computation. 16(4): 301–322.</p>
+<p>Ding, J., L. Gravano, and N. Shivakumar. 2000. “Computing Geographical Scopes of Web<br>
+Resources”. In: Proceedings of the 26th International Conference on Very Large Data<br>
+Bases. VLDB ’00. San Francisco, CA, USA: Morgan Kaufmann Publishers Inc. 545–556.<br>
+url: <a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=645926.672013">http://dl.acm.org/citation.cfm?id=645926.672013</a>.</p>
+<p>Drosou, M. and E. Pitoura. 2010. “Search Result Diversification”. SIGMOD Rec. 39(1): 41–1 doi: 10.1145/1860702.1860709. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/1860702.1860709">http://doi.acm.org/10.1145/1860702.1860709</a>.</p>
+<p>Dunlop, M. 2000. “Reflections on Mira: Interactive evaluation in information retrieval”.<br>
+Journal of the American Society for Information Science. 51(14): 1269–1274. doi:<br>
+10.1002/1097-4571(2000)9999:9999&lt;::AID-ASI1042&gt;<a target="_blank" rel="noopener" href="http://3.0.CO">3.0.CO</a>;2-7.</p>
+<p>Dykes, J., A. M. MacEachren, and M.-J. Kraak. 2005. Exploring geovisualization. Elsevier.</p>
+<p>Feng, J., M. Johnston, and S. Bangalore. 2011. “Speech and multimodal interaction in<br>
+mobile search”. Signal Processing Magazine, IEEE. 28(4): 40–49.</p>
+<p>Ferrès, D. and H. Rodriguez. 2015. “Evaluating geographical knowledge re-ranking, linguistic<br>
+processing and query expansion techniques for geographical information retrieval”. In:<br>
+International Symposium on String Processing and Information Retrieval. Springer.<br>
+311–323.</p>
+<p>Fisher, P. 2000. “Sorites paradox and vague geographies”. Fuzzy Sets and Systems. 113(1):<br>
+7–18. doi: https : / / doi . org / 10 . 1016 / S0165 - 0114(99 ) 00009 - 3. url: http : / / www .<br>
+<a target="_blank" rel="noopener" href="http://sciencedirect.com/science/article/pii/S0165011499000093">sciencedirect.com/science/article/pii/S0165011499000093</a>.</p>
+<p>Frontiera, P., R. Larson, and J. Radke. 2008. “A Comparison of Geometric Approaches<br>
+to Assessing Spatial Similarity for GIR”. Int. J. Geogr. Inf. Sci. 22(3): 337–360. doi:<br>
+10.1080/13658810701626293. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1080/13658810701626293">http://dx.doi.org/10.1080/13658810701626293</a>.</p>
+<p>Gaio, M., C. Sallaberry, P. Etcheverry, C. Marquesuzaa, and J. Lesbegueries. 2008. “A<br>
+global process to access documentsćontents from a geographical point of view”. Journal<br>
+of Visual Languages &amp; Computing. 19(1): 3–23.</p>
+<p>Gale, W., K. Church, and D. Yarowsky. 1992. “One Sense Per Discourse”. In: Proceedings<br>
+of the Workshop on Speech and Natural Language. HLT ’91. Harriman, New York:<br>
+Association for Computational Linguistics. 233–237. doi: 10.3115/1075527.1075579.<br>
+url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.3115/1075527.1075579">http://dx.doi.org/10.3115/1075527.1075579</a>.</p>
+<p>Gan, Q., J. Attenberg, A. Markowetz, and T. Suel. 2008. “Analysis of Geographic Queries in<br>
+a Search Engine Log”. In: Proceedings of the First International Workshop on Location<br>
+and the Web. LOCWEB ’08. Beijing, China: ACM. 49–56. doi: 10.1145/1367798.1367806.<br>
+url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/1367798.1367806">http://doi.acm.org/10.1145/1367798.1367806</a>.</p>
+<p>Gao, S., K. Janowicz, D. R. Montello, Y. Hu, J.-A. Yang, G. McKenzie, Y. Ju, L. Gong, B.<br>
+Adams, and B. Yan. 2017. “A data-synthesis-driven method for detecting and extracting<br>
+vague cognitive regions”. International Journal of Geographical Information Science.<br>
+31(6): 1245–1271.</p>
+<p>Gey, F. C., R. R. Larson, M. Sanderson, H. Joho, P. Clough, and V. Petras. 2005. “GeoCLEF:<br>
+The CLEF 2005 Cross-Language Geographic Information Retrieval Track Overview”.<br>
+In: CLEF. 908–919.</p>
+<p>Gey, F., R. Larson, M. Sanderson, K. Bischoff, T. Mandl, C. Womser-Hacker, D. Santos,<br>
+P. Rocha, and A. Montoyo. 2007. “Challenges to evaluation of multilingual geographic<br>
+information retrieval in GeoCLEF”. In: The First International Workshop on Evaluating<br>
+Information Access (EVIA). url: <a target="_blank" rel="noopener" href="http://eprints.whiterose.ac.uk/4535/">http://eprints.whiterose.ac.uk/4535/</a>.</p>
+<p>Goodchild, M. F. 2010. “Twenty years of progress: GIScience in 2010”. Journal of Spatial<br>
+Information Science. 2010(1): 3–20.</p>
+<p>Graham, M. and S. De Sabbata. 2015. “Mapping information wealth and poverty: the<br>
+geography of gazetteers”. Environment and Planning A. 47(6): 1254–1264.</p>
+<p>Gritta, M., M. T. Pilehvar, N. Limsopatham, and N. Collier. 2017. “What’s missing in<br>
+geographical parsing?” Language Resources and Evaluation. Mar. doi: 10.1007/s10579-<br>
+017-9385-8. url: <a target="_blank" rel="noopener" href="https://doi.org/10.1007/s10579-017-9385-8">https://doi.org/10.1007/s10579-017-9385-8</a>.</p>
+<p>Grover, C., R. Tobin, K. Byrne, M. Woollard, J. Reid, S. Dunn, and J. Ball. 2010. “Use<br>
+of the Edinburgh geoparser for georeferencing digitized historical collections”. Philo-<br>
+sophical Transactions of the Royal Society of London A: Mathematical, Physical and<br>
+Engineering Sciences. 368(1925): 3875–3889. doi: 10 . 1098 / rsta . 2010 . 0149. eprint:<br>
+<a target="_blank" rel="noopener" href="http://rsta.royalsocietypublishing.org/content/368/1925/3875.full.pdf">http://rsta.royalsocietypublishing.org/content/368/1925/3875.full.pdf</a>. url: http:<br>
+<a target="_blank" rel="noopener" href="//rsta.royalsocietypublishing.org/content/368/1925/3875">//rsta.royalsocietypublishing.org/content/368/1925/3875</a>.</p>
+<p>Hall, M. M., P. D. Smart, and C. B. Jones. 2011. “Interpreting Spatial Language in Image<br>
+Captions”. Cognitive Processing. 12(1): 67–94. doi: 10.1007/s10339-010-0385-5.<br>
+Hariharan, R., B. Hore, C. Li, and S. Mehrotra. 2007a. “Processing Spatial-Keyword (SK)<br>
+Queries in Geographic Information Retrieval (GIR) Systems”. In: 19th International<br>
+Conference on Scientific and Statistical Database Management (SSDBM 2007). 16–16.<br>
+doi: 10.1109/SSDBM.2007.22.</p>
+<p>Hariharan, R., B. Hore, C. Li, and S. Mehrotra. 2007b. “Processing Spatial-Keyword (SK)<br>
+Queries in Geographic Information Retrieval (GIR) Systems”. In: Proceedings of the 19th<br>
+International Conference on Scientific and Statistical Database Management. SSDBM ’07.<br>
+Washington, DC, USA: IEEE Computer Society. 16–16. doi: 10.1109/SSDBM.2007.22.<br>
+url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1109/SSDBM.2007.22">http://dx.doi.org/10.1109/SSDBM.2007.22</a>.</p>
+<p>Harman, D. 2011. Information Retrieval Evaluation. 1st. Morgan &amp; Claypool Publishers.<br>
+Harter, S. P. and C. A. Hert. 1997. “Evaluation of information retrieval systems: Approaches,<br>
+issues, and methods.” Annual Review of Information Science and Technology (ARIST).<br>
+32: 3–94.</p>
+<p>Hearst, M. A. 2009. Search User Interfaces. 1st. New York, NY, USA: Cambridge University<br>
+Press.</p>
+<p>Henrich, A. and V. Luedecke. 2007. “Characteristics of Geographic Information Needs”.<br>
+In: Proceedings of the 4th ACM Workshop on Geographical Information Retrieval.<br>
+GIR ’07. Lisbon, Portugal: ACM. 1–6. doi: 10 . 1145 / 1316948 . 1316950. url: http :<br>
+<a target="_blank" rel="noopener" href="//doi.acm.org/10.1145/1316948.1316950">//doi.acm.org/10.1145/1316948.1316950</a>.</p>
+<p>Herskovits, A. 1986. Language and Spatial Cognition: An Interdisciplinary Study of Prepo-<br>
+sitions in English. Cambridge University Press.</p>
+<p>Hill, L. L. 2000. “Core elements of digital gazetteers: placenames, categories, and footprints”.<br>
+In: Research and advanced technology for digital libraries. Springer. 280–290.</p>
+<p>Hill, L. L. 2006. Georeferencing: The Geographic Associations of Information (Digital<br>
+Libraries and Electronic Publishing). The MIT Press.</p>
+<p>Hill, L. L., L. Carver, M. Larsgaard, R. Dolin, T. R. Smith, J. Frew, and M.-A. Rae. 2000.<br>
+“Alexandria digital library: user evaluation studies and system design”. Journal of the<br>
+American Society for Information Science. 51(3): 246–259.</p>
+<p>Himmelstein, M. 2005. “Local Search: The Internet Is the Yellow Pages”. Computer. 38(2):<br>
+26–34. doi: <a target="_blank" rel="noopener" href="http://doi.ieeecomputersociety.org/10.1109/MC.2005.65">http://doi.ieeecomputersociety.org/10.1109/MC.2005.65</a>.</p>
+<p>Hjaltason, G. and H. Samet. 1999. “Distance browsing in spatial databases”. ACM Trans-<br>
+actions on Database Systems. 24(2): 265–318.</p>
+<p>Hobona, G., P. James, and D. Fairbairn. 2005. “An Evaluation of a Multidimensional Visual<br>
+Interface for Geographic Information Retrieval”. In: Proceedings of the 2005 Workshop<br>
+on Geographic Information Retrieval. GIR ’05. Bremen, Germany: ACM. 5–8. doi:<br>
+10.1145/1096985.1096988. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/1096985.1096988">http://doi.acm.org/10.1145/1096985.1096988</a>.</p>
+<p>Hoeber, O. and X. D. Yang. 2007. “User-Oriented Evaluation Methods for Interactive<br>
+Web Search Interfaces”. In: Proceedings of the 2007 IEEE/WIC/ACM International<br>
+Conferences on Web Intelligence and Intelligent Agent Technology - Workshops. WI-<br>
+IATW ’07. IEEE Computer Society. 239–243.</p>
+<p>Hofmann, K., L. Li, and F. Radlinski. 2016. “Online Evaluation for Information Retrieval”.<br>
+Foundations and Trends® in Information Retrieval. 10(June): 1–117.<br>
+Ide, N. and J. Véronis. 1998. “Introduction to the Special Issue on Word Sense Disambigua-<br>
+tion: The State of the Art”. Comput. Linguist. 24(1): 2–40. url: <a target="_blank" rel="noopener" href="http://dl.acm.org/">http://dl.acm.org/</a><br>
+citation.cfm?id=972719.972721.</p>
+<p>Janowicz, K., M. Raubal, and W. Kuhn. 2011. “The semantics of similarity in geographic<br>
+information retrieval”. Journal of Spatial Information Science. 2011(2): 29–57.</p>
+<p>Järvelin, K. 2011. “Evaluation”. In: Interactive information seeking, behaviour and retrieval.<br>
+Ed. by I. Ruthven and D. Kelly. London, UK: Facet Publishing.</p>
+<p>Järvelin, K. and J. Kekäläinen. 2000. “IR Evaluation Methods for Retrieving Highly Relevant<br>
+Documents”. In: Proceedings of the 23rd Annual International ACM SIGIR Conference<br>
+on Research and Development in Information Retrieval. SIGIR ’00. Athens, Greece: ACM.<br>
+41–48. doi: 10.1145/345508.345545. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/345508.345545">http://doi.acm.org/10.1145/345508.345545</a>.</p>
+<p>Jones, C. B., A. I. Abdelmoty, D. Finch, G. Fu, and S. Vaid. 2004. “The SPIRIT Spatial<br>
+Search Engine: Architecture, Ontologies and Spatial Indexing”. In: Geographic Informa-<br>
+tion Science. Ed. by M. J. Egenhofer, C. Freksa, and H. J. Miller. Vol. 3234. Lecture<br>
+Notes in Computer Science. Springer Berlin Heidelberg. 125–139. doi: 10.1007/978-3-<br>
+540-30231-5_9. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1007/978-3-540-30231-5_9">http://dx.doi.org/10.1007/978-3-540-30231-5_9</a>.</p>
+<p>Jones, C. B. and R. S. Purves. 2008. “Geographical Information Retrieval”. Int. J. Geogr.<br>
+Inf. Sci. 22(3): 219–228. doi: 10.1080/13658810701626343. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10">http://dx.doi.org/10</a>.<br>
+1080/13658810701626343.</p>
+<p>Jones, C. B., R. S. Purves, P. D. Clough, and H. Joho. 2008. “Modelling Vague Places with<br>
+Knowledge from the Web”. Int. J. Geogr. Inf. Sci. 22(10): 1045–1065. doi: 10.1080/1 url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1080/13658810701850547">http://dx.doi.org/10.1080/13658810701850547</a>.</p>
+<p>Karimzadeh, M., W. Huang, S. Banerjee, J. O. Wallgrün, F. Hardisty, S. Pezanowski,<br>
+P. Mitra, and A. M. MacEachren. 2013. “GeoTxt: A Web API to Leverage Place<br>
+References in Text”. In: Proceedings of the 7th Workshop on Geographic Information<br>
+Retrieval. GIR ’13. Orlando, Florida: ACM. 72–73. doi: 10.1145/2533888.2533942. url:<br>
+<a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/2533888.2533942">http://doi.acm.org/10.1145/2533888.2533942</a>.</p>
+<p>Karney, C. F. F. 2013. “Algorithm for Geodesics”. Journey of Geodetics. 87(1): 43–55.</p>
+<p>Kelly, D. 2009. “Methods for evaluating interactive information retrieval systems with<br>
+users”. Foundations and Trends in Information Retrieval. 3(1-2): 1–224.</p>
+<p>Keßler, C., K. Janowicz, and M. Bishr. 2009. “An agenda for the next generation gazetteer:<br>
+Geographic information contribution and retrieval”. In: Proceedings of the 17th ACM<br>
+SIGSPATIAL international conference on advances in Geographic Information Systems.<br>
+ACM. 91–100.</p>
+<p>Khodaei, A., C. Shahabi, and C. Li. 2010. “Hybrid Indexing and Seamless Ranking of<br>
+Spatial and Textual Features of Web Documents”. In: DEXA. 450–466.</p>
+<p>Khodaei, A., C. Shahabi, and C. Li. 2012. “SKIF-P: a point-based indexing and ranking of<br>
+web documents for spatial-keyword search”. GeoInformatica. 16(3): 563–596.</p>
+<p>Kinney, K. A., S. B. Huffman, and J. Zhai. 2008. “How evaluator domain expertise affects<br>
+search result relevance judgments”. In: Proceedings of the 17th ACM conference on<br>
+Information and knowledge management. CIKM ’08. ACM. 591–598.</p>
+<p>Kinsella, S., V. Murdock, and N. O’Hare. 2011. ““I’M Eating a Sandwich in Glasgow”:<br>
+Modeling Locations with Tweets”. In: Proceedings of the 3rd International Workshop<br>
+on Search and Mining User-generated Contents. SMUC ’11. Glasgow, Scotland, UK:<br>
+ACM. 61–68. doi: 10.1145/2065023.2065039. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/2065023">http://doi.acm.org/10.1145/2065023</a>.<br>
+2065039.</p>
+<p>Kreveld, M., I. Reinbacher, A. Arampatzis, and R. Zwol. 2005. “Developments in Spa-<br>
+tial Data Handling: 11th International Symposium on Spatial Data Handling”. In:<br>
+Berlin, Heidelberg: Springer Berlin Heidelberg. Chap. Distributed Ranking Methods<br>
+for Geographic Information Retrieval. 231–243. doi: 10.1007/3-540-26772-7_18. url:<br>
+<a target="_blank" rel="noopener" href="http://dx.doi.org/10.1007/3-540-26772-7_18">http://dx.doi.org/10.1007/3-540-26772-7_18</a>.</p>
+<p>Laere, O. V., S. Schockaert, V. Tanasescu, B. Dhoedt, and C. B. Jones. 2014. “Georeferencing<br>
+Wikipedia Documents Using Data from Social Media Sources”. ACM Trans. Inf. Syst.<br>
+32(3): 12:1–12:32. doi: 10.1145/2629685. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/2629685">http://doi.acm.org/10.1145/2629685</a>.<br>
+102Landau, B. and R. Jackendoff. 1993. ““What” and “where” in spatial language and spatial<br>
+cognition”. Behavioral and Brain Sciences. 16(2): 217–238.</p>
+<p>Larson, R. R. 1996. “Geographic Information Retrieval and Spatial Browsing”. GIS and<br>
+Libraries: Patrons, Maps and Spatial Information. Apr.: 81–124. Ed. by L. Smith and<br>
+M. Gluck.</p>
+<p>Larson, R. R. 2011. “Ranking Approaches for GIR”. SIGSPATIAL Special. 3(2): 37–41.<br>
+doi: 10.1145/2047296.2047305. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/2047296.2047305">http://doi.acm.org/10.1145/2047296.2047305</a>.</p>
+<p>Larson, R. R. and P. Frontiera. 2004. “Spatial Ranking Methods for Geographic Information<br>
+Retrieval (GIR) in Digital Libraries”. In: Research and Advanced Technology for Digital<br>
+Libraries, 8th European Conference, ECDL 2004, Bath, UK, September 12-17, 2004,<br>
+Proceedings. 45–56.</p>
+<p>Leidner, J. L. 2006. “An evaluation dataset for the toponym resolution task”. Computers,<br>
+Environment and Urban Systems. 30(4): 400–417.</p>
+<p>Leidner, J. L. 2008. Toponym Resolution in Text : Annotation, Evaluation and Applications<br>
+of Spatial Grounding of Place Names. Boca Raton, FL, USA: Universal Press.</p>
+<p>Leidner, J. L. and M. D. Lieberman. 2011. “Detecting Geographical References in the Form<br>
+of Place Names and Associated Spatial Natural Language”. SIGSPATIAL Special. 3(2):<br>
+5–11. doi: 10.1145/2047296.2047298. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/2047296.2047298">http://doi.acm.org/10.1145/2047296.2047298</a>.</p>
+<p>Leveling, J. 2015. “Tagging of Temporal Expressions and Geological Features in Scientific<br>
+Articles”. In: Proceedings of the 9th Workshop on Geographic Information Retrieval.<br>
+GIR ’15. Paris, France: ACM. 6:1–6:10. doi: 10.1145/2837689.2837701. url: http:<br>
+<a target="_blank" rel="noopener" href="//doi.acm.org/10.1145/2837689.2837701">//doi.acm.org/10.1145/2837689.2837701</a>.</p>
+<p>Levinson, S. C. 2003a. “Frames of reference”. In: Space in Language and Cognition: Explo-<br>
+rations in Cognitive Diversity. Language Culture and Cognition. Cambridge University<br>
+Press. 24–61. doi: 10.1017/CBO9780511613609.003.</p>
+<p>Levinson, S. C. 2003b. Space in language and cognition: Explorations in cognitive diversity.<br>
+Cambridge: CUP.</p>
+<p>Lewis, J. R. 1995. “IBM computer usability satisfaction questionnaires: psychometric evalu-<br>
+ation and instructions for use”. International Journal of Human-Computer Interaction.<br>
+7(1): 57–78.</p>
+<p>Li, H. 2011. “A Short Introduction to Learning to Rank”. IEICE Transactions on Information<br>
+and Systems. E94.D(10): 1854–1862. doi: 10.1587/transinf.E94.D.1854.</p>
+<p>Li, H., R. K. Srihari, C. Niu, and W. Li. 2003. “InfoXtract Location Normalization: A<br>
+Hybrid Approach to Geographic References in Information Extraction”. In: Proceedings<br>
+of the HLT-NAACL 2003 Workshop on Analysis of Geographic References - Volume 1.<br>
+HLT-NAACL-GEOREF ’03. Stroudsburg, PA, USA: Association for Computational<br>
+Linguistics. 39–44. doi: 10.3115/1119394.1119400. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.3115/">http://dx.doi.org/10.3115/</a><br>
+1119394.1119400.</p>
+<p>Li, Z., K. C. K. Lee, B. Zheng, W.-C. Lee, D. L. Lee, and X. Wang. 2011. “IR-Tree: An<br>
+Efficient Index for Geographic Document Search.” IEEE Transactions on Knowledge<br>
+and Data Engineering. 23(4): 585–599. url: <a target="_blank" rel="noopener" href="http://dblp.uni-trier.de/db/journals/tkde/">http://dblp.uni-trier.de/db/journals/tkde/</a><br>
+tkde23.html#LiLZLLW11.</p>
+<p>Lieberman, M. D., H. Samet, and J. Sankaranarayanan. 2010. “Geotagging with local<br>
+lexicons to build indexes for textually-specified spatial data”. In: 2010 IEEE 26th<br>
+International Conference on Data Engineering (ICDE 2010). 201–212. doi: 10.1109/<br>
+ICDE.2010.5447903.</p>
+<p>Lieberman, M. D., H. Samet, J. Sankaranarayanan, and J. Sperling. 2007. “STEWARD:<br>
+Architecture of a Spatio-textual Search Engine”. In: Proceedings of the 15th Annual<br>
+ACM International Symposium on Advances in Geographic Information Systems. GIS<br>
+’07. Seattle, Washington: ACM. 25:1–25:8. doi: 10.1145/1341012.1341045. url: http:<br>
+<a target="_blank" rel="noopener" href="//doi.acm.org/10.1145/1341012.1341045">//doi.acm.org/10.1145/1341012.1341045</a>.</p>
+<p>Lieberman, M. and H. Samet. 2012. “Adaptive Context Features for Toponym Resolution<br>
+in Streaming News”. In: Proceedings of the 35th International ACM SIGIR Conference<br>
+on Research and Development in Information Retrieval. SIGIR ’12. Portland, Oregon,<br>
+USA: ACM. 731–740. isbn: 978-1-4503-1472-5. doi: 10.1145/2348283.2348381. url:<br>
+<a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/2348283.2348381">http://doi.acm.org/10.1145/2348283.2348381</a>.</p>
+<p>Liu, T.-Y. 2009. “Learning to Rank for Information Retrieval”. Foundations and Trends in<br>
+Information Retrieval. 3(3): 225–331. doi: 10.1561/1500000016. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/">http://dx.doi.org/</a><br>
+10.1561/1500000016.</p>
+<p>Longley, P. A., M. F. Goodchild, D. J. Maguire, and D. W. Rhind. 2015. Geographic<br>
+information science and systems. John Wiley &amp; Sons.</p>
+<p>Lowe, D. G. 2004. “Distinctive image features from scale-invariant keypoints”. International<br>
+journal of computer vision. 60(2): 91–110.</p>
+<p>MacEachren, A. M. 1995. How maps work: representation, visualization, and design. Guilford<br>
+Press.</p>
+<p>Mackaness, W. A., A. Ruas, and L. T. Sarjakoski. 2011. Generalisation of geographic<br>
+information: cartographic modelling and applications. Elsevier.</p>
+<p>Mandl, T. 2011. “Evaluating GIR: Geography-oriented or User-oriented?” SIGSPATIAL<br>
+Special. 3(2): 42–45.</p>
+<p>Mandl, T., P. Carvalho, G. M. Di Nunzio, F. Gey, R. R. Larson, D. Santos, and C.<br>
+Womser-Hacker. 2008a. “GeoCLEF 2008: the CLEF 2008 cross-language geographic<br>
+information retrieval track overview”. In: Evaluating Systems for Multilingual and<br>
+Multimodal Information Access. Springer. 808–821.</p>
+<p>Mandl, T., F. Gey, G. (Di Nunzio), N. Ferro, M. Sanderson, D. Santos, and C. Womser-<br>
+Hacker. 2008b. “An Evaluation Resource for Geographic Information Retrieval”. In:<br>
+Proceedings of the Sixth International Conference on Language Resources and Evaluation<br>
+(LREC’08). Ed. by N. C. ( Chair), K. Choukri, B. Maegaard, J. Mariani, J. Odijk, S.<br>
+Piperidis, and D. Tapias. <a target="_blank" rel="noopener" href="http://www.lrec-conf.org/proceedings/lrec2008/">http://www.lrec-conf.org/proceedings/lrec2008/</a>. Marrakech,<br>
+Morocco: European Language Resources Association (ELRA).</p>
+<p>Manguinhas, H., B. Martins, and J. Borbinha. 2008. “A geo-temporal web gazetteer<br>
+integrating data from multiple sources”. In: Digital Information Management, 2008.<br>
+ICDIM 2008. Third International Conference on. IEEE. 146–153.</p>
+<p>Manning, C. D., P. Raghavan, and H. Schütze. 2008. Introduction to Information Retrieval.<br>
+New York, NY, USA: Cambridge University Press.</p>
+<p>Mao, J., Y. Liu, K. Zhou, J.-Y. Nie, J. Song, M. Zhang, S. Ma, J. Sun, and H. Luo. “When Does Relevance Mean Usefulness and User Satisfaction in Web Search?”<br>
+In: Proceedings of the 39th International ACM SIGIR Conference on Research and<br>
+Development in Information Retrieval. SIGIR ’16. Pisa, Italy: ACM. 463–472. doi:<br>
+10.1145/2911451.2911507. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/2911451.2911507">http://doi.acm.org/10.1145/2911451.2911507</a>.</p>
+<p>Marchionini, G. 2006. “Exploratory Search: From Finding to Understanding”. Commun.<br>
+ACM. 49(4): 41–46. doi: 10.1145/1121949.1121979. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/">http://doi.acm.org/10.1145/</a><br>
+1121949.1121979.</p>
+<p>Mark, D. M., D. Comas, M. . Egenhofer, S. M. Freundschuh, M. D. Gould, and J. Nunes. “Evaluating and refining computational models of spatial relations through cross-<br>
+linguistic human-subjects testing”. In: Spatial Information Theory A Theoretical Basis<br>
+for GIS. Vol. 988/1995. Lecture Notes in Computer Science. Springer Berlin / Heidelberg.<br>
+553–568.</p>
+<p>Martins, B. 2011. “A supervised machine learning approach for duplicate detection over<br>
+gazetteer records”. In: GeoSpatial Semantics. Springer. 34–51.</p>
+<p>Martins, B. and P. Calado. 2010. “Learning to Rank for Geographic Information Retrieval”.<br>
+In: Proceedings of the 6th Workshop on Geographic Information Retrieval. GIR ’10.<br>
+Zurich, Switzerland: ACM. 21:1–21:8. doi: 10 . 1145 / 1722080 . 1722107. url: http :<br>
+<a target="_blank" rel="noopener" href="//doi.acm.org/10.1145/1722080.1722107">//doi.acm.org/10.1145/1722080.1722107</a>.</p>
+<p>Martins, B., M. J. Silva, and M. S. Chaves. 2005. “Challenges and Resources for Evaluating<br>
+Geographical IR”. In: Proceedings of the 2005 Workshop on Geographic Information<br>
+Retrieval. GIR ’05. Bremen, Germany: ACM. 65–69.</p>
+<p>Maskari, A., M. Sanderson, and P. Clough. 2007. “The Relationship Between IR Effective-<br>
+ness Measures and User Satisfaction”. In: Proceedings of the 30th Annual International<br>
+ACM SIGIR Conference on Research and Development in Information Retrieval. SI-<br>
+GIR ’07. Amsterdam, The Netherlands: ACM. 773–774. isbn: 978-1-59593-597-7. doi:<br>
+10.1145/1277741.1277902. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/1277741.1277902">http://doi.acm.org/10.1145/1277741.1277902</a>.</p>
+<p>McCurley, K. S. 2001. “Geospatial Mapping and Navigation of the Web”. In: Proceedings of<br>
+the 10th International Conference on World Wide Web. WWW ’01. Hong Kong, Hong<br>
+Kong: ACM. 221–229. doi: 10.1145/371920.372056.</p>
+<p>Melo, F. and B. Martins. 2017. “Automated Geocoding of Textual Documents: A Survey of<br>
+Current Approaches”. Transactions in GIS. 21(1): 3–38.</p>
+<p>Mikheev, A., M. Moens, and C. Grover. 1999. “Named Entity Recognition Without<br>
+Gazetteers”. In: Proceedings of the Ninth Conference on European Chapter of the<br>
+Association for Computational Linguistics. EACL ’99. Bergen, Norway: Association for<br>
+Computational Linguistics. 1–8. doi: 10.3115/977035.977037. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/">http://dx.doi.org/</a><br>
+10.3115/977035.977037.</p>
+<p>Montello, D. R. 2016. “Cognition and Spatial Behavior”. In: International Encyclopedia of<br>
+Geography: People, the Earth, Environment and Technology. John Wiley &amp; Sons, Ltd.<br>
+doi: 10.1002/9781118786352.wbieg0498. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1002/9781118786352">http://dx.doi.org/10.1002/9781118786352</a>.<br>
+wbieg0498.</p>
+<p>Montello, D. R., M. F. Goodchild, J. Gottsegen, and P. Fohl. 2003. “Where’s Downtown?:<br>
+Behavioral Methods for Determining Referents of Vague Spatial Queries”. Spatial<br>
+Cognition &amp; Computation. 3(3): 185–104.</p>
+<p>Morimoto, Y., M. Aono, M. E. Houle, and K. S. McCurley. 2003. “Extracting spatial<br>
+knowledge from the web”. In: 2003 Symposium on Applications and the Internet, 2003.<br>
+Proceedings. 326–333. doi: 10.1109/SAINT.2003.1183066.</p>
+<p>Morville, P. and L. Rosenfeld. 2006. Information Architecture for the World Wide Web.<br>
+O’Reilly Media, Inc.</p>
+<p>Nadeau, D. and S. Sekine. 2007. “A Survey of Named Entity Recognition and Classification”.<br>
+Journal of Linguisticae Investigationes. 30(1): 1–20. url: <a target="_blank" rel="noopener" href="http://nlp.cs.nyu.edu/sekine/">http://nlp.cs.nyu.edu/sekine/</a><br>
+papers/li07.pdf.</p>
+<p>Nielsen, J. 1993. Usability Engineering. San Francisco, CA, USA: Morgan Kaufmann<br>
+Publishers Inc.</p>
+<p>O’Hare, N. and V. Murdock. 2013. “Modeling locations with social media”. Information<br>
+Retrieval. 16(1): 30–62.</p>
+<p>O’Sullivan, D. and D. Unwin. 2014. Geographic information analysis. John Wiley &amp; Sons.<br>
+Opach, T., I. Golebiowska, and S. I. Fabrikant. 2013. “How Do People View Multi-<br>
+Component Animated Maps?” The Cartograhic Journal. online(Oct.). doi: dx . doi .<br>
+org/10.1179/1743277413Y.0000000049.</p>
+<p>Overell, S. and S. Rüger. 2008. “Using co-occurrence models for placename disambiguation”.<br>
+International Journal of Geographical Information Science. 22(3): 265–287.<br>
+Palacio, D., G. Cabanac, C. Sallaberry, and G. Hubert. 2010. “On the Evaluation of<br>
+Geographic Information Retrieval Systems: Evaluation Framework and Case Study”.<br>
+Int. J. Digit. Libr. 11(2): 91–109. doi: 10.1007/s00799-011-0070-z. url: <a target="_blank" rel="noopener" href="http://dx.doi">http://dx.doi</a>.<br>
+org/10.1007/s00799-011-0070-z.</p>
+<p>Palacio, D., C. Derungs, and R. Purves. 2015. “Development and evaluation of a geographic<br>
+information retrieval system using fine grained toponyms”. Journal of Spatial Information<br>
+Science. (11): 1–29.</p>
+<p>Pasley, R. C., P. D. Clough, and M. Sanderson. 2007. “Geo-tagging for Imprecise Regions of<br>
+Different Sizes”. In: Proceedings of the 4th ACM Workshop on Geographical Information<br>
+Retrieval. GIR ’07. Lisbon, Portugal: ACM. 77–82. doi: 10.1145/1316948.1316969. url:<br>
+<a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/1316948.1316969">http://doi.acm.org/10.1145/1316948.1316969</a>.</p>
+<p>Purves, R. S. and P. D. Clough. 2006. “Judging spatial relevance and document location for<br>
+Geographic Information Retrieval”. In: In Proceedings of 4th International Conference<br>
+on Geographic Information Science (GIScience 2006). 159–164.</p>
+<p>Purves, R. S., P. Clough, C. B. Jones, A. Arampatzis, B. Bucher, D. Finch, G. Fu, H.<br>
+Joho, A. K. Syed, S. Vaid, and B. Yang. 2007. “The Design and Implementation of<br>
+SPIRIT: A Spatially Aware Search Engine for Information Retrieval on the Internet”.<br>
+Int. J. Geogr. Inf. Sci. 21(7): 717–745. doi: 10.1080/13658810601169840. url: http:<br>
+<a target="_blank" rel="noopener" href="//dx.doi.org/10.1080/13658810601169840">//dx.doi.org/10.1080/13658810601169840</a>.</p>
+<p>Purves, R. S., A. Edwardes, and M. Sanderson. 2008. “Describing the where–improving<br>
+image annotation and search through geography”. In: Proceedings of the workshop on<br>
+Metadata Mining for Image Understanding (MMIU 2008). Sheffield.</p>
+<p>Raper, J. 2007. “Geographic relevance”. Journal of Documentation. 63(6): 836–852.</p>
+<p>Rapp, R. H. 1993. “Geometric geodesy, part II, Technical report,” tech. rep. Ohio State<br>
+Univ. url: <a target="_blank" rel="noopener" href="http://hdl.handle.net/1811/24409">http://hdl.handle.net/1811/24409</a>.</p>
+<p>Rauch, E., M. Bukatin, and K. Baker. 2003. “A Confidence-based Framework for Disam-<br>
+biguating Geographic Terms”. In: Proceedings of the HLT-NAACL 2003 Workshop on<br>
+Analysis of Geographic References - Volume 1. HLT-NAACL-GEOREF ’03. Stroudsburg,<br>
+PA, USA: Association for Computational Linguistics. 50–54. doi: 10.3115/1119394. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.3115/1119394.1119402">http://dx.doi.org/10.3115/1119394.1119402</a>.</p>
+<p>Recchia, G. and M. M. Louwerse. 2013. “A Comparison of String Similarity Measures for<br>
+Toponym Matching.” In: Proceedings of The First ACM SIGSPATIAL International<br>
+Workshop on Computational Models of Place. COMP ’13. Orlando FL, USA: ACM.<br>
+54:54–54:61. doi: 10.1145/2534848.2534850. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/2534848">http://doi.acm.org/10.1145/2534848</a>.<br>
+2534850.</p>
+<p>Reichenbacher, T., S. De Sabbata, R. S. Purves, and S. I. Fabrikant. 2016. “Assessing<br>
+geographic relevance for mobile search: A computational model and its validation via<br>
+crowdsourcing”. Journal of the Association for Information Science and Technology.<br>
+67(11): 2620–2634. doi: 10.1002/asi.23625. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1002/asi.23625">http://dx.doi.org/10.1002/asi.23625</a>.</p>
+<p>Robertson, S. E. 1981. “The methodology of information retrieval experiment”. In: Infor-<br>
+mation retrieval experiment. Butterworths. 9–31.</p>
+<p>Robertson, S. E. and M. M. Hancock-Beaulieu. 1992. “On the Evaluation of IR Systems”.<br>
+Inf. Process. Manage. 28(4): 457–466. doi: 10 . 1016 / 0306 - 4573(92 ) 90004 - J. url:<br>
+<a target="_blank" rel="noopener" href="http://dx.doi.org/10.1016/0306-4573(92)90004-J">http://dx.doi.org/10.1016/0306-4573(92)90004-J</a>.</p>
+<p>Robertson, S. and H. Zaragoza. 2009. “The Probabilistic Relevance Framework: BM25 and<br>
+Beyond”. Foundations and Trends Information Retrieval. 3(4): 333–389. doi: 10.1561/ url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1561/1500000019">http://dx.doi.org/10.1561/1500000019</a>.</p>
+<p>Rocha-Junior, J. B., O. Gkorgkas, S. Jonassen, and K. Nørvåg. 2011. “Efficient Processing<br>
+of Top-k Spatial Keyword Queries”. In: Proceedings of the 12th International Conference<br>
+on Advances in Spatial and Temporal Databases. SSTD’11. Minneapolis, MN: Springer-<br>
+Verlag. 205–222. url: <a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=2035253.2035270">http://dl.acm.org/citation.cfm?id=2035253.2035270</a>.</p>
+<p>Rodden, K., H. Hutchinson, and X. Fu. 2010. “Measuring the User Experience on a Large<br>
+Scale: User-centered Metrics for Web Applications”. In: Proceedings of the SIGCHI<br>
+Conference on Human Factors in Computing Systems. CHI ’10. Atlanta, Georgia, USA:<br>
+ACM. 2395–2398. doi: 10.1145/1753326.1753687. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/">http://doi.acm.org/10.1145/</a><br>
+1753326.1753687.</p>
+<p>Roller, S., M. Speriosu, S. Rallapalli, B. Wing, and J. Baldridge. 2012. “Supervised text-<br>
+based geolocation using language models on an adaptive grid”. In: Proceedings of the<br>
+2012 Joint Conference on Empirical Methods in Natural Language Processing and<br>
+Computational Natural Language Learning. Association for Computational Linguistics.<br>
+1500–1510.</p>
+<p>Russell-Rose, T. and T. Tate. 2013. Designing the Search Experience: The Information<br>
+Architecture of Discovery. 1st. San Francisco, CA, USA: Morgan Kaufmann Publishers<br>
+Inc.</p>
+<p>Sanderson, M. 2010. “Test Collection Based Evaluation of Information Retrieval Sys-<br>
+tems”. Foundations and Trends in Information Retrieval. 4(4): 247–375. doi: 10.1561/ url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1561/1500000009">http://dx.doi.org/10.1561/1500000009</a>.</p>
+<p>Sanderson, M. and J. Kohler. 2004. “Analyzing geographic queries”. In: Proceedings of the<br>
+Workshop on Geographic Information Retrieval. Sheffield.</p>
+<p>Santos, D., L. M. Cabral, C. Forascu, P. Forner, F. C. Gey, K. Lamm, T. Mandl, P. Osenova,<br>
+A. Peñas, Á. Rodrigo, J. M. Schulz, Y. Skalban, and E. F. T. K. Sang. 2010. “GikiCLEF:<br>
+Crosscultural Issues in Multilingual Information Access.” In: Proceedings of the Seventh<br>
+conference on International Language Resources and Evaluation (LREC’10). Ed. by<br>
+N. Calzolari, K. Choukri, B. Maegaard, J. Mariani, J. Odijk, S. Piperidis, M. Rosner,<br>
+and D. Tapias. European Languages Resources Association (ELRA). 2346–2353.</p>
+<p>Santos, D., N. Cardoso, P. Carvalho, I. Dornescu, S. Hartrumpf, J. Leveling, and Y. Skalban.“GikiP at GeoCLEF 2008: Joining GIR and QA forces for querying Wikipedia”. In:<br>
+Evaluating Systems for Multilingual and Multimodal Information Access: 9th Workshop<br>
+of the Cross-Language Evaluation Forum. Ed. by C. Peters, T. Deselaers, N. Ferro,<br>
+J. Gonzalo, G. J. F. Jones, M. Kurimo, T. Mandl, A. Peñas, and V. Petras. Vol. 5706.<br>
+Lecture Notes in Computer Science (LNCS). Springer. 894–905.</p>
+<p>Santos, R. L. T., C. Macdonald, and I. Ounis. 2015. “Search Result Diversification”.<br>
+Foundations and Trends in Information Retrieval. 9(1): 1–90. doi: 10.1561/1500000040.<br>
+url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1561/1500000040">http://dx.doi.org/10.1561/1500000040</a>.</p>
+<p>Saracevic, T. 1995. “Evaluation of Evaluation in Information Retrieval”. In: Proceedings of<br>
+the 18th Annual International ACM SIGIR Conference on Research and Development<br>
+in Information Retrieval. SIGIR ’95. Seattle, Washington, USA: ACM. 138–146. doi:<br>
+10.1145/215206.215351.</p>
+<p>Saracevic, T. 1996. “Relevance reconsidered”. In: Information science: Integration in perspec-<br>
+tives. Proceedings of the Second Conference on Conceptions of Library and Information<br>
+Science. 201–218.</p>
+<p>Schockaert, S. 2011. “Vague Regions in Geographic Information Retrieval”. SIGSPATIAL<br>
+Special. 3(2): 24–28. doi: 10.1145/2047296.2047302. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/">http://doi.acm.org/10.1145/</a><br>
+2047296.2047302.</p>
+<p>Sehgal, V., L. Getoor, and P. D. Viechnicki. 2006. “Entity resolution in geospatial data<br>
+integration”. In: Proceedings of the 14th annual ACM international symposium on<br>
+Advances in geographic information systems. ACM. 83–90.</p>
+<p>Shatford, S. 1986. “Analyzing the subject of a picture: a theoretical approach”. Cataloging<br>
+&amp; classification quarterly. 6(3): 39–62.</p>
+<p>Shaw, B., J. Shea, S. Sinha, and A. Hogue. 2013. “Learning to Rank for Spatiotemporal<br>
+Search”. In: Proceedings of the Sixth ACM International Conference on Web Search and<br>
+Data Mining. WSDM ’13. Rome, Italy: ACM. 717–726. doi: 10.1145/2433396.2433485.<br>
+url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/2433396.2433485">http://doi.acm.org/10.1145/2433396.2433485</a>.</p>
+<p>Shneiderman, B. 1996. “The eyes have it: A task by data type taxonomy for information<br>
+visualizations”. In: Visual Languages, 1996. Proceedings., IEEE Symposium on. IEEE.<br>
+336–343.</p>
+<p>Shneiderman, B., D. Byrd, and W. B. Croft. 1998. “Sorting out Searching: A User-interface<br>
+Framework for Text Searches”. Commun. ACM. 41(4): 95–98. doi: 10.1145/273035. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/273035.273069">http://doi.acm.org/10.1145/273035.273069</a>.</p>
+<p>Smart, P. D., C. B. Jones, and F. A. Twaroch. 2010. “Multi-source Toponym Data Integration<br>
+and Mediation for a Meta-Gazetteer Service”. In: Geographic Information Science: 6th<br>
+International Conference, GIScience 2010, Zurich, Switzerland, September 14-17, 2010.<br>
+Proceedings. Ed. by S. I. Fabrikant, T. Reichenbacher, M. van Kreveld, and C. Schlieder.<br>
+Berlin, Heidelberg: Springer Berlin Heidelberg. 234–248. doi: 10.1007/978-3-642-15300-<br>
+6_17. url: <a target="_blank" rel="noopener" href="https://doi.org/10.1007/978-3-642-15300-6_17">https://doi.org/10.1007/978-3-642-15300-6_17</a>.</p>
+<p>Smith, D. A. and G. Crane. 2001. “Disambiguating geographic names in a historical digital<br>
+library”. In: Research and Advanced Technology for Digital Libraries. Springer. 127–136.</p>
+<p>Smith, D. A. and G. S. Mann. 2003. “Bootstrapping Toponym Classifiers”. In: Proceedings<br>
+of the HLT-NAACL 2003 Workshop on Analysis of Geographic References - Volume 1.<br>
+HLT-NAACL-GEOREF ’03. Stroudsburg, PA, USA: Association for Computational<br>
+Linguistics. 45–49. doi: 10.3115/1119394.1119401. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.3115/">http://dx.doi.org/10.3115/</a><br>
+1119394.1119401.</p>
+<p>Speriosu, M. and J. Baldridge. 2013. “Text-Driven Toponym Resolution using Indirect<br>
+Supervision”. In: Proceedings of the 51st Annual Meeting of the Association for Com-<br>
+putational Linguistics, ACL 2013, 4-9 August 2013, Sofia, Bulgaria, Volume 1: Long<br>
+Papers. 1466–1476. url: <a target="_blank" rel="noopener" href="http://aclweb.org/anthology/P/P13/P13-1144.pdf">http://aclweb.org/anthology/P/P13/P13-1144.pdf</a>.</p>
+<p>Spink, A., B. J. Jansen, D. Wolfram, and T. Saracevic. 2002. “From e-sex to e-commerce:<br>
+Web search changes”. Computer. 35(3): 107–109. doi: 10.1109/2.989940.</p>
+<p>Spink, A., D. Wolfram, M. B. J. Jansen, and T. Saracevic. 2001. “Searching the web:<br>
+The public and their queries”. Journal of the Association for Information Science and<br>
+Technology. 52(3): 226–234.</p>
+<p>Stokes, N., Y. Li, A. Moffat, and J. Rong. 2008. “An empirical study of the effects of NLP<br>
+components on Geographic IR performance”. Int. J. Geogr. Inf. Sci. 22(3): 247–264.</p>
+<p>Su, L. T. 2003. “A comprehensive and systematic model of user evaluation of Web search<br>
+engines: I. Theory and background”. J. Am. Soc. Inf. Sci. Technol. 54(13): 1175–1192.<br>
+doi: 10.1002/asi.10303. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1002/asi.10303">http://dx.doi.org/10.1002/asi.10303</a>.</p>
+<p>Sutcliffe, A. and M. Ennis. 1998. “Towards a cognitive theory of information retrieval”.<br>
+Interacting with Computers. 10(3): 321–351. {HCI} and Information Retrieval. doi:<br>
+<a target="_blank" rel="noopener" href="http://dx.doi.org/10.1016/S0953-5438(98)00013-7">http://dx.doi.org/10.1016/S0953-5438(98)00013-7</a>. url: <a target="_blank" rel="noopener" href="http://www.sciencedirect.com/">http://www.sciencedirect.com/</a><br>
+science/article/pii/S0953543898000137.</p>
+<p>Talmy, L. 1983. “How Language Structures Space”. In: Spatial Orientation. New York:<br>
+Plenum. 225–282.</p>
+<p>Tang, J. and M. Sanderson. 2010. “Evaluation and User Preference Study on Spatial<br>
+Diversity”. In: Advances in Information Retrieval: 32nd European Conference on IR<br>
+Research, ECIR 2010, Milton Keynes, UK, March 28-31, 2010.Proceedings. Ed. by C.</p>
+<p>Gurrin, Y. He, G. Kazai, U. Kruschwitz, S. Little, T. Roelleke, S. Rüger, and K. Van<br>
+Rijsbergen. Berlin, Heidelberg: Springer Berlin Heidelberg. 179–190. doi: 10.1007/978-<br>
+3-642-12275-0_18. url: <a target="_blank" rel="noopener" href="https://doi.org/10.1007/978-3-642-12275-0_18">https://doi.org/10.1007/978-3-642-12275-0_18</a>.</p>
+<p>Teitler, B. E., M. D. Lieberman, D. Panozzo, J. Sankaranarayanan, H. Samet, and J.<br>
+Sperling. 2008. “NewsStand: A New View on News”. In: Proceedings of the 16th ACM<br>
+SIGSPATIAL International Conference on Advances in Geographic Information Systems.<br>
+GIS ’08. Irvine, California: ACM. 18:1–18:10. doi: 10.1145/1463434.1463458. url: http:<br>
+<a target="_blank" rel="noopener" href="//doi.acm.org/10.1145/1463434.1463458">//doi.acm.org/10.1145/1463434.1463458</a>.</p>
+<p>Thomas, P. and D. Hawking. 2006. “Evaluation by Comparing Result Sets in Context”. In:<br>
+Proceedings of the 15th ACM International Conference on Information and Knowledge<br>
+Management. CIKM ’06. Arlington, Virginia, USA: ACM. 94–101. doi: 10.1145/1183614. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/1183614.1183632">http://doi.acm.org/10.1145/1183614.1183632</a>.</p>
+<p>Tobler, W. R. 1970. “A Computer Movie Simulating Urban Growth in the Detroit Region”.<br>
+Economic Geography. 46: 234–240. url: <a target="_blank" rel="noopener" href="http://www.jstor.org/stable/143141">http://www.jstor.org/stable/143141</a>.</p>
+<p>Uryupina, O. 2003. “Semi-supervised Learning of Geographical Gazetteers from the Inter-<br>
+net”. In: Proceedings of the HLT-NAACL 2003 Workshop on Analysis of Geographic<br>
+References - Volume 1. HLT-NAACL-GEOREF ’03. Stroudsburg, PA, USA: Asso-<br>
+ciation for Computational Linguistics. 18–25. doi: 10.3115/1119394.1119397. url:<br>
+<a target="_blank" rel="noopener" href="http://dx.doi.org/10.3115/1119394.1119397">http://dx.doi.org/10.3115/1119394.1119397</a>.</p>
+<p>Vaid, S., C. B. Jones, H. Joho, and M. Sanderson. 2005. “Spatio-textual Indexing for<br>
+Geographical Search on the Web”. In: Advances in Spatial and Temporal Databases:<br>
+9th International Symposium, SSTD 2005, Angra dos Reis, Brazil, August 22-24, 2005.<br>
+Proceedings. Ed. by C. Bauzer Medeiros, M. J. Egenhofer, and E. Bertino. Berlin,<br>
+Heidelberg: Springer Berlin Heidelberg. 218–235. doi: 10.1007/11535331_ 13. url:<br>
+<a target="_blank" rel="noopener" href="https://doi.org/10.1007/11535331_13">https://doi.org/10.1007/11535331_13</a>.</p>
+<p>Vakkari, P. 2012. “Evaluating Interactive Information Retrieval Systems”. Revista <a target="_blank" rel="noopener" href="http://PRISMA.COM">PRISMA.COM</a>.<br>
+2012(19): 1–15. url: <a target="_blank" rel="noopener" href="http://revistas.ua.pt/index.php/prismacom/article/view/2410">http://revistas.ua.pt/index.php/prismacom/article/view/2410</a>.</p>
+<p>Vakkari, P. and S. Huuskonen. 2012. “Search effort degrades search output but improves<br>
+task outcome”. Journal of the American Society for Information Science and Technology.<br>
+63(4): 657–670. doi: 10.1002/asi.21683. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1002/asi.21683">http://dx.doi.org/10.1002/asi.21683</a>.</p>
+<p>Van Rijsbergen, C. J. 1979. Information Retrieval. 2nd. Newton, MA, USA: Butterworth-<br>
+Heinemann.</p>
+<p>Vaughan, M. W. and M. L. Resnick. 2006. “Search User Interfaces: Best Practices and<br>
+Future Visions”. J. Am. Soc. Inf. Sci. Technol. 57(6): 777–780. doi: 10.1002/asi.v57:6.<br>
+url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1002/asi.v57:6">http://dx.doi.org/10.1002/asi.v57:6</a>.</p>
+<p>Voorhees, E. M. and D. K. Harman. 2005. TREC: Experiment and Evaluation in Information<br>
+Retrieval (Digital Libraries and Electronic Publishing). The MIT Press.</p>
+<p>Wallgrün, J. O., M. Karimzadeh, A. M. MacEachren, and S. Pezanowski. 2017. “GeoCorpora:<br>
+building a corpus to test and train microblog geoparsers”. International Journal of<br>
+Geographical Information Science. 0(0): 1–29. doi: 10.1080/13658816.2017.1368523.<br>
+eprint: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1080/13658816.2017.1368523">http://dx.doi.org/10.1080/13658816.2017.1368523</a>. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10">http://dx.doi.org/10</a>.<br>
+1080/13658816.2017.1368523.</p>
+<p>Wang, C., X. Xie, L. Wang, Y. Lu, and W.-Y. Ma. 2005. “Web Resource Geographic<br>
+Location Classification and Detection”. In: Special Interest Tracks and Posters of the 14th<br>
+International Conference on World Wide Web. WWW ’05. Chiba, Japan: ACM. 1138–1 doi: 10.1145/1062745.1062907. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/1062745.1062907">http://doi.acm.org/10.1145/1062745.1062907</a>.</p>
+<p>Wang, W. and K. Stewart. 2015. “Creating spatiotemporal semantic maps from web text<br>
+documents”. In: Space-Time Integration in Geography and GIScience. Springer. 157–174.</p>
+<p>White, R. W. 2016. Interactions with Search Systems. Cambridge University Press. doi:<br>
+10.1017/CBO9781139525305. url: <a target="_blank" rel="noopener" href="http://dx.doi.org/10.1017/CBO9781139525305">http://dx.doi.org/10.1017/CBO9781139525305</a>.</p>
+<p>Wilkening, J. and S. I. Fabrikant. 2013. “How Users Interact With a 3D Geo-Browser under<br>
+Time Pressure”. Cartography and Geographic Information Science. 40: 40–52.</p>
+<p>Wilson, M. L. 2011. Search User Interface Design. Morgan &amp; Claypool Publishers.</p>
+<p>Wing, B. P. and J. Baldridge. 2011. “Simple supervised document geolocation with geodesic<br>
+grids”. In: Proceedings of the 49th Annual Meeting of the Association for Computational<br>
+Linguistics: Human Language Technologies-Volume 1. Association for Computational<br>
+Linguistics. 955–964.</p>
+<p>Woodruff, A. G. and C. Plaunt. 1994. “GIPSY: Automated Geographic Indexing of Text<br>
+Documents”. J. Am. Soc. Inf. Sci. 45(9): 645–655. doi: 10.1002/(SICI)1097-4571(199410)<br>
+45:9&lt;645::AID-ASI2&gt;<a target="_blank" rel="noopener" href="http://3.0.CO">3.0.CO</a>;2-8.</p>
+<p>Wu, D., G. Cong, and C. S. Jensen. 2012. “A Framework for Efficient Spatial Web Object<br>
+Retrieval”. The VLDB Journal. 21(6): 797–822. doi: 10.1007/s00778-012-0271-0. url:<br>
+<a target="_blank" rel="noopener" href="http://dx.doi.org/10.1007/s00778-012-0271-0">http://dx.doi.org/10.1007/s00778-012-0271-0</a>.</p>
+<p>Xiao, X., Q. Luo, Z. Li, X. Xie, and W.-Y. Ma. 2010. “A Large-scale Study on Map<br>
+Search Logs”. ACM Trans. Web. 4(3): 8:1–8:33. doi: 10.1145/1806916.1806917. url:<br>
+<a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/1806916.1806917">http://doi.acm.org/10.1145/1806916.1806917</a>.</p>
+<p>Yan, H., S. Ding, and T. Suel. 2009. “Inverted Index Compression and Query Processing with<br>
+Optimized Document Ordering”. In: Proceedings of the 18th International Conference<br>
+on World Wide Web. WWW ’09. Madrid, Spain: ACM. 401–410. doi: 10.1145/1526709.url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/1526709.1526764">http://doi.acm.org/10.1145/1526709.1526764</a>.</p>
+<p>Zaila, Y. L. and D. Montesi. 2015. “Geographic Information Extraction, Disambiguation and<br>
+Ranking Techniques”. In: Proceedings of the 9th Workshop on Geographic Information<br>
+Retrieval. GIR ’15. Paris, France: ACM. 11:1–11:7. doi: 10.1145/2837689.2837695. url:<br>
+<a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/2837689.2837695">http://doi.acm.org/10.1145/2837689.2837695</a>.</p>
+<p>Zandbergen, P. A. 2008. “A comparison of address point, parcel and street geocoding<br>
+techniques”. Computers, Environment and Urban Systems. 32(3): 214–232.</p>
+<p>Zhai, C. X., W. W. Cohen, and J. Lafferty. 2003. “Beyond Independent Relevance: Methods<br>
+and Evaluation Metrics for Subtopic Retrieval”. In: Proceedings of the 26th Annual<br>
+International ACM SIGIR Conference on Research and Development in Information<br>
+Retrieval. SIGIR ’03. Toronto, Canada: ACM. 10–17. doi: 10.1145/860435.860440. url:<br>
+<a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/860435.860440">http://doi.acm.org/10.1145/860435.860440</a>.</p>
+<p>Zhang, C., Y. Zhang, W. Zhang, and X. Lin. 2013. “Inverted linear quadtree: Efficient<br>
+top k spatial keyword search”. In: 2013 IEEE 29th International Conference on Data<br>
+Engineering (ICDE). 901–912. doi: 10.1109/ICDE.2013.6544884.</p>
+<p>Zhou, Y., X. Xie, C. Wang, Y. Gong, and W.-Y. Ma. 2005. “Hybrid Index Structures for<br>
+Location-based Web Search”. In: Proceedings of the 14th ACM International Conference<br>
+on Information and Knowledge Management. CIKM ’05. Bremen, Germany: ACM. 155–1 doi: 10.1145/1099554.1099584. url: <a target="_blank" rel="noopener" href="http://doi.acm.org/10.1145/1099554.1099584">http://doi.acm.org/10.1145/1099554.1099584</a>.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/cd1740d4.html">http://xishansnow.github.io/posts/cd1740d4.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%9C%B0%E7%90%86%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">地理知识图谱</a><a class="post-meta__tags" href="/tags/GeoParsing/">GeoParsing</a><a class="post-meta__tags" href="/tags/GeoCoding/">GeoCoding</a><a class="post-meta__tags" href="/tags/%E5%9C%B0%E5%90%8D%E8%A7%A3%E6%9E%90/">地名解析</a><a class="post-meta__tags" href="/tags/%E5%9C%B0%E5%90%8D%E8%AF%86%E5%88%AB/">地名识别</a><a class="post-meta__tags" href="/tags/%E5%9C%B0%E7%90%86%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96/">地理信息抽取</a><a class="post-meta__tags" href="/tags/%E5%9C%B0%E7%90%86%E5%AE%9A%E4%BD%8D/">地理定位</a><a class="post-meta__tags" href="/tags/GeoReferencing/">GeoReferencing</a><a class="post-meta__tags" href="/tags/%E5%9C%B0%E7%90%86%E7%BC%96%E7%A0%81%E6%96%B9%E6%B3%95/">地理编码方法</a></div><div class="post_share"><div class="social-share" data-image="/img/coffe_02.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/70f04f5e.html"><img class="prev-cover" src="/img/book_20.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">0️⃣  概率图模型简介</div></div></a></div><div class="next-post pull-right"><a href="/posts/4a655ddb.html"><img class="next-cover" src="/img/coffe_04.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">地理知识图谱「 2 」-- 地理信息抽取技术</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/4a655ddb.html" title="地理知识图谱「 2 」-- 地理信息抽取技术"><img class="cover" src="/img/coffe_04.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-27</div><div class="title">地理知识图谱「 2 」-- 地理信息抽取技术</div></div></a></div><div><a href="/posts/dfaef359.html" title="从自然语言文本中收割地理空间大数据"><img class="cover" src="/img/book_08.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-11</div><div class="title">从自然语言文本中收割地理空间大数据</div></div></a></div><div><a href="/posts/80c964ef.html" title="空间表征学习之Tile2Vec"><img class="cover" src="/img/book_03.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-17</div><div class="title">空间表征学习之Tile2Vec</div></div></a></div><div><a href="/posts/da0ebb97.html" title="空间表征学习之Place2Vec"><img class="cover" src="/img/book_07.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-11</div><div class="title">空间表征学习之Place2Vec</div></div></a></div><div><a href="/posts/c897a336.html" title="空间表征学习之Space2Vec"><img class="cover" src="/img/002.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-15</div><div class="title">空间表征学习之Space2Vec</div></div></a></div><div><a href="/posts/f184becf.html" title="🔥  空间表征学习综述文章"><img class="cover" src="/img/book_11.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-15</div><div class="title">🔥  空间表征学习综述文章</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">非结构化文本的地理定位</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%96%87%E6%9C%AC%E4%B8%AD%E7%9A%84%E5%9C%B0%E7%90%86%E5%BC%95%E7%94%A8"><span class="toc-text">1. 文本中的地理引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%96%87%E6%9C%AC%E7%9A%84%E5%9C%B0%E7%90%86%E5%AE%9A%E4%BD%8D"><span class="toc-text">2.  文本的地理定位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%9C%B0%E7%90%86%E8%A7%A3%E6%9E%90%E6%8A%80%E6%9C%AF"><span class="toc-text">3. 地理解析技术</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%9C%B0%E7%90%86%E8%A7%A3%E6%9E%90%E4%BB%BB%E5%8A%A1%E8%A7%A3%E9%87%8A"><span class="toc-text">3.1 地理解析任务解释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%9C%B0%E7%90%86%E8%A7%A3%E6%9E%90%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%81%9A%E6%B3%95"><span class="toc-text">3.2 地理解析的基本做法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%9C%B0%E7%90%86%E8%A7%A3%E6%9E%90%E7%9A%84%E4%B8%BB%E8%A6%81%E6%96%B9%E6%B3%95%E7%B1%BB%E5%9E%8B"><span class="toc-text">3.3 地理解析的主要方法类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E5%9F%BA%E4%BA%8E%E5%88%97%E8%A1%A8%E6%9F%A5%E6%89%BE%E7%9A%84%E5%9C%B0%E7%90%86%E8%A7%A3%E6%9E%90%E6%B3%95"><span class="toc-text">3.4 基于列表查找的地理解析法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E5%9F%BA%E4%BA%8E%E7%9F%A5%E8%AF%86%E6%88%96%E8%A7%84%E5%88%99%E7%9A%84%E5%9C%B0%E7%90%86%E8%A7%A3%E6%9E%90%E6%B3%95"><span class="toc-text">3.5 基于知识或规则的地理解析法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-%E5%9F%BA%E4%BA%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%9C%B0%E7%90%86%E8%A7%A3%E6%9E%90%E6%B3%95"><span class="toc-text">3.6 基于机器学习的地理解析法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-%E5%8D%8A%E7%BB%93%E6%9E%84%E5%8C%96%E6%95%B0%E6%8D%AE%E7%9A%84%E5%9C%B0%E7%90%86%E8%A7%A3%E6%9E%90"><span class="toc-text">3.7 半结构化数据的地理解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%9C%B0%E7%90%86%E7%BC%96%E7%A0%81%E6%8A%80%E6%9C%AF"><span class="toc-text">4. 地理编码技术</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%9C%B0%E7%90%86%E7%BC%96%E7%A0%81%E9%9D%A2%E4%B8%B4%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">4.1 地理编码面临的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%9C%B0%E7%90%86%E7%BC%96%E7%A0%81%E7%9A%84%E4%B8%BB%E8%A6%81%E6%8A%80%E6%9C%AF%E6%96%B9%E6%B3%95"><span class="toc-text">4.2 地理编码的主要技术方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E5%92%8C%E7%9F%A5%E8%AF%86%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">4.3 基于规则和知识的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E5%9F%BA%E4%BA%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">4.4 基于机器学习的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E5%9F%BA%E4%BA%8E%E5%9C%B0%E5%9B%BE%EF%BC%88%E7%A9%BA%E9%97%B4%EF%BC%89%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">4.5 基于地图（空间）的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="toc-text">4.6 其他问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%96%87%E6%9C%AC%E5%9C%B0%E7%90%86%E8%8C%83%E5%9B%B4%E7%9A%84%E8%A7%A3%E6%9E%90"><span class="toc-text">5. 文本地理范围的解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%9F%BA%E4%BA%8E%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%9A%90%E6%80%A7%E4%BD%8D%E7%BD%AE%E5%BB%BA%E6%A8%A1"><span class="toc-text">6. 基于语言模型的隐性位置建模</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%8F%91%E5%B1%95%E8%B6%8B%E5%8A%BF%E4%B8%8E%E6%8C%91%E6%88%98"><span class="toc-text">7. 发展趋势与挑战</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E6%80%BB%E7%BB%93"><span class="toc-text">8. 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE%EF%BC%9A"><span class="toc-text">参考文献：</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

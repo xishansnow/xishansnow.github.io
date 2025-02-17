@@ -1,0 +1,453 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>基于图的知识表示方法 | 西山晴雪的知识笔记</title><meta name="keywords" content="知识图谱,本体,知识表示,模式,OWL,RDF,图模型,Schema"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基于图的知识表示方法 摘要： ​		在知识表示方法的演进过程中，图模型因为其结构性、联想性、自然性、易于人类理解等优点，已经成为知识表示的基础模型。从框架表示法、语义网络表示法、逻辑程序标识法、语义网络表示法、语义网和知识图谱中，能够看到图模型在知识表示方法中的逐步演化历史。目前，基于图的知识表示方法主要聚焦在RDF数据模型和图属性数据模型两种类型。其中： ​		（1）RDF数据模型由">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于图的知识表示方法">
+<meta property="og:url" content="http://xishansnow.github.io/posts/c16f9ca5.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="基于图的知识表示方法 摘要： ​		在知识表示方法的演进过程中，图模型因为其结构性、联想性、自然性、易于人类理解等优点，已经成为知识表示的基础模型。从框架表示法、语义网络表示法、逻辑程序标识法、语义网络表示法、语义网和知识图谱中，能够看到图模型在知识表示方法中的逐步演化历史。目前，基于图的知识表示方法主要聚焦在RDF数据模型和图属性数据模型两种类型。其中： ​		（1）RDF数据模型由">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/book_10.png">
+<meta property="article:published_time" content="2020-05-15T10:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.038Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="知识图谱">
+<meta property="article:tag" content="本体">
+<meta property="article:tag" content="知识表示">
+<meta property="article:tag" content="模式">
+<meta property="article:tag" content="OWL">
+<meta property="article:tag" content="RDF">
+<meta property="article:tag" content="图模型">
+<meta property="article:tag" content="Schema">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/book_10.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/c16f9ca5"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '基于图的知识表示方法',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/book_10.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">基于图的知识表示方法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-05-15T10:00:00.000Z" title="发表于 2020-05-15 18:00:00">2020-05-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.038Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/">基础理论知识</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>基于图的知识表示方法</h1>
+<p>摘要：</p>
+<p>​		在知识表示方法的演进过程中，图模型因为其结构性、联想性、自然性、易于人类理解等优点，已经成为知识表示的基础模型。从框架表示法、语义网络表示法、逻辑程序标识法、语义网络表示法、语义网和知识图谱中，能够看到图模型在知识表示方法中的逐步演化历史。目前，基于图的知识表示方法主要聚焦在RDF数据模型和图属性数据模型两种类型。其中：</p>
+<p>​		（1）RDF数据模型由从互联网领域发起，W3C制定了丰富的语义网技术栈作为知识表示的一个阶段性成果，并已经成为知识表示的事实标准；相关知识点在第1、2、3、4节中。</p>
+<p>​		（2）图属性数据模型由工业界和学术界组成的关联数据基准委员会(LDBC)提出，并正在以属性图为基础对图数据模型、图查询语言进行标准化；相关知识点在第5节中。</p>
+<h2 id="一、-基于图的知识表示技术框架">一、 基于图的知识表示技术框架</h2>
+<h3 id="1-1-语义网技术栈的发展过程">1.1 语义网技术栈的发展过程</h3>
+<p>​</p>
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E7%9F%A5%E8%AF%86%E5%BB%BA%E6%A8%A1-%E4%BB%8E%E7%AE%80%E5%8D%95%E5%9B%BE%E6%A8%A1%E5%9E%8B%E5%88%B0%E5%88%B0%E9%80%BB%E8%BE%91%E4%B8%8E%E6%9C%AC%E4%BD%93.jpg" style="zoom:50%;" />
+<h3 id="1-2-语义网技术栈的主要内容">1.2 语义网技术栈的主要内容</h3>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E8%AF%AD%E4%B9%89%E7%BD%91%E6%8A%80%E6%9C%AF%E6%A0%88.jpg" alt=""></p>
+<h2 id="二、RDF模型—RDF资源描述框架">二、RDF模型—RDF资源描述框架</h2>
+<h3 id="2-1-RDF概述">2.1 RDF概述</h3>
+<ul>
+<li>
+<p>RDF：资源描述框架（Resource  Description Framework, RDF）是一种用于在Web中表示信息的通用语言，构建在XML语言标准之上，用于传递有关面向人类的资源结构信息。RDF的基础构建为“实体-属性-取值”三元组，该三元组被称为声明（Declaration）。</p>
+</li>
+<li>
+<p>RDF-S：RDF是一种通用资源描述框架， 不针对任何特定领域，因此对用户而言必须自行定义三元组声明中使用的术语。W3C的语义网技术栈提供了专门的RDF-S（RDF Schema）标准，以便用户能够精确定义所需词汇表。</p>
+</li>
+<li>
+<p>RDFa：为是网页自身具备语义描述能力，W3C还定义了RDFa标准，通过为XHTML增加若干语义属性，形成语义能力，以方便外部通过对网页的直接访问和解析获得网页语义信息。</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E5%9B%BE%E6%A0%87%E8%AF%86%E6%A8%A1%E5%9E%8B--RDF%E5%9F%BA%E6%9C%AC%E6%A8%A1%E5%9E%8B.jpg" alt=""></p>
+<h3 id="2-2-RDF-中的基本要素"><strong>2.2 RDF 中的基本要素</strong></h3>
+<ul>
+<li>资源：
+<ul>
+<li>即知识表示中的“实体”或“对象”</li>
+<li>每个资源都由一个唯一的URI来做标识符</li>
+</ul>
+</li>
+<li>属性：
+<ul>
+<li>即知识表示中的“关系”，是一类特殊的资源，用于描述资源之间的关系，如： “located in”</li>
+<li>属性也由一个唯一的URI作为标识符，可以通过URI获取其描述信息</li>
+</ul>
+</li>
+<li>事实陈述（或声明）：
+<ul>
+<li>声明断言了资源的属性</li>
+<li>声明的形式为：&lt;实体-属性-取值&gt;三元组</li>
+<li>属性取值要么是一个资源URI，要么是一个文字(literal)。文字必须是原子值，如：数字、字符串或日期。</li>
+<li>通常
+<ul>
+<li>使用主语一词来指称三元组里的实体</li>
+<li>使用宾语来指称其属性取值。</li>
+</ul>
+</li>
+<li>例如，对于声明 “Baron Way Building is located in Amsterdam”，可以由以下三元组声明：</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 资源URI：&lt;http://www.semanticwebprimer.org/ontology/apartments.ttl#BaronWayBuilding&gt; </span><br><span class="line">- 属性URI：&lt;http://dbpedia.org/ontology/location&gt; </span><br><span class="line">- 属性取值URI：&lt;http://dbpedia.org/resource/Amsterdam&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-RDF图的图形化表示法">2.3 RDF图的图形化表示法</h3>
+<ul>
+<li>
+<p>RDF图定义为三元组(S，P，O)的有限集合</p>
+</li>
+<li>
+<p>每个三元组表示是一个事实陈述句，S是主语、P是谓语、O是宾语</p>
+</li>
+<li>
+<p>三元组(S，P，O)表示两类事实陈述：</p>
+<ul>
+<li>S与O之间具有联系P</li>
+<li>或表示S具有属性P，且其取值为O</li>
+</ul>
+</li>
+<li>
+<p>RDF图的正式定义：</p>
+<ul>
+<li>设U、B和L为互不相交的无限集合，分别代表URI、空顶点(blank node)和字面量(literal)。一个三元组 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>S</mi><mtext>，</mtext><mi>P</mi><mtext>，</mtext><mi>O</mi><mo stretchy="false">)</mo><mtext> </mtext><mo>∈</mo><mo stretchy="false">(</mo><mi>U</mi><mo>∪</mo><mi>B</mi><mo stretchy="false">)</mo><mo>×</mo><mi>U</mi><mo>×</mo><mo stretchy="false">(</mo><mi>U</mi><mo>∪</mo><mi>B</mi><mo>∪</mo><mi>L</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(S，P，O)\, \in(U \cup B)\times U \times (U \cup B\cup L)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord cjk_fallback">，</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord cjk_fallback">，</span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">L</span><span class="mclose">)</span></span></span></span> 称为RDF三元组。其中，S为主语，P为谓语，O为宾语。RDF图G是RDF三元组的有限集合。</li>
+</ul>
+</li>
+<li>
+<p>RDF图中的基本图例：</p>
+</li>
+<li>
+<p>用椭圆表示资源，用矩形表示字面量或属性值，用有向边表示联系或属性</p>
+</li>
+<li>
+<p>有向边及其连接的两个顶点构成一条三元组，尾顶点是主语，边标签是谓语，头顶点是宾语</p>
+</li>
+<li>
+<p>资源类型也是资源，其与相连接的资源之间构成Is-a的联系，用内置谓语rdf:type标记</p>
+<ul>
+<li>如：下图中三元组（James_Cameron，rdf:type，Director）表示James_Cameron是导演</li>
+</ul>
+</li>
+<li>
+<p>字面量或属性值需遵循标准数据类型定义</p>
+<ul>
+<li>如：字符串（放在双引号中）、整型（如：195）、浮点型（如：1.79E9、2.0E8）、日期（如：<br>
+1954-08-16、1974-11-11和1975-10-05）</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E7%9F%A5%E8%AF%86%E5%BB%BA%E6%A8%A1-RDF%E5%9B%BE%E5%AE%9E%E4%BE%8B.jpg" alt=""></p>
+<p>​</p>
+<ul>
+<li>上图所示RDF图，描述了一个电影知识图谱。其中包括以下三元组集合：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- G=&#123;</span><br><span class="line">	(James_Cameron,rdf:type,Director),(James_Cameron,name,&quot;James Cameron&quot;), </span><br><span class="line">  	(James_Cameron,birthDate,1954-08-16),(James_Cameron,networth,1.79E9), </span><br><span class="line">  	(James_Cameron,directs,Titanic),(James_Cameron,acts_in,Titanic), </span><br><span class="line">  	(Titanic,rdf:type,Movie),(Titanic,label,&quot;Titanic(1997 film)&quot;), </span><br><span class="line">  	(Titanic,budget,2.0E8),(Titanic,length,195), </span><br><span class="line">  	(Leonardo_DiCaprio,rdf:type,Actor),(Leonardo_DiCaprio,name,&quot;Leonardo DiCaprio&quot;), </span><br><span class="line">  	(Leonardo_DiCaprio,birthDate,1974-11-11),(Leonardo_DiCaprio,acts_in,Titanic), </span><br><span class="line">  	(Kate_Winslet,rdf:type,Actor),(Kate_Winslet,name,&quot;Kate Winslet&quot;), </span><br><span class="line">  	(Kate_Winslet,birthDate,1975-10-05),(Kate_Winslet,acts_in,Titanic)</span><br><span class="line">  	&#125;. </span><br></pre></td></tr></table></figure>
+<ul>
+<li>从数据模型角度看，RDF图是一种特殊的有向标记图。与普通有向标签图相比，RDF图的特殊性在于：</li>
+</ul>
+<p><strong>其三元组集合的本质使得一个三元组中的谓语也可作为另一个三元组的主语或宾语，反映在有向标记图中，即边亦可作为顶点，顶点与边交集非空。</strong></p>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E7%9F%A5%E8%AF%86%E5%BB%BA%E6%A8%A1-RDF%E5%9B%BE%E8%BE%B9%E4%BD%9C%E4%B8%BA%E8%8A%82%E7%82%B9.jpg" alt=""></p>
+<h3 id="2-4-RDF图的文本表示法">2.4 RDF图的文本表示法</h3>
+<ul>
+<li>RDF的文本表示有两种形式：
+<ul>
+<li>
+<p>Turtle：一种RDF的简易文本语法，后缀名为 “.ttl”</p>
+</li>
+<li>
+<p>RDF/XML：一套基于XML的RDF文本语法</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-5-RDF-S模式框架"><strong>2.5 RDF-S模式框架</strong></h3>
+<p>​	由于基础的RDF没有定义资源和属性类型以及类型之间继承的能力（即定义模式Schema的能力），W3C在RDF基础上，扩展了RDF-S模式框架，提供了描述应用程序专用的类和属性的一个表示框架。主要定义了以下预定义词汇（关键字）：Class, subClassOf, type, Property, subPropertyOf, Domain, Range。</p>
+<ul>
+<li>RDF-S本身不提供实际应用程序的专用类和属性，只提供定义类和属性的语法</li>
+<li>RDF-S中的类与面向对象编程语言中的类非常相似，使得资源能够作为类的实例和子类来被定义</li>
+<li>RDF-S在实体关系推理基础上，增加了资源类型等新的推理的能力</li>
+</ul>
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E7%9F%A5%E8%AF%86%E5%BB%BA%E6%A8%A1-RDFS%E7%A4%BA%E4%BE%8B.jpg" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E7%9F%A5%E8%AF%86%E5%BB%BA%E6%A8%A1-RDFS%E6%8E%A8%E7%90%86.jpg" style="zoom:50%;" />
+<h3 id="2-6-RDFa语法框架"><strong>2.6 RDFa语法框架</strong></h3>
+<p>​	为了使网页自身具有语义，W3C为XHTML扩充了若干语义属性，定为RDFa语法框架</p>
+<ul>
+<li>RDFa：一套扩充了XHTML属性，使XHTML具有RDF描述能力的文本语法框架</li>
+</ul>
+<h3 id="2-7-开放世界假设">2.7 开放世界假设</h3>
+<p>​		RDF资源描述框架，最终目的是实现在开放世界假设中，知识可以分布式的表示、存储和共享发布，遵循RDF的知识，可以被自动理解和抽取，并自动合并为更大的知识图谱。</p>
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E7%9F%A5%E8%AF%86%E5%BB%BA%E6%A8%A1-%E5%BC%80%E6%94%BE%E4%B8%96%E7%95%8C%E5%81%87%E8%AE%BE.jpg" style="zoom:50%;" />
+<h2 id="三、RDF模型—OWL本体语言描述框架">三、RDF模型—OWL本体语言描述框架</h2>
+<h3 id="3-1-为什么还要OWL框架？">3.1 为什么还要OWL框架？</h3>
+<p>​		RDF虽然经过RDFS扩展，实现了模式定义能力，但人们还是觉得其表达能力有限，因此，又提出了OWL（Web Ontology Language），基于描述逻辑（Description Logic）在RDFS基础上又做了扩展，添加了额外的预定义词汇。OWL提供快速、灵活的数据建模能力和高效的自动推理。详情参见<a target="_blank" rel="noopener" href="https://www.w3.org/TR/2004/REC-owl-features-20040210/">OWL标准</a>。</p>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E7%9F%A5%E8%AF%86%E5%BB%BA%E6%A8%A1-OWL%E7%9A%84%E6%89%A9%E5%B1%95.jpg" alt=""></p>
+<h3 id="3-2-OWL增加的主要表达构建">3.2 OWL增加的主要表达构建</h3>
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E7%9F%A5%E8%AF%86%E5%BB%BA%E6%A8%A1-OWL%E8%A1%A8%E8%BE%BE%E6%9E%84%E4%BB%B61.jpg" style="zoom: 50%;" />
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E7%9F%A5%E8%AF%86%E5%BB%BA%E6%A8%A1-OWL%E8%A1%A8%E8%BE%BE%E6%9E%84%E4%BB%B62.jpg" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E7%9F%A5%E8%AF%86%E5%BB%BA%E6%A8%A1-OWL%E8%A1%A8%E8%BE%BE%E6%9E%84%E4%BB%B63.jpg" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E7%9F%A5%E8%AF%86%E5%BB%BA%E6%A8%A1-OWL%E8%A1%A8%E8%BE%BE%E6%9E%84%E4%BB%B64.jpg" style="zoom:50%;" />
+<h3 id="3-3-OWL的三个使用场景">3.3 OWL的三个使用场景</h3>
+<p>​		由于不同的使用场景，对模式的定义需求不同，OWL标准建议了三种比较典型的应用场景，三者合起来为OWN2的全集。</p>
+<ul>
+<li>OWL 2/EL ：本体结构中有大量相互链接的类和属性，设计者想用自动推理机得到里面复杂的关系。</li>
+<li>OWL 2/QL：有大量实例数据。OWL 2 QL本体可以被改写为SQL查询，适用于使用OBDA（ontology based data access）方式来访问的关系数据库。也就是说我们不用显式地把关系数据库中的数据转为RDF，而是通过映射的方式，将数据库转为虚拟RDF图进行访问。</li>
+<li>OWL 2/RL：需要结合基于规则的推理引擎（rule-based reasoning engine）的场合</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E7%9F%A5%E8%AF%86%E5%BB%BA%E6%A8%A1-OWL%E7%9A%84%E4%B8%89%E4%B8%AA%E5%B1%82%E7%BA%A7.jpg" alt=""></p>
+<h3 id="3-4-基于OWL的推理">3.4 基于OWL的推理</h3>
+<p>知识图谱的推理主要分为两类（详细内容放在知识推理部分梳理）：</p>
+<ul>
+<li>
+<p><strong>基于本体</strong>的推理</p>
+</li>
+<li>
+<p><strong>基于规则</strong>的推理</p>
+</li>
+</ul>
+<h3 id="3-5-常见的OWL推理机">3.5 常见的OWL推理机</h3>
+<img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E7%9F%A5%E8%AF%86%E5%BB%BA%E6%A8%A1-OWL%E6%8E%A8%E7%90%86%E6%9C%BA.jpg" style="zoom:50%;" />
+<h3 id="3-6-OWL与描述逻辑">3.6 OWL与描述逻辑</h3>
+<p>​		OWL的理论基础是描述逻辑：</p>
+<p>​		（1）OWL是⼀种⽤来定义概念、描述客观事物以及这些事物之间关系（即本体）的语⾔，是⼀阶谓词逻辑的可判定⼦集。</p>
+<p>​		（2）在知识图谱实践过程中，经常会发现简单三元组的表⽰⽆法满⾜语义表⽰的需求，OWL为更加深度的语义表达提供可供参考的表达能⼒和可选⽤的表达构建。</p>
+<p>​		（3）描述逻辑可以为知识图谱的表⽰与建模提供理论基础。描述逻辑之于知识图谱，好⽐关系代数之于关系数据库。做好知识图谱也需要理论与实践兼顾。</p>
+<h2 id="四、RDF模型—Web-Schema与Semantic-Markup">四、RDF模型—Web Schema与Semantic Markup</h2>
+<h3 id="4-1-Web-Schema">4.1 Web Schema</h3>
+<ul>
+<li>Web Schema是⾯向Web的数据Schema标准，⼈们可以利⽤Web Schema向⽹页增加元数据或Semantic Markup，以便于从⽹页中抽取结构化数据。</li>
+<li>Web Schema由标准第⼀（1996年起）过渡到数据第⼀（2004年起）再发展为⽤户第⼀（2008年起）。<a target="_blank" rel="noopener" href="http://xn--2011schema-xm3pp54al04bpe3d.org">2011年出现了schema.org</a>。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/shilang1220/imageBed/master/img/%E7%9F%A5%E8%AF%86%E5%BB%BA%E6%A8%A1-WebSchema%E5%8F%91%E5%B1%95%E8%BF%87%E7%A8%8B.jpg" alt=""></p>
+<h3 id="4-2-RDFa-早期标准">4.2 RDFa: 早期标准</h3>
+<p>如前述，RDFa是最早期在网页中嵌入知识表示语法的标准。</p>
+<h3 id="4-3-HTML5-Microdata">4.3 HTML5 Microdata</h3>
+<p>Microdata微数据，是在⽹页标记语⾔中嵌⼊机器可读的属性数据</p>
+<ul>
+<li>微数据使⽤可以来⾃⾃定义词汇表、带作⽤域的键/值对给DOM做标记</li>
+<li>⽤户可以⾃定义微数据词汇表，在⾃⼰的⽹页中嵌⼊⾃定义的属性</li>
+<li>微数据是给那些已经在页⾯上可见的数据施加额外的语义</li>
+<li>当HTML的词汇不够⽤时，使⽤微数据可以取得较好的效果</li>
+</ul>
+<h3 id="4-4-Schema-org">4.4 <a target="_blank" rel="noopener" href="http://Schema.org">Schema.org</a></h3>
+<ul>
+<li>
+<p>致力于在⽹⻚、邮件、应⽤程序等更多范围内嵌⼊语义数据</p>
+</li>
+<li>
+<p>截⽌2016年，全球约有1.2亿的⽹站，超过30%的⽹⻚已经嵌⼊有Schema.org的语义数据</p>
+</li>
+<li>
+<p>⾕歌2015年12⽉推出的Cutomizable Knowledg Graph，<a href="http://xn--Schema-9y2em78twcf90hz6lxp9he30b.org">允许各⽹站基于Schema.org</a>，以RDFa， JSON-LD， HTML Microdata等⽅式在⽹⻚、邮件等数据源中嵌⼊语义化数据，⽀持个⼈和企业定制⾃⼰的知识图谱信息</p>
+</li>
+</ul>
+<h3 id="4-5-cnSchema-org">4.5 <a target="_blank" rel="noopener" href="http://cnSchema.org">cnSchema.org</a></h3>
+<ul>
+<li>cnSchema.org是⼀个基于社区维护的开放的知识图谱Schema标准</li>
+<li>cnSchema的词汇集包括了上千种概念分类(classes)、数据类型(data types)、属性(propertities)和<br>
+关系(relations)等常⽤概念定义，以⽀持知识图谱数据的通⽤性、复⽤性和流动性</li>
+<li>结合中⽂的特点，复⽤、<a target="_blank" rel="noopener" href="http://xn--Schema-2e8it65geie4yljmdqr8p.org">连接并扩展了Schema.org</a>，Wikidata， Wikipedia等已有的知识图谱Schema标准</li>
+<li>为中⽂领域的开放知识图谱、聊天机器⼈、搜索引擎优化等提供可供参考和扩展的数据描述和接口定义标准</li>
+</ul>
+<h3 id="4-6-IoT与Web-Schema">4.6 IoT与Web Schema</h3>
+<p>​		Semantic Markup会更加⼴泛的被植⼊到⽹页、App、邮件和各类传感器当中。</p>
+<p>​		知识表示方法天生就是为机器自动抽取使用的，将来Web Schema在IoT系统中机器与机器之间的相互理解和交流沟通，以及流式数据的语义化。</p>
+<h2 id="五、属性图模型表示框架">五、属性图模型表示框架</h2>
+<p>​		关联数据基准委员会(Linked Data Benchmark Council,简称LDBC)在⼯业界的工程实践中，数据库内部模型往往采用另外一种有向标记图–属性图，而将RDF或OWL作为一种数据交换格式（属性图在知识存储和图数据库部分梳理）。在此参考陈华钧教授的PPT，列出以下几点不同：</p>
+<ul>
+<li>属性图由于其建模更多考量实⽤场景需求，并针对图查询做性能优化，因此在⼯业界有⽐较多的实践；</li>
+<li>但属性图缺乏形式化基础，不利于推理的实现；</li>
+<li>RDF是更多考量了互联⽹知识发布需求的模型，RDF作为⼀种知识图谱表⽰框架的参考标准，向上对接OWL等更丰富的语义表⽰和推理能⼒，向下对接简化后的属性图数据库以及图计算引擎，是最值得重视的知识图谱表⽰框架。</li>
+</ul>
+<h2 id="六、总结">六、总结</h2>
+<p>（1）当前基于图的知识表示方法主要有RDF模型和属性图模型两大类，其中：RDF模型标准统一、描述能力强使用比较广泛，而属性图模型则由于简单灵活、实现代价小，为工业界在图数据库中广泛采用；</p>
+<p>（2）RDF模型以及在其基础上扩展的RDF-S、OWL等语义网技术栈，具有更强的知识表示、描述逻辑和支撑推理的能力，同时也作为交换格式广泛使用；</p>
+<p>（3）知识表示模型直接决定了其推理能力，RDF-S、OWL不仅支持实体之间的关系推理，同时还在模式或本体层面同时提供推理能力，亦即在知识抽象层面推理能力也较强；</p>
+<p>（4）知识表示的最终极目的是实现人工智能，而IoT是机器构成的网络，直觉上两者之间能够形成融合，通过分布式知识表示、存储和发布，实现真正的机器智能；</p>
+<p>（5）与UML为软件的建模提供通用语言类似，语义网技术栈为知识建模提供了通用语言，因此，和软件建模相似，学习和掌握OWL只是掌握了工具，更重要的是如何利用OWL去为领域知识库建立本体，千万不要陷入为语言而学语言的境地。</p>
+<p>（6）目前可用的知识建模工具有：<a target="_blank" rel="noopener" href="http://protege.stanford.edu">protégé</a>、SemanticWorks()、<a target="_blank" rel="noopener" href="https://www.topquadrant.com/products/topbraid-composer/">TopBraid Composer</a>、WSMT等，其中protégé、TopBraid Composer具有一定的本体推理能力。</p>
+<h2 id="七、参考资料">七、参考资料</h2>
+<p>（1）<a target="_blank" rel="noopener" href="https://person.zju.edu.cn/person/wescms/sys/filebrowser/file.php?cmd=download&amp;id=826677">浙大陈华钧老师</a></p>
+<p>（2）<a target="_blank" rel="noopener" href="http://www.w3.org/TR/owl-guide/">W3C,(2004)OWL Web Ontology Language Guide</a></p>
+<p>（3）<a target="_blank" rel="noopener" href="http://protege.stanford.edu">What is protégé?</a></p>
+<p>（4）<a target="_blank" rel="noopener" href="http://owl.cs.manchester.ac.uk/tutorials/protegeowltutorial/resources/ProtegeOWLTutorialP4_v1_1.pdf">A Practical Guide To Building OWL Ontologies Using Protege 4 and CO-ODE Tools </a></p>
+<p>（5）<a target="_blank" rel="noopener" href="http://www.ksl.stanford.edu/people/dlm/papers/ontology-tutorial-noy-mcguinness.pdf">Ontology Development 101: A Guide to Creating Your First Ontology</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/c16f9ca5.html">http://xishansnow.github.io/posts/c16f9ca5.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a><a class="post-meta__tags" href="/tags/%E6%9C%AC%E4%BD%93/">本体</a><a class="post-meta__tags" href="/tags/%E7%9F%A5%E8%AF%86%E8%A1%A8%E7%A4%BA/">知识表示</a><a class="post-meta__tags" href="/tags/%E6%A8%A1%E5%BC%8F/">模式</a><a class="post-meta__tags" href="/tags/OWL/">OWL</a><a class="post-meta__tags" href="/tags/RDF/">RDF</a><a class="post-meta__tags" href="/tags/%E5%9B%BE%E6%A8%A1%E5%9E%8B/">图模型</a><a class="post-meta__tags" href="/tags/Schema/">Schema</a></div><div class="post_share"><div class="social-share" data-image="/img/book_10.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/65b43396.html"><img class="prev-cover" src="/img/book_17.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Ontology、Taxonomy、Folksonomy和Thesauri的不同</div></div></a></div><div class="next-post pull-right"><a href="/posts/922d4ae7.html"><img class="next-cover" src="/img/coffe_11.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">概念解释</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/bd450411.html" title="知识表示与知识图谱"><img class="cover" src="/img/coffe_10.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-15</div><div class="title">知识表示与知识图谱</div></div></a></div><div><a href="/posts/65b43396.html" title="Ontology、Taxonomy、Folksonomy和Thesauri的不同"><img class="cover" src="/img/book_17.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-15</div><div class="title">Ontology、Taxonomy、Folksonomy和Thesauri的不同</div></div></a></div><div><a href="/posts/922d4ae7.html" title="概念解释"><img class="cover" src="/img/coffe_11.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-15</div><div class="title">概念解释</div></div></a></div><div><a href="/posts/9ebb1b2.html" title="领域知识图谱技术概览"><img class="cover" src="/img/coffe_11.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-15</div><div class="title">领域知识图谱技术概览</div></div></a></div><div><a href="/posts/52222f0e.html" title="信息抽取技术进展【2】 --命名实体识别及关系抽取"><img class="cover" src="/img/coffe_10.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-25</div><div class="title">信息抽取技术进展【2】 --命名实体识别及关系抽取</div></div></a></div><div><a href="/posts/4ce878e6.html" title="信息抽取技术进展【2】 --命名实体识别技术"><img class="cover" src="/img/book_03.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-25</div><div class="title">信息抽取技术进展【2】 --命名实体识别技术</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">基于图的知识表示方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81-%E5%9F%BA%E4%BA%8E%E5%9B%BE%E7%9A%84%E7%9F%A5%E8%AF%86%E8%A1%A8%E7%A4%BA%E6%8A%80%E6%9C%AF%E6%A1%86%E6%9E%B6"><span class="toc-text">一、 基于图的知识表示技术框架</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E8%AF%AD%E4%B9%89%E7%BD%91%E6%8A%80%E6%9C%AF%E6%A0%88%E7%9A%84%E5%8F%91%E5%B1%95%E8%BF%87%E7%A8%8B"><span class="toc-text">1.1 语义网技术栈的发展过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E8%AF%AD%E4%B9%89%E7%BD%91%E6%8A%80%E6%9C%AF%E6%A0%88%E7%9A%84%E4%B8%BB%E8%A6%81%E5%86%85%E5%AE%B9"><span class="toc-text">1.2 语义网技术栈的主要内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81RDF%E6%A8%A1%E5%9E%8B%E2%80%94RDF%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6"><span class="toc-text">二、RDF模型—RDF资源描述框架</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-RDF%E6%A6%82%E8%BF%B0"><span class="toc-text">2.1 RDF概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-RDF-%E4%B8%AD%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%A6%81%E7%B4%A0"><span class="toc-text">2.2 RDF 中的基本要素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-RDF%E5%9B%BE%E7%9A%84%E5%9B%BE%E5%BD%A2%E5%8C%96%E8%A1%A8%E7%A4%BA%E6%B3%95"><span class="toc-text">2.3 RDF图的图形化表示法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-RDF%E5%9B%BE%E7%9A%84%E6%96%87%E6%9C%AC%E8%A1%A8%E7%A4%BA%E6%B3%95"><span class="toc-text">2.4 RDF图的文本表示法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-RDF-S%E6%A8%A1%E5%BC%8F%E6%A1%86%E6%9E%B6"><span class="toc-text">2.5 RDF-S模式框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-RDFa%E8%AF%AD%E6%B3%95%E6%A1%86%E6%9E%B6"><span class="toc-text">2.6 RDFa语法框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7-%E5%BC%80%E6%94%BE%E4%B8%96%E7%95%8C%E5%81%87%E8%AE%BE"><span class="toc-text">2.7 开放世界假设</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81RDF%E6%A8%A1%E5%9E%8B%E2%80%94OWL%E6%9C%AC%E4%BD%93%E8%AF%AD%E8%A8%80%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6"><span class="toc-text">三、RDF模型—OWL本体语言描述框架</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%98%E8%A6%81OWL%E6%A1%86%E6%9E%B6%EF%BC%9F"><span class="toc-text">3.1 为什么还要OWL框架？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-OWL%E5%A2%9E%E5%8A%A0%E7%9A%84%E4%B8%BB%E8%A6%81%E8%A1%A8%E8%BE%BE%E6%9E%84%E5%BB%BA"><span class="toc-text">3.2 OWL增加的主要表达构建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-OWL%E7%9A%84%E4%B8%89%E4%B8%AA%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">3.3 OWL的三个使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E5%9F%BA%E4%BA%8EOWL%E7%9A%84%E6%8E%A8%E7%90%86"><span class="toc-text">3.4 基于OWL的推理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E5%B8%B8%E8%A7%81%E7%9A%84OWL%E6%8E%A8%E7%90%86%E6%9C%BA"><span class="toc-text">3.5 常见的OWL推理机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-OWL%E4%B8%8E%E6%8F%8F%E8%BF%B0%E9%80%BB%E8%BE%91"><span class="toc-text">3.6 OWL与描述逻辑</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81RDF%E6%A8%A1%E5%9E%8B%E2%80%94Web-Schema%E4%B8%8ESemantic-Markup"><span class="toc-text">四、RDF模型—Web Schema与Semantic Markup</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Web-Schema"><span class="toc-text">4.1 Web Schema</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-RDFa-%E6%97%A9%E6%9C%9F%E6%A0%87%E5%87%86"><span class="toc-text">4.2 RDFa: 早期标准</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-HTML5-Microdata"><span class="toc-text">4.3 HTML5 Microdata</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-Schema-org"><span class="toc-text">4.4 Schema.org</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-cnSchema-org"><span class="toc-text">4.5 cnSchema.org</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-IoT%E4%B8%8EWeb-Schema"><span class="toc-text">4.6 IoT与Web Schema</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%B1%9E%E6%80%A7%E5%9B%BE%E6%A8%A1%E5%9E%8B%E8%A1%A8%E7%A4%BA%E6%A1%86%E6%9E%B6"><span class="toc-text">五、属性图模型表示框架</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">六、总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">七、参考资料</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

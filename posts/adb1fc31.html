@@ -1,0 +1,413 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>大型数据集的空间统计竞赛 | 西山晴雪的知识笔记</title><meta name="keywords" content="空间统计学,点参考数据,概述"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="大型数据集的空间统计竞赛">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大型数据集的空间统计竞赛">
+<meta property="og:url" content="http://xishansnow.github.io/posts/adb1fc31.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="大型数据集的空间统计竞赛">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/book_14.png">
+<meta property="article:published_time" content="2022-12-13T12:50:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.025Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="空间统计学">
+<meta property="article:tag" content="点参考数据">
+<meta property="article:tag" content="概述">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/book_14.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/adb1fc31"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '大型数据集的空间统计竞赛',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/book_14.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">大型数据集的空间统计竞赛</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-13T12:50:00.000Z" title="发表于 2022-12-13 20:50:00">2022-12-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.025Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/">GeoAI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/">大数据专题</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/">点参考数据</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">7.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>26分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src="https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js"></script>
+<script src="/js/attachTooltips.js"></script>
+<link rel="stylesheet" href="/css/tippy.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>〖摘 要〗 随着空间数据集变得越来越大和笨重，对空间模型的精确推断在计算上变得令人望而却步。已经提出了各种近似方法来减少计算负担。尽管存在对这些近似方法的综合评论，但对于一些选定的方法，它们的性能比较仅限于中小型数据集。为了实现包含尽可能多的方法的全面比较，我们组织了大型数据集空间统计竞赛。本次竞赛具有以下创新特点：1）我们使用 ExaGeoStat 软件生成合成数据集，生成的实现数在 10 万到 100 万之间； 2）我们系统地设计了数据生成模型来表示具有广泛统计特性的空间过程，适用于高斯和非高斯情况； 3) 竞赛任务包括估计和预测，并通过多个标准评估结果； 4）我们公开了所有数据集和竞赛结果，以作为其他近似方法的基准。在本文中，我们公开了所有比赛细节和结果以及对比赛结果的一些分析。</p>
+<p>〖原 文〗 Huang, H. et al. (2021) ‘Competition on Spatial Statistics for Large Datasets’, Journal of Agricultural, Biological and Environmental Statistics, 26(4), pp. 580–595. Available at: <a target="_blank" rel="noopener" href="https://doi.org/10.1007/s13253-021-00457-z">https://doi.org/10.1007/s13253-021-00457-z</a>.</p>
+<h2 id="1-引言">1 引言</h2>
+<p>随着更好的观测技术和先进计算设备的发展，获取大型空间数据集变得更加容易和普遍。因此，空间统计中的统计推断在计算上变得具有挑战性。几十年来，当精确计算不可行时，人们提出了各种近似方法来对大规模空间数据进行建模和分析。然而，在文献中，使用那些提出的近似方法的统计推断的性能通常只用中小型数据集进行评估，可以获得精确的解决方案。然而，对于大型现实世界数据集，精确计算不再可行。近似方法的推论通常根据经验或通过拟合模型的预测准确性进行验证。</p>
+<p>受比较不同近似方法的统计和计算效率挑战的推动，引发了一些开创性的工作:</p>
+<ul>
+<li>Englund (1990) <sup class="refplus-num"><a href="#ref-Englund1990">[9]</a></sup> 进行了一项非常早期的研究，调查不同空间模型的推断性能。该研究在具有数万个数据点的两个区域中使用了 Walker Lake 数据集（Srivastava，1987），他们观察到来自不同空间模型的插值结果存在相当大的差异。</li>
+<li>Bradley 等 (2016)<sup class="refplus-num"><a href="#ref-Bradley2016">[6]</a></sup> 回顾了各种空间预测因子，包括确定性和随机方法，并将它们应用于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><msub><mi>O</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">CO_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 的卫星测量。研究了三种不同大小的数据集（最大的一个包含数万个观察值），并且对不同方法的评估依赖于预测误差。</li>
+<li>Heaton 等 (2019)<sup class="refplus-num"><a href="#ref-Heaton2019">[12]</a></sup> 主要关注高斯过程 (GP)，并提出了一项竞赛，在竞赛中，研究小组使用他们选择的高斯过程近似方法或其他无模型算法方法对模拟和真实世界的数据集进行预测。两个数据集都包含 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>150</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">150,000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">150</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span> 个实现。来自高斯过程的模拟数据的协方差是已知的，并向竞赛参与者公开；真实世界的数据包括由卫星测量的地表温度，其真正的潜在协方差是未知的。基于预测误差或预测分布检查性能。</li>
+<li>Wikle 等 (2017) <sup class="refplus-num"><a href="#ref-Wikle2017">[26]</a></sup> 讨论了一个通用任务框架的设计来比较不同的方法。此外，他们开发了一个网站，让研究人员可以将他们的预测脚本上传到网站服务器以获取 NASA OCO-2 数据，然后相关的预测性能将发布在网站排行榜上。</li>
+</ul>
+<p>受这些作品的启发，我们组织了一场竞赛，即<a target="_blank" rel="noopener" href="https://cemse.kaust.edu.sa/stsds/2021-kaust-competitionspatial-statistics-large-datasets">大型数据集空间统计竞赛</a>，以涉及最近的方法并克服以往研究中存在的弱点。与以往的比赛或对比作品相比，我们的比赛有以下主要特点：</p>
+<ul>
+<li>通过使用 <a target="_blank" rel="noopener" href="https://github.com/ecrc/exageostat">ExaGeoStat软件</a>（Abdulah 等人，2018a）<sup class="refplus-num"><a href="#ref-Abdulah2018a">[2]</a></sup>模拟大数据集，我们可以更好地理解不同方法的统计效率。</li>
+<li>数据集是根据各种空间模型模拟的，包括高斯和非高斯过程模型。对于高斯过程模型，数据集是用 Matern 协方差函数模拟的一组选定参数，代表空间随机场的广泛统计特性。非高斯空间数据集由 <code>Tukey g-and-h</code> 随机场（Xu 和 Genton，2017）<sup class="refplus-num"><a href="#ref-Xu2017">[27]</a></sup>生成，它概括了高斯过程以解释偏度和重尾。</li>
+<li>竞赛任务包括估计和预测。检查高斯过程近似方法推断的模型与事实的偏离程度是有见地的。一项分项竞赛侧重于评估模型规格错误，我们使用平均效率损失 (MLOE) 和均方误差的平均规格错误 (MMOM) 作为标准，这两个标准均由 Hong 等 (2021) <sup class="refplus-num"><a href="#ref-Hong2021">[13]</a></sup>提出。。对于侧重于预测的分项竞赛，使用均方根误差（RMSE）来评估预测精度。</li>
+<li>我们在公共存储库中共享了所有准备好的数据集和竞赛结果。未来针对大型空间数据集的近似方法可以使用这些数据集作为基准数据，并将其性能与现有方法进行比较。此外，我们还发布了 ExaGeoStat 精确计算的模型参数估计结果和预测结果，可作为精确推断结果参考。</li>
+</ul>
+<p>大赛于 2020 年 11 月 23 日启动，吸引了全球 29 支研究团队报名。这些注册团队包括空间统计界的活跃研究人员。比赛于 2021 年 2 月 1 日结束，21 支队伍成功提交成绩；有关提交结果的团队的详细信息，请参见补充材料中的表 S1。</p>
+<p>本文的其余部分组织如下：在第 2 节中，我们提供了比赛的概述。在第 3 节中，我们简要讨论了参赛队伍在比赛中使用的方法。在第 4 节中，我们通过一些分析展示了比赛结果的细节。在第 5 节中，我们总结并给出最后的评论。</p>
+<h2 id="2-竞赛信息">2 竞赛信息</h2>
+<h3 id="2-1-比赛准备中的-ExaGeoStat-软件">2.1 比赛准备中的 ExaGeoStat 软件</h3>
+<p>略</p>
+<h3 id="2-2-比赛使用的数据集">2.2 比赛使用的数据集</h3>
+<p>略</p>
+<h3 id="2-3-分项比赛详情">2.3 分项比赛详情</h3>
+<p><strong>分项竞赛 1a</strong>：检查不同方法在中等大型数据集上正确推断高斯过程模型的能力。我们在每个数据集 G1 – G16 中选择了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>90</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">90,000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">90</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span> 个实现，并要求参与团队估计四个参数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>σ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">σ^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">β &gt; 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ν</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">ν &gt; 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.06366em;">ν</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>τ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">τ^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>。用于评估性能的指标是 MLOE 和 MMOM（Hong 等，2021) 跨越不同的数据集。 MLOE 表征了当使用近似模型而不是真实模型进行预测时，预测效率的平均损失。 MMOM 表征了在近似模型下计算时均方误差的平均误指定。 MLOE 和 MMOM 的详细信息在补充材料的 S3 节中给出。</p>
+<p><strong>分项竞赛 1b</strong>：评估在从高斯模型生成的中等大型数据集支撑下的空间预测性能。对于每个数据集 G1 – G16，我们为参赛团队提供了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">10,000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">10</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span> 个新位置，并要求他们根据 <code> </code>分项竞赛 1a<code> </code> 中提供的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>90</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">90,000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">90</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span> 个实现来预测这些位置。 RMSE 用于评估预测准确性。</p>
+<p><strong>分项竞赛 2a</strong>：侧重于非高斯数据的预测，要求参赛团队预测超过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">10,000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">10</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span> 个新位置，条件是每个数据集 NG1 和 NG2 有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>90</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">90,000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">90</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span> 个实现。</p>
+<p><strong>分项竞赛 2b</strong>：对更大的数据集进行建模。选择了一个高斯数据集（数据集 G5）和一个非高斯数据集（数据集 NG1）。我们将条件数据规模增加到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>900</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">900,000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">900</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span>，参赛团队需要预测超过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>100</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">100,000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">100</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span> 个新位置。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213105624-368e.webp" alt="分项竞赛情况"></p>
+<h3 id="2-4-评估">2.4 评估</h3>
+<p>略</p>
+<h3 id="2-5-结果">2.5 结果</h3>
+<p>每个提交的完整竞赛结果在补充材料的表 S2 中给出。使用了许多近似方法，我们在第 3 节中提供了它们的简要总结。为了突出表现最好的人，每个分项竞赛中的前三名提交（ <code>分项竞赛 2a</code>  中的四个提交由于三个团队之间的平局或第二名）如下，得分最高的队伍排在第一位：</p>
+<ul>
+<li><code>分项竞赛 1a</code> : [1] <code>SpatStat-Fans</code>, [2] <code>GpGp</code>, [3] <code>RESSTE(CL/krig)</code></li>
+<li><code>分项竞赛 1b</code> : [1] <code>RESSTE(CL/krig)</code>, [2] HCHISS, [3] Chile-Team</li>
+<li><code>分项竞赛 2a</code> : [1] RESSTE(Tukey-g-h-trans-GPGP), [3] <code>GpGp</code>(quick), [3] HMatrix, [3] RESSTE (nonpara-trans-GPGP)</li>
+<li><code>分项竞赛 2b</code> : [2] RESSTE(nonpara-trans-GPGP), [2] RESSTE(Tukey-g-htrans-GPGP), [2] Tohoku-University</li>
+</ul>
+<p>除了竞赛提交，我们还使用 ExaGeoStat 查看 <code>分项竞赛 1a</code>  和 1b 中精确计算的排名。 <code>分项竞赛 1a</code>  和 <code>1b</code> 的扩充顶级列表如表 4 所示，其中 <code>分项竞赛 1a</code>  中的 “ExaGeoStat(estimated-model)” 表示我们使用 ExaGeoStat 通过精确计算最大化完全似然来估计 Matern 协方差参数；在 <code>分项竞赛 1b</code>  中，这意味着我们使用关联的估计模型进行精确计算的预测。 <code>分项竞赛 1b</code>  中的 “ExaGeoStat(true-model)” 表示使用真实模型进行预测，ExaGeoStat 精确计算。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213111015-fef0.webp" alt="Table04"></p>
+<p>我们观察到 <code>ExaGeoStat(estimated-model)</code> 在 <code>分项竞赛 1a</code>  中设法找到了最接近真实情况的模型，但在 <code>分项竞赛 1b</code>  中预测性能略差于 <code>RESSTE(CL/krig)</code>。这表明使用更接近事实的模型并不能保证给定实现的点预测性能更准确。然而，<code>ExaGeoStat(estimated-model)</code> 应该在空间过程的多个实现中产生平均最好的预测。当使用真实参数值进行预测时（ <code>ExaGeoStat(true-model)</code> ），分数从 79 分下降到 72 分，是 <code>分项竞赛 1b</code>  中的最好成绩。</p>
+<h2 id="3-方法分类">3 方法分类</h2>
+<p>在本节中，我们不打算对现有的近似方法进行详尽的文献综述，仅简要讨论参与者在比赛中使用的方法。详细的文献综述可以在 Sun 等 (2012) 和 Heaton 等（2019）中找到</p>
+<h3 id="3-1-主要方法">3.1 主要方法</h3>
+<p><strong>（1）组合似然法</strong></p>
+<p>此类方法将联合似然近似为一组分量似然的加权乘积（Varin 等人，2011 年）<sup class="refplus-num"><a href="#ref-Varin2011">[24]</a></sup>。例如，Vecchia 的近似框架使用一系列条件似然，其中条件集是稀疏选择的（Vecchia，1988）<sup class="refplus-num"><a href="#ref-Vecchia1988">[25]</a></sup>。成对似然法将每对观测值的似然性作为成分似然性 (Varin, 2008) <sup class="refplus-num"><a href="#ref-Varin2008">[23]</a></sup>。因此，可以用较少的计算得到组合似然中的每个分量。</p>
+<p><code>Teams Among-Stats</code>、<code>Chile-Team</code>、<code>ExtStat</code>、<code>GpGp</code>、<code>HCHISS</code>、<code>RESSTE</code> 等团队提交了组合似然近似法的结果。</p>
+<p><strong>（2）低秩近似方法</strong></p>
+<p>低秩逼近方法一般将整个随机过程投影到某个低维空间，并使用低秩表示作为代理来逼近原始过程。例如，预测过程 (Banerjee 等, 2008) <sup class="refplus-num"><a href="#ref-Banerjee2008">[5]</a></sup> 在空间域中放置节点，并且以节点实现为条件的原始过程的期望被用作替代。 <code>Fixed rank kriging</code> (Cressie and Johannesson, 2008) <sup class="refplus-num"><a href="#ref-Cressie2008">[7]</a></sup> 使用少量基函数来表示过程，从而可以通过对维数更小的矩阵求逆来获得精度矩阵。</p>
+<p><code>ExtStat</code>、<code>UOW</code> 等团队提交了低秩近似方法的结果。</p>
+<p><strong>（3）稀疏近似方法</strong></p>
+<ul>
+<li>
+<p>协方差锥化 (Furrer 等, 2006 <sup class="refplus-num"><a href="#ref-Furrer2006">[10]</a></sup>; Kaufman 等, 2008 <sup class="refplus-num"><a href="#ref-Kaufman2008">[16]</a></sup>) 将具有紧凑支持的相关函数与原始协方差函数相乘，使得远距离位置的相关性缩小为零，并在协方差矩阵中引入稀疏性。</p>
+</li>
+<li>
+<p>对于精度矩阵，高斯马尔可夫随机场自然会在精度矩阵中产生稀疏结构 (Rue 等, 2009) <sup class="refplus-num"><a href="#ref-Rue2009">[19]</a></sup>。</p>
+</li>
+</ul>
+<p><code>ExtStat</code> 团队使用提交了这种技术的结果。</p>
+<p><strong>（4）其他方法</strong></p>
+<ul>
+<li>
+<p>层次矩阵方法 (Litvinenko 等, 2019) <sup class="refplus-num"><a href="#ref-Litvinenko2019">[17]</a></sup> 将层次矩阵近似格式应用于协方差矩阵。然后，协方差矩阵的非对角块采用低秩表示，这使得协方差矩阵可以以较低的计算成本求逆。<code>HMatrix</code> 团队通过这种方式提交了结果。</p>
+</li>
+<li>
+<p>协方差函数的全尺度近似（Sang 和 Huang，2012）<sup class="refplus-num"><a href="#ref-Sang2012">[20]</a></sup> 结合了协方差锥化和预测过程模型，同时考虑了小尺度和大尺度的空间依赖性。<code>SpatStat-Fans</code> 团队使用了这种方法。</p>
+</li>
+<li>
+<p>多分辨率近似 (Katzfuss, 2017) <sup class="refplus-num"><a href="#ref-Katzfuss2017">[15]</a></sup> 是预测过程模型或全尺度近似模型的扩展，其中具有层次结构的基函数用于捕获不同尺度的空间依赖性。<code>Colorado-School-of-Mines</code> 和 <code>GPvecchia</code> 团队提交了使用这种方法的论文。</p>
+</li>
+<li>
+<p>最近邻高斯过程 (Datta 等, 2016) <sup class="refplus-num"><a href="#ref-Datta2016">[8]</a></sup>将 Vecchia 近似扩展到基于过程的模型，以便使用统一框架估计参数和进行预测。 <code>ExtStat</code> 和 <code>NNGP</code> 团队在他们的提交中应用了这种方法。</p>
+</li>
+</ul>
+<h3 id="3-2-主要参赛队伍及其使用的方法">3.2 主要参赛队伍及其使用的方法</h3>
+<p>在这里，我们为比赛中的顶级团队提供简要说明和设置。</p>
+<p><strong>（1） <code>分项竞赛 1a</code>  中的高斯过程模型推断问题</strong></p>
+<ul>
+<li><code>SpatStat-Fans</code> 采用平滑的 <strong>全尺度近似方法</strong>，将整个域划分为 10×10 的规则矩形块，结点集合位于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>20</mn><mo>×</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">20×20</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">20</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">20</span></span></span></span> 的网格上。</li>
+<li><code>GpGp</code> 对 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>30</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">30, 000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">30</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span> 个观测值进行二次采样，然后使用 R 包 <code>GpGp</code> 以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>30</mn></mrow><annotation encoding="application/x-tex">30</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">30</span></span></span></span> 个最近邻为条件的 <strong>条件分解近似法</strong>（Guinness 等人，2021 年）<sup class="refplus-num"><a href="#ref-Guinness2021">[11]</a></sup>。</li>
+<li><code>RESSTE(CL/krig)</code> 使用 <strong>组合似然法</strong> 来找到最佳协方差参数估计。</li>
+</ul>
+<p><strong>（2）<code>分项竞赛 1b</code>  的高斯过程预测问题</strong></p>
+<ul>
+<li><code>RESSTE(CL/krig)</code> 使用即插即用克里金预测器，通过组合似然来推断参数。</li>
+<li><code>HCHISS</code> 通过过 Vecchia 近似估计协方差参数，然后使用以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">1, 000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span> 个最近邻为条件的克里金法。</li>
+<li><code>Chile-Team</code> 采用高斯条件成对似然估计协方差参数，然后使用以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>800</mn></mrow><annotation encoding="application/x-tex">800</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">800</span></span></span></span> 个最近邻为条件的克里金法，。</li>
+</ul>
+<p><strong>（3）<code>分项竞赛 2a</code> 的非高斯响应预测问题</strong></p>
+<ul>
+<li>
+<p><code>RESSTE(Tukey-g-h-trans-GPGP)</code> 和 <code>RESSTE(nonpara-trans-GPGP)</code> 在 <code>分项竞赛 2a</code>  和 <code>分项竞赛 2b</code> 中应用了 <code>Tukey g and-h</code> 变换和非参数变换，使得变换后的数据分别近似为高斯分布，然后使用 R 包 <code>GpGp</code> 进行高斯预测。</p>
+</li>
+<li>
+<p><code>HMatrix</code> 使用层次矩阵逼近协方差矩阵，精度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>10</mn><mrow><mo>−</mo><mn>6</mn></mrow></msup></mrow><annotation encoding="application/x-tex">10^{−6}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></span>。</p>
+</li>
+<li>
+<p><code>GpGp(quick)</code> 使用 R 包 <code>GpGp</code> 中的 “matern nonstat var” 协方差函数，其中使用 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>50</mn></mrow><annotation encoding="application/x-tex">50</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">50</span></span></span></span> 个基函数表示空间变化的协方差函数，协方差参数由 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">10, 000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">10</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span> 个随机样本估计 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>20</mn></mrow><annotation encoding="application/x-tex">20</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">20</span></span></span></span> 个条件邻居；然后，通过克里金法与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>30</mn></mrow><annotation encoding="application/x-tex">30</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">30</span></span></span></span> 个条件邻居进行预测。</p>
+</li>
+</ul>
+<p><strong>（4）<code>分项竞赛 2b</code> 的大规模预测问题（高斯和非高斯）</strong></p>
+<ul>
+<li>
+<ul>
+<li><code>RESSTE(Tukey-g-h-trans-GPGP)</code> 和 <code>RESSTE(nonpara-trans-GPGP)</code> 在 <code>分项竞赛 2b</code> 中应用了 <code>Tukey g and-h</code> 变换和非参数变换，使得变换后的数据分别近似为高斯分布，然后使用 R 包 <code>GpGp</code> 进行高斯预测。</li>
+</ul>
+</li>
+<li>
+<p><code>Tohoku-University</code> 使用了协方差锥化，其中高斯过程的 Matern 协方差函数应用了通过交叉验证估计的参数。</p>
+</li>
+</ul>
+<p>论文的讨论部分将提供每个分项竞赛中顶级团队使用方法的更多细节。</p>
+<h2 id="4-竞赛结果分析">4 竞赛结果分析</h2>
+<p>在本节中，我们提供了有关比赛结果的更多详细信息。</p>
+<p><code>图（2）</code> 展示了分项竞赛 1a 中所有团队提交的参数估计以及 ExaGeoStat 的精确计算以供比较。我们重点介绍了 ExaGeoStat 的结果以及分项竞赛 1a（<code>SpatStat-Fans</code>、<code>GpGp</code>、<code>RESSTE(CL/krig)</code>）和 1b（<code>RESSTE(CL/krig)</code>、<code>HCHISS</code>、<code>Chile-Team</code>）中的前三名。请注意，提交的 <code>RESSTE(CL/krig)</code> 在两个分项竞赛中均名列前三。除了 <code>HCHISS</code> 之外的所有提交都成功地非常精确地估计了块金参数。我们观察到，当过程更平滑（更大的平滑参数）并且具有更强的依赖性（更大的有效变程）时，参数估计通常更困难。在这种情况下，来自不同提交的偏基台和变程参数估计差异最大。</p>
+<p>为了进行比较，我们还展示了提交的 <code>HCHISS</code> 和 <code>Chile-Team</code> 的模型推断结果，它们分别在分项竞赛 1b 中排名第 2 和第 3。然而，我们注意到他们的模型估计不如 <code>SpatStat-Fans</code>、<code>GpGp</code> 和 <code>RESSTE(CL/krig)</code>。</p>
+<p>尽管 <code>ExaGeoStat</code> 总体上具有最准确的估计，但我们注意到对于数据集 G15 和 G16，具有精确计算的 <code>ExaGeoStat</code> 往往会高估偏基台和变程。</p>
+<p><code>SpatStat-Fans</code> 和 <code>RESSTE(CL/krig)</code> 显示出与精确计算结果相似的模式，但 <code>GpGp</code> 获得的估计更准确，更接近事实。补充材料中的图 S1 说明了绝对 MLOE 和 MMOM，其中我们观察到 <code>GpGp</code> 对于数据集 G15 和 G16 确实具有更小的绝对 MLOE 和 MMOM。估计参数的似然值也可以用于比较。当插入来自提交的参数估计值时，我们使用 <code>ExaGeoStat</code> 来计算精确的对数似然。补充材料中的图 S2 描述了来自提交的对数似然减去具有真实参数的对数似然。对于那些具有较小对数似然的方法，例如 <code>Chile-Team</code> 和 <code>HCHISS</code>，这意味着它们由于近似而未能找到似然的最大值。那些具有较高值的，例如 <code>ExaGeoStat</code> 和 <code>SpatStat-Fans</code>，可能已经获得了给定数据集的最优估计。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213115310-f3f7.webp" alt="Figure02"></p>
+<blockquote>
+<p>图 2：子竞赛 1a 中所有团队的参数估计的箱线图（为清楚起见，未显示异常值）。突出显示了 ExaGeoStat、SpatStat-Fans、GpGp、RESSTE(CL/krig)、Chile-Team 和 HCHISS 的真实值和估计值。突出显示的提交（真相除外）的图例顺序遵循它们在子竞赛 1a 中的排名。数据集 G9 - G16 分别与 G1 - G8 共享相同的协方差结构，除了块块。</p>
+</blockquote>
+<p><code>图（3）</code> 显示了分项竞赛 1b 中每个数据集的不同提交的 RMSE。我们强调与之前讨论的分项竞赛 1a 相同的提交，包括分项竞赛 1b 和 1a 中的前三名提交。此外，我们使用 ExaGeoStat 在分项竞赛 1a 中使用真实参数和 ExaGeoStat 的估计进行精确计算进行预测，并给出并突出显示相应的 RMSE。在 <code>图（3）</code> 的顶部面板中，我们使用箱线图来总结不同数据集的整体预测性能。由于分项竞赛 1a 和 1b 中顶级团队的 RMSE 无法使用箱线图尺度很好地区分，我们还在 <code>图（3）</code> 的底部面板中用条形图显示了他们的 RMSE，以便更好地比较这些顶级团队。我们观察到，当块存在时，RMSE 通常较大，因为数据具有较高的噪声水平。值得注意的是，分项竞赛 1a 中表现最好的 SpatStat-Fans 和 GpGp 成功地找到了出色的参数估计。然而，与其他突出显示的提交相比，他们更好的推断模型并没有带来更好的整体预测。一个可能的原因是他们的近似在克里金法中不充分，即使他们使用的基础模型更准确。事实上，GpGp 只使用了 50 个最近的邻居作为每个预测的条件集，而 HCHISS 使用了 1000 个最近的点。这表明模型推断和考虑的邻居数量对于局部克里金预测都很重要；很难说邻居的数量在多大程度上很重要。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213115515-44b8.webp" alt="Figure03"></p>
+<blockquote>
+<p>图 3：子竞赛 1b 中每个数据集中所有提交的 RMSE 箱线图。还给出了 ExaGeoStat 在子竞赛 1a 中使用真实参数和估计参数的 ExaGeoStat 预测。在图例中，突出显示的提交按照它们在子竞赛 1b 中的排名顺序列出。子竞赛 1a 和 1b 中顶级团队的 RMSE 突出显示并显示在条形图中。数据集 G9 - G16 分别与 G1 - G8 共享相同的协方差结构，除了块块。</p>
+</blockquote>
+<p>分项竞赛 2a 和 2b 中的 RMSE 总结分别在补充材料的图 S3 和 S4 中给出，我们在其中突出显示了两个分项竞赛中的顶级团队。表现最好的包括将 <code>Tukey g-and-h</code> 变换和非参数变换应用于高斯过程，以及基于推断（非平稳）高斯过程模型的其他局部克里金预测。</p>
+<h2 id="5-讨论">5 讨论</h2>
+<p>在本次比赛中，我们创建并发布了一组不同设计的基准数据。我们知道用于生成数据集的真实参数以及 ExaGeoStat 的精确最大似然估计，可用于研究未来提出的方法。出于实际原因，我们在本次比赛中仅选择并使用了生成的高斯过程数据集的子集。具有一百万个空间位置的完整数据集已在 <a target="_blank" rel="noopener" href="https://doi.org/10.25781/KAUST-8VP2V">https://doi.org/10.25781/KAUST-8VP2V</a> 上公开提供，以便于在未来的研究中使用。未来的近似方法可以使用此存储库作为工具，根据不同参赛团队的提交来评估它们的性能，并在本次比赛中使用 ExaGeoStat 进行精确推断（ExaGeoStat 在分项竞赛 1a 中的精确最大似然估计的详细摘要也是在补充材料的表 S3 中给出）</p>
+<p>我们没有在本次比赛中比较计算时间，因为参赛团队在自己的机器上对数据进行建模，执行时间无法直接比较。但我们在补充材料的图 S5 中总结了所有提交的分项竞赛 1b、2a 和 2b 中进行预测的执行时间。以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>90</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">90,000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">90</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span> 次观察为条件进行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">10,000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">10</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span> 次预测的中位时间对于高斯数据（在分项竞赛 1b 中）约为 60 秒，对于非高斯数据（在分项竞赛 2a 中）约为 430 秒。对于分项竞赛 2b 中更大的数据集，以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>900</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">900,000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">900</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span> 次观察为条件进行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>100</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">100,000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">100</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">000</span></span></span></span> 次预测的中位时间约为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo separator="true">,</mo><mn>700</mn></mrow><annotation encoding="application/x-tex">2,700</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">700</span></span></span></span> 秒。</p>
+<p>我们还注意到，理想情况下需要复制具有相同设置的数据集，以便从统计的角度更好地评估不同的方法。然而，本次比赛使用的数据集已经非常庞大，许多团队无法进行多次重复的推断和预测。为了让大多数参赛团队都能参加比赛，我们在每个设置中只使用了一个副本。尽管如此，我们考虑的各种协方差设置为大型空间数据建模提供了一个公平的比较。</p>
+<p>几十年来，由于大型空间数据集的普遍存在带来的挑战，大空间数据问题一直是一个活跃的研究领域，这些数据集通常包含数百万个观测值，例如遥感气候数据或数值模型输出。 “大数据” 研究领域因实际应用中空间数据的规模而得到推进。除了为更大的空间数据集开发高效和准确的方法外，最近的研究还集中在多变量空间和时空数据上，这些数据的大小可以显著放大。然后，预测问题将包括单个或多个变量的空间插值和时间预测。提供一个统一的框架来理解现有近似方法的性能在模拟和评估中更具挑战性，但对于建议未来的研究方向至关重要。</p>
+<h2 id="参考文献">参考文献</h2>
+<ul id="refplus"><li id="ref-Abdulah2019" data-num="1">[1]  Abdulah, S., Y. Li, J. Cao, H. Ltaief, D. E. Keyes, M. G. Genton, and Y. Sun (2019). ExaGeoStatR: A package for large-scale geostatistics in R. arXiv preprint arXiv:1908.06936 .</li><li id="ref-Abdulah2018a" data-num="2">[2]  Abdulah, S., H. Ltaief, Y. Sun, M. G. Genton, and D. E. Keyes (2018a). ExaGeoStat: A high performance unified software for geostatistics on manycore systems. IEEE Transactions on Parallel and Distributed Systems 29 (12), 2771–2784.</li><li id="ref-Abdulah2018b" data-num="3">[3]  Abdulah, S., H. Ltaief, Y. Sun, M. G. Genton, and D. E. Keyes (2018b). Parallel approximation of the maximum likelihood estimation for the prediction of large-scale geostatistics simulations. In 2018 IEEE International Conference on Cluster Computing (CLUSTER), pp. 98–108.</li><li id="ref-Abdulah2019" data-num="4">[4]  Abdulah, S., H. Ltaief, Y. Sun, M. G. Genton, and D. E. Keyes (2019). Geostatistical modeling and prediction using mixed precision tile Cholesky factorization. In 2019 IEEE 26th International Conference on High Performance Computing, Data, and Analytics (HiPC), pp. 152–162.</li><li id="ref-Banerjee2008" data-num="5">[5]  Banerjee, S., A. E. Gelfand, A. O. Finley, and H. Sang (2008). Gaussian predictive process models for large spatial data sets. Journal of the Royal Statistical Society: Series B (Statistical Methodology) 70 (4), 825–848.</li><li id="ref-Bradley2016" data-num="6">[6]  Bradley, J. R., N. Cressie, and T. Shi (2016). A comparison of spatial predictors when datasets could be very large. Statistics Surveys 10, 100–131. CHAMELEON (2021, January). The Chameleon project. Available at https://project. inria.fr/chameleon.</li><li id="ref-Cressie2008" data-num="7">[7]  Cressie, N. and G. Johannesson (2008). Fixed rank kriging for very large spatial data sets. Journal of the Royal Statistical Society: Series B (Statistical Methodology) 70 (1), 209–226.</li><li id="ref-Datta2016" data-num="8">[8]  Datta, A., S. Banerjee, A. O. Finley, and A. E. Gelfand (2016). Hierarchical nearestneighbor Gaussian process models for large geostatistical datasets. Journal of the American Statistical Association 111 (514), 800–812.</li><li id="ref-Englund1990" data-num="9">[9]  Englund, E. J. (1990). A variance of geostatisticians. Mathematical Geology 22 (4), 417–455.</li><li id="ref-Furrer2006" data-num="10">[10]  Furrer, R., M. G. Genton, and D. Nychka (2006). Covariance tapering for interpolation of large spatial datasets. Journal of Computational and Graphical Statistics 15 (3), 502–523</li><li id="ref-Guinness2021" data-num="11">[11]  Guinness, J., M. Katzfuss, and Y. Fahmy (2021). GpGp: Fast Gaussian Process Computation Using Vecchia’s Approximation. R package version 0.3.2.</li><li id="ref-Heaton2019" data-num="12">[12]  Heaton, M. J., A. Datta, A. O. Finley, R. Furrer, J. Guinness, R. Guhaniyogi, F. Gerber, R. B. Gramacy, D. Hammerling, M. Katzfuss, F. Lindgren, D. W. Nychka, F. Sun, and A. Zammit-Mangion (2019). A case study competition among methods for analyzing large spatial data. Journal of Agricultural, Biological and Environmental Statistics 24 (3), 398–425. HICMA (2021, January). The HiCMA project. Available at https://github.com/ecrc/ hicma.</li><li id="ref-Hong2021" data-num="13">[13]  Hong, Y., S. Abdulah, M. G. Genton, and Y. Sun (2021). Efficiency assessment of approximated spatial predictions for large datasets. Spatial Statistics, to appear.</li><li id="ref-Johnson2014" data-num="14">[14]  Johnson, S. G. (2014). The NLopt nonlinear-optimization package. Available at https://github.com/stevengj/nlopt.</li><li id="ref-Katzfuss2017" data-num="15">[15]  Katzfuss, M. (2017). A multi-resolution approximation for massive spatial datasets. Journal of the American Statistical Association 112 (517), 201–214.</li><li id="ref-Kaufman2008" data-num="16">[16]  Kaufman, C. G., M. J. Schervish, and D. W. Nychka (2008). Covariance tapering for likelihood-based estimation in large spatial data sets. Journal of the American Statistical Association 103 (484), 1545–1555.</li><li id="ref-Litvinenko2019" data-num="17">[17]  Litvinenko, A., Y. Sun, M. G. Genton, and D. E. Keyes (2019). Likelihood approximation with hierarchical matrices for large spatial datasets. Computational Statistics &amp; Data Analysis 137, 115–132.</li><li id="ref-R Core Team (2019). R: A Language and Environment for Statistical Computing. Vienna, Austria: R Foundation for Statistical Computing. https://www.R-project.org/" data-num="18">[18] R Core Team (2019). R: A Language and Environment for Statistical Computing. Vienna, Austria: R Foundation for Statistical Computing. https://www.R-project.org/.</li><li id="ref-Rue2009" data-num="19">[19]  Rue, H., S. Martino, and N. Chopin (2009). Approximate Bayesian inference for latent Gaussian models by using integrated nested Laplace approximations. Journal of the Royal Statistical Society: Series B (Statistical Methodology) 71 (2), 319–392.</li><li id="ref-Sang2012" data-num="20">[20]  Sang, H. and J. Z. Huang (2012). A full scale approximation of covariance functions for large spatial data sets. Journal of the Royal Statistical Society: Series B (Statistical Methodology) 74 (1), 111–132.</li><li id="ref-Srivastava1987" data-num="21">[21]  Srivastava, R. M. (1987). A non-ergodic framework for variograms and covariance functions. Master’s thesis, Stanford University, Stanford, CA.</li><li id="ref-Sun2012" data-num="22">[22]  Sun, Y., B. Li, and M. G. Genton (2012). Geostatistics for large datasets. In E. Porcu, J.M. Montero, and M. Schlather (Eds.), Advances and Challenges in Space-time Modelling of Natural Events, Volume 207, Chapter 3, pp. 55–77. Springer.</li><li id="ref-Varin2008" data-num="23">[23]  Varin, C. (2008). On composite marginal likelihoods. Advances in Statistical Analysis 92 (1), 1–28.</li><li id="ref-Varin2011" data-num="24">[24]  Varin, C., N. Reid, and D. Firth (2011). An overview of composite likelihood methods. Statistica Sinica 21, 5–42.</li><li id="ref-Vecchia1988" data-num="25">[25]  Vecchia, A. V. (1988). Estimation and model identification for continuous spatial processes. Journal of the Royal Statistical Society: Series B (Methodological) 50 (2), 297–312.</li><li id="ref-Wikle2017" data-num="26">[26]  Wikle, C. K., N. Cressie, A. Zammit-Mangion, and C. Shumack (2017). A common task framework (ctf) for objective comparison of spatial prediction methodologies. Stats &amp; Data Science Views. Available at https://www.statisticsviews.com/article/a-common-task-framework-ctf-for-objective-comparison-of-spatialprediction-methodologies.</li><li id="ref-Xu2017" data-num="27">[27]  Xu, G. and M. G. Genton (2017). Tukey g-and-h random fields. Journal of the American Statistical Association 112 (519), 1236–1249.</li></ul>
+<h2 id="附录">附录</h2>
+<h3 id="S1-补充表格">S1 补充表格</h3>
+<p><strong>（1）参赛队伍名单</strong></p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213120054-d6b8.webp" alt="TableS1-1"><br>
+<img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213120112-bd48.webp" alt="TableS1-2"><br>
+<img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213120151-e8b3.webp" alt="TableS1-3"></p>
+<p><strong>（2）分项比赛排名</strong></p>
+<blockquote>
+<p>表 S2：每个子比赛中每个提交的排名。表中“S1a”、“S1b”、“S2a”、“S2b”分别表示分项比赛1a、1b、2a、2b。粗体值表示每个子比赛的获胜者。</p>
+</blockquote>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213120550-55a4.webp" alt="TableS2"></p>
+<p><strong>（3）ExaGeoStat 的精确最大似然估计</strong></p>
+<blockquote>
+<p>表 S3：ExaGeoStat 对子竞赛 1a 中每个数据集的精确最大似然估计及其相应的 MLOE、MMOM 和对数似然。</p>
+</blockquote>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213120750-688e.webp" alt="TableS3"></p>
+<h3 id="S2-补充图件">S2  补充图件</h3>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213120944-15aa.webp" alt="Figure-s1"></p>
+<blockquote>
+<p>图 S1：子竞赛 1a 中所有团队的绝对 MLOE 和 MMOM。突出显示了 ExaGeoStat、SpatStat-Fans、GpGp、RESSTE(CL/krig)、Chile-Team 和 HCHISS 的结果。灰点是来自其他提交的指标。在图例中，突出显示的提交按照它们在子竞赛 1a 中的排名顺序列出。数据集 G9 G16 分别与 G1 – G8 共享相同的协方差结构，除了块块。</p>
+</blockquote>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213121128-91ea.webp" alt="FigureS2"></p>
+<blockquote>
+<p>图 S2：ExaGeoStat、SpatStat-Fans、GpGp、RESSTE(CL/krig)、智利团队和 HCHISS 的对数似然减去子竞赛 1a 中真实参数的对数似然。在图例中，突出显示的提交按照它们在子竞赛 1a 中的排名顺序列出。数据集 G9 - G16 分别与 G1 - G8 共享相同的协方差结构，除了块块。</p>
+</blockquote>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213121207-e64f.webp" alt="FigureS3"></p>
+<blockquote>
+<p>图 S3：子竞赛 2a 中每个数据集中所有提交的 RMSE 箱线图。在图例中，突出显示的提交按照它们在子竞赛 2a 中的排名顺序列出。所有子比赛中顶级团队的 RMSE 突出显示并显示在条形图中。</p>
+</blockquote>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213121243-2704.webp" alt="FigureS4"></p>
+<blockquote>
+<p>图 S4：子竞赛 2b 中每个数据集中所有提交的 RMSE 箱线图。在图例中，突出显示的提交按照它们在子竞赛 2b 中的排名顺序列出。所有子比赛中顶级团队的 RMSE 突出显示并显示在条形图中。</p>
+</blockquote>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213121323-379c.webp" alt="FigureS5"></p>
+<blockquote>
+<p>图 S5：在子竞赛 1b、2a 和 2b 的每个数据集中进行预测的所有提交的执行时间箱线图。</p>
+</blockquote>
+<h3 id="S3-MLOE-与-MMOM">S3 MLOE 与 MMOM</h3>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20221213121416-36cd.webp" alt="MLOE&MMOM"></p>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/adb1fc31.html">http://xishansnow.github.io/posts/adb1fc31.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E5%AD%A6/">空间统计学</a><a class="post-meta__tags" href="/tags/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/">点参考数据</a><a class="post-meta__tags" href="/tags/%E6%A6%82%E8%BF%B0/">概述</a></div><div class="post_share"><div class="social-share" data-image="/img/book_14.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/b6cef99d.html"><img class="prev-cover" src="/img/book_08.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">艺术、地理信息和数学之间存在惊人的接口</div></div></a></div><div class="next-post pull-right"><a href="/posts/5c4624dd.html"><img class="next-cover" src="/img/book_01.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">pyton、node.js、hexo配置指南</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/737a759d.html" title="🔥 空间大数据组织管理方法索引帖"><img class="cover" src="/img/008.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-13</div><div class="title">🔥 空间大数据组织管理方法索引帖</div></div></a></div><div><a href="/posts/82ad5e00.html" title="🔥  点参考数据模型索引帖"><img class="cover" src="/img/coffe_09.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-10</div><div class="title">🔥  点参考数据模型索引帖</div></div></a></div><div><a href="/posts/36f530ea.html" title="空间过程的贝叶斯建模分析方法综述"><img class="cover" src="/img/book_10.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-11</div><div class="title">空间过程的贝叶斯建模分析方法综述</div></div></a></div><div><a href="/posts/dd354f.html" title="空间数据的贝叶斯分层建模"><img class="cover" src="/img/book_10.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-01</div><div class="title">空间数据的贝叶斯分层建模</div></div></a></div><div><a href="/posts/37a1c275.html" title="基于似然的的方法"><img class="cover" src="/img/coffe_02.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-01</div><div class="title">基于似然的的方法</div></div></a></div><div><a href="/posts/a944ff60.html" title="🔥  大规模点参考数据统计分析方法索引帖"><img class="cover" src="/img/coffe_01.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-10</div><div class="title">🔥  大规模点参考数据统计分析方法索引帖</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%AB%9E%E8%B5%9B%E4%BF%A1%E6%81%AF"><span class="toc-text">2 竞赛信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%AF%94%E8%B5%9B%E5%87%86%E5%A4%87%E4%B8%AD%E7%9A%84-ExaGeoStat-%E8%BD%AF%E4%BB%B6"><span class="toc-text">2.1 比赛准备中的 ExaGeoStat 软件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%AF%94%E8%B5%9B%E4%BD%BF%E7%94%A8%E7%9A%84%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">2.2 比赛使用的数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%88%86%E9%A1%B9%E6%AF%94%E8%B5%9B%E8%AF%A6%E6%83%85"><span class="toc-text">2.3 分项比赛详情</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E8%AF%84%E4%BC%B0"><span class="toc-text">2.4 评估</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E7%BB%93%E6%9E%9C"><span class="toc-text">2.5 结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%96%B9%E6%B3%95%E5%88%86%E7%B1%BB"><span class="toc-text">3 方法分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%B8%BB%E8%A6%81%E6%96%B9%E6%B3%95"><span class="toc-text">3.1 主要方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%B8%BB%E8%A6%81%E5%8F%82%E8%B5%9B%E9%98%9F%E4%BC%8D%E5%8F%8A%E5%85%B6%E4%BD%BF%E7%94%A8%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">3.2 主要参赛队伍及其使用的方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%AB%9E%E8%B5%9B%E7%BB%93%E6%9E%9C%E5%88%86%E6%9E%90"><span class="toc-text">4 竞赛结果分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E8%AE%A8%E8%AE%BA"><span class="toc-text">5 讨论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95"><span class="toc-text">附录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#S1-%E8%A1%A5%E5%85%85%E8%A1%A8%E6%A0%BC"><span class="toc-text">S1 补充表格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#S2-%E8%A1%A5%E5%85%85%E5%9B%BE%E4%BB%B6"><span class="toc-text">S2  补充图件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#S3-MLOE-%E4%B8%8E-MMOM"><span class="toc-text">S3 MLOE 与 MMOM</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>

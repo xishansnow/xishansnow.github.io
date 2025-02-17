@@ -1,0 +1,370 @@
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>现代高斯过程回归速览 | 西山晴雪的知识笔记</title><meta name="keywords" content="高斯过程,随机过程,地统计数据,可扩展性,深度高斯过程"><meta name="author" content="西山晴雪"><meta name="copyright" content="西山晴雪"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="现代高斯过程回归速览">
+<meta property="og:type" content="article">
+<meta property="og:title" content="现代高斯过程回归速览">
+<meta property="og:url" content="http://xishansnow.github.io/posts/97a2ec3c.html">
+<meta property="og:site_name" content="西山晴雪的知识笔记">
+<meta property="og:description" content="现代高斯过程回归速览">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://xishansnow.github.io/img/008.png">
+<meta property="article:published_time" content="2023-03-03T08:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T11:55:02.008Z">
+<meta property="article:author" content="西山晴雪">
+<meta property="article:tag" content="高斯过程">
+<meta property="article:tag" content="随机过程">
+<meta property="article:tag" content="地统计数据">
+<meta property="article:tag" content="可扩展性">
+<meta property="article:tag" content="深度高斯过程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xishansnow.github.io/img/008.png"><link rel="shortcut icon" href="/img/favi.jpg"><link rel="canonical" href="http://xishansnow.github.io/posts/97a2ec3c"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"12DC1Q07CH","apiKey":"7e4ac2a644127298a8a2e8170335afdb","indexName":"xishansnowblog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '现代高斯过程回归速览',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-17 19:55:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favi.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">383</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">409</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">109</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/008.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">西山晴雪的知识笔记</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 贝叶斯方法</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E4%BC%BC%E7%84%B6%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-chart-area"></i><span> 似然方法</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%BF%91%E4%BC%BC%E8%B4%9D%E5%8F%B6%E6%96%AF/"><i class="fa-fw fa-solid fa-cube"></i><span> 近似贝叶斯</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/MCMC/"><i class="fa-fw fa-solid fa-wand-magic-sparkles"></i><span> MCMC</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 变分推断</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 贝叶斯优化</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 概率图模型</span></a></li><li><a class="site-page child" href="/categories/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BB%9F%E8%AE%A1/%E6%A6%82%E7%8E%87%E7%BC%96%E7%A8%8B/"><i class="fa-fw fa-brands fa-codepen"></i><span> 概率编程</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-atom"></i><span> 高斯过程</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/posts/b5b2c876.html"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/"><i class="fa-fw fas fa-atom"></i><span> 高斯过程原理</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/"><i class="fa-fw fa-solid fa-magnet"></i><span> 可扩展高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/"><i class="fa-fw fas fa-cogs"></i><span> 高斯过程推断方法</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 神经网络高斯过程</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%AF%84%E6%B5%8B%E5%AF%B9%E6%AF%94/"><i class="fa-fw fa-solid fa-school"></i><span> 评测与数据集</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA/"><i class="fa-fw fa-solid fa-cube"></i><span> 模型自动构建</span></a></li><li><a class="site-page child" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-ghost"></i><span> 不确定性DL</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/BayesNN/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%8D%95%E4%B8%80%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-atom"></i><span> 单一确定性神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><i class="fa-fw fas fa-school"></i><span> 贝叶斯神经网络</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90/"><i class="fa-fw fas fa-cogs"></i><span> 深度集成</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 数据增强</span></a></li><li><a class="site-page child" href="/categories/BayesNN/%E5%AF%B9%E6%AF%94%E8%AF%84%E6%B5%8B/"><i class="fa-fw fa-solid fa-magnet"></i><span> 对比评测</span></a></li><li><a class="site-page child" href="/categories/%E9%A2%84%E6%B5%8B%E4%BB%BB%E5%8A%A1/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E6%A0%A1%E5%87%86/"><i class="fa-fw fa-solid fa-gas-pump"></i><span> 不确定性校准</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-map"></i><span> 空间统计</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/GeoAI/%E7%BB%BC%E8%BF%B0%E6%A6%82%E8%A7%88/"><i class="fa-fw fa-solid fa-pen-nib"></i><span> 综述概览</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%82%B9%E5%8F%82%E8%80%83%E6%95%B0%E6%8D%AE/"><i class="fa-fw fa-solid fa-map"></i><span> 点参考数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95/"><i class="fa-fw fa-solid fa-cube"></i><span> 空间贝叶斯方法</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E5%8F%98%E7%B3%BB%E6%95%B0%E6%A8%A1%E5%9E%8B/"><i class="fa-fw fa-solid fa-ghost"></i><span> 空间变系数模型</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E7%BB%9F%E8%AE%A1%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fa-brands fa-deezer"></i><span> 空间统计深度学习</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E6%97%B6%E7%A9%BA%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/"><i class="fa-fw fas fa-atlas"></i><span> 时空统计数据</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%93%E9%A2%98/"><i class="fa-fw fa fa-anchor"></i><span> 大数据专题</span></a></li><li><a class="site-page child" href="/categories/GeoAI/%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E6%A8%A1%E6%8B%9F/"><i class="fa-fw fa-solid fa-layer-group"></i><span> 空间随机模拟</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i><span> 书籍</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="https://xishansnow.github.io/BayesianAnalysiswithPython2nd/index.html"><i class="fa-fw fa-solid  fa-landmark-dome"></i><span> 《Bayesian Analysis with Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/BayesianModelingandComputationInPython/index.html"><i class="fa-fw fa-solid  fa-graduation-cap"></i><span> 《Bayesian Modeling and Computation in Python》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/ElementsOfStatisticalLearning/index.html"><i class="fa-fw fa-solid  fa-book-atlas"></i><span> 《统计学习精要（ESL）》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/spatialSTAT_CN/index.html"><i class="fa-fw fa-solid  fa-layer-group"></i><span> 《空间统计学》</span></a></li><li><a class="site-page child" target="_blank" rel="noopener" href="https://otexts.com/fppcn/index.html"><i class="fa-fw fa-solid  fa-cloud-sun-rain"></i><span> 《预测：方法与实践》</span></a></li><li><a class="site-page child" href="https://xishansnow.github.io/MLAPP/index.html"><i class="fa-fw fa-solid  fa-robot"></i><span> 《机器学习的概率视角（MLAPP）》</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-compass"></i><span> 索引</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-timeline"></i><span> 时间索引</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签索引</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类索引</span></a></li><li><a class="site-page child" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7/"><i class="fa-fw fas fa-atlas"></i><span> 临时索引</span></a></li></ul></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-link"></i><span> 其他</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"><i class="fa-fw fas fa-utensils"></i><span> 常用软件</span></a></li><li><a class="site-page child" href="/link/paper/"><i class="fa-fw fas fa-book-open"></i><span> 学术工具</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 摄影作品</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">现代高斯过程回归速览</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-03-03T08:00:00.000Z" title="发表于 2023-03-03 16:00:00">2023-03-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-17T11:55:02.008Z" title="更新于 2025-02-17 19:55:02">2025-02-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/">高斯过程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/">基本原理</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>15分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><script src='https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js'></script>
+<script src='/js/attachTooltips.js'></script>
+<link rel='stylesheet' href='/css/tippy.css'>
+<script src="https://unpkg.com/tippy.js@2.0.2/dist/tippy.all.min.js"></script>
+<script src="/js/attachTooltips.js"></script>
+<link rel="stylesheet" href="/css/tippy.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="1-无限模型表达-现代计算">1 无限模型表达 + 现代计算</h2>
+<p>有没有想过如何创建具有 <strong>无限表达能力</strong> 的非参数监督学习模型？看看 <strong>高斯过程回归 (GPR)</strong>，这是一种几乎完全根据数据本身学习做出预测的算法（在超参数的帮助下）。将此算法与自动微分等最新的计算进展相结合，可以应用高斯过程回归近乎实时地解决各种受监督的机器学习问题。</p>
+<p>在本文中，我们将讨论：</p>
+<ol>
+<li>高斯过程回归理论的简要概述/回顾</li>
+<li>我们可以使用高斯过程回归解决的问题类型，以及一些例子</li>
+<li>高斯过程回归与其他监督学习算法的比较</li>
+<li>可以用来实现高斯过程回归的现代编程包和工具</li>
+</ol>
+<p>这是我的高斯过程回归系列中的第二篇文章。如需从头开始对高斯过程回归进行严格的介绍，请查看我之前的文章 <a target="_blank" rel="noopener" href="https://towardsdatascience.com/gaussian-process-regression-from-first-principles-833f4aa5f842"><strong>此处</strong></a>。</p>
+<h2 id="2-高斯过程回归的概念">2 高斯过程回归的概念</h2>
+<p>在深入研究如何实现和使用高斯过程回归之前，先快速回顾一下这个监督机器学习算法背后的机制和理论。关于以下概念的详细推导/讨论，请查看我之前的文章<a target="_blank" rel="noopener" href="https://towardsdatascience.com/gaussian-process-regression-from-first-principles-833f4aa5f842">《高斯过程回归》</a> 的文章。</p>
+<p>（i）以 <strong>观测到的</strong> 训练点为条件，预测测试点的 <strong>条件后验分布</strong>：</p>
+<p><img src="https://miro.medium.com/max/352/0*D5pwrdIfVmlGZ5g4" alt="Fig"></p>
+<p><img src="https://miro.medium.com/max/699/0*vihvz0KsUGXSOuxp" alt="Fig"></p>
+<p><img src="https://miro.medium.com/max/286/0*3UhQ289y6zYk6AoA" alt="Fig"></p>
+<p><img src="https://miro.medium.com/max/488/0*CGSCSTFRNfByxaJI" alt="Fig"></p>
+<p>（ii）将测试点目标的 <strong>均值</strong> 被预测为 <strong>已观测到的目标值的线性组合</strong>，这些线性组合的权重，则由从训练输入到测试点的核距离确定：</p>
+<p><img src="https://miro.medium.com/max/432/0*Pu-VCqHBUBNQ56Tb" alt="fig"></p>
+<p><img src="https://miro.medium.com/max/281/0*jroKL7CWcK5N60Bl" alt="fig"></p>
+<p>（iii） 使用 <strong>协方差函数</strong> 来测量输入之间的 <strong>核距离</strong>：</p>
+<p><img src="https://miro.medium.com/max/337/0*NYre8qRxUvtyRbgc" alt="Fig"></p>
+<p><img src="https://miro.medium.com/max/349/0*Bh5uo2AvbmoaXTtQ" alt="Fig"></p>
+<p><img src="https://miro.medium.com/max/528/0*zL1RwPyLiOBF6WI8" alt="Fig"></p>
+<p>（iv） 通过将每个新点视为高斯过程的一部分，从现有点中插值新点，即将新点也参数化为一个高斯分布：</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230310151419-fcc2.webp" alt="Fig"></p>
+<p>使用含噪声的正弦时间序列数据集进行一维插值的示例。</p>
+<h2 id="3-高斯过程回归能解决的问题">3 高斯过程回归能解决的问题</h2>
+<p>高斯过程回归可以应用于各种 <strong>有监督</strong> 机器学习问题（在某些情况下，也可以用作 <strong>无监督</strong> 机器学习中的子程序）。以下是可以使用这种机器学习技术解决的几类问题：</p>
+<h3 id="（A）插值-克里金法"><strong>（A）插值/克里金法</strong></h3>
+<p>插值是信号处理、空间统计和控制等多个领域的关键任务。此应用在利用空间统计的领域中尤为常见，例如 <strong>地统计学</strong>。作为一个具体示例，请考虑生成与下面的山坡相对应的表面问题，只给定山坡上有限数量的定义点。如果您有兴趣查看此的具体实现，请查看我的文章 <a target="_blank" rel="noopener" href="https://towardsdatascience.com/batched-multi-dimensional-gaussian-process-regression-with-gpytorch-3a6425185109"><strong>此处</strong></a>。</p>
+<p><img src="https://miro.medium.com/max/700/0*z9uQ51TflTHBE9mW" alt="图"></p>
+<blockquote>
+<p>克里金法和插值在地统计学中经常用到，可以用于高维空间的曲面插值！ <a target="_blank" rel="noopener" href="https://unsplash.com/@markos_mant?utm_source=medium&utm_medium=referral">Markos Mant</a> 在 <a target="_blank" rel="noopener" href="https://unsplash.com?utm_source=medium&utm_medium=referral">Unsplash</a> 上拍摄的照片</p>
+</blockquote>
+<h3 id="（B）时间序列预测"><strong>（B）时间序列预测</strong></h3>
+<p>这类问题着眼于使用历史数据将时间序列投射到未来。与克里金法一样，时间序列预测允许预测看不见的值。然而，这个问题不是预测不同位置的看不见的值，而是应用高斯过程回归来预测未来看不见的点的均值和方差。这非常适用于预测电力需求、股票价格或线性动力系统的状态空间演化等任务。</p>
+<p>此外，高斯过程回归不仅预测未来点的均值，而且还输出预测方差，使决策系统能够将不确定性纳入决策。</p>
+<p><img src="https://xishansnowblog.oss-cn-beijing.aliyuncs.com/images/images/stats-20230310151454-0707.webp" alt="图"></p>
+<blockquote>
+<p>使用含噪声的正弦曲线进行时间序列预测的示例。深蓝色线代表预测均值，而浅蓝色区间代表模型的置信区间。</p>
+</blockquote>
+<h3 id="（C）-预测不确定性"><strong>（C） 预测不确定性</strong></h3>
+<p>更一般地说，因为高斯过程回归允许预测测试点的方差，高斯过程回归可用于各种不确定性量化任务——即任何与估计<strong>期望值</strong>和与此 <strong>预期值</strong> 相关的不确定性或 <strong>方差</strong>。</p>
+<p>您可能想知道：<em>为什么不确定性很重要</em>？为了激发这个答案，考虑为自主导航安全系统预测行人的轨迹。如果行人的预测轨迹具有<strong>高预测不确定性</strong>，则自动驾驶车辆应更加谨慎，以应对对行人意图的信心不足。另一方面，如果自动驾驶汽车对行人的轨迹具有<strong>低预测方差</strong>，那么自动驾驶汽车将能够更好地预测行人的意图，并且可以更轻松地按照当前的驾驶计划进行。</p>
+<p>从某种意义上说，通过预测不确定性，决策系统可以根据他们预测这些预期值的 <strong>不确定性</strong> 来 “加权” 他们估计的 <strong>预期值</strong>。</p>
+<h2 id="4-为什么高斯过程回归优于其他监督学习模型？">4 为什么高斯过程回归优于其他监督学习模型？</h2>
+<p>你可能想知道：为什么我应该考虑使用高斯过程回归而不是不同的监督学习模型？下面，我列举几个对比原因。</p>
+<ol>
+<li>
+<p>高斯过程回归是 <strong>非参数模型</strong>。这意味着它主要从数据本身学习，而不是通过学习大量参数。这是特别有利的，因为这导致高斯过程回归模型不像神经网络等高参数模型那样 <strong><em>数据饥渴</em></strong>，即它们不需要那么多的样本来实现强大的通用性。</p>
+</li>
+<li>
+<p>对于插值和预测任务，高斯过程回归估计 <strong>预期值</strong> 和 <strong>不确定性</strong>。这对于在决策时考虑到这种不确定性的决策系统尤其有益。</p>
+</li>
+<li>
+<p>高斯过程回归是一个 <strong>线性平滑器</strong> <sup class="refplus-num"><a href="#ref-5">[5]</a></sup>， 从 <strong>监督学习</strong> 角度来看，这可以概念化为一种 <strong>正则化</strong> 技术。从 <strong>贝叶斯</strong> 的角度来看，这相当于在您的模型上强加一个 <strong>先验</strong>，即测试点上的所有目标必须是现有训练目标的 <strong><em>线性组合</em></strong>。这个性质有助于高斯过程回归泛化到未观测到的数据，只要真正为观测到的目标可以表示为训练目标的线性组合。</p>
+</li>
+<li>
+<p>通过集成 <code>torch</code> 和 <code>tensorflow</code> 等 <strong>自动微分</strong> 后端框架，<code>gpytorch</code> 和 <code>gpflow</code> 等高斯过程回归的软件包正在变得 <strong>更快</strong> 和 <strong>根据可扩展性</strong>。对于 <strong>批次</strong> 模型尤其如此。有关这方面的示例案例研究，请参阅我之前关于小批量、多维高斯过程回归的文章<a target="_blank" rel="noopener" href="https://towardsdatascience.com/batched-multi-dimensional-gaussian-process-regression-with-gpytorch-3a6425185109"><strong>此处</strong></a>！</p>
+</li>
+</ol>
+<h2 id="5-如何实现高斯过程回归？">5 如何实现高斯过程回归？</h2>
+<p>下面，我们介绍几个 Python 机器学习包，用于 <strong>可扩展的</strong>、<strong>高效的</strong>、<strong>模块化的</strong> 高斯过程回归实现。</p>
+<h3 id="Scikit-Learn"><strong>Scikit-Learn</strong></h3>
+<p><a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.GaussianProcessRegressor.html">Scikit-Learn</a> <sup class="refplus-num"><a href="#ref-1">[1]</a></sup> 是一个很好的 GPR 入门包。它允许一定的模型灵活性，并且能够在引擎盖下进行超参数优化和定义可能性。要将 <code>sklearn</code> 与您的数据集一起使用，请确保您的数据集可以用 <code>np.array</code> 对象以数字表示。使用<code>sklearn</code>进行高斯过程回归的主要步骤：</p>
+<ol>
+<li>
+<p>预处理您的数据。训练数据 (<code>np.array</code>) 可以表示为具有 <code>x_train</code> 形状 <strong>(N, D)</strong> 和 <code>y_train</code> 形状 <strong>(N, 1)</strong> 的 <code>(x_train, y_train)</code> 元组，其中 <strong>N</strong> 是样本数，<strong>D</strong> 是特征的维度。测试点 (<code>np.array</code>) 可以表示为形状为 <strong>(N, D)</strong> 的 <code>x_test</code>。</p>
+</li>
+<li>
+<p>定义您的 <strong>协方差函数</strong>。在下面的代码段中，我们使用径向基函数 (RBF) 核 “RBF” 以及使用 “WhiteKernel” 的加性噪声。</p>
+</li>
+<li>
+<p>使用您的协方差函数定义 “GaussianProcessRegressor” 对象，以及为您的 GPR 设定种子的随机状态。这种 “random_state” 对于确保再现性很重要。</p>
+</li>
+<li>
+<p>使用方法 <code>gpr.fit(x_train, y_train)</code> 拟合您的 <code>gpr</code> 对象。这会 “训练您的模型”，并使用梯度方法（例如基于 Hessian 的二阶优化例程 lbfgs）优化 gpr 对象的超参数。</p>
+</li>
+<li>
+<p>使用方法 <code>gpr.predict(x_test, return_std=True)</code> 预测测试点 <code>x_test</code> 上目标的 <strong>均值</strong> 和 <strong>协方差</strong>。这为您提供了预测值以及该预测点的不确定性度量。</p>
+</li>
+</ol>
+<p>要使用 <code>pip</code> 为下面的示例安装依赖项：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install scikit-learn numpy matplotlib</span><br></pre></td></tr></table></figure>
+<p>这是一个使用 <code>sklearn</code> <strong>拟合</strong> 和 <strong>预测</strong> 一维正弦曲线的示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.gaussian_process <span class="keyword">import</span> GaussianProcessRegressor</span><br><span class="line"><span class="keyword">from</span> sklearn.gaussian_process.kernels <span class="keyword">import</span> WhiteKernel, DotProduct, RBF</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># Random seeds</span></span><br><span class="line">np.random.seed(seed=<span class="number">0</span>)  <span class="comment"># Set seed for NumPy</span></span><br><span class="line">random_state = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate features, and take norm for use with target</span></span><br><span class="line">x = np.random.normal(loc=<span class="number">0</span>, scale=<span class="number">1</span>, size=(<span class="number">50</span>, <span class="number">1</span>))</span><br><span class="line">y = np.sin(x)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create kernel and define GPR</span></span><br><span class="line">kernel = RBF() + WhiteKernel()</span><br><span class="line">gpr = GaussianProcessRegressor(kernel=kernel, random_state=random_state)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit GPR model</span></span><br><span class="line">gpr.fit(x, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create test data</span></span><br><span class="line">x_test = np.random.normal(loc=<span class="number">0</span>, scale=<span class="number">1</span>, size=(<span class="number">50</span>, <span class="number">1</span>))</span><br><span class="line">y_test = np.sin(x_test)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># Predict mean</span></span><br><span class="line">y_hat, y_sigma = gpr.predict(x_test, return_std=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Initialize plot</span></span><br><span class="line">f, ax = plt.subplots(<span class="number">1</span>, <span class="number">1</span>, figsize=(<span class="number">4</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Squeeze data</span></span><br><span class="line">x = np.squeeze(x)</span><br><span class="line">y = np.squeeze(y)</span><br><span class="line">x_test = np.squeeze(x_test)</span><br><span class="line">y_test = np.squeeze(y_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the training data</span></span><br><span class="line">ax.scatter(x, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot predictive means as blue line</span></span><br><span class="line">ax.plot(x_test, y_hat, <span class="string">'b'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Shade between the lower and upper confidence bounds</span></span><br><span class="line">lower = x_test - y_sigma</span><br><span class="line">upper = x_test + y_sigma</span><br><span class="line">ax.fill_between(x_test, lower, upper, alpha=<span class="number">0.5</span>)</span><br><span class="line">ax.set_ylim([-<span class="number">3</span>, <span class="number">3</span>])</span><br><span class="line">plt.title(<span class="string">"GPR Model Predictions"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<h3 id="GPyTorch">GPyTorch</h3>
+<p><a target="_blank" rel="noopener" href="https://gpytorch.ai/">GPyTorch</a><sup class="refplus-num"><a href="#ref-2">[undefined]</a></sup> 非常适用于创建完全可定制的、先进的、可加速的高斯过程回归模型。这个软件包支持从高斯过程回归模型优化（通过自动分化）到硬件加速（通过 CUDA 和 <a target="_blank" rel="noopener" href="https://pypi.org/project/pykeops/">PyKeOps</a> 的一切。</p>
+<p>建议您在使用 GPyTorch 之前熟悉 PyTorch 和/或 python 中的自动微分包，但是 [<strong>教程</strong>](<a target="_blank" rel="noopener" href="https://docs.gpytorch.ai/en/v1.1.1/examples/">https://docs.gpytorch.ai/en/v1.1.1/examples/</a> 01_Exact_GPs/Simple_GP_Regression.html) 使该框架易于学习和使用。 GPyTorch 中 GPR 的数据表示为 “torch.tensor” 对象。以下是在 GPyTorch 中拟合高斯过程回归模型的步骤：</p>
+<ol>
+<li>
+<p>预处理您的数据。训练数据可以表示为具有 <code>x_train</code> 形状 <strong>(B, N, D)</strong> 和 <code>y_train</code> 形状 <strong>(B, N, 1)</strong> 的 <code>(x_train, y_train)</code> 元组，其中 <strong>B</strong> 是批量大小，<strong>N</strong> 是样本数，<strong>D</strong> 是特征的维度。您的测试点可以表示为形状为 <strong>(B, N, D)</strong> 的 “x_test”。</p>
+</li>
+<li>
+<p>通过子类化 <code>gpytorch.models.ExactGP</code> 类来定义您的 <code>ExactGPModel</code>。要对该模型进行子类化，您需要定义：(i) 构造函数方法，它指定模型的均值和协方差函数，(ii) <code>forward</code> 方法，它描述了高斯过程回归模型如何进行预测。要使用 <strong>批处理</strong>，请查看教程 <a target="_blank" rel="noopener" href="https://docs.gpytorch.ai/en/v1.1.1/examples/08_Advanced_Usage/index.html?highlight=batch#batch-gpr"><strong>此处</strong></a>。要在超参数上使用 <strong>先验</strong> 分布，请查看教程 <a target="_blank" rel="noopener" href="https://docs.gpytorch.ai/en/v1.1.1/examples/00_Basic_Usage/Hyperparameters.html?highlight=priors"><strong>此处</strong></a>。</p>
+</li>
+<li>
+<p>指定您的“似然”函数，您的模型使用该函数将潜在变量 <strong>f</strong> 与观察到的目标 <strong>y</strong> 相关联。</p>
+</li>
+<li>
+<p>使用您的“可能性”和训练数据“(x_train, y_train)”实例化您的“模型”。</p>
+</li>
+<li>
+<p>使用 <code>pytorch</code> 自动微分对您的 <code>model</code> 进行超参数优化（“训练”）。完成后，确保您的 <code>model</code> 和 <code>likelihood</code> 使用 <code>model.eval()</code> 和 <code>likelihood.eval()</code> 置于后验模式。</p>
+</li>
+<li>
+<p>通过调用 <code>likelihood(model(x_test))</code> 使用您的 <code>model</code> 计算测试点的 <strong>mean</strong> 和 <strong>variance</strong> 预测。内部函数从测试输入“<strong>x</strong>” 预测潜在测试值 f，外部函数从潜在测试值预测均值和方差。</p>
+</li>
+</ol>
+<p>要使用 <code>pip</code> 为下面的示例安装依赖项：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install gpytorch torch matplotlib numpy# (Optional) - Installs pykeopspip install pykeops</span><br></pre></td></tr></table></figure>
+<p>下面是一个使用 <code>gpytorch</code> 拟合含噪声一维正弦曲线的示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gpytorch</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create features</span></span><br><span class="line">X = torch.tensor(np.arange(<span class="number">100</span>)).<span class="built_in">float</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create targets as noisy function of features</span></span><br><span class="line">Y = torch.tensor(np.add(np.sin(X / <span class="number">10</span>), np.random.normal(loc=<span class="number">0</span>, scale=<span class="number">0.5</span>, size=<span class="number">100</span>))).<span class="built_in">float</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># We will use the simplest form of GP model, exact inference</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ExactGPModel</span>(gpytorch.models.ExactGP):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, train_x, train_y, likelihood</span>):</span><br><span class="line">        <span class="built_in">super</span>(ExactGPModel, <span class="variable language_">self</span>).__init__(train_x, train_y, likelihood)</span><br><span class="line">        <span class="variable language_">self</span>.mean_module = gpytorch.means.ConstantMean()</span><br><span class="line">        <span class="variable language_">self</span>.covar_module = gpytorch.kernels.ScaleKernel(gpytorch.kernels.RBFKernel())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        mean_x = <span class="variable language_">self</span>.mean_module(x)</span><br><span class="line">        covar_x = <span class="variable language_">self</span>.covar_module(x)</span><br><span class="line">        <span class="keyword">return</span> gpytorch.distributions.MultivariateNormal(mean_x, covar_x)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Initialize likelihood and model</span></span><br><span class="line">likelihood = gpytorch.likelihoods.GaussianLikelihood()</span><br><span class="line">model = ExactGPModel(X, Y, likelihood)</span><br><span class="line"></span><br><span class="line"><span class="comment"># this is for running the notebook in our testing framework</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">training_iter = <span class="number">50</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Find optimal model hyperparameters</span></span><br><span class="line">model.train()</span><br><span class="line">likelihood.train()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use the adam optimizer</span></span><br><span class="line">optimizer = torch.optim.Adam(model.parameters(), lr=<span class="number">0.1</span>)  <span class="comment"># Includes GaussianLikelihood parameters</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># "Loss" for GPs - the marginal log likelihood</span></span><br><span class="line">mll = gpytorch.mlls.ExactMarginalLogLikelihood(likelihood, model)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Performs "training" via hyperparameter optimization</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(training_iter):</span><br><span class="line">    <span class="comment"># Zero gradients from previous iteration</span></span><br><span class="line">    optimizer.zero_grad()</span><br><span class="line">    <span class="comment"># Output from model</span></span><br><span class="line">    output = model(X)</span><br><span class="line">    <span class="comment"># Calc loss and backprop gradients</span></span><br><span class="line">    loss = -mll(output, Y)</span><br><span class="line">    loss.backward()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">'Iter %d/%d - Loss: %.3f   lengthscale: %.3f   noise: %.3f'</span> % (</span><br><span class="line">        i + <span class="number">1</span>, training_iter, loss.item(),</span><br><span class="line">        model.covar_module.base_kernel.lengthscale.item(),</span><br><span class="line">        model.likelihood.noise.item()</span><br><span class="line">    ))</span><br><span class="line">    optimizer.step()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Places model in "posterior mode"</span></span><br><span class="line">model = model.<span class="built_in">eval</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create test data</span></span><br><span class="line">X_test = torch.tensor(np.arange(<span class="number">0</span>, <span class="number">100</span>, <span class="number">0.01</span>)).<span class="built_in">float</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Makes predictions without noise</span></span><br><span class="line">f_preds = model(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Attributes of predictive function</span></span><br><span class="line">f_mean = f_preds.mean</span><br><span class="line">f_var = f_preds.variance</span><br><span class="line">f_covar = f_preds.covariance_matrix</span><br><span class="line"></span><br><span class="line"><span class="comment"># Run with the no_grad and LOVE (fast variance prediction) context manager</span></span><br><span class="line"><span class="keyword">with</span> torch.no_grad(), gpytorch.settings.fast_pred_var():</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Initialize plot</span></span><br><span class="line">    f, ax = plt.subplots(<span class="number">1</span>, <span class="number">1</span>, figsize=(<span class="number">4</span>, <span class="number">3</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Make predictions with noise model</span></span><br><span class="line">    observed_pred = likelihood(model(X_test))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Get upper and lower confidence bounds</span></span><br><span class="line">    lower, upper = observed_pred.confidence_region()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Plot training data as black stars</span></span><br><span class="line">    ax.scatter(X.numpy(), Y.numpy())</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Plot predictive means as blue line</span></span><br><span class="line">    ax.plot(X_test.numpy(), observed_pred.mean.numpy(), <span class="string">'b'</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Shade between the lower and upper confidence bounds</span></span><br><span class="line">    ax.fill_between(X_test.numpy(), lower.numpy(), upper.numpy(), alpha=<span class="number">0.5</span>)</span><br><span class="line">    ax.set_ylim([-<span class="number">3</span>, <span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="GPFlow">GPFlow</h3>
+<p><a target="_blank" rel="noopener" href="https://gpflow.readthedocs.io/en/master/index.html">GPFlow</a> <sup class="refplus-num"><a href="#ref-3">[2]</a></sup> 是另一个支持自动微分的高斯过程回归包，只是其后端采用了 <code>tensorflow</code>。GPFlow 具有广泛的内置功能，可用于创建完全可定制的模型、似然函数、内核以及优化和推断例程。除了 GPR，GPFlow 还内置了针对贝叶斯优化中其他各种最先进问题的功能，例如 <a target="_blank" rel="noopener" href="https://gpflow.readthedocs.io/en/master/notebooks/advanced/variational_fourier_features.html"><strong>变分傅里叶特征</strong></a> 和 <a target="_blank" rel="noopener" href="https://gpflow.readthedocs.io/en/master/notebooks/advanced/convolutional.html"><strong>卷积高斯过程</strong></a>。</p>
+<p>在使用 GPFlow 之前，建议您对 Python 中的 TensorFlow 和/或自动微分包有一定的了解。 GPFlow 中 GPR 的数据表示为 “tf.tensor” 对象。要开始使用 GPFlow，请查看 <a target="_blank" rel="noopener" href="https://gpflow.readthedocs.io/en/master/notebooks_file.html"><strong>此示例链接</strong></a>。</p>
+<h3 id="GPy">GPy</h3>
+<p><a target="_blank" rel="noopener" href="https://gpy.readthedocs.io/en/deploy/GPy.models.html">GPy</a> <sup class="refplus-num"><a href="#ref-4">[4]</a></sup> 含有大量高斯过程回归模型、似然函数和推断过程的 Python 实现。尽管这个包不支持自动微分的后端，但其多功能性、模块化和可定制性使其成为实现 GPR 的宝贵资源。</p>
+<h3 id="Pyro">Pyro</h3>
+<p><a target="_blank" rel="noopener" href="http://pyro.ai/">Pyro</a> <sup class="refplus-num"><a href="#ref-6">[6]</a></sup> 是一个概率编程包，可以与 Python 集成，还支持高斯过程回归，以及高级应用程序，例如 <a target="_blank" rel="noopener" href="https://pyro.ai/examples/dkl.html">深度核学习</a>。</p>
+<h3 id="Gen">Gen</h3>
+<p><a target="_blank" rel="noopener" href="https://www.gen.dev/">Gen</a> <sup class="refplus-num"><a href="#ref-7">[7]</a></sup> 是一个建立在 Julia 之上的概率编程包。 Gen 通过高斯过程回归提供了几个优势：（i）它建立在提议分布中，这可以通过有效地对可能的解集合施加先验来帮助缩小搜索空间，（ii）它有一个简单的 API 用于采样跟踪来自适合高斯过程回归模型，(iii) 作为许多概率编程语言的目标，它能够轻松创建分层模型以调整高斯过程回归超参数的先验。</p>
+<h3 id="Stan">Stan</h3>
+<p><a target="_blank" rel="noopener" href="https://mc-stan.org/">Stan</a> <sup class="refplus-num"><a href="#ref-8">[8]</a></sup> 是另一个可以与 Python 集成的概率编程包，但也支持其他语言，如 R、MATLAB、Julia 和 Stata。除了具有内置的高斯过程回归功能外，Stan 还支持各种其他贝叶斯推断和采样功能。</p>
+<h3 id="BoTorch">BoTorch</h3>
+<p><a target="_blank" rel="noopener" href="https://botorch.org/">BoTorch</a> <sup class="refplus-num"><a href="#ref-9">[9]</a></sup> 由 GPyTorch 的创建者构建，是一个贝叶斯优化库，它支持许多与 GPyTorch 相同的高斯过程回归技术，以及高级贝叶斯优化技术和分析测试套件。</p>
+<h2 id="6-总结">6 总结</h2>
+<p>在本文中，我们回顾了高斯过程回归 (GPR) 背后的理论，介绍并讨论了高斯过程回归可用于解决的问题类型，讨论了高斯过程回归与其他监督学习算法的比较，并介绍了我们如何能够使用 <code>sklearn</code>、<code>gpytorch</code> 或 <code>gpflow</code> 实现高斯过程回归。</p>
+<h2 id="致谢">致谢</h2>
+<p>Thank you to Carl Edward Rasmussen for open-sourcing the textbook <em>Gaussian Processes for Machine Learning</em> <sup class="refplus-num"><a href="#ref-5">[5]</a></sup>, and for <a target="_blank" rel="noopener" href="https://scikit-learn.org/stable/">Scikit-Learn</a>, <a target="_blank" rel="noopener" href="https://gpytorch.ai/">GPyTorch</a>, <a target="_blank" rel="noopener" href="https://gpflow.readthedocs.io/en/master/intro.html">GPFlow</a>, and <a target="_blank" rel="noopener" href="https://gpy.readthedocs.io/en/deploy/GPy.models.html">GPy</a> for open-sourcing their Gaussian Process Regression Python libraries.</p>
+<h2 id="参考文献">参考文献</h2>
+<ul id="refplus"><li id="ref-1" data-num="1">[1]  Pedregosa, Fabian, et al. “Scikit-learn: Machine learning in Python.” _the Journal of machine Learning research_ 12 (2011): 2825–2830.</li><li id="ref-3" data-num="2">[2]  Gardner, Jacob R., et al. “Gpytorch: Blackbox matrix-matrix gaussian process inference with gpu acceleration.” _arXiv preprint arXiv:1809.11165_ (2018).</li><li id="ref-3" data-num="3">[3]  Matthews, Alexander G. de G., et al. “GPflow: A Gaussian Process Library using TensorFlow.” _J. Mach. Learn. Res._ 18.40 (2017): 1–6.</li><li id="ref-4" data-num="4">[4]  GPy, “GPy.” [_http://github.com/SheffieldML/GPy_](http://github.com/SheffieldML/GPy)_._</li><li id="ref-5" data-num="5">[5]  Carl Edward Rasmussen and Christopher K. I. Williams. 2005. Gaussian Processes for Machine Learning (Adaptive Computation and Machine Learning). The MIT Press.</li><li id="ref-6" data-num="6">[6]  Eli Bingham, Jonathan P. Chen, Martin Jankowiak, Fritz Obermeyer, Neeraj Pradhan, Theofanis Karaletsos, Rohit Singh, Paul Szerlip, Paul Horsfall, and Noah D. Goodman. 2019. _Pyro: deep universal probabilistic programming._ J. Mach. Learn. Res. 20, 1 (January 2019), 973–978.</li><li id="ref-7" data-num="7">[7]  Gen: A General-Purpose Probabilistic Programming System with Programmable Inference. Cusumano-Towner, M. F.; Saad, F. A.; Lew, A.; and Mansinghka, V. K. In Proceedings of the 40th ACM SIGPLAN Conference on Programming Language Design and Implementation (PLDI ‘19).</li><li id="ref-8" data-num="8">[8]  Stan Development Team. 2021. Stan Modeling Language Users Guide and Reference Manual, VERSION. [https://mc-stan.org](https://mc-stan.org).</li><li id="ref-9" data-num="9">[9]  Balandat, Maximilian, et al. “BoTorch: A framework for efficient Monte-Carlo Bayesian optimization.” _Advances in Neural Information Processing Systems_ 33 (2020).</li></ul>
+
+    <style>
+    #refplus, #refplus li{ 
+        padding:0;
+        margin:0;
+        list-style:none;
+    }；
+    </style>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script>
+    document.querySelectorAll(".refplus-num").forEach((ref) => {
+        let refid = ref.firstChild.href.replace(location.origin+location.pathname,'');
+        let refel = document.querySelector(refid);
+        let refnum = refel.dataset.num;
+        let ref_content = refel.innerText.replace(`[${refnum}]`,'');
+        tippy(ref, {
+            content: ref_content,
+        });
+    });
+    </script>
+    </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io">西山晴雪</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://xishansnow.github.io/posts/97a2ec3c.html">http://xishansnow.github.io/posts/97a2ec3c.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://xishansnow.github.io" target="_blank">西山晴雪的知识笔记</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/">高斯过程</a><a class="post-meta__tags" href="/tags/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a><a class="post-meta__tags" href="/tags/%E5%9C%B0%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE/">地统计数据</a><a class="post-meta__tags" href="/tags/%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7/">可扩展性</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%BA%A6%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/">深度高斯过程</a></div><div class="post_share"><div class="social-share" data-image="/img/008.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/c1f3dd64.html"><img class="prev-cover" src="/img/book_11.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">神经正切：Python 中快速简单的无限宽神经网络</div></div></a></div><div class="next-post pull-right"><a href="/posts/c98696a6.html"><img class="next-cover" src="/img/coffe_05.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">归纳高斯过程网络（IGN）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/3fe8789c.html" title="局部和全局稀疏高斯过程近似"><img class="cover" src="/img/book_09.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-10</div><div class="title">局部和全局稀疏高斯过程近似</div></div></a></div><div><a href="/posts/92f7ba1d.html" title="🔥 可扩展高斯过程综述"><img class="cover" src="/img/001.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-08</div><div class="title">🔥 可扩展高斯过程综述</div></div></a></div><div><a href="/posts/1aa0965f.html" title="🔥 稀疏高斯过程及其变分推断"><img class="cover" src="/img/book_04.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-20</div><div class="title">🔥 稀疏高斯过程及其变分推断</div></div></a></div><div><a href="/posts/977049a8.html" title="🔥 组合似然法概述"><img class="cover" src="/img/002.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-30</div><div class="title">🔥 组合似然法概述</div></div></a></div><div><a href="/posts/9ad0bba6.html" title="深度高斯过程(DGP)"><img class="cover" src="/img/book_18.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-01</div><div class="title">深度高斯过程(DGP)</div></div></a></div><div><a href="/posts/9515d5ad.html" title="神经网络高斯过程(NNGP)"><img class="cover" src="/img/coffe_08.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-06</div><div class="title">神经网络高斯过程(NNGP)</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%97%A0%E9%99%90%E6%A8%A1%E5%9E%8B%E8%A1%A8%E8%BE%BE-%E7%8E%B0%E4%BB%A3%E8%AE%A1%E7%AE%97"><span class="toc-text">1 无限模型表达 + 现代计算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B%E5%9B%9E%E5%BD%92%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-text">2 高斯过程回归的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B%E5%9B%9E%E5%BD%92%E8%83%BD%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">3 高斯过程回归能解决的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88A%EF%BC%89%E6%8F%92%E5%80%BC-%E5%85%8B%E9%87%8C%E9%87%91%E6%B3%95"><span class="toc-text">（A）插值&#x2F;克里金法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88B%EF%BC%89%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E9%A2%84%E6%B5%8B"><span class="toc-text">（B）时间序列预测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88C%EF%BC%89-%E9%A2%84%E6%B5%8B%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7"><span class="toc-text">（C） 预测不确定性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B%E5%9B%9E%E5%BD%92%E4%BC%98%E4%BA%8E%E5%85%B6%E4%BB%96%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%EF%BC%9F"><span class="toc-text">4 为什么高斯过程回归优于其他监督学习模型？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B%E5%9B%9E%E5%BD%92%EF%BC%9F"><span class="toc-text">5 如何实现高斯过程回归？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Scikit-Learn"><span class="toc-text">Scikit-Learn</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GPyTorch"><span class="toc-text">GPyTorch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GPFlow"><span class="toc-text">GPFlow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GPy"><span class="toc-text">GPy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pyro"><span class="toc-text">Pyro</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gen"><span class="toc-text">Gen</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stan"><span class="toc-text">Stan</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BoTorch"><span class="toc-text">BoTorch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%80%BB%E7%BB%93"><span class="toc-text">6 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%B4%E8%B0%A2"><span class="toc-text">致谢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 西山晴雪</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : ''
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script></div></body></html>
